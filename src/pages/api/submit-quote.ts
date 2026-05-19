@@ -29,7 +29,7 @@ interface QuoteFormData {
 
 // Helper to get clients on demand
 function getClients() {
-  const supabaseUrl = import.meta.env.SUPABASE_URL || process.env.SUPABASE_URL;
+  const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL || import.meta.env.SUPABASE_URL || process.env.SUPABASE_URL;
   const supabaseKey = import.meta.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
   const resendKey = import.meta.env.RESEND_API_KEY || process.env.RESEND_API_KEY;
 
@@ -220,8 +220,8 @@ export const POST: APIRoute = async ({ request }) => {
       priority: getPriorityLabel(leadScore),
     }), { status: 200 });
 
-  } catch (err) {
+  } catch (err: any) {
     console.error('Handler error:', err);
-    return new Response(JSON.stringify({ error: 'Internal server error' }), { status: 500 });
+    return new Response(JSON.stringify({ error: 'Internal server error', detail: err?.message }), { status: 500 });
   }
 };
