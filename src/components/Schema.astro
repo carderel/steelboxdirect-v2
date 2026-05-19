@@ -1,0 +1,362 @@
+---
+interface Props {
+  pageType: 'home' | 'guide' | 'tool' | 'quote' | 'legal';
+  pageTitle: string;
+  pageDescription: string;
+  guideTopic?: 'size' | 'condition' | 'delivery' | 'cost' | 'permits';
+}
+
+const { pageType, pageTitle, pageDescription, guideTopic } = Astro.props;
+
+// Organization Schema
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  'name': 'Steel Box Direct',
+  'url': 'https://steelboxdirect.com',
+  'logo': 'https://steelboxdirect.com/logo.svg',
+  'description': 'Educational shipping container buying guide and quote service serving 250 miles from Cincinnati, Ohio',
+  'foundingDate': '2024',
+  'areaServed': {
+    '@type': 'City',
+    'name': 'Cincinnati',
+    'address': {
+      '@type': 'PostalAddress',
+      'addressRegion': 'OH',
+      'addressCountry': 'US'
+    }
+  },
+  'contactPoint': {
+    '@type': 'ContactPoint',
+    'contactType': 'Sales',
+    'url': 'https://steelboxdirect.com/quote/'
+  },
+  'sameAs': ['https://steelboxdirect.com']
+};
+
+// LocalBusiness Schema (250-mile radius from Cincinnati)
+const localBusinessSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  'name': 'Steel Box Direct',
+  'image': 'https://steelboxdirect.com/logo.svg',
+  'description': 'Shipping container buyer\'s guide and sales service',
+  'address': {
+    '@type': 'PostalAddress',
+    'addressLocality': 'Cincinnati',
+    'addressRegion': 'OH',
+    'addressCountry': 'US'
+  },
+  'geo': {
+    '@type': 'Circle',
+    'geoMidpoint': {
+      '@type': 'GeoCoordinates',
+      'latitude': '39.1582',
+      'longitude': '-84.4704'
+    },
+    'geoRadius': '402.336' // 250 miles in km
+  },
+  'serviceArea': {
+    '@type': 'Place',
+    'name': '250-mile radius from Cincinnati, Ohio'
+  }
+};
+
+// BreadcrumbList Schema
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  'itemListElement': [
+    {
+      '@type': 'ListItem',
+      'position': 1,
+      'name': 'Home',
+      'item': 'https://steelboxdirect.com'
+    }
+  ]
+};
+
+// Size Guide Schema
+const sizeGuideSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  'name': 'How to Choose the Right Shipping Container Size',
+  'description': 'Step-by-step guide to determining the correct container size for your equipment and storage needs',
+  'step': [
+    {
+      '@type': 'HowToStep',
+      'position': 1,
+      'name': 'Measure Your Equipment',
+      'text': 'Determine the dimensions of the equipment or items you need to store'
+    },
+    {
+      '@type': 'HowToStep',
+      'position': 2,
+      'name': 'Compare Container Sizes',
+      'text': '20-foot containers fit single equipment pieces; 40-foot containers hold equipment and additional inventory'
+    },
+    {
+      '@type': 'HowToStep',
+      'position': 3,
+      'name': 'Use the Calculator',
+      'text': 'Input your equipment dimensions to find the optimal container size'
+    }
+  ]
+};
+
+// Condition Guide Schema
+const conditionGuideSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  'name': 'Understanding Shipping Container Condition Grades',
+  'description': 'Guide to container condition grades: New (One-Trip), Cargo Worthy, Wind & Water Tight, and As-Is',
+  'step': [
+    {
+      '@type': 'HowToStep',
+      'position': 1,
+      'name': 'New (One-Trip) Containers',
+      'text': 'Never used for cargo. Guarantee weather protection for expensive equipment. Premium cost justified by perfect condition.'
+    },
+    {
+      '@type': 'HowToStep',
+      'position': 2,
+      'name': 'Cargo Worthy Containers',
+      'text': 'Used for shipping but still weatherproof. Good condition at lower cost than new. Ideal for most buyers.'
+    },
+    {
+      '@type': 'HowToStep',
+      'position': 3,
+      'name': 'Wind & Water Tight Containers',
+      'text': 'Waterproof but may show cosmetic wear. Cost-effective and suitable for most storage needs.'
+    },
+    {
+      '@type': 'HowToStep',
+      'position': 4,
+      'name': 'As-Is Containers',
+      'text': 'Lowest cost, visible wear. Inspect thoroughly. May require repairs depending on damage.'
+    }
+  ]
+};
+
+// Delivery Guide Schema
+const deliveryGuideSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  'name': 'How to Prepare Your Property for Container Delivery',
+  'description': 'Guide to delivery requirements, property access, and placement considerations for shipping container delivery',
+  'step': [
+    {
+      '@type': 'HowToStep',
+      'position': 1,
+      'name': 'Verify Site Access',
+      'text': 'Ensure driveway is 12+ feet wide with clearance for delivery truck and boom extension'
+    },
+    {
+      '@type': 'HowToStep',
+      'position': 2,
+      'name': 'Check Ground Conditions',
+      'text': 'Level ground required. Soft ground may need reinforcement. Notify us of challenging terrain.'
+    },
+    {
+      '@type': 'HowToStep',
+      'position': 3,
+      'name': 'Clear Obstacles',
+      'text': 'Remove trees, power lines, and structures within boom swing radius'
+    },
+    {
+      '@type': 'HowToStep',
+      'position': 4,
+      'name': 'Schedule Delivery',
+      'text': 'Coordinate timing. Delivery takes 30-45 minutes. Be present to direct placement.'
+    }
+  ]
+};
+
+// Pricing Guide Schema
+const pricingGuideSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  'name': 'Understanding Shipping Container Pricing',
+  'description': 'Guide to container pricing factors, cost drivers, and how to evaluate container quotes',
+  'step': [
+    {
+      '@type': 'HowToStep',
+      'position': 1,
+      'name': 'Container Condition',
+      'text': 'New containers cost more than used. Cost varies with condition grade (One-Trip, Cargo Worthy, Wind & Water Tight, As-Is)'
+    },
+    {
+      '@type': 'HowToStep',
+      'position': 2,
+      'name': 'Size',
+      'text': '20-foot containers cost less than 40-foot. Choose based on actual storage needs to avoid overpaying.'
+    },
+    {
+      '@type': 'HowToStep',
+      'position': 3,
+      'name': 'Delivery Distance',
+      'text': 'Distance from our location affects delivery cost. We serve 250 miles from Cincinnati.'
+    },
+    {
+      '@type': 'HowToStep',
+      'position': 4,
+      'name': 'Site Conditions',
+      'text': 'Difficult access, soft ground, or crane delivery increases cost. Factor these into your budget.'
+    }
+  ]
+};
+
+// Permits Guide Schema
+const permitsGuideSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  'name': 'How to Determine if You Need a Shipping Container Permit',
+  'description': 'Guide to understanding permit requirements for shipping container placement and storage',
+  'step': [
+    {
+      '@type': 'HowToStep',
+      'position': 1,
+      'name': 'Identify Your Location Type',
+      'text': 'Rural agricultural properties often have exemptions. Urban and residential areas may require permits.'
+    },
+    {
+      '@type': 'HowToStep',
+      'position': 2,
+      'name': 'Check Local Zoning',
+      'text': 'Contact your county zoning office or check online. Zoning determines if containers are permitted on your property.'
+    },
+    {
+      '@type': 'HowToStep',
+      'position': 3,
+      'name': 'Apply for Permits if Required',
+      'text': 'Most jurisdictions have straightforward permits for equipment storage. Budget 2-4 weeks for approval.'
+    },
+    {
+      '@type': 'HowToStep',
+      'position': 4,
+      'name': 'Verify Before Delivery',
+      'text': 'Confirm permit status before scheduling delivery to avoid delays or removal orders.'
+    }
+  ]
+};
+
+// Quote Page Schema
+const quotePageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  'name': 'Get a Shipping Container Quote',
+  'description': 'Request an accurate shipping container quote based on size, condition, delivery location, and timeline',
+  'potentialAction': {
+    '@type': 'TradeAction',
+    'target': {
+      '@type': 'EntryPoint',
+      'urlTemplate': 'https://steelboxdirect.com/quote/',
+      'actionPlatform': ['DesktopWebPlatform', 'MobileWebPlatform']
+    },
+    'deliveryMethod': 'OnlineOnly'
+  }
+};
+
+// FAQ Schema (for all guides)
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  'mainEntity': [
+    {
+      '@type': 'Question',
+      'name': 'How do I know what size container I need?',
+      'acceptedAnswer': {
+        '@type': 'Answer',
+        'text': 'Measure your equipment and compare to 20-foot (1,160 cubic feet) and 40-foot (2,385 cubic feet) containers. Use our size calculator for exact recommendations.'
+      }
+    },
+    {
+      '@type': 'Question',
+      'name': 'What is the difference between new and used containers?',
+      'acceptedAnswer': {
+        '@type': 'Answer',
+        'text': 'New (One-Trip) containers guarantee weatherproofing but cost more. Used containers (Cargo Worthy, Wind & Water Tight) are cheaper and suitable for most uses. Condition grade determines durability and cost.'
+      }
+    },
+    {
+      '@type': 'Question',
+      'name': 'Do I need a permit for a shipping container?',
+      'acceptedAnswer': {
+        '@type': 'Answer',
+        'text': 'Most rural agricultural properties have exemptions. Urban and residential areas may require permits. Check with your local zoning office for specific requirements.'
+      }
+    },
+    {
+      '@type': 'Question',
+      'name': 'How much does a shipping container cost?',
+      'acceptedAnswer': {
+        '@type': 'Answer',
+        'text': 'Costs vary based on condition, size, and delivery distance. New 20-foot containers cost more than used 40-foot containers. We provide accurate quotes after consultation.'
+      }
+    },
+    {
+      '@type': 'Question',
+      'name': 'What areas do you serve?',
+      'acceptedAnswer': {
+        '@type': 'Answer',
+        'text': 'We serve approximately 250 miles from Cincinnati, Ohio. This includes Ohio, Indiana, Kentucky, and surrounding regions.'
+      }
+    }
+  ]
+};
+
+// Article Schema (for guides)
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  'headline': pageTitle,
+  'description': pageDescription,
+  'datePublished': '2026-03-10',
+  'dateModified': '2026-03-23',
+  'author': {
+    '@type': 'Organization',
+    'name': 'Steel Box Direct'
+  }
+};
+
+// Webpage Schema
+const webpageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  'name': pageTitle,
+  'description': pageDescription,
+  'url': Astro.url.href,
+  'isPartOf': {
+    '@type': 'WebSite',
+    'name': 'Steel Box Direct',
+    'url': 'https://steelboxdirect.com'
+  },
+  'potentialAction': {
+    '@type': 'SearchAction',
+    'target': {
+      '@type': 'EntryPoint',
+      'urlTemplate': 'https://steelboxdirect.com/quote/'
+    }
+  }
+};
+
+// Build schema array based on page type
+let schemas: any[] = [organizationSchema, localBusinessSchema, breadcrumbSchema, webpageSchema];
+
+if (pageType === 'home') {
+  schemas.push(faqSchema);
+} else if (pageType === 'guide') {
+  schemas.push(articleSchema, faqSchema);
+  if (guideTopic === 'size') schemas.push(sizeGuideSchema);
+  if (guideTopic === 'condition') schemas.push(conditionGuideSchema);
+  if (guideTopic === 'delivery') schemas.push(deliveryGuideSchema);
+  if (guideTopic === 'cost') schemas.push(pricingGuideSchema);
+  if (guideTopic === 'permits') schemas.push(permitsGuideSchema);
+} else if (pageType === 'quote') {
+  schemas.push(quotePageSchema);
+}
+---
+
+{schemas.map((schema) => (
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+))}

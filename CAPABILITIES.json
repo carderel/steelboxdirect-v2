@@ -1,0 +1,30 @@
+{
+  "environment": "Claude Code CLI (macOS Darwin 25.3.0)",
+  "llm": "Claude Opus 4.6 (claude-opus-4-6)",
+  "tools_available": {
+    "file_read": true,
+    "file_write": true,
+    "file_edit": true,
+    "file_glob": true,
+    "file_grep": true,
+    "bash_execution": true,
+    "code_execution": true,
+    "web_search": true,
+    "web_fetch": true,
+    "image_read": true,
+    "image_generation": false,
+    "browser_control": false,
+    "git": true,
+    "github_cli": true,
+    "subagent_delegation": true,
+    "mcp_tools": true
+  },
+  "constraints": {
+    "max_file_size": null,
+    "allowed_languages": [],
+    "restricted_paths": [],
+    "platform": "darwin",
+    "shell": "zsh"
+  },
+  "notes": "Running via Claude Code CLI with full filesystem access, bash execution, web search, and MCP tool integrations (Teamwork Projects, Teamwork Desk, Docker MCP). Subagents available for parallel task execution."
+}

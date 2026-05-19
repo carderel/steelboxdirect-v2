@@ -1,0 +1,30 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AdminDashboard from '../../components/AdminDashboard';
+---
+
+<BaseLayout title="Seller Dashboard | Steel Box Direct" pageType="legal">
+  <div class="admin-wrapper">
+    <AdminDashboard client:only="react" />
+  </div>
+
+  <script>
+    import { supabase } from '../../lib/supabase';
+
+    // Protect the route
+    async function checkAuth() {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        window.location.href = '/admin/login';
+      }
+    }
+    checkAuth();
+  </script>
+
+  <style>
+    .admin-wrapper {
+      background: #f8f8f8;
+      min-height: calc(100vh - 60px);
+    }
+  </style>
+</BaseLayout>

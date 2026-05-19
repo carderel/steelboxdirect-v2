@@ -1,0 +1,173 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  pageType="guide"
+  guideTopic="delivery"
+  title="Shipping Container Delivery Requirements | Steel Box Direct"
+  description="Learn how shipping container delivery works, site requirements, access needs, and how to prepare your property."
+>
+  <div class="guide-header" style="background: var(--c3-deliver); color: var(--cream);">
+    <div class="wrap">
+      <div class="sh" style="border-color: var(--cream);">
+        <span class="idx">§ 03</span>
+        <span class="nm" style="color: var(--cream);">Decision: Delivery</span>
+        <span class="tg" style="color: var(--cream);">Logistics Standards</span>
+      </div>
+      <h1 class="big" style="color: var(--cream);">Will it even<br><em>Get there?</em></h1>
+      <p class="guide-lede" style="opacity: .9;">
+        Narrow lanes, soft ground, low branches — we plan for it. Most rural properties can receive a container,
+        but you need to know the clearance requirements before you buy.
+      </p>
+    </div>
+  </div>
+
+  <section class="guide-content">
+    <div class="wrap">
+      <div class="row">
+        <div class="main-col">
+          <h2>How Containers Are Delivered</h2>
+          <p>The delivery method depends on your property access. A 65-foot truck combination needs room to maneuver.</p>
+
+          <div class="method-card" style="border-left-color: var(--c3-deliver);">
+            <h3>Tilt-Bed Truck</h3>
+            <div class="m" style="color: var(--c3-deliver); margin-bottom: 12px;">The Farm Standard</div>
+            <p>The truck tilts its bed and slides the container off onto the ground. Requires 100+ feet of straight approach.</p>
+            <div class="who">→ Best for clear driveways</div>
+          </div>
+
+          <div class="method-card" style="border-left-color: var(--c2-cond);">
+            <h3>Crane-Set</h3>
+            <div class="m" style="color: var(--c2-cond); margin-bottom: 12px;">Tight Access Solution</div>
+            <p>A separate crane lifts the container into place. Solves sharp turns, fencelines, or soft ground issues.</p>
+            <div class="who" style="background: var(--c2-cond); color: var(--cream);">→ Mike · rural access</div>
+          </div>
+
+          <h3>The Quick Clearance Checklist</h3>
+          <ul class="check-list">
+            <li><strong>Width:</strong> 12 feet minimum clearance.</li>
+            <li><strong>Height:</strong> 14 feet overhead (branches/wires).</li>
+            <li><strong>Ground:</strong> Must support a 30,000 lb truck.</li>
+          </ul>
+        </div>
+
+        <aside class="sidebar-col">
+          <div class="authority-card">
+            <div class="m">Logistics Data</div>
+            <ul>
+              <li><strong>92%</strong> of rural properties can receive tilt-bed delivery.</li>
+              <li><strong>60 feet</strong> is the average truck length.</li>
+              <li><strong>95%</strong> of access issues are solved by crane-set.</li>
+            </ul>
+          </div>
+
+          <div class="cta-card">
+            <h4>Not sure?</h4>
+            <p>Send us a photo of your driveway with your quote request.</p>
+            <a href="/quote/" class="btn">Check My Access <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .guide-header {
+      padding: 80px 0 64px;
+      border-bottom: 2.5px solid var(--ink);
+    }
+    .guide-lede {
+      font-size: 22px;
+      line-height: 1.45;
+      margin: 40px 0 0;
+      max-width: 720px;
+      font-weight: 500;
+    }
+
+    .guide-content {
+      padding: 96px 0;
+      background: var(--cream);
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .method-card {
+      background: white;
+      border: 2px solid var(--ink);
+      border-left: 8px solid var(--ink);
+      padding: 32px;
+      margin-top: 40px;
+      box-shadow: 8px 8px 0 var(--ink);
+    }
+    .method-card h3 {
+      font-family: var(--narrow);
+      font-weight: 700;
+      font-size: 28px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .who {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: 4px 8px;
+      background: var(--ink);
+      color: var(--cream);
+      display: inline-block;
+      margin-top: 16px;
+    }
+
+    .check-list {
+      list-style: none;
+      padding: 0;
+      margin: 40px 0 0;
+    }
+    .check-list li {
+      padding: 16px 0;
+      border-bottom: 1.5px solid rgba(11,15,26,.1);
+      font-size: 18px;
+      font-weight: 500;
+    }
+    .check-list li::before {
+      content: "→";
+      color: var(--c3-deliver);
+      margin-right: 12px;
+      font-family: var(--mono);
+      font-weight: 700;
+    }
+
+    .authority-card {
+      background: var(--ink);
+      color: var(--cream);
+      padding: 32px;
+      border: 2px solid var(--ink);
+    }
+    .authority-card .m { color: var(--yellow); margin-bottom: 16px; }
+    .authority-card ul { list-style: none; padding: 0; margin: 0; }
+    .authority-card li { margin-bottom: 16px; font-size: 15px; line-height: 1.45; border-bottom: 1px solid rgba(246,241,231,.1); padding-bottom: 16px; }
+    .authority-card li:last-child { border: none; }
+
+    .cta-card {
+      margin-top: 40px;
+      background: white;
+      border: 2px solid var(--ink);
+      padding: 32px;
+      box-shadow: 8px 8px 0 var(--c3-deliver);
+    }
+    .cta-card h4 { font-family: var(--narrow); font-size: 24px; text-transform: uppercase; margin-bottom: 8px; }
+    .cta-card p { font-size: 15px; margin-bottom: 20px; }
+
+    @media (max-width: 960px) {
+      .row { grid-template-columns: 1fr; gap: 48px; }
+      .guide-header { padding: 48px 0; }
+      .big { font-size: clamp(48px, 10vw, 80px); }
+    }
+  </style>
+</BaseLayout>

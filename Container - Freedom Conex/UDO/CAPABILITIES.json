@@ -1,0 +1,18 @@
+{
+  "environment": "Claude Code CLI on macOS Darwin 25.2.0",
+  "llm": "Claude Opus 4.5 (claude-opus-4-5-20251101)",
+  "tools_available": {
+    "file_read": true,
+    "file_write": true,
+    "web_search": true,
+    "code_execution": true,
+    "image_generation": false,
+    "browser_control": false
+  },
+  "constraints": {
+    "max_file_size": null,
+    "allowed_languages": ["any"],
+    "restricted_paths": []
+  },
+  "notes": "Full file system access. Bash execution available. Web search and fetch available."
+}

@@ -1,0 +1,296 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Shipping Container Delivery Requirements | Freedom Conex"
+  description="Learn how shipping container delivery works, site requirements, access needs, and how to prepare your property."
+>
+  <article>
+    <h1>Can your site receive a container?</h1>
+
+    <p class="intro">
+      Good news: Most rural properties can receive delivery without problems. Bad news: Some can't, and you need to know which applies to you
+      before requesting a quote. A 60–65 foot truck needs specific clearances. Let's figure out if your site works and what options exist if it's tight.
+    </p>
+
+    <section>
+      <h2>Can Your Property Receive Delivery?</h2>
+      <p><strong>Most rural properties: YES.</strong> You probably need just one or two things to work:</p>
+      <ul class="quick-list">
+        <li><strong>Width:</strong> 10 feet minimum (at narrowest point)</li>
+        <li><strong>Height:</strong> 14 feet minimum (no low branches or power lines overhead)</li>
+        <li><strong>Turnable:</strong> Room for a 60–65 foot truck to maneuver in (or backup out)</li>
+        <li><strong>Ground:</strong> Reasonably firm (not swampy, but gravel/dirt/asphalt all work)</li>
+      </ul>
+      <p><strong>Quick test:</strong> "Can a large equipment hauler (like farm machinery transport) reach my placement spot?" If yes, a container truck can get there. If no, we have options.</p>
+    </section>
+
+    <section>
+      <h2>How Containers Are Delivered</h2>
+
+      <div class="method-card">
+        <h3>Tilt-Bed Truck (Most Common)</h3>
+        <p>The container sits on a flatbed trailer. At your site, the truck tilts the bed and slides the container off onto the ground. This is the standard method for farm deliveries.</p>
+        <p><strong>What you need:</strong></p>
+        <ul>
+          <li>Truck length: ~60–65 feet total (truck + trailer + container)</li>
+          <li>The truck positions with the back of the trailer where you want the container</li>
+          <li>Ground should be firm enough that the container doesn't sink as it slides off (gravel, compacted earth, asphalt all work)</li>
+          <li>Works for both 20-foot and 40-foot containers</li>
+        </ul>
+        <p><strong>Tom (Equipment Farmer):</strong> Standard delivery. Truck reaches your placement spot, drops the container. Works for most rural driveways.</p>
+        <p><strong>Mike (Rural/Budget):</strong> If driveway is tight, you may need site prep or alternatives below.</p>
+        <p><strong>Best for:</strong> Properties with good driveway access and space to position.</p>
+      </div>
+
+      <div class="method-card">
+        <h3>Crane Delivery</h3>
+        <p>A separate crane lifts the container off a flatbed and places it. The truck doesn't need to position exactly at the final spot—it stops closer to the road, and the crane reaches from there.</p>
+        <p><strong>Why this helps:</strong></p>
+        <ul>
+          <li>Crane can reach placement sites the truck truck can't access</li>
+          <li>Solves narrow driveway, tight turn, or long-distance problems</li>
+          <li>More expensive than tilt-bed (typically $500–$1,500 extra), but solves otherwise impossible deliveries</li>
+          <li>Still works for both 20-foot and 40-foot containers</li>
+        </ul>
+        <p><strong>Mike (Rural/Budget):</strong> If your driveway is too narrow or turns too sharp, crane is your option. Yes, it costs more, but it works when tilt-bed won't.</p>
+        <p><strong>Best for:</strong> Locations where the truck can't reach the exact placement spot but crane access is possible.</p>
+      </div>
+
+      <div class="method-card">
+        <h3>Chassis Drop</h3>
+        <p>The container arrives on a wheeled chassis (the frame semi-trucks use). The chassis is disconnected and left with the container on wheels.</p>
+        <p><strong>Why you'd use this:</strong></p>
+        <ul>
+          <li>Container stays on wheels (elevated, not on ground)</li>
+          <li>Allows repositioning later if needed</li>
+          <li>Useful for temporary staging or if final placement location isn't ready</li>
+        </ul>
+        <p><strong>Reality check:</strong> Less common for permanent farm storage. Wheels elevate the container (better for drainage) but make it harder to use. Usually a temporary solution.</p>
+        <p><strong>Best for:</strong> Temporary use, staging, or if final placement spot isn't ready yet.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Access Requirements</h2>
+
+      <h3>Driveway Width</h3>
+      <p><strong>Minimum:</strong> 10 feet wide &nbsp;|&nbsp; <strong>Comfortable:</strong> 12+ feet wide</p>
+      <p>The delivery truck is about 8.5 feet wide. You need clearance on both sides for mirrors and maneuvering. This is where many rural driveways get tight.</p>
+      <p><strong>Check for:</strong> Narrow gates or fence openings (common culprit). Trees or posts that pinch the driveway. Mailboxes, signs, or other obstacles sticking into the driving line.</p>
+      <p><strong>Tom (Equipment Farmer):</strong> Most farm driveways are 10–12 feet. Measure the narrowest point from property line to property line.</p>
+      <p><strong>Mike (Rural/Budget):</strong> If your driveway is under 10 feet wide, you likely need crane delivery. This is solvable but costs more.</p>
+
+      <h3>Overhead Clearance</h3>
+      <p><strong>Minimum:</strong> 14 feet</p>
+      <p>A container on a truck sits about 13–14 feet high. This is the second most common problem for rural properties.</p>
+      <p><strong>Check for:</strong> Low-hanging tree branches (especially over driveways—they grow back and hit trucks). Power lines or phone lines overhead. Covered structures, carports, or low-hanging barn roofs along the route.</p>
+      <p><strong>Tom & Mike:</strong> If you have trees overhanging the driveway, a few strategic branches may need trimming. This is usually no problem and takes an hour with a chainsaw.</p>
+      <p><strong>Power lines:</strong> If uncertain, contact your local utility (free service). They'll tell you if there's clearance.</p>
+
+      <h3>Turning Radius</h3>
+      <p>A 65-foot truck combination needs room to turn. This matters if your driveway has sharp switchbacks or multiple tight 90-degree turns.</p>
+      <p><strong>What matters:</strong></p>
+      <ul>
+        <li>90-degree turns off a public road (truck needs space to angle in)</li>
+        <li>Tight curves in your driveway (sharp turns are harder; gentle curves work fine)</li>
+        <li>Dead ends where the truck would need to back out (usually okay, but the driver needs to know in advance)</li>
+      </ul>
+      <p><strong>Reality:</strong> Long straight driveways with gentle curves work great. Sharp switchbacks or multiple tight turns are challenging but solvable with crane delivery or site prep.</p>
+      <p><strong>Tom (Equipment Farmer):</strong> Most rural driveways have gentle enough curves. If your farm equipment hauler can get in, a container truck can too.</p>
+
+      <h3>Ground Conditions</h3>
+      <p><strong>For tilt-bed delivery:</strong> Ground should be firm enough to support the truck. Soft, muddy, or sandy areas may not work. Gravel or compacted earth is fine. Concrete or asphalt is ideal.</p>
+      <p><strong>Reality check:</strong> If the ground is wet or soft enough that a loaded pickup truck sinks, the delivery truck won't work. Same test: Can a heavy farm implement stay on firm ground in that spot?</p>
+      <p><strong>For final placement:</strong> Container should sit on level ground. Some sellers provide railroad ties or concrete blocks to level and elevate. Sitting directly on dirt is okay but may cause faster bottom rust.</p>
+      <p><strong>Mike (Rural/Budget):</strong> Gravel pads are cheap insurance. Even a simple 10ft x 40ft area of crushed gravel ($200–$400) protects container longevity significantly.</p>
+    </section>
+
+    <section>
+      <h2>Measure Your Access</h2>
+      <p>Before requesting a quote, check these measurements:</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Minimum</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Driveway width (narrowest point)</td><td>10 ft</td></tr>
+            <tr><td>Gate/fence opening width</td><td>10 ft</td></tr>
+            <tr><td>Overhead clearance (lowest point)</td><td>14 ft</td></tr>
+            <tr><td>Distance from road to placement</td><td>Note it</td></tr>
+            <tr><td>Any tight turns?</td><td>Note them</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="tip-box">
+        <h3>Tip: Walk the Route (Most Important)</h3>
+        <p>Walk from the road to where you want the container. This is the single best way to spot problems.</p>
+        <p><strong>Note anything that might be tight:</strong> Trees close to the edge (can be trimmed). Ditches or drop-offs that narrow the passage. Soft spots that might not hold a heavy truck (can be prepped). Overhead wires or branches (can be cleared).</p>
+        <p><strong>Bring measurements.</strong> A 30-foot measuring tape and a smartphone photo of any tight spots help the seller evaluate your site.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Placement Considerations</h2>
+
+      <h3>Where Should the Container Go?</h3>
+      <p>Placement decision matters for long-term success. Think about:</p>
+      <ul>
+        <li><strong>Access:</strong> Can you easily get to it with vehicles, equipment? (Tom: Where will you park your tractor for quick load/unload?)</li>
+        <li><strong>Drainage:</strong> Will water pool around it? High ground or slight slope is ideal.</li>
+        <li><strong>Sun/shade:</strong> Full sun keeps it dry; shade may increase condensation. East-facing is typical.</li>
+        <li><strong>Visibility:</strong> Does placement matter for aesthetics? (Sarah: Hidden in back field vs. visible from road affects resale/appearance perception)</li>
+        <li><strong>Future use:</strong> If you might add a second container later, leave room to place it. 15 feet apart is ideal.</li>
+      </ul>
+
+      <h3>Ground Preparation</h3>
+      <p><strong>Options, from minimum to best:</strong></p>
+      <ul>
+        <li><strong>Clear ground:</strong> Remove rocks, vegetation. Works for temporary use.</li>
+        <li><strong>Gravel pad:</strong> $200–$400 for a 10ft × 40ft area. Significantly extends container life. Recommended for most farm storage.</li>
+        <li><strong>Compacted base:</strong> Grading + compaction. $400–$800. Ideal if you'll be moving equipment in/out frequently.</li>
+        <li><strong>Concrete or railroad ties:</strong> $800–$2,000+. For high-value equipment or long-term workspace use.</li>
+      </ul>
+      <p><strong>Tom (Equipment Farmer):</strong> Gravel pad is the farm standard. Costs little, extends container life by 5+ years, and provides traction for your equipment.</p>
+      <p><strong>Mike (Rural/Budget):</strong> Even firm ground works for 10+ years. Gravel pad is cheap insurance if you want to protect your investment.</p>
+
+      <h3>Door Orientation & Access</h3>
+      <p>Containers have doors on one end. Decide early:</p>
+      <ul>
+        <li><strong>Which direction should doors face?</strong> (North-facing keeps sun/heat out; south-facing easier to work during winter)</li>
+        <li><strong>Door clearance:</strong> You need about 9 feet of clearance to swing doors fully open (they need space to swing without hitting a barn, tree, or other equipment)</li>
+        <li><strong>Vehicle access to the door:</strong> Can you back a truck or trailer to the door if you need to load/unload equipment? (Tom: Important for tractor or hay wagons)</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Common Delivery Scenarios & Solutions</h2>
+
+      <div class="faq">
+        <h3>What if my driveway is too narrow (under 10 feet)?</h3>
+        <p><strong>Solution:</strong> Crane delivery. Yes, it costs $500–$1,500 more, but it solves an otherwise unsolvable problem. The truck drops the crane closer to the road, and the crane reaches your placement spot.</p>
+        <p><strong>Alternative:</strong> Temporary branch trimming or obstacle removal may give you the extra foot you need. If that works, standard tilt-bed delivery becomes possible.</p>
+
+        <h3>What if I have sharp turns or switchbacks?</h3>
+        <p><strong>Reality:</strong> Tight switchbacks are the hardest problem to solve. The 65-foot truck can't navigate sharp S-curves.</p>
+        <p><strong>Solutions:</strong> (1) Crane delivery (most common), (2) Smaller container (20-foot is easier than 40-foot to maneuver), (3) Temporary removal of obstacles to create wider turn radius.</p>
+        <p><strong>Mike (Rural/Budget):</strong> Call ahead and describe your turns. The driver/seller will tell you if it's possible. Don't guess.</p>
+
+        <h3>What if power lines are overhead?</h3>
+        <p><strong>Solution:</strong> Call your local utility company. It's a free call and they'll tell you if there's clearance or if lines need to be temporarily raised. Usually not a blocker.</p>
+        <p><strong>Sarah (Business Owner):</strong> Document the utility company's response for your records in case of issues.</p>
+
+        <h3>What if my driveway has a long distance from road to placement?</h3>
+        <p><strong>Good news:</strong> Distance isn't the problem—access is. If the truck can navigate the driveway (width, height, turns all okay), it doesn't matter if it's 1/4 mile or 1 mile.</p>
+        <p><strong>Reality:</strong> The longer the drive, the longer the delivery takes, but same delivery method applies.</p>
+
+        <h3>Can delivery happen in winter?</h3>
+        <p><strong>Frozen ground:</strong> Actually ideal. Firm ground supports the truck perfectly.</p>
+        <p><strong>Snow/mud:</strong> May delay delivery. Heavy snow-covered driveways or deep mud require conditions to improve first.</p>
+        <p><strong>Plan ahead:</strong> Schedule delivery during decent weather if possible. If winter delivery is necessary, discuss timing with the seller.</p>
+
+        <h3>Who decides if delivery is possible?</h3>
+        <p><strong>You + Seller partnership.</strong> You provide property details, photos, and measurements. The seller (or driver) evaluates feasibility and recommends the right approach.</p>
+        <p><strong>Red flag:</strong> If a seller says "it's impossible," get a second opinion. Options exist for almost all rural properties.</p>
+
+        <h3>What should I tell the seller about my property?</h3>
+        <p><strong>The essentials:</strong></p>
+        <ul>
+          <li>Driveway width (narrowest point, in feet)</li>
+          <li>Overhead clearance (lowest branches/wires, in feet)</li>
+          <li>Any tight turns or S-curves? (Describe them)</li>
+          <li>Ground type: Asphalt / Gravel / Dirt / Mud-prone</li>
+          <li>Where exactly do you want the container placed?</li>
+          <li>Photos of the driveway and placement area (huge help)</li>
+        </ul>
+        <p><strong>Bonus:</strong> A short video walking from road to placement spot helps the seller visualize everything.</p>
+      </div>
+    </section>
+
+    <section class="next-step">
+      <h2>Confident Delivery Will Work?</h2>
+      <p>The next decision is understanding pricing factors—what affects how much you'll pay.</p>
+      <a href="/cost/" class="cta-button">Pricing Factors</a>
+      <div class="alt-links">
+        <p>Still have questions about your site? <a href="/quote/">Describe your property in a quote request</a>—we can discuss delivery options specific to your situation.</p>
+      </div>
+    </section>
+  </article>
+
+  <style>
+    article { max-width: 800px; }
+
+    .intro {
+      font-size: 1.15rem;
+      color: var(--color-muted);
+      margin-bottom: 2rem;
+      line-height: 1.7;
+    }
+
+    section { margin: 2.5rem 0; }
+
+    .quick-list { margin: 1rem 0 1rem 1.5rem; }
+    .quick-list li { margin-bottom: 0.5rem; line-height: 1.5; }
+
+    .method-card {
+      background: #f7fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .method-card h3 { color: var(--color-primary); margin-bottom: 0.75rem; margin-top: 0; }
+
+    .table-wrap { overflow-x: auto; margin: 1rem 0; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+    th, td { text-align: left; padding: 0.75rem 1rem; border-bottom: 1px solid #e2e8f0; }
+    th { background: #f7fafc; font-weight: 600; color: var(--color-primary); }
+
+    .tip-box {
+      background: #f0fff4;
+      border-left: 4px solid #38a169;
+      padding: 1.25rem 1.5rem;
+      margin: 1.5rem 0;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .tip-box h3 { color: #276749; margin-top: 0; margin-bottom: 0.5rem; }
+
+    .faq h3 { font-size: 1.05rem; margin-top: 1.5rem; color: var(--color-primary); }
+    .faq p { color: var(--color-muted); line-height: 1.6; }
+
+    h3 { margin-top: 1.5rem; }
+    ul { margin: 0.5rem 0 1rem 1.5rem; }
+    li { margin-bottom: 0.35rem; line-height: 1.5; }
+
+    .next-step {
+      background: #f7fafc;
+      padding: 2rem;
+      border-radius: 8px;
+      margin-top: 3rem;
+    }
+
+    .alt-links { margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #e2e8f0; }
+    .alt-links p { color: var(--color-muted); }
+
+    .cta-button {
+      display: inline-block;
+      background: var(--color-accent);
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .cta-button:hover { background: #2c5282; color: white; }
+  </style>
+</BaseLayout>

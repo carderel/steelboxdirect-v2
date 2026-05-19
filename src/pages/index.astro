@@ -1,0 +1,541 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { Image } from 'astro:assets';
+import heroImage from '../assets/photos/container-blue-weathered.jpg';
+---
+
+<BaseLayout
+  title="Steel Box Direct — Protect what you've built"
+  pageType="home"
+>
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="wrap">
+      <div class="top">
+        <div class="chip"><span class="pulse"></span> Ohio · Indiana · Kentucky — 100-mile radius of Cincinnati</div>
+        <span class="m" style="opacity:.6">Est. 2009 · Family owned</span>
+      </div>
+
+      <h1 class="billboard">
+        <span class="l1">Protect what</span>
+        <span class="l2 swap">you've built.</span>
+        <span class="l3 italic">No hard sell.</span>
+      </h1>
+
+      <svg class="doodle" viewBox="0 0 100 100" aria-hidden="true">
+        <path d="M10 20 Q 50 5, 85 35" />
+        <path d="M78 25 L 85 35 L 72 40" />
+      </svg>
+
+      <div class="dek">
+        <p class="dek-lede">From <strong>expensive farm equipment</strong> to business inventory to specialized tools — containers protect what matters, if you choose the right size, condition, and delivery method. We'll walk you through <strong>five decisions</strong> so you can buy with confidence.</p>
+        <div class="dek-acts">
+          <a class="btn" href="/size/">Start: what size? <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+          <a class="btn-ghost" href="/quote/">→ Skip ahead · just send me a quote</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ticker under hero -->
+  <div class="ticker" aria-hidden="true">
+    <div class="track">
+      <span>40-ft cargo-worthy from <em>$3,200</em></span><span>●</span>
+      <span>20-ft one-trip <em>next week</em></span><span>●</span>
+      <span>Delivery included within <em>100 miles</em></span><span>●</span>
+      <span>No farm-access upcharge</span><span>●</span>
+      <span>Most farm storage is <em>zoned exempt</em></span><span>●</span>
+      <span>400+ containers placed across OH · IN · KY</span><span>●</span>
+      <span>40-ft cargo-worthy from <em>$3,200</em></span><span>●</span>
+      <span>20-ft one-trip <em>next week</em></span><span>●</span>
+    </div>
+  </div>
+
+  <!-- ============ §01 PROBLEM ============ -->
+  <section class="problem">
+    <div class="wrap">
+      <div class="sh">
+        <span class="idx">§ 01</span>
+        <span class="nm">The Problem</span>
+        <span class="tg">Why we built this</span>
+      </div>
+      <h2 class="big">Most sellers jump<br>straight to <em>the sale.</em></h2>
+      <div class="row">
+        <div>
+          <p class="lede">A container is a <mark>25-year investment.</mark> The difference between the right one and the wrong one is years of protection — or a rusted-out headache. Before you sign anything, you deserve to understand what you're buying.</p>
+          <p style="font-size:15px;line-height:1.55;opacity:.75;max-width:520px">We're a small shop, not a call-center. You'll talk to the same person from first question to day-of-delivery — usually Carder. No jargon. Just clarity.</p>
+        </div>
+        <div>
+          <div class="stat">
+            <div class="num c2">25yr</div>
+            <div>
+              <div class="lbl">Useful life</div>
+              <div class="txt">A properly-placed steel box outlasts most pole barns for a fraction of the price.</div>
+            </div>
+          </div>
+          <div class="stat">
+            <div class="num c3">400+</div>
+            <div>
+              <div class="lbl">Units placed</div>
+              <div class="txt">Across farms, workshops, breweries, and hobby properties in OH · IN · KY since 2009.</div>
+            </div>
+          </div>
+          <div class="stat">
+            <div class="num c4">0</div>
+            <div>
+              <div class="lbl">Hidden fees</div>
+              <div class="txt">All-in pricing. Container, delivery, setup. What we quote is what you pay.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §02 THE FIVE ============ -->
+  <section class="five" id="five">
+    <div class="wrap wrap-top">
+      <div class="sh">
+        <span class="idx">§ 02</span>
+        <span class="nm">The Five Decisions</span>
+        <span class="tg">Est. 5 min / decision</span>
+      </div>
+      <div class="intro">
+        <h2 class="big">Five decisions<br>stand between you<br>and <em>the right container.</em></h2>
+        <p>Work through them in order. Each guide answers the question buyers like you — Tom, Sarah, Mike — actually ask. No sales pitch, no jargon.</p>
+      </div>
+    </div>
+
+    <div class="grid5">
+      <a class="blk blk-1" href="/size/">
+        <span class="lbl">§ 01 · Size</span>
+        <div class="num">01</div>
+        <h3>What size do you need?</h3>
+        <p>A 20-foot holds one tractor. A 40-foot is your full arsenal. 40 High-Cube if you've got a tall implement.</p>
+        <span class="who">→ Tom · 40-ft primary</span>
+        <span class="go">Open size guide <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+      </a>
+      <a class="blk blk-2" href="/condition/">
+        <span class="lbl">§ 02 · Condition</span>
+        <div class="num">02</div>
+        <h3>New or used?</h3>
+        <p>New guarantees protection. Used saves money. Both work — it just depends on what you're protecting and for how long.</p>
+        <span class="who">→ The Sweet Spot: cargo-worthy</span>
+        <span class="go">Open condition guide <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+      </a>
+      <a class="blk blk-3" href="/delivery/">
+        <span class="lbl">§ 03 · Delivery</span>
+        <div class="num">03</div>
+        <h3>Will it even get here?</h3>
+        <p>Narrow lanes, soft ground, low branches — we plan for it. Tilt-bed for firm ground, crane-set for tight or rural access.</p>
+        <span class="who">→ Mike · rural access</span>
+        <span class="go">Open delivery guide <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+      </a>
+      <a class="blk blk-4" href="/cost/">
+        <span class="lbl">§ 04 · Cost</span>
+        <div class="num">04</div>
+        <h3>What will it really cost?</h3>
+        <p>All-in. Container, delivery, setup. No surprise fees. Fair regional pricing — no premium just because you're rural.</p>
+        <span class="who">→ Sarah · multi-unit</span>
+        <span class="go">Open pricing guide <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+      </a>
+      <a class="blk blk-5" href="/permits/">
+        <span class="lbl">§ 05 · Permits</span>
+        <div class="num">05</div>
+        <h3>Do I need a permit?</h3>
+        <p>Usually no. Most farm storage is zoned-exempt in OH, IN, and KY. Commercial use or HOAs — we'll tell you straight.</p>
+        <span class="who">→ Ag-exempt in most counties</span>
+        <span class="go">Open permit guide <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ============ §04 THE RIG (Embece slab) ============ -->
+  <section class="rig" id="rig">
+    <div class="top-type wrap">
+      <h2 class="wordmark"><span>THE&nbsp;RIG</span> · SPECS</h2>
+    </div>
+    <div class="rig-inner">
+      <div class="photo">
+        <div class="photo-frame">
+          <Image src={heroImage} alt="40-ft cargo-worthy container on a rural property" width={1100} height={550} format="webp" />
+          <span class="fig">FIG. 003 — Site placement</span>
+          <span class="cap">40 × 8 × 8'6" · placed Brown County, IN · March 2020</span>
+        </div>
+      </div>
+      <div class="grid-below">
+        <div class="spec">
+          <span class="lbl">Footprint</span>
+          <span class="val">320 sq ft</span>
+          <span class="note">The 40-ft holds a mid-size tractor with room for a grain drill or a pallet-deep shelving run.</span>
+        </div>
+        <div class="spec">
+          <span class="lbl">Interior height</span>
+          <span class="val">8' 6" HC</span>
+          <span class="note">High-cube adds 12" of headroom. Clears most utility tractors with ROPS folded.</span>
+        </div>
+        <div class="spec">
+          <span class="lbl">Door opening</span>
+          <span class="val">7' 9" wide</span>
+          <span class="note">Double cargo doors open 270° and lock flat to the sidewall. No ramp required for most equipment.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §05 PERSONAS TABLE ============ -->
+  <section class="personas">
+    <div class="wrap">
+      <div class="sh">
+        <span class="idx">§ 03</span>
+        <span class="nm">Who buys from us</span>
+        <span class="tg">Three common stories</span>
+      </div>
+      <div class="intro">
+        <h2 class="big">If any of this<br>sounds like <em>you</em> —<br>we've done it before.</h2>
+        <p>We've placed 400+ containers across the region. Most of our customers are one of three people. Here's what they bought and why.</p>
+      </div>
+
+      <table class="ptbl">
+        <thead>
+          <tr>
+            <th>Buyer</th>
+            <th>They said</th>
+            <th>We recommended</th>
+            <th>Why it fit</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <div class="pname">
+                <span class="dot" style="background:var(--c1-size)"></span>
+                <span class="pcol"><b>Tom</b><small>Equipment farmer</small></span>
+              </div>
+            </td>
+            <td class="quote">"Won't it rust? Will it protect my equipment long-term?"</td>
+            <td><span class="rec">40-ft · one-trip</span></td>
+            <td>New steel for 25-year weather protection on a John Deere and a grain drill. Sited on crushed stone, leveled with railroad ties.</td>
+          </tr>
+          <tr>
+            <td>
+              <div class="pname">
+                <span class="dot" style="background:var(--c3-deliver)"></span>
+                <span class="pcol"><b>Sarah</b><small>Diversified business owner</small></span>
+              </div>
+            </td>
+            <td class="quote">"Can we make this look professional? Scale to multiple units?"</td>
+            <td><span class="rec">2 × 40-ft · mixed</span></td>
+            <td>One one-trip for customer-facing inventory, one cargo-worthy for back-stock. Painted to match the barn.</td>
+          </tr>
+          <tr>
+            <td>
+              <div class="pname">
+                <span class="dot" style="background:var(--c5-permits)"></span>
+                <span class="pcol"><b>Mike</b><small>Hobby / rural</small></span>
+              </div>
+            </td>
+            <td class="quote">"Can you deliver to my property? Is used okay?"</td>
+            <td><span class="rec">20-ft · cargo-worthy</span></td>
+            <td>Crane-set over a fenceline at the end of a gravel lane. Cargo-worthy for a 2/3 cost savings — horse trailer and tools stay dry.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============ §06 PRICING TEASER ============ -->
+  <section class="price" id="price">
+    <div class="wrap">
+      <div class="sh">
+        <span class="idx">§ 04</span>
+        <span class="nm">What it really costs</span>
+        <span class="tg">All-in · no hidden fees</span>
+      </div>
+      <h2 class="big">Three price points.<br><em>One honest number</em> each.</h2>
+      <p class="intro">Each is a real all-in figure for our most common configuration — container, delivery inside the 100-mile radius, and placement on flat, stable ground. Add only if we tell you to.</p>
+
+      <div class="pgrid">
+        <div class="pcard">
+          <div class="tag"><span class="name">20-ft cargo</span><span class="chip">From</span></div>
+          <div class="num">$2,400<small>/ all-in · delivered</small></div>
+          <ul>
+            <li>~160 sq ft · fits a tractor or a lot of tools</li>
+            <li>Wind &amp; Water Tight, minor surface rust</li>
+            <li>Next-week delivery usually available</li>
+          </ul>
+        </div>
+        <div class="pcard rec">
+          <div class="tag"><span class="name">40-ft cargo</span><span class="chip">Most popular</span></div>
+          <div class="num">$3,200<small>/ all-in · delivered</small></div>
+          <ul>
+            <li>~320 sq ft · equipment + implements + shelving</li>
+            <li>The Sweet Spot — price of used, life of new</li>
+            <li>Best $ / sq ft on the lot</li>
+          </ul>
+        </div>
+        <div class="pcard">
+          <div class="tag"><span class="name">40-ft one-trip</span><span class="chip">New</span></div>
+          <div class="num">$5,800<small>/ all-in · delivered</small></div>
+          <ul>
+            <li>Single trip from factory · factory finish</li>
+            <li>25-year weather protection, warranty-backed</li>
+            <li>Tom's pick for high-value equipment</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §07 FAQ ============ -->
+  <section class="faq" id="faq">
+    <div class="wrap">
+      <div class="sh">
+        <span class="idx">§ 05</span>
+        <span class="nm">Straight answers</span>
+        <span class="tg">Before you ask</span>
+      </div>
+      <h2 class="big">The questions <em>everyone</em> asks<br>before they send a deposit.</h2>
+
+      <div class="faq-list">
+        <div class="faq-item">
+          <span class="n">Q · 01</span>
+          <h3 class="q">Won't it rust out on me?</h3>
+          <p class="a">Corten steel, painted inside and out. On crushed-stone pads with airflow underneath, 25 years is realistic. We'll show you how to prep the site.</p>
+        </div>
+        <div class="faq-item">
+          <span class="n">Q · 02</span>
+          <h3 class="q">Can you get it back my driveway?</h3>
+          <p class="a">Usually yes. Tilt-bed needs ~100 ft of approach and firm ground. For tight or soft sites, crane-set works — no lane damage. We'll scout before we schedule.</p>
+        </div>
+        <div class="faq-item">
+          <span class="n">Q · 03</span>
+          <h3 class="q">Do I need a permit?</h3>
+          <p class="a">For farm storage in OH, IN, and KY: almost never. Commercial use or an HOA changes things — we'll flag it on the call, not after you pay.</p>
+        </div>
+        <div class="faq-item">
+          <span class="n">Q · 04</span>
+          <h3 class="q">Is used actually safe for my equipment?</h3>
+          <p class="a">Cargo-worthy units are structurally certified and weather-tight. Surface rust is cosmetic. For anything irreplaceable, we still steer you to one-trip.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §08 CTA ============ -->
+  <section class="cta" id="cta">
+    <div class="inner">
+      <h2 class="big">Ready? <em>Let's talk.</em></h2>
+      <p>A quote is just information. Tell us what you're protecting — we'll send a real number and a delivery window. Usually same day.</p>
+      <a class="btn" href="/quote/">Get my quote <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+      <div class="reassure">
+        <span>No obligation</span>
+        <span>Real human replies</span>
+        <span>All-in pricing, always</span>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    /* Hero */
+    .hero{background:var(--yellow);color:var(--ink);padding:40px 0 0;border-bottom:2.5px solid var(--ink);position:relative;overflow:hidden}
+    .hero .top{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:28px;gap:24px;flex-wrap:wrap}
+    .hero .chip{display:inline-flex;align-items:center;gap:10px;padding:6px 12px;background:var(--ink);color:var(--yellow);font-family:var(--mono);font-size:var(--t-meta);letter-spacing:.08em;text-transform:uppercase}
+    .hero .chip .pulse{width:8px;height:8px;background:var(--c4-cost);border-radius:50%;display:inline-block;box-shadow:0 0 0 0 var(--c4-cost);animation:p 1.8s infinite}
+    @keyframes p{0%{box-shadow:0 0 0 0 rgba(11,143,78,.6)}70%{box-shadow:0 0 0 8px rgba(11,143,78,0)}100%{box-shadow:0 0 0 0 rgba(11,143,78,0)}}
+
+    .billboard{font-family:var(--narrow);font-weight:700;font-size:var(--t-billboard);line-height:.84;letter-spacing:-.03em;text-transform:uppercase;margin:8px 0 0;position:relative}
+    .billboard .l1{display:block;white-space:nowrap;transform:translateX(-1%)}
+    .billboard .l2{display:block;white-space:nowrap;margin-left:4%}
+    .billboard .l3{display:block;white-space:nowrap}
+    .billboard .italic{font-style:italic;font-weight:600}
+    .billboard .swap{color:var(--c3-deliver)}
+
+    .hero .doodle{position:absolute;right:5%;top:42%;width:90px;height:90px;stroke:var(--ink);stroke-width:2.4;fill:none;transform:rotate(8deg);pointer-events:none;display:none}
+    @media(min-width:1100px){.hero .doodle{display:block}}
+
+    .hero .dek{display:grid;grid-template-columns:1fr 1fr 1fr;gap:40px;align-items:end;padding:60px 0 48px;border-top:2px solid var(--ink);margin-top:40px}
+    .hero .dek-lede{grid-column:span 2;font-size:22px;line-height:1.35;margin:0;max-width:720px;font-weight:500}
+    .hero .dek-lede strong{background:var(--ink);color:var(--yellow);padding:1px 8px;box-decoration-break:clone;-webkit-box-decoration-break:clone;font-weight:700}
+    .hero .dek-acts{display:flex;flex-direction:column;gap:14px;align-items:flex-start}
+
+    /* Ticker */
+    .ticker{background:var(--ink);color:var(--yellow);border-top:2.5px solid var(--ink);border-bottom:2.5px solid var(--ink);overflow:hidden;white-space:nowrap;padding:14px 0;font-family:var(--narrow);font-weight:700;font-size:20px;text-transform:uppercase;letter-spacing:-.01em}
+    .ticker .track{display:inline-block;animation:tkr 38s linear infinite;padding-left:100%}
+    .ticker span{margin:0 24px}
+    .ticker em{font-style:normal;color:var(--c5-permits)}
+    @keyframes tkr{from{transform:translateX(0)}to{transform:translateX(-100%)}}
+
+    /* Sections Shared */
+    .sh{display:grid;grid-template-columns:auto 1fr auto;gap:20px;align-items:center;padding:18px 0;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);margin-bottom:72px}
+    .sh .idx{font-family:var(--mono);font-size:var(--t-meta);letter-spacing:.08em;text-transform:uppercase}
+    .sh .nm{font-family:var(--narrow);font-weight:700;font-size:22px;text-transform:uppercase;letter-spacing:-.01em}
+    .sh .tg{font-family:var(--mono);font-size:var(--t-meta);letter-spacing:.08em;text-transform:uppercase;opacity:.55;text-align:right}
+    .big{font-family:var(--narrow);font-weight:700;font-size:var(--t-big);line-height:.9;letter-spacing:-.02em;text-transform:uppercase;margin:0}
+    .big em{font-style:italic;color:var(--c5-permits);font-weight:700}
+
+    /* Problem */
+    .problem{background:var(--cream);padding:120px 0 96px;border-bottom:2.5px solid var(--ink);position:relative;overflow:hidden}
+    .problem .row{display:grid;grid-template-columns:1.1fr 1fr;gap:72px;align-items:start;margin-top:56px}
+    .problem .lede{font-size:22px;line-height:1.45;margin:0 0 32px;max-width:560px;font-weight:500}
+    .problem .lede mark{background:var(--yellow);color:var(--ink);padding:1px 6px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+    .stat{display:grid;grid-template-columns:auto 1fr;gap:22px;padding:22px 0;border-top:1.5px solid var(--ink);align-items:baseline}
+    .stat:last-child{border-bottom:1.5px solid var(--ink)}
+    .stat .num{font-family:var(--narrow);font-weight:700;font-size:64px;line-height:.85;letter-spacing:-.02em}
+    .stat .num.c2{color:var(--c2-cond)}
+    .stat .num.c3{color:var(--c3-deliver)}
+    .stat .num.c4{color:var(--c4-cost)}
+    .stat .lbl{font-family:var(--mono);font-size:var(--t-meta);letter-spacing:.08em;text-transform:uppercase;opacity:.55;margin-bottom:4px}
+    .stat .txt{font-size:16px;line-height:1.45}
+
+    /* Five */
+    .five{background:var(--ink);color:var(--cream);padding:0;border-bottom:2.5px solid var(--ink)}
+    .five .wrap-top{padding-top:96px;padding-bottom:48px}
+    .five .sh{border-color:var(--cream);color:var(--cream)}
+    .five .big{color:var(--cream)}
+    .five .big em{color:var(--yellow)}
+    .five .intro{display:grid;grid-template-columns:1.2fr 1fr;gap:56px;align-items:end;margin:56px 0 0}
+    .five .intro p{font-size:var(--t-lede);line-height:1.5;margin:0;max-width:460px;opacity:.85}
+
+    .grid5{display:grid;grid-template-columns:repeat(5,1fr);border-top:2.5px solid var(--ink)}
+    .blk{position:relative;padding:32px 24px 28px;display:flex;flex-direction:column;gap:14px;min-height:520px;border-right:2.5px solid var(--ink);color:var(--ink);transition:transform .2s}
+    .blk:last-child{border-right:none}
+    .blk:hover{transform:translateY(-4px)}
+    .blk .num{font-family:var(--narrow);font-weight:700;font-size:clamp(90px,8vw,140px);line-height:.8;letter-spacing:-.04em;margin:0}
+    .blk .lbl{font-family:var(--mono);font-size:var(--t-meta);letter-spacing:.08em;text-transform:uppercase;position:absolute;top:16px;right:20px}
+    .blk h3{font-family:var(--narrow);font-weight:700;font-size:var(--t-card);line-height:.95;text-transform:uppercase;letter-spacing:-.01em;margin:0;max-width:90%}
+    .blk p{font-size:15px;line-height:1.5;margin:0;flex:1;font-weight:500}
+    .blk .who{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:4px 8px;background:var(--ink);color:var(--cream);align-self:flex-start;margin-top:4px}
+    .blk .go{font-family:var(--narrow);font-weight:700;font-size:15px;text-transform:uppercase;letter-spacing:.01em;display:inline-flex;align-items:center;gap:10px;border-top:1.5px solid var(--ink);padding-top:14px;margin-top:auto}
+    .blk .go svg{width:16px;height:16px;stroke:currentColor;stroke-width:2.6;fill:none;transition:transform .15s}
+    .blk:hover .go svg{transform:translateX(6px)}
+
+    .blk-1{background:var(--c1-size)}
+    .blk-2{background:var(--c2-cond);color:var(--cream)}
+    .blk-2 .go{border-top-color:var(--cream)}
+    .blk-2 .who{background:var(--cream);color:var(--c2-cond)}
+    .blk-3{background:var(--c3-deliver);color:var(--cream)}
+    .blk-3 .go{border-top-color:var(--cream)}
+    .blk-3 .who{background:var(--cream);color:var(--c3-deliver)}
+    .blk-4{background:var(--c4-cost);color:var(--cream)}
+    .blk-4 .go{border-top-color:var(--cream)}
+    .blk-4 .who{background:var(--cream);color:var(--c4-cost)}
+    .blk-5{background:var(--c5-permits);color:var(--cream)}
+    .blk-5 .go{border-top-color:var(--cream)}
+    .blk-5 .who{background:var(--cream);color:var(--c5-permits)}
+
+    /* Rig */
+    .rig{background:var(--c3-deliver);color:var(--cream);padding:0;border-bottom:2.5px solid var(--ink);position:relative;overflow:hidden}
+    .rig .top-type{padding-top:56px;position:relative}
+    .rig .wordmark{font-family:var(--narrow);font-weight:700;font-size:clamp(56px,11vw,220px);line-height:.9;letter-spacing:-.03em;text-transform:uppercase;margin:0;white-space:nowrap;transform:translateX(-1%);position:relative;z-index:1}
+    .rig .wordmark span{-webkit-text-stroke:2px var(--cream);color:transparent}
+
+    .rig-inner{padding:0 0 96px;margin-top:-60px;position:relative;z-index:2}
+    .rig .photo{margin:0 auto;max-width:1100px;padding:0 32px}
+    .rig .photo-frame{aspect-ratio:16/8;background:var(--ink);border:2.5px solid var(--ink);overflow:hidden;position:relative}
+    .rig .photo-frame img{width:100%;height:100%;object-fit:cover;display:block}
+    .rig .photo-frame .cap{position:absolute;left:16px;bottom:16px;background:var(--cream);color:var(--ink);padding:6px 12px;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+    .rig .photo-frame .fig{position:absolute;top:16px;right:16px;background:var(--yellow);color:var(--ink);padding:6px 12px;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+
+    .rig .grid-below{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;max-width:1100px;margin:48px auto 0;padding:0 32px}
+    .rig .spec{padding:20px 24px 20px 0;border-right:1.5px solid rgba(246,241,231,.3);display:flex;flex-direction:column;gap:6px}
+    .rig .spec:last-child{border-right:none;padding-right:0}
+    .rig .spec .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;opacity:.7}
+    .rig .spec .val{font-family:var(--narrow);font-weight:700;font-size:40px;line-height:1;letter-spacing:-.02em;text-transform:uppercase}
+    .rig .spec .note{font-size:13px;line-height:1.45;opacity:.85}
+
+    /* Personas */
+    .personas{background:var(--cream);padding:120px 0;border-bottom:2.5px solid var(--ink)}
+    .personas .intro{display:grid;grid-template-columns:1.2fr 1fr;gap:56px;align-items:end;margin:56px 0 56px}
+    .personas .intro p{font-size:var(--t-lede);line-height:1.5;margin:0;max-width:460px;font-weight:500}
+
+    .ptbl{width:100%;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);border-collapse:collapse}
+    .ptbl thead th{padding:14px 16px;text-align:left;border-bottom:2px solid var(--ink);font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:500;opacity:.6;background:var(--yellow)}
+    .ptbl tbody td{padding:22px 16px;border-bottom:1.5px solid rgba(11,15,26,.12);vertical-align:top;font-size:15px;line-height:1.45}
+    .ptbl tbody tr:last-child td{border-bottom:none}
+    .ptbl tbody td:first-child{width:18%}
+    .ptbl .pname{display:flex;align-items:center;gap:12px}
+    .ptbl .pname .dot{width:14px;height:14px;border-radius:50%;flex-shrink:0}
+    .ptbl .pname b{font-family:var(--narrow);font-weight:700;font-size:22px;text-transform:uppercase;letter-spacing:-.01em;line-height:1}
+    .ptbl .pname small{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;opacity:.55;margin-top:4px}
+    .ptbl .quote{font-style:italic;font-family:var(--narrow);font-weight:500;font-size:17px;line-height:1.3}
+    .ptbl .rec{font-family:var(--mono);font-size:12px;letter-spacing:.04em;background:var(--ink);color:var(--yellow);padding:4px 8px;display:inline-block}
+
+    /* Price */
+    .price{background:var(--ink);color:var(--cream);padding:120px 0;border-bottom:2.5px solid var(--ink)}
+    .price .sh{border-color:var(--cream);color:var(--cream)}
+    .price .big{color:var(--cream)}
+    .price .big em{color:var(--c1-size)}
+    .price .intro{font-size:var(--t-lede);line-height:1.5;margin:32px 0 56px;max-width:640px;opacity:.85}
+    .pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:2.5px solid var(--cream)}
+    .pcard{padding:32px 28px;border-right:2.5px solid var(--cream);display:flex;flex-direction:column;gap:16px;background:var(--ink);transition:background .15s}
+    .pcard:last-child{border-right:none}
+    .pcard:hover{background:var(--ink-2)}
+    .pcard .tag{display:flex;justify-content:space-between;align-items:center}
+    .pcard .tag .name{font-family:var(--narrow);font-weight:700;font-size:22px;text-transform:uppercase;letter-spacing:-.01em}
+    .pcard .tag .chip{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;background:var(--c1-size);color:var(--ink)}
+    .pcard.rec .tag .chip{background:var(--c5-permits);color:var(--cream)}
+    .pcard .num{font-family:var(--narrow);font-weight:700;font-size:80px;line-height:.85;letter-spacing:-.03em}
+    .pcard .num small{font-family:var(--mono);font-size:13px;letter-spacing:.04em;font-weight:500;opacity:.7;display:block;margin-top:6px;text-transform:uppercase}
+    .pcard ul{list-style:none;padding:0;margin:0;font-size:14.5px;line-height:1.55}
+    .pcard ul li{padding:8px 0;border-bottom:1px solid rgba(246,241,231,.2);display:flex;align-items:flex-start;gap:10px}
+    .pcard ul li:last-child{border-bottom:none}
+    .pcard ul li::before{content:"→";color:var(--c1-size);flex-shrink:0;font-family:var(--mono);font-weight:700}
+    .pcard.rec{background:var(--ink-2);outline:2.5px solid var(--c5-permits);outline-offset:-2.5px;position:relative}
+
+    /* FAQ */
+    .faq{background:var(--c5-permits);color:var(--cream);padding:120px 0;border-bottom:2.5px solid var(--ink)}
+    .faq .sh{border-color:var(--cream);color:var(--cream)}
+    .faq .big{color:var(--cream);margin-bottom:48px}
+    .faq .big em{color:var(--ink);font-style:italic}
+    .faq-list{border-top:2px solid var(--cream)}
+    .faq-item{border-bottom:2px solid var(--cream);padding:32px 0;display:grid;grid-template-columns:60px 1fr;row-gap:16px;column-gap:32px;align-items:start}
+    .faq-item .n{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;opacity:.85;padding-top:8px}
+    .faq-item .q{font-family:var(--narrow);font-weight:700;font-size:clamp(26px,3.2vw,44px);line-height:1;letter-spacing:-.015em;text-transform:uppercase;margin:0;grid-column:2}
+    .faq-item .a{font-size:18px;line-height:1.5;opacity:.9;grid-column:2;margin:0;max-width:760px;font-weight:500}
+
+    /* CTA */
+    .cta{background:var(--yellow);color:var(--ink);padding:140px 0 120px;border-bottom:2.5px solid var(--ink);position:relative;overflow:hidden}
+    .cta .inner{max-width:1200px;margin:0 auto;padding:0 32px;text-align:center;position:relative;z-index:1}
+    .cta .big{font-size:clamp(60px,11vw,180px);line-height:.84;margin-bottom:32px}
+    .cta .big em{color:var(--c2-cond)}
+    .cta p{font-size:22px;line-height:1.4;max-width:640px;margin:0 auto 40px;font-weight:500}
+    .cta .btn{padding:22px 32px;font-size:18px}
+    .cta .reassure{margin-top:40px;display:flex;gap:36px;justify-content:center;flex-wrap:wrap;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;opacity:.65}
+    .cta .reassure span::before{content:"●";margin-right:8px;color:var(--c4-cost)}
+
+    @media (max-width:960px){
+      .hero .dek{grid-template-columns:1fr;gap:24px}
+      .hero .dek-lede{grid-column:auto}
+      .problem .row,.five .intro,.personas .intro{grid-template-columns:1fr;gap:32px}
+      .grid5{grid-template-columns:1fr 1fr}
+      .blk{min-height:380px;border-right:2px solid var(--ink);border-bottom:2px solid var(--ink)}
+      .blk:nth-child(2n){border-right:none}
+      .blk:last-child{grid-column:1 / -1;border-bottom:none;border-right:none;min-height:240px}
+      .rig .grid-below,.pgrid{grid-template-columns:1fr}
+      .pcard{border-right:none;border-bottom:2.5px solid var(--cream)}
+      .pcard:last-child{border-bottom:none}
+      .faq-item{grid-template-columns:1fr;gap:12px}
+      .faq-item .q, .faq-item .a{grid-column:1}
+      .ptbl thead{display:none}
+      .ptbl,.ptbl tbody,.ptbl tr,.ptbl td{display:block;width:100%}
+      .ptbl tbody tr{border-bottom:2px solid var(--ink);padding:16px 0}
+      .ptbl tbody td{border-bottom:none;padding:6px 0}
+      .ptbl tbody td:first-child{width:auto}
+    }
+
+    @media (max-width:720px){
+      .billboard{line-height:.92}
+      .grid5{grid-template-columns:1fr}
+      .blk{border-right:none!important;min-height:auto;padding:24px 20px 28px}
+      .blk:last-child{min-height:auto}
+      .big{font-size:clamp(36px,9vw,64px)}
+      .cta .big{font-size:clamp(44px,12vw,80px)}
+      .sh{grid-template-columns:auto 1fr;row-gap:6px}
+      .sh .tg{grid-column:1 / -1;text-align:left;opacity:.5}
+      .rig .wordmark{white-space:normal;line-height:.95;font-size:clamp(44px,13vw,72px)}
+      .rig-inner{margin-top:24px}
+      .rig .photo,.rig .grid-below{padding:0 20px}
+    }
+  </style>
+</BaseLayout>

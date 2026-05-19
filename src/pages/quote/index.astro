@@ -1,0 +1,309 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Get a Container Quote | Steel Box Direct"
+  description="Request a quote for a shipping container. We'll provide accurate pricing based on your size, condition, and delivery location."
+  pageType="quote"
+>
+  <div class="guide-header">
+    <div class="wrap">
+      <div class="sh">
+        <span class="idx">Step 06</span>
+        <span class="nm">Finalize</span>
+        <span class="tg">Quote Request</span>
+      </div>
+      <h1 class="big">Ready?<br><em>Let's talk.</em></h1>
+      <p class="guide-lede">
+        A quote is just information. Tell us what you're protecting — we'll send a real number and a delivery window. Usually same day.
+      </p>
+    </div>
+  </div>
+
+  <section class="guide-content">
+    <div class="wrap">
+      <div class="row">
+        <div class="main-col">
+          <form id="quote-form" class="quote-form">
+            <div class="form-section">
+              <h3>The Hardware</h3>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="size_preference">Container size</label>
+                  <select id="size_preference" name="size_preference" required>
+                    <option value="">Select size...</option>
+                    <option value="20ft">20ft Standard</option>
+                    <option value="40ft">40ft Standard</option>
+                    <option value="40ft_hc">40ft High Cube</option>
+                    <option value="not_sure">Not sure yet</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="condition_preference">Condition</label>
+                  <select id="condition_preference" name="condition_preference" required>
+                    <option value="">Select condition...</option>
+                    <option value="new">New (One-Trip)</option>
+                    <option value="used_good">Cargo Worthy (Used - Good)</option>
+                    <option value="used_budget">Wind & Water Tight (Used - Budget)</option>
+                    <option value="not_sure">Not sure yet</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="primary_use">Primary use</label>
+                <input type="text" id="primary_use" name="primary_use" placeholder="e.g., Farm equipment storage, workshop" required />
+              </div>
+              <div class="form-group">
+                <label for="timeline">Timeline</label>
+                <select id="timeline" name="timeline" required>
+                  <option value="">Select timeline...</option>
+                  <option value="asap">As soon as possible</option>
+                  <option value="1_3_months">1-3 months</option>
+                  <option value="3_6_months">3-6 months</option>
+                  <option value="researching">Just researching</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h3>The Logistics</h3>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="delivery_zip">Delivery ZIP</label>
+                  <input type="text" id="delivery_zip" name="delivery_zip" placeholder="e.g., 45202" pattern="[0-9]{5}" maxlength="5" required />
+                </div>
+                <div class="form-group">
+                  <label for="site_access">Site access</label>
+                  <select id="site_access" name="site_access" required>
+                    <option value="">Select access type...</option>
+                    <option value="easy">Easy - Wide driveway</option>
+                    <option value="challenging">Moderate - Some constraints</option>
+                    <option value="not_sure">Not sure</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h3>The Contact</h3>
+              <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" required />
+              </div>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="email">Email</label>
+                  <input type="email" id="email" name="email" required />
+                </div>
+                <div class="form-group">
+                  <label for="phone">Phone</label>
+                  <input type="tel" id="phone" name="phone" required />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="buyer_notes">Notes (Optional)</label>
+                <textarea id="buyer_notes" name="buyer_notes" rows="3" placeholder="Driveway concerns, questions..."></textarea>
+              </div>
+            </div>
+
+            <div class="form-submit">
+              <button type="submit" class="btn">Request My Quote <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
+              <p class="m" style="margin-top: 20px; opacity: .5; text-align: center;">One business day response · No obligation</p>
+            </div>
+          </form>
+
+          <div id="form-success" class="success-message" style="display: none;">
+            <div class="m" style="color: var(--c4-cost); margin-bottom: 12px;">Success</div>
+            <h2>Thanks! Your request is in.</h2>
+            <p>We'll review your requirements and send a detailed quote to your email within 1 business day.</p>
+            <a href="/" class="btn-ghost">Back to home</a>
+          </div>
+        </div>
+
+        <aside class="sidebar-col">
+          <div class="authority-card">
+            <div class="m">Service Area</div>
+            <p style="font-size: 15px; line-height: 1.45;">We deliver within 250 miles of Cincinnati, OH. Covering OH, IN, and KY.</p>
+          </div>
+          
+          <div class="reassure-list">
+            <div class="item"><span>●</span> No obligation</div>
+            <div class="item"><span>●</span> Real human replies</div>
+            <div class="item"><span>●</span> All-in pricing</div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    import { formatForSubmission, clearAttribution, getAttributionData } from '../../lib/attribution';
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const sizeFromUrl = urlParams.get('size');
+    const sizeSelect = document.getElementById('size_preference') as HTMLSelectElement;
+
+    if (sizeFromUrl && sizeSelect) {
+      const sizeMap: Record<string, string> = { '20ft': '20ft', '40ft': '40ft', '40ft_hc': '40ft_hc' };
+      if (sizeMap[sizeFromUrl]) sizeSelect.value = sizeMap[sizeFromUrl];
+    } else {
+      const attribution = getAttributionData();
+      if (attribution?.session.calculatorResult && sizeSelect) sizeSelect.value = attribution.session.calculatorResult;
+    }
+
+    const form = document.getElementById('quote-form') as HTMLFormElement;
+    const successMessage = document.getElementById('form-success');
+
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const submitButton = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+      submitButton.disabled = true;
+      submitButton.textContent = 'Submitting...';
+
+      const formData = new FormData(form);
+      const data: Record<string, any> = {};
+      formData.forEach((value, key) => { data[key] = value; });
+
+      const attribution = formatForSubmission();
+      Object.assign(data, attribution);
+
+      try {
+        const response = await fetch('/api/submit-quote', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+
+        if (response.ok) {
+          form.style.display = 'none';
+          if (successMessage) {
+            successMessage.style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+          clearAttribution();
+        } else {
+          alert('Something went wrong. Please try again.');
+          submitButton.disabled = false;
+          submitButton.textContent = 'Request My Quote';
+        }
+      } catch (err) {
+        alert('Something went wrong. Please try again.');
+        submitButton.disabled = false;
+        submitButton.textContent = 'Request My Quote';
+      }
+    });
+  </script>
+
+  <style>
+    .guide-header {
+      background: var(--yellow);
+      padding: 80px 0 64px;
+      border-bottom: 2.5px solid var(--ink);
+    }
+    .guide-lede {
+      font-size: 22px;
+      line-height: 1.45;
+      margin: 40px 0 0;
+      max-width: 720px;
+      font-weight: 500;
+    }
+
+    .guide-content {
+      padding: 96px 0;
+      background: var(--cream);
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .quote-form {
+      background: white;
+      border: 2px solid var(--ink);
+      padding: 48px;
+      box-shadow: 12px 12px 0 var(--ink);
+    }
+
+    .form-section {
+      margin-bottom: 48px;
+      padding-bottom: 40px;
+      border-bottom: 1.5px solid rgba(11,15,26,.1);
+    }
+    .form-section:last-of-type { border-bottom: none; margin-bottom: 20px; }
+    .form-section h3 {
+      font-family: var(--narrow);
+      font-size: 24px;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .form-group { margin-bottom: 20px; }
+    .form-group label {
+      display: block;
+      font-family: var(--mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      opacity: .6;
+    }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%;
+      padding: 14px;
+      border: 2px solid var(--ink);
+      font-family: var(--display);
+      font-size: 16px;
+      background: var(--cream);
+    }
+    .form-group input:focus { outline: none; background: white; border-color: var(--c3-deliver); }
+
+    .form-submit .btn { width: 100%; justify-content: center; font-size: 20px; }
+
+    .authority-card {
+      background: var(--ink);
+      color: var(--cream);
+      padding: 32px;
+      border: 2px solid var(--ink);
+    }
+    .authority-card .m { color: var(--yellow); margin-bottom: 16px; }
+
+    .reassure-list {
+      margin-top: 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .reassure-list .item {
+      font-family: var(--mono);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+    .reassure-list .item span { color: var(--c4-cost); margin-right: 8px; }
+
+    .success-message {
+      background: white;
+      border: 2px solid var(--ink);
+      padding: 48px;
+      box-shadow: 12px 12px 0 var(--c4-cost);
+      text-align: center;
+    }
+    .success-message h2 { font-family: var(--narrow); font-size: 32px; text-transform: uppercase; }
+    .success-message p { margin-bottom: 32px; }
+
+    @media (max-width: 960px) {
+      .row { grid-template-columns: 1fr; gap: 48px; }
+      .quote-form { padding: 24px; }
+      .form-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</BaseLayout>

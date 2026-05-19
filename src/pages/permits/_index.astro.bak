@@ -1,0 +1,283 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Do You Need a Permit for a Shipping Container? | Freedom Conex"
+  description="Understand when permits are needed for shipping containers. Common scenarios for residential, agricultural, and commercial properties."
+>
+  <article>
+    <h1>Do you need a permit?</h1>
+
+    <p class="intro">
+      The short answer: <strong>Most agricultural and rural storage doesn't require permits.</strong> Permit requirements vary by location and use, so you need to check your specific situation. We can't give legal advice, but this page explains how to figure out your requirements—and why it usually isn't a blocker.
+    </p>
+
+    <section>
+      <h2>Quick Answers by Situation</h2>
+      <ul>
+        <li><strong>Tom (Equipment Farmer) on rural/farm property:</strong> Likely NO permit required for farm equipment storage. Agricultural operations often have exemptions. Check your county first.</li>
+        <li><strong>Sarah (Business Owner) for business storage:</strong> Depends on zoning. Commercial storage may require permit + inspection. But if it's rural land, often no issue.</li>
+        <li><strong>Mike (Hobby/Rural) on rural property:</strong> Likely NO permit required. Rural zoning is usually permissive for farm storage.</li>
+        <li><strong>Any property in residential area/HOA:</strong> More likely to require permits or have restrictions. Check HOA covenants and city zoning.</li>
+      </ul>
+      <p><strong>Bottom line:</strong> For most agricultural and rural storage uses, permitting is straightforward or not required. Urban/residential = more complicated. Check first before delivery.</p>
+    </section>
+
+    <section>
+      <h2>Why Permitting Varies</h2>
+      <p>Container permitting isn't governed by a single rule. It depends on:</p>
+      <ul>
+        <li>Your county or municipality's zoning code</li>
+        <li>Whether the container is "temporary" or "permanent"</li>
+        <li>What you're using it for</li>
+        <li>Where on your property it's placed</li>
+        <li>Whether it's visible from roads or neighbors</li>
+      </ul>
+      <p><strong>There is no universal answer.</strong> What's allowed in one county may be prohibited in the next.</p>
+    </section>
+
+    <section>
+      <h2>Agricultural and Rural Properties</h2>
+      <p>Rural properties typically have the most flexibility. Agricultural exemptions are common.</p>
+
+      <div class="info-box green">
+        <h3>Likely NO permit required (farm/rural exemptions):</h3>
+        <ul>
+          <li><strong>Farm equipment storage</strong> on agricultural properties (Tom: Tractors, grain drills, implements)</li>
+          <li><strong>Agricultural materials storage</strong> (feed, tools, seasonal supplies)</li>
+          <li><strong>Farm buildings and structures</strong> on working farms (many areas exempt farm operations from standard building codes)</li>
+          <li><strong>Temporary storage</strong> during operations or transitions (often under 1 year = exempt)</li>
+          <li><strong>Unincorporated county land</strong> with minimal zoning codes (common in rural areas)</li>
+          <li><strong>Containers placed away from roads</strong> and property lines in rural areas</li>
+        </ul>
+        <p><strong>Key phrase to remember:</strong> "Agricultural use" or "farm operation" often unlocks exemptions. If you're storing farm equipment, emphasize that.</p>
+      </div>
+
+      <div class="info-box amber">
+        <h3>When you might still need a permit (even rural):</h3>
+        <ul>
+          <li><strong>Converting to habitable/commercial space</strong> (heated workshop with electricity, office, living space)</li>
+          <li><strong>Placing very close to property lines</strong> (setback restrictions may apply)</li>
+          <li><strong>Visible from public roads</strong> in some jurisdictions (cosmetic restrictions)</li>
+          <li><strong>HOA or deed restrictions</strong> on your property (these override zoning sometimes)</li>
+          <li><strong>Within city/town limits</strong> (even rural-seeming towns sometimes have strict codes)</li>
+        </ul>
+      </div>
+
+      <p><strong>Tom (Equipment Farmer):</strong> If your property is on working farm land and you're storing equipment, check with your county—likely exempt. Rural farm operations have specific legal protections.</p>
+      <p><strong>Sarah (Business Owner):</strong> If you're using it for business inventory on rural land, still likely okay—but verify the business/commercial zoning distinction.</p>
+      <p><strong>Mike (Hobby/Rural):</strong> Most straightforward. Rural property + storage use = usually no issues. Just verify before delivery.</p>
+    </section>
+
+    <section>
+      <h2>How to Check Your Requirements (Simple Process)</h2>
+
+      <div class="step">
+        <h3>Step 1: Know Your Jurisdiction</h3>
+        <ul>
+          <li><strong>Unincorporated county?</strong> Call county zoning or planning dept (they usually have permissive farm exemptions)</li>
+          <li><strong>Within city/town limits?</strong> Call city building or zoning dept (more likely to require permits)</li>
+          <li><strong>HOA or private covenants?</strong> Check your deed restrictions and HOA bylaws (these sometimes override zoning)</li>
+        </ul>
+        <p><strong>Pro tip:</strong> Search "[your county] zoning code shipping container" online first. Many counties have published guidance.</p>
+      </div>
+
+      <div class="step">
+        <h3>Step 2: Ask These Questions (5-Minute Phone Call)</h3>
+        <p>When you call, introduce yourself and ask:</p>
+        <ol>
+          <li>"I'm planning to place a <strong>[20-foot / 40-foot]</strong> shipping container on my <strong>[farm / rural property]</strong> for <strong>[equipment storage / materials storage]</strong>. Do I need a permit?"</li>
+          <li>"Are there agricultural exemptions for farm storage?" (Tom: emphasize this if applicable)</li>
+          <li>"If a permit is needed, what's the process and typical timeline?"</li>
+          <li>"Are there setback requirements from property lines or roads?"</li>
+          <li>"Is there a distinction between temporary and permanent placement?"</li>
+        </ol>
+        <p><strong>Key for agricultural buyers:</strong> Specifically mention "farm equipment storage" or "agricultural use"—these often qualify for exemptions most other uses don't get.</p>
+      </div>
+
+      <div class="step">
+        <h3>Step 3: Document Their Answer (Important)</h3>
+        <p>Even better than a phone call: Email the zoning office. Something like:</p>
+        <p><em>"I plan to place a shipping container on my property at [address] for storage. Is a permit required? Please respond via email with the relevant zoning code section if applicable."</em></p>
+        <p>Email documentation protects you if enforcement questions come up later. You have written confirmation of what you were told.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Common Restrictions (When They Exist)</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Restriction</th><th>What It Means</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Setbacks</strong></td><td>Must be X feet from property lines, roads, or structures</td></tr>
+            <tr><td><strong>Screening</strong></td><td>May need to be hidden from view (fence, vegetation)</td></tr>
+            <tr><td><strong>Foundation</strong></td><td>Some areas require permanent foundation for permanent placement</td></tr>
+            <tr><td><strong>Appearance</strong></td><td>Some residential areas prohibit "industrial" appearance</td></tr>
+            <tr><td><strong>Duration</strong></td><td>"Temporary" containers may have time limits</td></tr>
+            <tr><td><strong>Quantity</strong></td><td>Limits on how many containers per property</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <h2>Temporary vs. Permanent (Often Matters)</h2>
+      <p>Many jurisdictions distinguish between temporary and permanent structures. This distinction often determines whether a permit is needed.</p>
+
+      <div class="two-col">
+        <div class="col">
+          <h3>Temporary (permit-exempt in many places)</h3>
+          <ul>
+            <li>Placed for a defined period (30 days, 6 months, 1 year)</li>
+            <li>Not on permanent foundation (just sitting on ground)</li>
+            <li>Used for seasonal storage or transition</li>
+            <li><strong>Tom:</strong> "Seasonal equipment storage during harvest"</li>
+          </ul>
+        </div>
+        <div class="col">
+          <h3>Permanent (often requires permit)</h3>
+          <ul>
+            <li>Intended to stay indefinitely</li>
+            <li>On foundation, concrete blocks, or permanently anchored</li>
+            <li>Possibly connected to utilities or converted to workspace</li>
+            <li><strong>Sarah:</strong> "Long-term business storage structure"</li>
+          </ul>
+        </div>
+      </div>
+
+      <p><strong>The practical distinction:</strong> If your container is for farm storage and you're placing it on ground (not permanent foundation), most jurisdictions treat it as "temporary" equipment placement = no permit needed.</p>
+      <p><strong>Strategy:</strong> When talking to zoning office, if they allow temporary storage, and your usage pattern fits ("seasonal" or "during farming operations"), you may qualify for the exemption even if you keep it indefinitely.</p>
+      <p><strong>Real talk:</strong> Many rural agricultural storage containers sit indefinitely and never face enforcement issues. The enforcement environment in rural areas is typically permissive for farm operations. Urban/residential areas are stricter.</p>
+    </section>
+
+    <section>
+      <h2>What If Permits Are Required? (Not a Blocker)</h2>
+      <p>If your jurisdiction does require a permit for container placement, here's the reality:</p>
+      <ol>
+        <li><strong>It's usually straightforward.</strong> For simple storage structures, permits are often routine approvals (10–30 days).</li>
+        <li><strong>Costs are typically modest.</strong> Permit fees for accessory storage are usually $50–$200. Minimal compared to container cost.</li>
+        <li><strong>Timeline varies.</strong> Some jurisdictions approve quickly; others take a few weeks. Plan accordingly but it's not a major delay.</li>
+        <li><strong>Inspections are minimal.</strong> Usually a zoning officer checks placement and setbacks, not the container condition itself.</li>
+        <li><strong>The container isn't the issue.</strong> Permits are about how you're using the land and where you're placing it, not the container as a product.</li>
+      </ol>
+      <p><strong>Bottom line:</strong> If a permit is required, don't panic. It's a formality for simple storage, not a blocker. You can proceed with confidence knowing the process.</p>
+      <p><strong>Sarah (Business Owner):</strong> If your jurisdiction requires a commercial storage permit, the process is the same—straightforward and low-cost.</p>
+    </section>
+
+    <section>
+      <h2>Summary: Permitting Usually Isn't a Blocker</h2>
+      <ul>
+        <li><strong>Agricultural/rural storage:</strong> Likely no permit required (exemptions common)</li>
+        <li><strong>If permits required:</strong> Straightforward process, modest costs ($50–$200), 10–30 day timeline</li>
+        <li><strong>Enforcement varies:</strong> Rural areas usually permissive for farm operations; urban areas stricter</li>
+        <li><strong>What we can't tell you:</strong> Your specific local rules (only your zoning office can answer that)</li>
+      </ul>
+      <p><strong>Our experience:</strong> For agricultural storage on rural properties, permitting rarely blocks a container purchase. Most of our buyers proceed without issues after a simple phone call to their zoning office.</p>
+    </section>
+
+    <section class="next-step">
+      <h2>Ready to Move Forward?</h2>
+      <p>If you've checked your local requirements, you know your situation. Most rural agricultural buyers find permitting is either not required or straightforward.</p>
+      <p><strong>Tom:</strong> If you're on farm property storing equipment, you're likely clear. Quick call to county zoning = confidence.</p>
+      <p><strong>Sarah:</strong> Business storage on rural property = usually okay. Verify business zoning category with your office.</p>
+      <p><strong>Mike:</strong> Rural storage property = rarely an issue. One phone call to confirm.</p>
+      <a href="/quote/" class="cta-button">Request a Quote</a>
+      <div class="alt-links">
+        <p><strong>Before ordering:</strong> Contact your local zoning office with the questions above. A five-minute call = peace of mind.</p>
+        <p>Still reviewing decisions? <a href="/size/">Size Guide</a> | <a href="/condition/">Condition Guide</a> | <a href="/delivery/">Delivery Guide</a> | <a href="/cost/">Pricing Guide</a></p>
+      </div>
+    </section>
+  </article>
+
+  <style>
+    article { max-width: 800px; }
+
+    .intro {
+      font-size: 1.15rem;
+      color: var(--color-muted);
+      margin-bottom: 2rem;
+      line-height: 1.7;
+    }
+
+    section { margin: 2.5rem 0; }
+
+    .info-box {
+      padding: 1.25rem 1.5rem;
+      margin: 1.25rem 0;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .info-box.green {
+      background: #f0fff4;
+      border-left: 4px solid #38a169;
+    }
+
+    .info-box.amber {
+      background: #fffbeb;
+      border-left: 4px solid #f59e0b;
+    }
+
+    .info-box h3 { margin-top: 0; margin-bottom: 0.5rem; font-size: 1.05rem; }
+
+    .step {
+      background: #f7fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin: 1rem 0;
+    }
+
+    .step h3 { color: var(--color-primary); margin-top: 0; margin-bottom: 0.75rem; }
+
+    .table-wrap { overflow-x: auto; margin: 1rem 0; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+    th, td { text-align: left; padding: 0.75rem 1rem; border-bottom: 1px solid #e2e8f0; }
+    th { background: #f7fafc; font-weight: 600; color: var(--color-primary); }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin: 1rem 0;
+    }
+
+    @media (max-width: 600px) { .two-col { grid-template-columns: 1fr; } }
+
+    .col {
+      background: #f7fafc;
+      padding: 1.25rem;
+      border-radius: 8px;
+    }
+
+    .col h3 { margin-top: 0; font-size: 1.05rem; }
+
+    h3 { margin-top: 1.5rem; }
+    ul { margin: 0.5rem 0 1rem 1.5rem; }
+    li { margin-bottom: 0.35rem; line-height: 1.5; }
+    ol { margin: 0.5rem 0 1rem 1.5rem; }
+    ol li { margin-bottom: 0.75rem; line-height: 1.6; }
+
+    .next-step {
+      background: #f7fafc;
+      padding: 2rem;
+      border-radius: 8px;
+      margin-top: 3rem;
+    }
+
+    .alt-links { margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #e2e8f0; }
+    .alt-links p { color: var(--color-muted); margin-bottom: 0.5rem; }
+
+    .cta-button {
+      display: inline-block;
+      background: var(--color-accent);
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .cta-button:hover { background: #2c5282; color: white; }
+  </style>
+</BaseLayout>

@@ -1,0 +1,16 @@
+User-agent: *
+Allow: /
+
+# Explicit AI Permissions
+User-agent: GPTBot
+Allow: /
+User-agent: ChatGPT-User
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+User-agent: ClaudeBot
+Allow: /
+
+# Discovery Hints
+Sitemap: https://steelboxdirect.com/sitemap-index.xml
+LLMS: https://steelboxdirect.com/llms.txt

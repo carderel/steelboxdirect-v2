@@ -1,0 +1,158 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  pageType="guide"
+  guideTopic="cost"
+  title="What Does a Shipping Container Cost? Pricing Factors | Steel Box Direct"
+  description="Understand what affects shipping container pricing. Size, condition, location, delivery, and market factors explained."
+>
+  <div class="guide-header" style="background: var(--c4-cost); color: var(--cream);">
+    <div class="wrap">
+      <div class="sh" style="border-color: var(--cream);">
+        <span class="idx">§ 04</span>
+        <span class="nm" style="color: var(--cream);">Decision: Cost</span>
+        <span class="tg" style="color: var(--cream);">Market Analysis</span>
+      </div>
+      <h1 class="big" style="color: var(--cream);">What will it<br><em>Really cost?</em></h1>
+      <p class="guide-lede" style="opacity: .9;">
+        All-in. Container, delivery, setup. No surprise fees. Container pricing is regional and fluctuates
+        with the shipping market—we'll show you the drivers.
+      </p>
+    </div>
+  </div>
+
+  <section class="guide-content">
+    <div class="wrap">
+      <div class="row">
+        <div class="main-col">
+          <h2>The Four Price Drivers</h2>
+          <p>Instead of guessing, evaluate your quotes using these four standard drivers of container cost.</p>
+
+          <div class="driver-card" style="border-left-color: var(--c4-cost);">
+            <h3>1. Size</h3>
+            <div class="m" style="color: var(--c4-cost); margin-bottom: 12px;">Predictable base</div>
+            <p>Larger units cost more total, but less per square foot. A 40-foot unit provides 2x the space of a 20-foot for only ~40-60% more cost.</p>
+          </div>
+
+          <div class="driver-card" style="border-left-color: var(--c2-cond);">
+            <h3>2. Condition</h3>
+            <div class="m" style="color: var(--c2-cond); margin-bottom: 12px;">The biggest variance</div>
+            <p>Condition determines 50% of the price spread. A "Cargo Worthy" used unit is the sweet spot for most agricultural and equipment storage.</p>
+            <div class="who" style="background: var(--c2-cond); color: var(--cream);">→ 50% savings vs new</div>
+          </div>
+
+          <div class="driver-card" style="border-left-color: var(--c3-deliver);">
+            <h3>3. Logistics</h3>
+            <div class="m" style="color: var(--c3-deliver); margin-bottom: 12px;">Delivery distance</div>
+            <p>Delivery is often 15-25% of the total project. Within 100 miles of Cincinnati is our primary tier. Complex sites requiring cranes add to the labor cost.</p>
+          </div>
+
+          <div class="driver-card" style="border-left-color: var(--yellow);">
+            <h3>4. Market Cycles</h3>
+            <div class="m" style="color: var(--yellow-d); margin-bottom: 12px;">The timing factor</div>
+            <p>Prices fluctuate monthly based on global shipping volume and regional inventory. Patience usually equals savings.</p>
+          </div>
+        </div>
+
+        <aside class="sidebar-col">
+          <div class="authority-card">
+            <div class="m">Pricing Insights</div>
+            <ul>
+              <li><strong>Cincinnati</strong> pricing is 15% lower than coastal markets.</li>
+              <li><strong>Logistics labor</strong> is 20% of the total quote.</li>
+              <li><strong>Used units</strong> provide equivalent weather protection for 50% less.</li>
+            </ul>
+          </div>
+
+          <div class="cta-card">
+            <h4>Get your real number</h4>
+            <p>We provide all-in, delivered quotes. No hidden fees.</p>
+            <a href="/quote/" class="btn">Request a Quote <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .guide-header {
+      padding: 80px 0 64px;
+      border-bottom: 2.5px solid var(--ink);
+    }
+    .guide-lede {
+      font-size: 22px;
+      line-height: 1.45;
+      margin: 40px 0 0;
+      max-width: 720px;
+      font-weight: 500;
+    }
+
+    .guide-content {
+      padding: 96px 0;
+      background: var(--cream);
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .driver-card {
+      background: white;
+      border: 2px solid var(--ink);
+      border-left: 8px solid var(--ink);
+      padding: 32px;
+      margin-top: 40px;
+      box-shadow: 8px 8px 0 var(--ink);
+    }
+    .driver-card h3 {
+      font-family: var(--narrow);
+      font-weight: 700;
+      font-size: 28px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .who {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: 4px 8px;
+      background: var(--ink);
+      color: var(--cream);
+      display: inline-block;
+      margin-top: 16px;
+    }
+
+    .authority-card {
+      background: var(--ink);
+      color: var(--cream);
+      padding: 32px;
+      border: 2px solid var(--ink);
+    }
+    .authority-card .m { color: var(--yellow); margin-bottom: 16px; }
+    .authority-card ul { list-style: none; padding: 0; margin: 0; }
+    .authority-card li { margin-bottom: 16px; font-size: 15px; line-height: 1.45; border-bottom: 1px solid rgba(246,241,231,.1); padding-bottom: 16px; }
+    .authority-card li:last-child { border: none; }
+
+    .cta-card {
+      margin-top: 40px;
+      background: white;
+      border: 2px solid var(--ink);
+      padding: 32px;
+      box-shadow: 8px 8px 0 var(--c4-cost);
+    }
+    .cta-card h4 { font-family: var(--narrow); font-size: 24px; text-transform: uppercase; margin-bottom: 8px; }
+    .cta-card p { font-size: 15px; margin-bottom: 20px; }
+
+    @media (max-width: 960px) {
+      .row { grid-template-columns: 1fr; gap: 48px; }
+      .guide-header { padding: 48px 0; }
+      .big { font-size: clamp(48px, 10vw, 80px); }
+    }
+  </style>
+</BaseLayout>

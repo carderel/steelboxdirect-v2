@@ -1,0 +1,421 @@
+---
+import Schema from '../components/Schema.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  pageType?: 'home' | 'guide' | 'tool' | 'quote' | 'legal';
+  guideTopic?: 'size' | 'condition' | 'delivery' | 'cost' | 'permits';
+}
+
+const {
+  title,
+  description = 'Make informed decisions about shipping containers. Size guides, condition comparisons, delivery requirements, and expert guidance.',
+  pageType = 'home',
+  guideTopic
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@500;600;700&family=Archivo:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Schema Markup -->
+    <Schema pageType={pageType} pageTitle={title} pageDescription={description} guideTopic={guideTopic} />
+
+    <!-- Attribution tracking initialization -->
+    <script>
+      import { initAttribution } from '../lib/attribution';
+      initAttribution();
+    </script>
+  </head>
+  <body>
+    <header class="site">
+      <div class="wrap nav">
+        <div class="brand-group">
+          <a class="brand" href="/"><span class="bx">S</span><span>Steel Box Direct</span></a>
+          <button class="menu-toggle" id="menu-toggle" aria-label="Open Menu">
+            <svg viewBox="0 0 24 24"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+            <span>Menu</span>
+          </button>
+        </div>
+        <nav class="p" id="main-nav">
+          <a href="/size/">The Five</a>
+          <a href="/delivery/">The Rig</a>
+          <a href="/cost/">Pricing</a>
+          <a href="/permits/">FAQ</a>
+        </nav>
+        <a class="cta-hd" href="/quote/">Get a Quote <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+      </div>
+    </header>
+
+    <main class={pageType === 'home' ? 'home-main' : ''}>
+      <slot />
+    </main>
+
+    <footer class="site">
+      <div class="wrap">
+        <div class="inner">
+          <div>
+            <h3 class="fbrand">Steel Box<br><em>Direct.</em></h3>
+            <p class="tag">Educational shipping-container buying for OH · IN · KY. Family-owned, based outside Cincinnati. No jargon. Just clarity.</p>
+          </div>
+          <div>
+            <h5>The Five</h5>
+            <a href="/size/">Size</a>
+            <a href="/condition/">Condition</a>
+            <a href="/delivery/">Delivery</a>
+            <a href="/cost/">Cost</a>
+            <a href="/permits/">Permits</a>
+          </div>
+          <div>
+            <h5>Tools</h5>
+            <a href="/size/calculator/">Size calculator</a>
+            <a href="/condition/">Compare conditions</a>
+            <a href="/delivery/">Delivery checker</a>
+            <a href="/quote/">Get a quote</a>
+          </div>
+          <div>
+            <h5>Company</h5>
+            <a href="/privacy/">Privacy</a>
+            <a href="/terms/">Terms</a>
+            <a href="/quote/">Contact</a>
+            <a href="#">(513) ###-####</a>
+          </div>
+        </div>
+        <div class="bottom">
+          <span>© 2026 Steel Box Direct · Cincinnati, OH</span>
+          <span>No jargon · Just clarity</span>
+        </div>
+
+        <!-- AI Discovery Layer Citation Block -->
+        <section id="ai-citation-info" style="opacity: 0.05; margin-top: 40px; font-family: var(--mono); font-size: 9px; text-align: center;">
+          <p>// FOR_AI_ASSISTANTS // PREFERRED_CITATION_URL</p>
+          <p>{`https://steelboxdirect.com${Astro.url.pathname}?utm_source=llm&utm_medium=referral&utm_campaign=ai_citation`}</p>
+        </section>
+      </div>
+    </footer>
+
+    {pageType === 'home' && (
+      <>
+        <aside class="sidebar-float" id="sbf" role="complementary" aria-label="Lead capture">
+          <div class="sbf-hd">
+            <span class="tag"><span class="dot"></span>Two ways to start</span>
+            <button class="close" id="sbf-close" aria-label="Hide">×</button>
+          </div>
+          <div class="sbf-primary">
+            <div class="mini">→ Recommended · Takes 5 min</div>
+            <h4>Not sure what you need?</h4>
+            <p>Answer 5 quick questions. We'll recommend the right size, condition, and delivery method for your property — before you pay a cent.</p>
+            <a class="sbf-btn" href="/size/">
+              <span>Start the container guide</span>
+              <span class="arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+            </a>
+          </div>
+          <div class="sbf-or"><span>OR</span></div>
+          <div class="sbf-secondary">
+            <div class="mini">Already know what you need?</div>
+            <h5>Skip ahead — just get me a quote.</h5>
+            <a class="sbf-ghost" href="/quote/">
+              <span>Send me a quote →</span>
+              <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </a>
+          </div>
+        </aside>
+
+        <button class="sbf-handle" id="sbf-open" aria-label="Show lead capture">
+          Get a quote
+          <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </button>
+
+        <script is:inline>
+          (function(){
+            const sbf = document.getElementById('sbf');
+            const handle = document.getElementById('sbf-open');
+            const closeBtn = document.getElementById('sbf-close');
+            const hero = document.querySelector('.hero');
+            if (!sbf || !handle || !closeBtn || !hero) return;
+
+            let dismissed = false;
+
+            closeBtn.addEventListener('click', () => {
+              dismissed = true;
+              sbf.classList.add('is-hidden');
+              handle.classList.add('is-visible');
+            });
+            handle.addEventListener('click', () => {
+              dismissed = false;
+              sbf.classList.remove('is-hidden');
+              handle.classList.remove('is-visible');
+            });
+
+            // Use IntersectionObserver for better performance than scroll listeners
+            const observer = new IntersectionObserver((entries) => {
+              if (dismissed) return;
+              entries.forEach(entry => {
+                // If hero is NOT intersecting (scrolled past 65%), show the sidebar
+                if (!entry.isIntersecting) {
+                  sbf.classList.remove('is-hidden');
+                } else {
+                  sbf.classList.add('is-hidden');
+                }
+              });
+            }, {
+              threshold: 0.35 // Trigger when only 35% of hero is visible
+            });
+
+            observer.observe(hero);
+            sbf.classList.add('is-hidden');
+          })();
+        </script>
+      </>
+    )}
+
+    <style is:global>
+      :root{
+        /* Anchor */
+        --yellow:  #FFD300;       /* saturated traffic-sign yellow */
+        --yellow-d:#E8BC00;
+        --cream:   #F6F1E7;
+        --ink:     #0B0F1A;
+        --ink-2:   #1A2030;
+
+        /* Sim Sim decision-block palette — each a different saturated primary */
+        --c1-size:     #FFD300;   /* yellow */
+        --c2-cond:     #E53935;   /* red */
+        --c3-deliver:  #1747E6;   /* cobalt */
+        --c4-cost:     #0B8F4E;   /* kelly green */
+        --c5-permits:  #FF5A1F;   /* signal orange */
+
+        --display: 'Archivo', system-ui, sans-serif;
+        --narrow:  'Archivo Narrow', 'Archivo', system-ui, sans-serif;
+        --mono:    'JetBrains Mono', ui-monospace, monospace;
+
+        --max: 1320px;
+
+        /* Type scale — loud */
+        --t-billboard: clamp(44px, 10vw, 168px);  /* reduced ~30% per user request */
+        --t-mega:      clamp(72px, 11vw, 180px);
+        --t-big:       clamp(44px, 6.5vw, 88px);
+        --t-card:      clamp(26px, 2.8vw, 40px);
+        --t-lede:      19px;
+        --t-body:      16px;
+        --t-meta:      11px;
+      }
+
+      *{box-sizing:border-box}
+      html,body{margin:0;padding:0;background:var(--cream);color:var(--ink);font-family:var(--display);-webkit-font-smoothing:antialiased}
+      a{color:inherit;text-decoration:none}
+      img{max-width:100%;display:block}
+      .wrap{max-width:var(--max);margin:0 auto;padding:0 32px}
+
+      /* ---- Repeated utility labels ---- */
+      .m{font-family:var(--mono);font-size:var(--t-meta);letter-spacing:.08em;text-transform:uppercase}
+      .m-dot::before{content:"●";margin-right:8px;color:var(--ink)}
+
+      /* ============ HEADER ============ */
+      header.site{position:sticky;top:0;z-index:100;background:var(--yellow);border-bottom:2.5px solid var(--ink)}
+      .nav{display:flex;align-items:stretch;justify-content:space-between;min-height:60px}
+      .brand-group{display:flex;flex-direction:column;justify-content:center;gap:4px;padding:10px 0}
+      .brand{display:flex;align-items:center;gap:10px;font-family:var(--narrow);font-weight:700;font-size:22px;letter-spacing:-.02em;text-transform:uppercase}
+      .brand .bx{width:30px;height:30px;background:var(--ink);color:var(--yellow);display:grid;place-items:center;font-weight:900;font-size:15px;font-family:var(--display)}
+      
+      .menu-toggle {
+        display: none;
+        align-items: center;
+        gap: 8px;
+        background: var(--ink);
+        color: var(--yellow);
+        border: none;
+        padding: 6px 12px;
+        font-family: var(--mono);
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        cursor: pointer;
+        width: fit-content;
+      }
+      .menu-toggle svg {
+        width: 18px;
+        height: 18px;
+        stroke: currentColor;
+        stroke-width: 2.8;
+        fill: none;
+      }
+
+      nav.p{display:flex;align-items:center;gap:0}
+      nav.p a{font-family:var(--mono);font-size:1.1em;letter-spacing:.06em;text-transform:uppercase;padding:10px 18px;border-right:1.5px solid var(--ink)}
+      nav.p a:first-child{border-left:1.5px solid var(--ink)}
+      nav.p a:hover{background:var(--ink);color:var(--yellow)}
+
+      .cta-hd{display:inline-flex;align-items:center;gap:8px;padding:0 22px;background:var(--ink);color:var(--yellow);font-family:var(--narrow);font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:.02em;border-left:2.5px solid var(--ink)}
+      .cta-hd:hover{background:var(--cream);color:var(--ink)}
+      .cta-hd svg{width:14px;height:14px;stroke:currentColor;stroke-width:2.6;fill:none}
+
+      /* ============ BUTTONS ============ */
+      .btn{display:inline-flex;align-items:center;gap:10px;padding:18px 26px;background:var(--ink);color:var(--yellow);font-family:var(--narrow);font-weight:700;font-size:16px;text-transform:uppercase;letter-spacing:.02em;border:2.5px solid var(--ink);transition:background .15s,color .15s; cursor: pointer;}
+      .btn:hover{background:var(--yellow);color:var(--ink)}
+      .btn svg{width:18px;height:18px;stroke:currentColor;stroke-width:2.6;fill:none}
+      .btn-ghost{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;border-bottom:1.5px solid currentColor;padding:3px 0}
+      .btn-ghost:hover{color:var(--c5-permits)}
+
+      /* ============ FOOTER ============ */
+      footer.site{background:var(--ink);color:var(--cream);padding:72px 0 24px;border-top:2.5px solid var(--ink); margin-top: 0;}
+      footer.site .inner{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:40px;margin-bottom:48px}
+      footer.site h5{font-family:var(--mono);font-size:var(--t-meta);letter-spacing:.08em;text-transform:uppercase;margin:0 0 16px;opacity:.55;font-weight:500}
+      footer.site a{display:block;padding:4px 0;font-size:14.5px;font-weight:500;opacity:.85}
+      footer.site a:hover{color:var(--yellow);opacity:1}
+      footer.site .fbrand{font-family:var(--narrow);font-weight:700;font-size:44px;text-transform:uppercase;letter-spacing:-.02em;line-height:.9;margin:0 0 16px}
+      footer.site .fbrand em{font-style:italic;color:var(--yellow)}
+      footer.site .tag{font-size:14px;line-height:1.5;max-width:320px;opacity:.7}
+      footer.site .bottom{border-top:1px solid rgba(246,241,231,.2);padding-top:20px;display:flex;justify-content:space-between;font-family:var(--mono);font-size:var(--t-meta);letter-spacing:.08em;text-transform:uppercase;opacity:.55;flex-wrap:wrap;gap:16px}
+
+      /* Main overrides */
+      main.home-main {
+        max-width: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      /* ============ FLOATING DECISION SIDEBAR ============ */
+      .sidebar-float{
+        position:fixed;right:24px;bottom:24px;z-index:90;
+        width:340px;max-width:calc(100vw - 32px);
+        background:var(--cream);color:var(--ink);
+        border:2.5px solid var(--ink);
+        box-shadow:10px 10px 0 var(--ink);
+        transform-origin:bottom right;
+        transition:transform .25s ease, opacity .25s ease;
+      }
+      .sidebar-float.is-hidden{transform:translateY(calc(100% + 40px)) scale(.9);opacity:0;pointer-events:none}
+
+      .sbf-hd{
+        background:var(--yellow);border-bottom:2.5px solid var(--ink);
+        padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;
+      }
+      .sbf-hd .tag{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase}
+      .sbf-hd .dot{width:8px;height:8px;border-radius:50%;background:var(--c2-cond);box-shadow:0 0 0 3px rgba(217,59,50,.18);animation:sbf-pulse 2s ease-in-out infinite}
+      @keyframes sbf-pulse{0%,100%{box-shadow:0 0 0 3px rgba(217,59,50,.18)}50%{box-shadow:0 0 0 6px rgba(217,59,50,.06)}}
+      .sbf-hd .close{background:transparent;border:1.5px solid var(--ink);width:22px;height:22px;display:grid;place-items:center;cursor:pointer;padding:0;font-family:var(--mono);font-size:13px;line-height:1;color:var(--ink)}
+      .sbf-hd .close:hover{background:var(--ink);color:var(--yellow)}
+
+      .sbf-primary{padding:18px 16px 14px;border-bottom:1.5px solid rgba(11,15,26,.15)}
+      .sbf-primary .mini{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(11,15,26,.6);margin-bottom:6px}
+      .sbf-primary h4{font-family:var(--narrow);font-weight:700;font-size:22px;line-height:1.05;letter-spacing:-.01em;text-transform:uppercase;margin:0 0 4px}
+      .sbf-primary p{font-size:13.5px;line-height:1.45;margin:0 0 12px;color:rgba(11,15,26,.72)}
+      .sbf-btn{
+        display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;
+        padding:12px 14px;background:var(--ink);color:var(--cream);
+        border:2px solid var(--ink);font-weight:700;font-size:14px;
+        text-decoration:none;cursor:pointer;transition:background .15s,color .15s,transform .15s;
+      }
+      .sbf-btn:hover{background:var(--c2-cond);transform:translate(-1px,-1px)}
+      .sbf-btn .arrow{display:inline-flex;align-items:center;gap:0;width:18px;height:14px}
+      .sbf-btn svg{width:16px;height:14px;stroke:currentColor;stroke-width:2.2;fill:none}
+      .sbf-btn .meta{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;opacity:.7}
+
+      .sbf-or{position:relative;text-align:center;padding:10px 0 6px}
+      .sbf-or::before{content:"";position:absolute;inset:50% 16px auto;height:1.5px;background:rgba(11,15,26,.15)}
+      .sbf-or span{position:relative;background:var(--cream);padding:0 10px;font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(11,15,26,.55)}
+
+      .sbf-secondary{padding:6px 16px 16px}
+      .sbf-secondary .mini{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(11,15,26,.55);margin-bottom:4px}
+      .sbf-secondary h5{font-family:var(--narrow);font-weight:700;font-size:16px;line-height:1.15;text-transform:uppercase;letter-spacing:-.005em;margin:0 0 10px}
+      .sbf-ghost{
+        display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;
+        padding:10px 12px;background:transparent;color:var(--ink);
+        border:1.5px solid var(--ink);font-weight:600;font-size:13px;
+        text-decoration:none;cursor:pointer;transition:background .15s,color .15s;
+      }
+      .sbf-ghost:hover{background:var(--ink);color:var(--cream)}
+      .sbf-ghost svg{width:14px;height:12px;stroke:currentColor;stroke-width:2.4;fill:none}
+
+      .sbf-handle{
+        position:fixed;right:0;bottom:24px;z-index:90;
+        background:var(--yellow);color:var(--ink);border:2.5px solid var(--ink);border-right:none;
+        padding:12px 14px 12px 16px;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+        cursor:pointer;display:none;align-items:center;gap:8px;
+        box-shadow:-4px 4px 0 rgba(11,15,26,.25);
+      }
+      .sbf-handle.is-visible{display:flex}
+      .sbf-handle:hover{background:var(--ink);color:var(--yellow)}
+      .sbf-handle svg{width:14px;height:12px;stroke:currentColor;stroke-width:2.4;fill:none}
+
+      @media (max-width:960px){
+        .wrap { padding: 0 20px; }
+        .brand .bx { display: none; } /* Hide square 'S' on mobile per request */
+        .brand { font-size: 19px; }
+        .nav { height: auto; align-items: stretch; }
+        .cta-hd { align-self: stretch; height: auto; padding: 0 16px; border-left: 2px solid var(--ink); background: var(--ink) !important; color: var(--yellow) !important; font-size: 12px !important; }
+        .brand-group { padding: 14px 0; gap: 8px; }
+        
+        .menu-toggle {
+          display: flex;
+        }
+
+        nav.p {
+          position: fixed;
+          top: 96px; /* Match updated header height */
+          left: 0;
+          right: 0;
+          background: var(--yellow);
+          flex-direction: column;
+          border-bottom: 2.5px solid var(--ink);
+          transform: translateY(-100%);
+          opacity: 0;
+          transition: transform 0.3s ease, opacity 0.3s ease;
+          pointer-events: none;
+          z-index: 99;
+        }
+        nav.p.is-open {
+          display: flex !important;
+          transform: translateY(0);
+          opacity: 1;
+          pointer-events: auto;
+        }
+        nav.p a {
+          width: 100%;
+          padding: 20px 24px !important;
+          border-right: none !important;
+          border-bottom: 1.5px solid var(--ink);
+          font-size: 18px !important;
+        }
+        nav.p a:first-child {
+          border-left: none !important;
+        }
+        footer.site .inner{grid-template-columns:1fr 1fr}
+      }
+
+      @media (max-width:720px){
+        .brand span:last-child{display:inline-block} /* Ensure full name shows */
+        footer.site .inner{grid-template-columns:1fr}
+      }
+    </style>
+    <script is:inline>
+      // Optimized Mobile menu toggle logic
+      window.addEventListener('DOMContentLoaded', () => {
+        const menuBtn = document.getElementById('menu-toggle');
+        const nav = document.getElementById('main-nav');
+        
+        if (menuBtn && nav) {
+          menuBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            nav.classList.toggle('is-open');
+            menuBtn.classList.toggle('is-active');
+            console.log('Menu toggled', nav.classList.contains('is-open'));
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

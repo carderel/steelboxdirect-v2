@@ -1,0 +1,141 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  pageType="legal"
+  title="Privacy Policy | Steel Box Direct"
+  description="Our privacy policy explains how we collect, use, and protect your information."
+>
+  <article>
+    <h1>Privacy Policy</h1>
+
+    <p class="intro">
+      Last updated: March 2026. We respect your privacy and are committed to protecting your personal information. This policy explains how we collect, use, and safeguard your data.
+    </p>
+
+    <section>
+      <h2>1. Information We Collect</h2>
+
+      <h3>Information You Provide Directly:</h3>
+      <ul>
+        <li><strong>Quote Requests:</strong> Name, email, phone, property address, container size preference, delivery location, and property description</li>
+        <li><strong>Contact Forms:</strong> Name, email, message content</li>
+        <li><strong>Correspondence:</strong> Email messages and replies</li>
+      </ul>
+
+      <h3>Automatically Collected Information:</h3>
+      <ul>
+        <li><strong>Browser/Device Data:</strong> IP address, browser type, device type, pages visited, time spent on site</li>
+        <li><strong>Cookies & Tracking:</strong> We use localStorage for first-party attribution tracking (which decision guide led you to the quote form). No third-party tracking cookies.</li>
+        <li><strong>Analytics:</strong> Google Analytics (anonymized) to understand visitor behavior and site performance</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>2. How We Use Your Information</h2>
+      <ul>
+        <li><strong>To respond to quote requests</strong> with pricing and container options tailored to your property</li>
+        <li><strong>To communicate about your purchase</strong> – confirmations, delivery scheduling, follow-up</li>
+        <li><strong>To improve our website</strong> – understanding which decision guides help buyers and where they get stuck</li>
+        <li><strong>For internal analytics</strong> – tracking which container sizes/conditions are most popular, geographic demand patterns</li>
+        <li><strong>To comply with legal obligations</strong> – tax records, business records retention</li>
+      </ul>
+
+      <p><strong>We do NOT:</strong></p>
+      <ul>
+        <li>Sell your information to third parties</li>
+        <li>Use your information for marketing beyond follow-up on your quote request</li>
+        <li>Share contact details with other companies without explicit consent</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>3. Data Sharing</h2>
+      <p>Your information may be shared with:</p>
+      <ul>
+        <li><strong>Our team:</strong> Sales, fulfillment, and customer service staff need your information to fulfill your quote and deliver containers</li>
+        <li><strong>Service providers:</strong> Email providers (Resend), database hosts (Supabase), and analytics tools that help us operate the site</li>
+        <li><strong>Legal requirements:</strong> If required by law, court order, or government request</li>
+      </ul>
+      <p>All service providers are contractually bound to protect your information.</p>
+    </section>
+
+    <section>
+      <h2>4. Data Security</h2>
+      <p>We use industry-standard security measures to protect your information:</p>
+      <ul>
+        <li>HTTPS encryption for all data in transit</li>
+        <li>Secure database hosting (Supabase with PostgreSQL encryption)</li>
+        <li>Limited access to customer data (only authorized personnel)</li>
+        <li>No storage of payment information on our servers (we don't process payments directly)</li>
+      </ul>
+      <p>However, no online system is completely secure. We cannot guarantee absolute security, though we maintain reasonable safeguards.</p>
+    </section>
+
+    <section>
+      <h2>5. Your Rights</h2>
+      <ul>
+        <li><strong>Access:</strong> You can request a copy of the information we hold about you</li>
+        <li><strong>Correction:</strong> You can ask us to correct inaccurate information</li>
+        <li><strong>Deletion:</strong> You can request we delete your data (subject to legal retention requirements)</li>
+        <li><strong>Opt-out:</strong> You can unsubscribe from follow-up communications by replying "unsubscribe" to any email</li>
+      </ul>
+      <p>To exercise these rights, contact us at the address below.</p>
+    </section>
+
+    <section>
+      <h2>6. Cookies & Tracking</h2>
+      <p><strong>First-party attribution tracking:</strong> We use browser localStorage to track which decision guide (Size, Condition, Delivery, Pricing, or Permits) led you to request a quote. This helps us understand which content is most valuable to buyers. This data is stored locally in your browser, not on our servers.</p>
+      <p><strong>Third-party services:</strong> We use Google Analytics (with IP anonymization) to understand aggregate site performance. Google's privacy policy applies to their data collection.</p>
+      <p><strong>No selling of data:</strong> We do not sell this information to advertisers or data brokers.</p>
+    </section>
+
+    <section>
+      <h2>7. Retention</h2>
+      <ul>
+        <li><strong>Quote requests:</strong> Kept for 2 years for business records and customer follow-up</li>
+        <li><strong>Analytics data:</strong> Retained per Google Analytics retention policies (typically 14-26 months)</li>
+        <li><strong>Correspondence:</strong> Archived for 2 years unless you request deletion</li>
+      </ul>
+      <p>You can request earlier deletion subject to legal and business requirements.</p>
+    </section>
+
+    <section>
+      <h2>8. GDPR & International Privacy</h2>
+      <p><strong>For EU visitors:</strong> We comply with GDPR requirements. You have the right to access, correct, and delete your personal data. We rely on legitimate business interest and consent for data processing. We do not transfer data outside the EU without appropriate safeguards.</p>
+      <p><strong>For California residents:</strong> Under CCPA, you have the right to know what data we collect, delete your information, and opt-out of data sales. We do not sell personal information, so opt-out does not apply.</p>
+    </section>
+
+    <section>
+      <h2>9. Children's Privacy</h2>
+      <p>This website is not intended for individuals under 18. We do not knowingly collect information from children. If we become aware a child has provided information, we will delete it promptly.</p>
+    </section>
+
+    <section>
+      <h2>10. Policy Changes</h2>
+      <p>We may update this privacy policy to reflect legal changes or business practices. We will notify you of material changes via email or by posting on this page. Your continued use of the site constitutes acceptance of updated terms.</p>
+    </section>
+
+    <section>
+      <h2>11. Contact Us</h2>
+      <p>If you have questions about this privacy policy or your information:</p>
+      <p>
+        <strong>Steel Box Direct</strong><br>
+        Email: support@steelboxdirect.com<br>
+        Address: Cincinnati, Ohio
+      </p>
+      <p>You can also contact us through our <a href="/quote/">quote form</a> with privacy questions.</p>
+    </section>
+  </article>
+
+  <style>
+    article { max-width: 800px; line-height: 1.6; }
+    h2 { margin-top: 2rem; margin-bottom: 1rem; }
+    h3 { margin-top: 1.5rem; margin-bottom: 0.75rem; }
+    ul { margin: 1rem 0 1rem 1.5rem; }
+    li { margin-bottom: 0.5rem; }
+    section { margin: 2rem 0; }
+    .intro { font-size: 1.05rem; color: var(--color-muted); margin-bottom: 2rem; }
+  </style>
+</BaseLayout>

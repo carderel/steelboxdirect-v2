@@ -1,0 +1,144 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Shipping Containers for Sale in Indianapolis, IN | Steel Box Direct"
+  description="Buying a shipping container in Indy? We provide cargo-worthy and one-trip containers with flat-fee delivery to Marion, Hamilton, and Hendricks counties."
+  pageType="guide"
+>
+  <section class="local-hero">
+    <div class="wrap">
+      <div class="sh">
+        <span class="idx">Region</span>
+        <span class="nm">Indianapolis · Crossroads</span>
+        <span class="tg">Local Delivery Expert</span>
+      </div>
+      <h1 class="big">Shipping Containers<br>in <em>Indianapolis.</em></h1>
+      <p class="lede">From the tech corridors of Fishers to the industrial hubs of Marion County, we deliver steel-clad protection to the Crossroads of America.</p>
+    </div>
+  </section>
+
+  <section class="local-details">
+    <div class="wrap">
+      <div class="grid">
+        <div class="card">
+          <div class="m">Delivery Areas</div>
+          <h3>Marion, Hamilton, & Hendricks</h3>
+          <p>We know the Indy metro. Whether it's a tight site in Carmel or a sprawling logistics facility near the airport, our drivers have the experience to place your unit precisely.</p>
+          <ul class="check-list">
+            <li>Marion County</li>
+            <li>Hamilton County</li>
+            <li>Hendricks County</li>
+            <li>Johnson County</li>
+            <li>Hancock County</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="m">Pricing</div>
+          <h3>Local Rates, No Fluff</h3>
+          <p>Being a regional leader means we don't charge "long-distance" premiums for Indy deliveries. Our flat-rate pricing covers the entire 465 loop and surrounding areas.</p>
+          <div class="price-box">
+            <span class="label">Average 20ft Delivery</span>
+            <span class="value">$300 - $500</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="local-content">
+    <div class="wrap">
+      <div class="row">
+        <div class="main-col">
+          <h2>Why Indy buyers choose Steel Box Direct</h2>
+          <p>Indianapolis is a world-class logistics hub. We match that standard by providing high-quality, ISO-certified containers that meet the rigorous demands of Indiana's business and agricultural sectors.</p>
+          
+          <div class="feature">
+            <h4>Crossroads Logistics</h4>
+            <p>We understand that Indy is where America's freight moves. Our containers provide the secure, mobile storage needed to keep your operations flexible and protected.</p>
+          </div>
+
+          <div class="feature">
+            <h4>Hamilton County Growth</h4>
+            <p>With rapid development in Fishers, Carmel, and Noblesville, we provide quick-deployment storage solutions for construction, retail, and homeowners.</p>
+          </div>
+
+          <div class="feature">
+            <h4>Hoosier Reliability</h4>
+            <p>We're a family-owned operation that values the same hard work and transparency that defines Indiana. No brokers, no hidden fees — just local service.</p>
+          </div>
+        </div>
+        <aside class="side-col">
+          <div class="m-card">
+            <div class="m">Local Stats</div>
+            <div class="stat">
+              <span class="v">120+</span>
+              <span class="l">Units placed in Central Indiana</span>
+            </div>
+            <div class="stat">
+              <span class="v">4.9/5</span>
+              <span class="l">Local review average</span>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <div class="wrap">
+      <div class="cta-box">
+        <h2>Ready for an Indy quote?</h2>
+        <p>Most requests in Central Indiana are answered within 4 business hours.</p>
+        <a href="/quote/" class="btn">Get My Local Quote <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .local-hero { padding: 120px 0 80px; background: var(--yellow); border-bottom: 2.5px solid var(--ink); }
+    .lede { font-size: 24px; line-height: 1.4; max-width: 800px; margin-top: 32px; font-weight: 500; }
+    
+    .local-details { padding: 96px 0; background: var(--cream); border-bottom: 1.5px solid rgba(11,15,26,.1); }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+    .card { background: white; border: 2.5px solid var(--ink); padding: 40px; box-shadow: 8px 8px 0 var(--ink); }
+    .card h3 { font-family: var(--narrow); font-size: 32px; text-transform: uppercase; margin: 16px 0; }
+    
+    .check-list { list-style: none; padding: 0; margin: 24px 0 0; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .check-list li { font-family: var(--mono); font-size: 11px; text-transform: uppercase; display: flex; align-items: center; gap: 8px; letter-spacing: .05em; }
+    .check-list li::before { content: "✓"; color: var(--c4-cost); font-weight: 800; }
+    
+    .price-box { margin-top: 32px; padding: 20px; background: var(--ink); color: var(--yellow); display: flex; flex-direction: column; gap: 4px; }
+    .price-box .label { font-family: var(--mono); font-size: 10px; text-transform: uppercase; opacity: .7; }
+    .price-box .value { font-family: var(--narrow); font-size: 28px; font-weight: 700; }
+
+    .local-content { padding: 96px 0; background: white; }
+    .row { display: grid; grid-template-columns: 2fr 1fr; gap: 80px; }
+    .main-col h2 { font-family: var(--narrow); font-size: 40px; text-transform: uppercase; margin-bottom: 24px; }
+    .feature { margin-top: 40px; border-left: 4px solid var(--yellow); padding-left: 24px; }
+    .feature h4 { font-family: var(--narrow); font-size: 22px; text-transform: uppercase; margin-bottom: 8px; }
+    .feature p { opacity: .8; line-height: 1.5; }
+
+    .m-card { background: var(--ink); color: white; padding: 32px; border: 2.5px solid var(--ink); }
+    .m-card .m { color: var(--yellow); margin-bottom: 24px; }
+    .stat { margin-bottom: 24px; }
+    .stat:last-child { margin-bottom: 0; }
+    .stat .v { display: block; font-family: var(--narrow); font-size: 44px; font-weight: 700; color: var(--yellow); line-height: 1; }
+    .stat .l { font-family: var(--mono); font-size: 10px; text-transform: uppercase; opacity: .6; letter-spacing: .1em; margin-top: 4px; display: block; }
+
+    .cta-section { padding: 80px 0 120px; background: var(--cream); }
+    .cta-box { background: var(--ink); color: var(--cream); padding: 64px; text-align: center; border: 2.5px solid var(--ink); box-shadow: 12px 12px 0 var(--yellow); }
+    .cta-box h2 { font-family: var(--narrow); font-size: 48px; text-transform: uppercase; margin-bottom: 16px; }
+    .cta-box p { font-size: 18px; opacity: .8; margin-bottom: 40px; }
+    
+    @media (max-width: 960px) {
+      .row { grid-template-columns: 1fr; gap: 48px; }
+    }
+    @media (max-width: 768px) {
+      .grid { grid-template-columns: 1fr; }
+      .cta-box { padding: 40px 24px; }
+      .cta-box h2 { font-size: 32px; }
+    }
+  </style>
+</BaseLayout>

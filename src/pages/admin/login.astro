@@ -1,0 +1,135 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Seller Login | Steel Box Direct" pageType="legal">
+  <div class="login-container">
+    <div class="wrap">
+      <div class="login-box">
+        <div class="m" style="margin-bottom: 24px; color: var(--c5-permits);">Restricted Access</div>
+        <h1>Seller Console</h1>
+        <p>Log in to manage leads and quote requests.</p>
+        
+        <form id="login-form" class="login-form">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required placeholder="your@email.com" />
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required />
+          </div>
+          <button type="submit" class="btn" style="width: 100%; justify-content: center;">Sign In</button>
+          <div id="login-error" class="error-msg" style="display: none;"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    import { supabase } from '../../lib/supabase';
+
+    const form = document.getElementById('login-form') as HTMLFormElement;
+    const errorDiv = document.getElementById('login-error');
+
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(form);
+      const email = formData.get('email') as string;
+      const password = formData.get('password') as string;
+
+      console.log('Auth: Attempting sign-in...', { email });
+
+      if (errorDiv) {
+        errorDiv.style.display = 'none';
+        errorDiv.textContent = '';
+      }
+
+      try {
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+
+        if (error) {
+          console.error('Auth Error:', error);
+          if (errorDiv) {
+            errorDiv.style.display = 'block';
+            errorDiv.textContent = error.message;
+          }
+        } else {
+          console.log('Auth Success:', data.user?.id);
+          window.location.href = '/admin/dashboard';
+        }
+      } catch (err: any) {
+        console.error('Auth Exception:', err);
+        if (errorDiv) {
+          errorDiv.style.display = 'block';
+          errorDiv.textContent = 'An unexpected error occurred.';
+        }
+      }
+    });
+
+    // Check if already logged in
+    async function checkSession() {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        window.location.href = '/admin/dashboard';
+      }
+    }
+    checkSession();
+  </script>
+
+  <style>
+    .login-container {
+      padding: 120px 0;
+      background: var(--cream);
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
+    }
+    .login-box {
+      max-width: 480px;
+      margin: 0 auto;
+      background: white;
+      border: 2px solid var(--ink);
+      padding: 48px;
+      box-shadow: 12px 12px 0 var(--ink);
+    }
+    .login-box h1 {
+      font-family: var(--narrow);
+      font-size: 32px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .login-box p {
+      opacity: .7;
+      margin-bottom: 32px;
+    }
+    .form-group {
+      margin-bottom: 24px;
+    }
+    .form-group label {
+      display: block;
+      font-family: var(--mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      opacity: .6;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 14px;
+      border: 2px solid var(--ink);
+      font-family: var(--display);
+      font-size: 16px;
+      background: var(--cream);
+    }
+    .error-msg {
+      margin-top: 20px;
+      color: var(--c2-cond);
+      font-size: 14px;
+      font-weight: 600;
+    }
+  </style>
+</BaseLayout>

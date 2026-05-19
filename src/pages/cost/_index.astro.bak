@@ -1,0 +1,252 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="What Does a Shipping Container Cost? Pricing Factors | Freedom Conex"
+  description="Understand what affects shipping container pricing. Size, condition, location, delivery, and market factors explained."
+>
+  <article>
+    <h1>What affects container pricing?</h1>
+
+    <p class="intro">
+      Container prices vary based on several factors. The good news: a container is typically cheaper than building storage and lasts 15–20+ years. The key is understanding what drives cost so you can evaluate quotes fairly and know if you're getting value for your money.
+    </p>
+
+    <section>
+      <h2>Why We Don't List Prices</h2>
+      <p>Container prices vary significantly based on factors we can't know until we talk to you: your location, what's available nearby, current market conditions, delivery complexity, and your timeline.</p>
+      <p><strong>Key reality:</strong> A container is a regional commodity. Prices in Cincinnati differ from Texas, which differ from the Northeast. What you should expect depends on your location and current supply.</p>
+      <p>Instead of publishing outdated numbers, this page explains <strong>what drives costs</strong> so you can evaluate quotes intelligently and compare apples-to-apples when you're ready to request pricing.</p>
+      <p><strong>Quick context:</strong> A cargo-worthy used 40-foot container in the Cincinnati region typically costs less than the annual expense of renting equivalent storage space, and it lasts 15+ years. That's why most rural buyers see containers as investment-grade storage.</p>
+    </section>
+
+    <section>
+      <h2>The Four Price Drivers</h2>
+
+      <div class="driver-card">
+        <h3>1. Size (Most Predictable)</h3>
+        <p>Larger containers cost more, but the per-square-foot cost actually decreases as you go larger. A 40-foot is not double the price of a 20-foot.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Size</th><th>Relative Cost</th><th>Best For</th></tr></thead>
+            <tbody>
+              <tr><td>20-foot</td><td>Base</td><td>One tractor, seasonal equipment, hobby use (Mike)</td></tr>
+              <tr><td>40-foot</td><td>~40–60% more</td><td>Multiple farm equipment, growing business (Tom, Sarah)</td></tr>
+              <tr><td>40-foot High Cube</td><td>~5–10% more than standard 40</td><td>Tall equipment, workspace conversion (Tom, Sarah)</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p><strong>Tom's ROI math:</strong> A 40-foot used container costs ~$3,500–$4,500. Building a 40ft × 8ft storage shed: $8,000–$12,000+. The container is not just cheaper; it's mobile and lasts longer.</p>
+      </div>
+
+      <div class="driver-card">
+        <h3>2. Condition (Biggest Price Variance)</h3>
+        <p>Condition has the biggest impact on price after size. The spread is significant: a cargo-worthy container might cost 40–60% less than new.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Condition</th><th>Relative Cost</th><th>Best For</th><th>Lifespan</th></tr></thead>
+            <tbody>
+              <tr><td>New (One-Trip)</td><td>Highest (100%)</td><td>Premium appearance, workspace conversion (Sarah)</td><td>20+ years</td></tr>
+              <tr><td>Cargo Worthy</td><td>Mid (60–70%)</td><td>Farm equipment storage—best value (Tom, Mike)</td><td>15+ years</td></tr>
+              <tr><td>Wind &amp; Water Tight</td><td>Lower (40–50%)</td><td>Budget storage, back-field placement (Mike)</td><td>10+ years</td></tr>
+              <tr><td>As-Is</td><td>Lowest (30–40%)</td><td>Projects, parts—not recommended for storage</td><td>Variable</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p><strong>The value question:</strong> For most farm storage, cargo-worthy is the sweet spot. You get reliable, weatherproof storage without paying extra for appearance. See our <a href="/condition/">Condition Guide</a> for details on what each grade means in practice.</p>
+        <p><strong>Sarah's perspective:</strong> Use new for customer-facing areas, cargo-worthy for inventory/out-of-sight storage. Mixed approach optimizes cost.</p>
+      </div>
+
+      <div class="driver-card">
+        <h3>3. Delivery Distance and Site Complexity</h3>
+        <p>Delivery is often a larger cost factor than buyers expect—sometimes as much as the container itself.</p>
+        <p><strong>Distance impacts cost:</strong> Containers are available from depot locations. The farther from a depot, the higher the delivery cost. Our regional service area covers approximately 250 miles from Cincinnati, Ohio. Within 100 miles = lower delivery. 150+ miles = higher delivery (but we can usually accommodate).</p>
+        <p><strong>Site complexity impacts cost:</strong></p>
+        <ul>
+          <li><strong>Standard delivery:</strong> Straight driveway, 10+ ft wide, 14+ ft clearance, firm ground = lowest cost</li>
+          <li><strong>Medium complexity:</strong> Minor obstacles (trim branches, remove gates temporarily), slightly soft ground (prep with gravel) = moderate cost</li>
+          <li><strong>Crane required:</strong> Narrow driveway, tight turns, limited truck access = adds $500–$1,500</li>
+        </ul>
+        <p><strong>What you control:</strong> Know your site conditions before requesting a quote. Clear obstacles, prepare ground, or trim branches before delivery (DIY savings). Be flexible on exact placement if access is tight. The delivery cost difference between $200 site prep and crane delivery is significant.</p>
+        <p><strong>Tom & Mike:</strong> If your property is rural but reasonably accessible, don't assume crane is necessary. Describe your situation; most rural driveways work with standard tilt-bed. See our <a href="/delivery/">Delivery Guide</a> for access requirements.</p>
+      </div>
+
+      <div class="driver-card">
+        <h3>4. Market Timing and Availability</h3>
+        <p>Container prices fluctuate based on supply and demand. This is the least predictable factor.</p>
+        <p><strong>What affects availability and pricing:</strong></p>
+        <ul>
+          <li><strong>Shipping cycles:</strong> Global imports/exports affect container supply (when cargo comes in from China, more used containers available)</li>
+          <li><strong>Seasonal demand:</strong> Spring construction season and fall agricultural season increase demand and pricing</li>
+          <li><strong>Regional inventory:</strong> Cincinnati area inventory levels vary; availability differs from other regions</li>
+          <li><strong>Condition mix:</strong> Some months have more new containers available, other months fewer cargo-worthy options</li>
+        </ul>
+        <p><strong>Real impact:</strong> A cargo-worthy 40-foot might cost $3,800 in March and $4,200 in May. That's typical seasonal variation.</p>
+        <p><strong>What you can do:</strong> Be flexible on timing if possible. Need a container next week? Expect premium pricing. Can wait 4–6 weeks? Pricing may be lower. Specific condition/size may have limited stock. Alternative specifications (different size, slightly lower condition) may be available immediately at lower cost.</p>
+        <p><strong>Tom & Sarah:</strong> If you need it urgently, plan for higher pricing. If you can wait, patience = savings.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>What's Included vs. Extra (Critical to Understand)</h2>
+      <div class="two-col">
+        <div class="col">
+          <h3>Standard Package (Included)</h3>
+          <ul>
+            <li>The container itself (specified condition)</li>
+            <li>Standard tilt-bed delivery to your site</li>
+            <li>Basic placement (truck drops and slides)</li>
+          </ul>
+        </div>
+        <div class="col">
+          <h3>Often Extra (Ask About)</h3>
+          <ul>
+            <li>Crane delivery (if standard won't work)</li>
+            <li>Site prep / ground leveling</li>
+            <li>Blocking or concrete pads</li>
+            <li>Modifications (new doors, vents, paint, insulation)</li>
+            <li>Delivery delays beyond standard lead time</li>
+          </ul>
+        </div>
+      </div>
+      <p class="callout"><strong>Critical:</strong> Always ask for the all-in total price (container + delivery + any extras). A quote saying "$3,500 container" might become "$4,500 with crane" or "$5,200 with ground prep." Compare total delivered costs across quotes, not just the container price.</p>
+      <p><strong>Mike's warning:</strong> The lowest-priced container often has the highest hidden delivery costs. Ask everything upfront.</p>
+    </section>
+
+    <section>
+      <h2>How to Evaluate a Quote (Checklist)</h2>
+      <p>When you receive quotes, use this checklist to compare apples-to-apples:</p>
+      <ol>
+        <li><strong>All-in delivered total?</strong> Container + delivery + any extras = final cost. Don't compare just the container price.</li>
+        <li><strong>Condition explicitly stated?</strong> "Used" is vague. Confirm: cargo worthy, wind &amp; water tight, or as-is? Different conditions = different expectations.</li>
+        <li><strong>Delivery method specified?</strong> Standard tilt-bed or crane? If unclear, ask specifically about your site's access.</li>
+        <li><strong>Delivery timeline realistic?</strong> When will it arrive? Guaranteed or estimated? (Guaranteed timelines = higher cost usually)</li>
+        <li><strong>What's the recourse process?</strong> If the container doesn't match description (condition, dimensions, etc.), what's the resolution? Return? Adjustment? This matters.</li>
+        <li><strong>Warranty or inspection period?</strong> Can you inspect upon delivery and raise issues? (Most sellers allow 24–48 hours post-delivery)</li>
+        <li><strong>Any regional differences?</strong> Is this pricing specific to your area or estimate only? (Prices vary significantly by region)</li>
+      </ol>
+      <p><strong>Pro tip:</strong> Get 2–3 quotes before deciding. One outlier quote (too low or too high) helps you spot red flags or exceptional deals.</p>
+    </section>
+
+    <section>
+      <h2>Typical Buyer Choices by Use Case & Persona</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Scenario</th><th>Typical Choice</th><th>Why (Persona)</th><th>Approximate Cost Range</th></tr></thead>
+          <tbody>
+            <tr><td>Farm equipment storage (Tom)</td><td>Cargo Worthy 40'</td><td>Function over appearance. 15+ year lifespan protects investment. ROI-focused.</td><td>$4,000–$5,500</td></tr>
+            <tr><td>Growing business inventory (Sarah)</td><td>Mixed: New 20' visible + CW 40' hidden</td><td>New for professional appearance where customers see. Used for back-storage. Scales investment.</td><td>$6,000–$9,000</td></tr>
+            <tr><td>Hobby equipment storage (Mike)</td><td>WWT 20' or CW 20'</td><td>Budget-conscious. Single-tractor storage. Used acceptable.</td><td>$2,500–$3,500</td></tr>
+            <tr><td>Workshop/workspace conversion</td><td>New or CW 40' HC</td><td>Headroom matters. Cleaner interior if people work inside. Professional appearance or long-term investment.</td><td>$5,500–$8,000</td></tr>
+            <tr><td>Temporary/short-term project</td><td>WWT 20'</td><td>Lowest cost. Weatherproof for 2–3 years of use. Not concerned with long-term durability.</td><td>$2,000–$2,800</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>Note on "costs":</strong> These are estimates for the Cincinnati area. Your location, timing, and delivery distance will affect your actual quote. Use the cost drivers above to understand what factors into your specific pricing.</p>
+    </section>
+
+    <section>
+      <h2>Our Pricing Commitments</h2>
+      <ul>
+        <li><strong>No website pricing.</strong> Regional pricing varies significantly and changes with market conditions. We'll give you real, current numbers when you request a quote.</li>
+        <li><strong>No "lowest price" promises.</strong> We offer fair, transparent pricing. We won't race to the bottom with cut-rate pricing that comes with hidden costs or poor service.</li>
+        <li><strong>All-in quotes only.</strong> Your quote includes container + delivery + any site-specific adjustments. No surprises at payment time.</li>
+        <li><strong>Clear comparison framework.</strong> We explain what drives costs so you can evaluate quotes from other sellers intelligently and spot overpricing or underpricing.</li>
+      </ul>
+    </section>
+
+    <section class="next-step">
+      <h2>Ready for Real Pricing?</h2>
+      <p>When you're ready to understand pricing for your situation, describe your specifics: size needed, condition preference, delivery location, and timeline. We'll respond with all-in pricing based on current market conditions.</p>
+      <p><strong>What we need to know:</strong> Driveway access, site conditions, where the container goes, and when you need it. Photos help.</p>
+      <a href="/quote/" class="cta-button">Request a Quote</a>
+      <div class="alt-links">
+        <p>Still working through the decision? <a href="/size/">Size Guide</a> | <a href="/condition/">Condition Guide</a> | <a href="/delivery/">Delivery Guide</a></p>
+      </div>
+    </section>
+  </article>
+
+  <style>
+    article { max-width: 800px; }
+
+    .intro {
+      font-size: 1.15rem;
+      color: var(--color-muted);
+      margin-bottom: 2rem;
+      line-height: 1.7;
+    }
+
+    section { margin: 2.5rem 0; }
+
+    .driver-card {
+      background: #f7fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .driver-card h3 { color: var(--color-primary); margin-top: 0; margin-bottom: 0.75rem; }
+
+    .table-wrap { overflow-x: auto; margin: 1rem 0; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+    th, td { text-align: left; padding: 0.75rem 1rem; border-bottom: 1px solid #e2e8f0; }
+    th { background: white; font-weight: 600; color: var(--color-primary); }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin: 1rem 0;
+    }
+
+    @media (max-width: 600px) {
+      .two-col { grid-template-columns: 1fr; }
+    }
+
+    .col {
+      background: #f7fafc;
+      padding: 1.25rem;
+      border-radius: 8px;
+    }
+
+    .col h3 { margin-top: 0; font-size: 1.05rem; }
+
+    .callout {
+      background: #fffbeb;
+      padding: 0.75rem 1rem;
+      border-radius: 4px;
+      border-left: 3px solid #f59e0b;
+    }
+
+    ol { margin: 0.5rem 0 1rem 1.5rem; }
+    ol li { margin-bottom: 0.75rem; line-height: 1.6; }
+    ul { margin: 0.5rem 0 1rem 1.5rem; }
+    li { margin-bottom: 0.35rem; line-height: 1.5; }
+
+    h3 { margin-top: 1.5rem; }
+
+    .next-step {
+      background: #f7fafc;
+      padding: 2rem;
+      border-radius: 8px;
+      margin-top: 3rem;
+    }
+
+    .alt-links { margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #e2e8f0; }
+    .alt-links p { color: var(--color-muted); }
+
+    .cta-button {
+      display: inline-block;
+      background: var(--color-accent);
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .cta-button:hover { background: #2c5282; color: white; }
+  </style>
+</BaseLayout>

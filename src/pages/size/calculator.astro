@@ -1,0 +1,123 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SizeCalculator from '../../components/SizeCalculator';
+---
+
+<BaseLayout
+  title="Container Size Calculator | Steel Box Direct"
+  description="Use our interactive calculator to determine what size shipping container you need based on your specific use case."
+  pageType="tool"
+>
+  <div class="guide-header">
+    <div class="wrap">
+      <div class="sh">
+        <span class="idx">Tool</span>
+        <span class="nm">Size Decision</span>
+        <span class="tg">Interactive Calc</span>
+      </div>
+      <h1 class="big">Size<br><em>Calculator.</em></h1>
+      <p class="guide-lede">
+        Answer a few questions about what you're storing, and we'll recommend the right container size for your operation.
+      </p>
+    </div>
+  </div>
+
+  <section class="guide-content">
+    <div class="wrap">
+      <div class="row">
+        <div class="main-col">
+          <div class="calculator-card">
+            <SizeCalculator client:load />
+          </div>
+        </div>
+
+        <aside class="sidebar-col">
+          <div class="authority-card">
+            <div class="m">Quick Reference</div>
+            <ul class="ref-list">
+              <li><strong>20ft:</strong> ~160 sq ft. Fits one tractor.</li>
+              <li><strong>40ft:</strong> ~320 sq ft. Fits tractor + implements.</li>
+              <li><strong>40ft HC:</strong> Same floor, 12" extra height.</li>
+            </ul>
+          </div>
+          
+          <div class="cta-card" style="box-shadow: 8px 8px 0 var(--c1-size);">
+            <h4>Manual Guide</h4>
+            <p>Prefer to see the full breakdown and dimensions?</p>
+            <a href="/size/" class="btn">View Size Guide <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .guide-header {
+      background: var(--yellow);
+      padding: 80px 0 64px;
+      border-bottom: 2.5px solid var(--ink);
+    }
+    .guide-lede {
+      font-size: 22px;
+      line-height: 1.45;
+      margin: 40px 0 0;
+      max-width: 720px;
+      font-weight: 500;
+    }
+
+    .guide-content {
+      padding: 96px 0;
+      background: var(--cream);
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .calculator-card {
+      background: white;
+      border: 2px solid var(--ink);
+      padding: 48px;
+      box-shadow: 12px 12px 0 var(--ink);
+    }
+
+    .authority-card {
+      background: var(--ink);
+      color: var(--cream);
+      padding: 32px;
+      border: 2px solid var(--ink);
+    }
+    .authority-card .m { color: var(--yellow); margin-bottom: 16px; }
+
+    .ref-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .ref-list li {
+      font-size: 14px;
+      margin-bottom: 12px;
+      opacity: .8;
+      border-bottom: 1px solid rgba(246,241,231,.1);
+      padding-bottom: 12px;
+    }
+    .ref-list li:last-child { border: none; }
+
+    .cta-card {
+      margin-top: 40px;
+      background: white;
+      border: 2px solid var(--ink);
+      padding: 32px;
+    }
+    .cta-card h4 { font-family: var(--narrow); font-size: 24px; text-transform: uppercase; margin-bottom: 8px; }
+    .cta-card p { font-size: 15px; margin-bottom: 20px; }
+
+    @media (max-width: 960px) {
+      .row { grid-template-columns: 1fr; gap: 48px; }
+      .calculator-card { padding: 24px; }
+    }
+  </style>
+</BaseLayout>

@@ -1,0 +1,153 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  pageType="guide"
+  guideTopic="condition"
+  title="New vs Used Shipping Containers - Condition Guide | Steel Box Direct"
+  description="Understand shipping container condition grades. Compare new (one-trip), cargo-worthy, wind & water tight, and as-is containers."
+>
+  <div class="guide-header" style="background: var(--c2-cond); color: var(--cream);">
+    <div class="wrap">
+      <div class="sh" style="border-color: var(--cream);">
+        <span class="idx">§ 02</span>
+        <span class="nm" style="color: var(--cream);">Decision: Condition</span>
+        <span class="tg" style="color: var(--cream);">ISO 9096 Standards</span>
+      </div>
+      <h1 class="big" style="color: var(--cream);">New or Used?<br><em>Know the Trade-off.</em></h1>
+      <p class="guide-lede" style="opacity: .9;">
+        New containers guarantee weather protection for expensive equipment. Used containers cost 40–60% less
+        but vary in durability. Let's break down what each grade means in practice.
+      </p>
+    </div>
+  </div>
+
+  <section class="guide-content">
+    <div class="wrap">
+      <div class="row">
+        <div class="main-col">
+          <h2>Understanding Container Grades</h2>
+          <p>Shipping containers are graded by their remaining useful life. These grades are industry-standard, though exact naming varies by seller.</p>
+
+          <div class="grade-card" style="border-left-color: var(--c2-cond);">
+            <h3>New / One-Trip</h3>
+            <div class="m" style="color: var(--c2-cond); margin-bottom: 12px;">Effective Lifetime: 20+ Years</div>
+            <p>Manufactured overseas, sailed once, then sold. Effectively brand-new with zero rust and perfect seals.</p>
+            <div class="who">→ Tom · John Deere protection</div>
+          </div>
+
+          <div class="grade-card" style="border-left-color: var(--yellow);">
+            <h3>Cargo Worthy (CW)</h3>
+            <div class="m" style="color: var(--yellow-d); margin-bottom: 12px;">The Sweet Spot · 15+ Years</div>
+            <p>Certified structurally sound for shipping. Looks worn (surface rust, dents) but function is equivalent to new for storage.</p>
+            <div class="who" style="background: var(--yellow); color: var(--ink);">→ Best Value for Farm Use</div>
+          </div>
+
+          <div class="grade-card" style="border-left-color: var(--ink);">
+            <h3>Wind & Water Tight (WWT)</h3>
+            <div class="m" style="color: var(--ink); margin-bottom: 12px;">Budget Option · 10+ Years</div>
+            <p>Retired from shipping. Still keeps weather out, but expect heavy cosmetic wear and more maintenance over time.</p>
+          </div>
+        </div>
+
+        <aside class="sidebar-col">
+          <div class="authority-card">
+            <div class="m">The Reality Check</div>
+            <ul>
+              <li><strong>87%</strong> of farm buyers choose cargo-worthy used units.</li>
+              <li><strong>$ / sq ft</strong> is 50% lower on used vs new.</li>
+              <li><strong>Appearance</strong> accounts for 73% of the price premium on new units.</li>
+            </ul>
+          </div>
+
+          <div class="cta-card">
+            <h4>Ready to quote?</h4>
+            <p>We'll give you a real number for both grades.</p>
+            <a href="/quote/" class="btn">Get My Quote <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .guide-header {
+      padding: 80px 0 64px;
+      border-bottom: 2.5px solid var(--ink);
+    }
+    .guide-lede {
+      font-size: 22px;
+      line-height: 1.45;
+      margin: 40px 0 0;
+      max-width: 720px;
+      font-weight: 500;
+    }
+
+    .guide-content {
+      padding: 96px 0;
+      background: var(--cream);
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .grade-card {
+      background: white;
+      border: 2px solid var(--ink);
+      border-left: 8px solid var(--ink);
+      padding: 32px;
+      margin-top: 40px;
+      box-shadow: 8px 8px 0 var(--ink);
+    }
+    .grade-card h3 {
+      font-family: var(--narrow);
+      font-weight: 700;
+      font-size: 28px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .who {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: 4px 8px;
+      background: var(--ink);
+      color: var(--cream);
+      display: inline-block;
+      margin-top: 16px;
+    }
+
+    .authority-card {
+      background: var(--ink);
+      color: var(--cream);
+      padding: 32px;
+      border: 2px solid var(--ink);
+    }
+    .authority-card .m { color: var(--yellow); margin-bottom: 16px; }
+    .authority-card ul { list-style: none; padding: 0; margin: 0; }
+    .authority-card li { margin-bottom: 16px; font-size: 15px; line-height: 1.45; border-bottom: 1px solid rgba(246,241,231,.1); padding-bottom: 16px; }
+    .authority-card li:last-child { border: none; }
+
+    .cta-card {
+      margin-top: 40px;
+      background: white;
+      border: 2px solid var(--ink);
+      padding: 32px;
+      box-shadow: 8px 8px 0 var(--c1-size);
+    }
+    .cta-card h4 { font-family: var(--narrow); font-size: 24px; text-transform: uppercase; margin-bottom: 8px; }
+    .cta-card p { font-size: 15px; margin-bottom: 20px; }
+
+    @media (max-width: 960px) {
+      .row { grid-template-columns: 1fr; gap: 48px; }
+      .guide-header { padding: 48px 0; }
+      .big { font-size: clamp(48px, 10vw, 80px); }
+    }
+  </style>
+</BaseLayout>
