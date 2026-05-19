@@ -220,8 +220,8 @@ export const POST: APIRoute = async ({ request }) => {
       priority: getPriorityLabel(leadScore),
     }), { status: 200 });
 
-  } catch (err: any) {
+  } catch (err) {
     console.error('Handler error:', err);
-    return new Response(JSON.stringify({ error: 'Internal server error', detail: err?.message }), { status: 500 });
+    return new Response(JSON.stringify({ error: 'Internal server error' }), { status: 500 });
   }
 };
