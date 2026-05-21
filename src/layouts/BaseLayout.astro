@@ -61,6 +61,18 @@ const {
           <a href="/delivery/">The Rig</a>
           <a href="/cost/">Pricing</a>
           <a href="/permits/">FAQ</a>
+          <div class="nav-loc">
+            <a href="/locations/" class="nav-loc-trigger">
+              Locations
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+            </a>
+            <div class="nav-loc-drop">
+              <a href="/cincinnati-shipping-containers/"><span class="dc">CIN</span><span>Cincinnati</span></a>
+              <a href="/dayton-shipping-containers/"><span class="dc">DAY</span><span>Dayton</span></a>
+              <a href="/indianapolis-shipping-containers/"><span class="dc">IND</span><span>Indianapolis</span></a>
+              <a href="/louisville-shipping-containers/"><span class="dc">LOU</span><span>Louisville</span></a>
+            </div>
+          </div>
         </nav>
         <a class="cta-hd" href="/quote/">Get a Quote <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
       </div>
@@ -91,6 +103,14 @@ const {
             <a href="/condition/">Compare conditions</a>
             <a href="/delivery/">Delivery checker</a>
             <a href="/quote/">Get a quote</a>
+          </div>
+          <div>
+            <h5>Locations</h5>
+            <a href="/locations/">All Markets</a>
+            <a href="/cincinnati-shipping-containers/">Cincinnati</a>
+            <a href="/dayton-shipping-containers/">Dayton</a>
+            <a href="/indianapolis-shipping-containers/">Indianapolis</a>
+            <a href="/louisville-shipping-containers/">Louisville</a>
           </div>
           <div>
             <h5>Company</h5>
@@ -266,6 +286,20 @@ const {
       nav.p a:first-child{border-left:1.5px solid var(--ink)}
       nav.p a:hover{background:var(--ink);color:var(--yellow)}
 
+      /* Nav location dropdown */
+      .nav-loc{position:relative;display:flex;align-items:stretch}
+      .nav-loc-trigger{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+      .nav-loc-trigger svg{width:10px;height:10px;stroke:currentColor;stroke-width:2.8;fill:none;transition:transform .2s;flex-shrink:0}
+      .nav-loc:hover .nav-loc-trigger{background:var(--ink);color:var(--yellow)}
+      .nav-loc:hover .nav-loc-trigger svg{transform:rotate(180deg)}
+      .nav-loc-drop{position:absolute;top:100%;left:0;min-width:210px;background:var(--ink);border:2.5px solid var(--ink);display:none;z-index:200}
+      .nav-loc:hover .nav-loc-drop{display:block}
+      .nav-loc-drop a{display:flex;align-items:center;gap:14px;padding:13px 18px;border-bottom:1px solid rgba(246,241,231,.1);color:var(--cream);font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;border-right:none!important}
+      .nav-loc-drop a:last-child{border-bottom:none}
+      .nav-loc-drop a:hover{background:var(--yellow);color:var(--ink)}
+      .dc{font-family:var(--narrow);font-weight:700;font-size:22px;line-height:1;color:var(--yellow);letter-spacing:-.01em;flex-shrink:0}
+      .nav-loc-drop a:hover .dc{color:var(--ink)}
+
       .cta-hd{display:inline-flex;align-items:center;gap:8px;padding:0 22px;background:var(--ink);color:var(--yellow);font-family:var(--narrow);font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:.02em;border-left:2.5px solid var(--ink)}
       .cta-hd:hover{background:var(--cream);color:var(--ink)}
       .cta-hd svg{width:14px;height:14px;stroke:currentColor;stroke-width:2.6;fill:none}
@@ -279,7 +313,7 @@ const {
 
       /* ============ FOOTER ============ */
       footer.site{background:var(--ink);color:var(--cream);padding:72px 0 24px;border-top:2.5px solid var(--ink); margin-top: 0;}
-      footer.site .inner{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:40px;margin-bottom:48px}
+      footer.site .inner{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr 1fr;gap:40px;margin-bottom:48px}
       footer.site h5{font-family:var(--mono);font-size:var(--t-meta);letter-spacing:.08em;text-transform:uppercase;margin:0 0 16px;opacity:.55;font-weight:500}
       footer.site a{display:block;padding:4px 0;font-size:14.5px;font-weight:500;opacity:.85}
       footer.site a:hover{color:var(--yellow);opacity:1}
@@ -401,12 +435,22 @@ const {
         nav.p a:first-child {
           border-left: none !important;
         }
+        /* Mobile dropdown — always expanded inline */
+        .nav-loc{flex-direction:column;width:100%}
+        .nav-loc-trigger{width:100%;padding:20px 24px!important;border-right:none!important;border-bottom:1.5px solid var(--ink);justify-content:space-between;font-size:18px!important}
+        .nav-loc:hover .nav-loc-trigger{background:inherit;color:inherit}
+        .nav-loc-drop{position:static;display:block;background:rgba(11,15,26,.06);border:none;min-width:0}
+        .nav-loc-drop a{padding:15px 24px 15px 44px!important;color:var(--ink)!important;border-bottom:1px solid rgba(11,15,26,.1);font-size:14px!important}
+        .nav-loc-drop a:hover{background:var(--ink);color:var(--yellow)!important}
+        .dc{color:var(--ink)!important;font-size:18px!important}
+        .nav-loc-drop a:hover .dc{color:var(--yellow)!important}
+        .nav-loc-trigger svg{display:none}
         footer.site .inner{grid-template-columns:1fr 1fr}
       }
 
       @media (max-width:720px){
-        .brand span:last-child{display:inline-block} /* Ensure full name shows */
-        footer.site .inner{grid-template-columns:1fr}
+        .brand span:last-child{display:inline-block}
+        footer.site .inner{grid-template-columns:1fr 1fr}
       }
     </style>
     <script is:inline>
