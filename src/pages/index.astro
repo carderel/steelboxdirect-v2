@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { Image } from 'astro:assets';
 import heroImage from '../assets/photos/container-blue-weathered.jpg';
+import containerHero from '../assets/photos/40ft-container-hero-reduced2.png';
 ---
 
 <BaseLayout
@@ -10,9 +11,16 @@ import heroImage from '../assets/photos/container-blue-weathered.jpg';
 >
   <!-- ============ HERO ============ -->
   <section class="hero">
-    <div class="wrap">
-      <div class="top">
-        <div class="chip"><span class="pulse"></span> Ohio · Indiana · Kentucky — 100-mile radius of Cincinnati</div>
+    <div class="hero-right hero_image_panel">
+      <svg class="doodle" viewBox="0 0 100 100" aria-hidden="true">
+        <path d="M10 20 Q 50 5, 85 35" />
+        <path d="M78 25 L 85 35 L 72 40" />
+      </svg>
+      <Image src={containerHero} alt="40ft shipping container" class="hero-container-img" />
+    </div>
+    <div class="wrap hero_wrap">
+      <div class="top hero_top">
+        <div class="chip hero_chip"><span class="pulse"></span> Ohio · Indiana · Kentucky — 250-mile radius of Cincinnati</div>
         <span class="m" style="opacity:.6">Est. 2009 · Family owned</span>
       </div>
 
@@ -22,14 +30,9 @@ import heroImage from '../assets/photos/container-blue-weathered.jpg';
         <span class="l3 italic">No hard sell.</span>
       </h1>
 
-      <svg class="doodle" viewBox="0 0 100 100" aria-hidden="true">
-        <path d="M10 20 Q 50 5, 85 35" />
-        <path d="M78 25 L 85 35 L 72 40" />
-      </svg>
-
-      <div class="dek">
-        <p class="dek-lede">From <strong>expensive farm equipment</strong> to business inventory to specialized tools — containers protect what matters, if you choose the right size, condition, and delivery method. We'll walk you through <strong>five decisions</strong> so you can buy with confidence.</p>
-        <div class="dek-acts">
+      <div class="dek hero_dek">
+        <p class="dek-lede hero_dek_lede">From <strong>expensive farm equipment</strong> to business inventory to specialized tools — containers protect what matters, if you choose the right size, condition, and delivery method. We'll walk you through <strong>five decisions</strong> so you can buy with confidence.</p>
+        <div class="dek-acts hero_cta_group">
           <a class="btn" href="/size/">Start: what size? <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
           <a class="btn-ghost" href="/quote/">→ Skip ahead · just send me a quote</a>
         </div>
@@ -39,7 +42,7 @@ import heroImage from '../assets/photos/container-blue-weathered.jpg';
 
   <!-- Ticker under hero -->
   <div class="ticker" aria-hidden="true">
-    <div class="track">
+    <div class="track ticker_track">
       <span>40-ft cargo-worthy from <em>$3,200</em></span><span>●</span>
       <span>20-ft one-trip <em>next week</em></span><span>●</span>
       <span>Delivery included within <em>100 miles</em></span><span>●</span>
@@ -53,38 +56,38 @@ import heroImage from '../assets/photos/container-blue-weathered.jpg';
 
   <!-- ============ §01 PROBLEM ============ -->
   <section class="problem">
-    <div class="wrap">
+    <div class="wrap problem_wrap">
       <div class="sh">
         <span class="idx">§ 01</span>
         <span class="nm">The Problem</span>
         <span class="tg">Why we built this</span>
       </div>
       <h2 class="big">Most sellers jump<br>straight to <em>the sale.</em></h2>
-      <div class="row">
-        <div>
-          <p class="lede">A container is a <mark>25-year investment.</mark> The difference between the right one and the wrong one is years of protection — or a rusted-out headache. Before you sign anything, you deserve to understand what you're buying.</p>
-          <p style="font-size:15px;line-height:1.55;opacity:.75;max-width:520px">We're a small shop, not a call-center. You'll talk to the same person from first question to day-of-delivery — usually Carder. No jargon. Just clarity.</p>
+      <div class="row problem_row">
+        <div class="problem_lede_col">
+          <p class="lede problem_lede">A container is a <mark>25-year investment.</mark> The difference between the right one and the wrong one is years of protection — or a rusted-out headache. Before you sign anything, you deserve to understand what you're buying.</p>
+          <p style="font-size:15px;line-height:1.55;opacity:.75;max-width:520px">We're a small shop, not a call-center. You'll talk to the same person from first question to day-of-delivery. No jargon. Just clarity.</p>
         </div>
-        <div>
-          <div class="stat">
+        <div class="problem_stats">
+          <div class="stat problem_stat">
             <div class="num c2">25yr</div>
-            <div>
-              <div class="lbl">Useful life</div>
-              <div class="txt">A properly-placed steel box outlasts most pole barns for a fraction of the price.</div>
+            <div class="problem_stat_copy">
+              <div class="lbl problem_stat_label">Useful life</div>
+              <div class="txt problem_stat_text">A properly-placed steel box outlasts most pole barns for a fraction of the price.</div>
             </div>
           </div>
-          <div class="stat">
+          <div class="stat problem_stat">
             <div class="num c3">400+</div>
-            <div>
-              <div class="lbl">Units placed</div>
-              <div class="txt">Across farms, workshops, breweries, and hobby properties in OH · IN · KY since 2009.</div>
+            <div class="problem_stat_copy">
+              <div class="lbl problem_stat_label">Units placed</div>
+              <div class="txt problem_stat_text">Across farms, workshops, breweries, and hobby properties — wherever the truck can reach — since 2009.</div>
             </div>
           </div>
-          <div class="stat">
+          <div class="stat problem_stat">
             <div class="num c4">0</div>
-            <div>
-              <div class="lbl">Hidden fees</div>
-              <div class="txt">All-in pricing. Container, delivery, setup. What we quote is what you pay.</div>
+            <div class="problem_stat_copy">
+              <div class="lbl problem_stat_label">Hidden fees</div>
+              <div class="txt problem_stat_text">All-in pricing. Container, delivery, setup. What we quote is what you pay.</div>
             </div>
           </div>
         </div>
@@ -94,19 +97,19 @@ import heroImage from '../assets/photos/container-blue-weathered.jpg';
 
   <!-- ============ §02 THE FIVE ============ -->
   <section class="five" id="five">
-    <div class="wrap wrap-top">
+    <div class="wrap wrap-top five_header">
       <div class="sh">
         <span class="idx">§ 02</span>
         <span class="nm">The Five Decisions</span>
         <span class="tg">Est. 5 min / decision</span>
       </div>
-      <div class="intro">
+      <div class="intro five_intro">
         <h2 class="big">Five decisions<br>stand between you<br>and <em>the right container.</em></h2>
         <p>Work through them in order. Each guide answers the question buyers like you — Tom, Sarah, Mike — actually ask. No sales pitch, no jargon.</p>
       </div>
     </div>
 
-    <div class="grid5">
+    <div class="grid5 five_grid">
       <a class="blk blk-1" href="/size/">
         <span class="lbl">§ 01 · Size</span>
         <div class="num">01</div>
@@ -152,29 +155,29 @@ import heroImage from '../assets/photos/container-blue-weathered.jpg';
 
   <!-- ============ §04 THE RIG (Embece slab) ============ -->
   <section class="rig" id="rig">
-    <div class="top-type wrap">
+    <div class="top-type wrap rig_header">
       <h2 class="wordmark"><span>THE&nbsp;RIG</span> · SPECS</h2>
     </div>
-    <div class="rig-inner">
-      <div class="photo">
-        <div class="photo-frame">
+    <div class="rig-inner rig_inner">
+      <div class="photo rig_photo">
+        <div class="photo-frame rig_photo_frame">
           <Image src={heroImage} alt="40-ft cargo-worthy container on a rural property" width={1100} height={550} format="webp" />
           <span class="fig">FIG. 003 — Site placement</span>
           <span class="cap">40 × 8 × 8'6" · placed Brown County, IN · March 2020</span>
         </div>
       </div>
-      <div class="grid-below">
-        <div class="spec">
+      <div class="grid-below rig_specs_grid">
+        <div class="spec rig_spec_item">
           <span class="lbl">Footprint</span>
           <span class="val">320 sq ft</span>
           <span class="note">The 40-ft holds a mid-size tractor with room for a grain drill or a pallet-deep shelving run.</span>
         </div>
-        <div class="spec">
+        <div class="spec rig_spec_item">
           <span class="lbl">Interior height</span>
           <span class="val">8' 6" HC</span>
           <span class="note">High-cube adds 12" of headroom. Clears most utility tractors with ROPS folded.</span>
         </div>
-        <div class="spec">
+        <div class="spec rig_spec_item">
           <span class="lbl">Door opening</span>
           <span class="val">7' 9" wide</span>
           <span class="note">Double cargo doors open 270° and lock flat to the sidewall. No ramp required for most equipment.</span>
@@ -185,13 +188,13 @@ import heroImage from '../assets/photos/container-blue-weathered.jpg';
 
   <!-- ============ §05 PERSONAS TABLE ============ -->
   <section class="personas">
-    <div class="wrap">
+    <div class="wrap personas_wrap">
       <div class="sh">
         <span class="idx">§ 03</span>
         <span class="nm">Who buys from us</span>
         <span class="tg">Three common stories</span>
       </div>
-      <div class="intro">
+      <div class="intro personas_intro">
         <h2 class="big">If any of this<br>sounds like <em>you</em> —<br>we've done it before.</h2>
         <p>We've placed 400+ containers across the region. Most of our customers are one of three people. Here's what they bought and why.</p>
       </div>
@@ -208,7 +211,7 @@ import heroImage from '../assets/photos/container-blue-weathered.jpg';
         <tbody>
           <tr>
             <td>
-              <div class="pname">
+              <div class="pname persona_name">
                 <span class="dot" style="background:var(--c1-size)"></span>
                 <span class="pcol"><b>Tom</b><small>Equipment farmer</small></span>
               </div>
@@ -219,7 +222,7 @@ import heroImage from '../assets/photos/container-blue-weathered.jpg';
           </tr>
           <tr>
             <td>
-              <div class="pname">
+              <div class="pname persona_name">
                 <span class="dot" style="background:var(--c3-deliver)"></span>
                 <span class="pcol"><b>Sarah</b><small>Diversified business owner</small></span>
               </div>
@@ -230,7 +233,7 @@ import heroImage from '../assets/photos/container-blue-weathered.jpg';
           </tr>
           <tr>
             <td>
-              <div class="pname">
+              <div class="pname persona_name">
                 <span class="dot" style="background:var(--c5-permits)"></span>
                 <span class="pcol"><b>Mike</b><small>Hobby / rural</small></span>
               </div>
@@ -246,50 +249,56 @@ import heroImage from '../assets/photos/container-blue-weathered.jpg';
 
   <!-- ============ §06 PRICING TEASER ============ -->
   <section class="price" id="price">
-    <div class="wrap">
+    <div class="wrap pricing_wrap">
       <div class="sh">
         <span class="idx">§ 04</span>
         <span class="nm">What it really costs</span>
         <span class="tg">All-in · no hidden fees</span>
       </div>
       <h2 class="big">Three price points.<br><em>One honest number</em> each.</h2>
-      <p class="intro">Each is a real all-in figure for our most common configuration — container, delivery inside the 100-mile radius, and placement on flat, stable ground. Add only if we tell you to.</p>
+      <p class="intro">These are recent averages — container, delivery, and placement on flat ground included. Container prices fluctuate with market availability. <a href="/quote/" style="color:inherit;border-bottom:1.5px solid currentColor">Submit a quote</a> for current pricing.</p>
 
-      <div class="pgrid">
-        <div class="pcard">
-          <div class="tag"><span class="name">20-ft cargo</span><span class="chip">From</span></div>
-          <div class="num">$2,400<small>/ all-in · delivered</small></div>
-          <ul>
+      <div class="pgrid pricing_grid">
+        <div class="pcard pricing_card">
+          <div class="tag pricing_name"><span class="name">20-ft cargo</span><span class="chip">From</span></div>
+          <div class="num pricing_price">$2,400<small>/ avg. · prices vary</small></div>
+          <ul class="pricing_features">
             <li>~160 sq ft · fits a tractor or a lot of tools</li>
             <li>Wind &amp; Water Tight, minor surface rust</li>
             <li>Next-week delivery usually available</li>
           </ul>
+          <a href="/quote/?size=20ft" class="pcard-cta pricing_cta">Get current price on a 20ft cargo container <span>→</span></a>
         </div>
-        <div class="pcard rec">
-          <div class="tag"><span class="name">40-ft cargo</span><span class="chip">Most popular</span></div>
-          <div class="num">$3,200<small>/ all-in · delivered</small></div>
-          <ul>
+        <div class="pcard rec pricing_card">
+          <div class="tag pricing_name"><span class="name">40-ft cargo</span><span class="chip">Most popular</span></div>
+          <div class="num pricing_price">$3,200<small>/ avg. · prices vary</small></div>
+          <ul class="pricing_features">
             <li>~320 sq ft · equipment + implements + shelving</li>
             <li>The Sweet Spot — price of used, life of new</li>
             <li>Best $ / sq ft on the lot</li>
           </ul>
+          <a href="/quote/?size=40ft" class="pcard-cta pricing_cta">Get current price on a 40ft cargo container <span>→</span></a>
         </div>
-        <div class="pcard">
-          <div class="tag"><span class="name">40-ft one-trip</span><span class="chip">New</span></div>
-          <div class="num">$5,800<small>/ all-in · delivered</small></div>
-          <ul>
+        <div class="pcard pricing_card">
+          <div class="tag pricing_name"><span class="name">40-ft one-trip</span><span class="chip">New</span></div>
+          <div class="num pricing_price">$5,800<small>/ avg. · prices vary</small></div>
+          <ul class="pricing_features">
             <li>Single trip from factory · factory finish</li>
             <li>25-year weather protection, warranty-backed</li>
             <li>Tom's pick for high-value equipment</li>
           </ul>
+          <a href="/quote/?size=40ft_hc" class="pcard-cta pricing_cta">Get current price on a 40ft one-trip container <span>→</span></a>
         </div>
       </div>
+      <p style="font-family:var(--mono);font-size:13px;letter-spacing:.04em;font-weight:500;opacity:.7;text-transform:uppercase;margin-top:2rem;line-height:1.75">
+        Prices shown are recent market averages — container, delivery, and flat-ground placement included. Container pricing tracks global shipping rates and steel supply, which can shift from week to week. We update these figures regularly to reflect current conditions. Request a quote to confirm the number that applies to your order.
+      </p>
     </div>
   </section>
 
   <!-- ============ §07 FAQ ============ -->
   <section class="faq" id="faq">
-    <div class="wrap">
+    <div class="wrap faq_wrap">
       <div class="sh">
         <span class="idx">§ 05</span>
         <span class="nm">Straight answers</span>
@@ -297,26 +306,31 @@ import heroImage from '../assets/photos/container-blue-weathered.jpg';
       </div>
       <h2 class="big">The questions <em>everyone</em> asks<br>before they send a deposit.</h2>
 
-      <div class="faq-list">
-        <div class="faq-item">
+      <div class="faq-list faq_list">
+        <div class="faq-item faq_item">
           <span class="n">Q · 01</span>
           <h3 class="q">Won't it rust out on me?</h3>
           <p class="a">Corten steel, painted inside and out. On crushed-stone pads with airflow underneath, 25 years is realistic. We'll show you how to prep the site.</p>
         </div>
-        <div class="faq-item">
+        <div class="faq-item faq_item">
           <span class="n">Q · 02</span>
           <h3 class="q">Can you get it back my driveway?</h3>
           <p class="a">Usually yes. Tilt-bed needs ~100 ft of approach and firm ground. For tight or soft sites, crane-set works — no lane damage. We'll scout before we schedule.</p>
         </div>
-        <div class="faq-item">
+        <div class="faq-item faq_item">
           <span class="n">Q · 03</span>
           <h3 class="q">Do I need a permit?</h3>
           <p class="a">For farm storage in OH, IN, and KY: almost never. Commercial use or an HOA changes things — we'll flag it on the call, not after you pay.</p>
         </div>
-        <div class="faq-item">
+        <div class="faq-item faq_item">
           <span class="n">Q · 04</span>
           <h3 class="q">Is used actually safe for my equipment?</h3>
           <p class="a">Cargo-worthy units are structurally certified and weather-tight. Surface rust is cosmetic. For anything irreplaceable, we still steer you to one-trip.</p>
+        </div>
+        <div class="faq-item faq_item">
+          <span class="n">Q · 05</span>
+          <h3 class="q">How quickly can you get it here?</h3>
+          <p class="a">Most deliveries land within 1–2 weeks of deposit. Depot inventory is stacked and sequenced — units aren't staged for quick pull — and drivers book out several weeks in advance, so exact timing depends on current availability. We'll give you an honest window before you commit, and you'll hear from us at every step until it's on your property.</p>
         </div>
       </div>
     </div>
@@ -324,11 +338,11 @@ import heroImage from '../assets/photos/container-blue-weathered.jpg';
 
   <!-- ============ §08 CTA ============ -->
   <section class="cta" id="cta">
-    <div class="inner">
+    <div class="inner cta_inner">
       <h2 class="big">Ready? <em>Let's talk.</em></h2>
       <p>A quote is just information. Tell us what you're protecting — we'll send a real number and a delivery window. Usually same day.</p>
       <a class="btn" href="/quote/">Get my quote <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
-      <div class="reassure">
+      <div class="reassure cta_reassure">
         <span>No obligation</span>
         <span>Real human replies</span>
         <span>All-in pricing, always</span>
@@ -339,20 +353,22 @@ import heroImage from '../assets/photos/container-blue-weathered.jpg';
   <style>
     /* Hero */
     .hero{background:var(--yellow);color:var(--ink);padding:40px 0 0;border-bottom:2.5px solid var(--ink);position:relative;overflow:hidden}
+    .hero-right{position:absolute;right:0;top:0;bottom:0;display:none;flex-direction:column;align-items:flex-start;justify-content:center;pointer-events:none;z-index:0;gap:8px}
+    @media(min-width:1100px){.hero-right{display:flex}}
+    .hero-container-img{width:30vw;max-width:420px;height:auto;display:block}
     .hero .top{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:28px;gap:24px;flex-wrap:wrap}
-    .hero .chip{display:inline-flex;align-items:center;gap:10px;padding:6px 12px;background:var(--ink);color:var(--yellow);font-family:var(--mono);font-size:var(--t-meta);letter-spacing:.08em;text-transform:uppercase}
+    .hero .chip{display:inline-flex;align-items:center;gap:10px;padding:6px 12px;background:var(--ink);color:var(--yellow);font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
     .hero .chip .pulse{width:8px;height:8px;background:var(--c4-cost);border-radius:50%;display:inline-block;box-shadow:0 0 0 0 var(--c4-cost);animation:p 1.8s infinite}
     @keyframes p{0%{box-shadow:0 0 0 0 rgba(11,143,78,.6)}70%{box-shadow:0 0 0 8px rgba(11,143,78,0)}100%{box-shadow:0 0 0 0 rgba(11,143,78,0)}}
 
-    .billboard{font-family:var(--narrow);font-weight:700;font-size:var(--t-billboard);line-height:.84;letter-spacing:-.03em;text-transform:uppercase;margin:8px 0 0;position:relative}
+    .billboard{font-family:var(--narrow);font-weight:700;font-size:var(--t-billboard);line-height:.84;letter-spacing:-.03em;text-transform:uppercase;margin:3% 0 0;position:relative;z-index:1}
     .billboard .l1{display:block;white-space:nowrap;transform:translateX(-1%)}
     .billboard .l2{display:block;white-space:nowrap;margin-left:4%}
     .billboard .l3{display:block;white-space:nowrap}
     .billboard .italic{font-style:italic;font-weight:600}
     .billboard .swap{color:var(--c3-deliver)}
 
-    .hero .doodle{position:absolute;right:5%;top:42%;width:90px;height:90px;stroke:var(--ink);stroke-width:2.4;fill:none;transform:rotate(8deg);pointer-events:none;display:none}
-    @media(min-width:1100px){.hero .doodle{display:block}}
+    .hero .doodle{width:90px;height:90px;stroke:var(--ink);stroke-width:2.4;fill:none;transform:rotate(8deg);display:block;flex-shrink:0}
 
     .hero .dek{display:grid;grid-template-columns:1fr 1fr 1fr;gap:40px;align-items:end;padding:60px 0 48px;border-top:2px solid var(--ink);margin-top:40px}
     .hero .dek-lede{grid-column:span 2;font-size:22px;line-height:1.35;margin:0;max-width:720px;font-weight:500}
@@ -466,7 +482,7 @@ import heroImage from '../assets/photos/container-blue-weathered.jpg';
     .price .sh{border-color:var(--cream);color:var(--cream)}
     .price .big{color:var(--cream)}
     .price .big em{color:var(--c1-size)}
-    .price .intro{font-size:var(--t-lede);line-height:1.5;margin:32px 0 56px;max-width:640px;opacity:.85}
+    .price .intro{font-size:var(--t-lede);line-height:1.5;margin:2em 0 56px;max-width:640px;opacity:.85}
     .pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:2.5px solid var(--cream)}
     .pcard{padding:32px 28px;border-right:2.5px solid var(--cream);display:flex;flex-direction:column;gap:16px;background:var(--ink);transition:background .15s}
     .pcard:last-child{border-right:none}
@@ -476,12 +492,16 @@ import heroImage from '../assets/photos/container-blue-weathered.jpg';
     .pcard .tag .chip{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;background:var(--c1-size);color:var(--ink)}
     .pcard.rec .tag .chip{background:var(--c5-permits);color:var(--cream)}
     .pcard .num{font-family:var(--narrow);font-weight:700;font-size:80px;line-height:.85;letter-spacing:-.03em}
-    .pcard .num small{font-family:var(--mono);font-size:13px;letter-spacing:.04em;font-weight:500;opacity:.7;display:block;margin-top:6px;text-transform:uppercase}
+    .pcard .num small{font-family:var(--mono);font-size:13px;letter-spacing:.04em;font-weight:500;opacity:.7;display:block;margin-top:1em;text-transform:uppercase}
     .pcard ul{list-style:none;padding:0;margin:0;font-size:14.5px;line-height:1.55}
     .pcard ul li{padding:8px 0;border-bottom:1px solid rgba(246,241,231,.2);display:flex;align-items:flex-start;gap:10px}
     .pcard ul li:last-child{border-bottom:none}
     .pcard ul li::before{content:"→";color:var(--c1-size);flex-shrink:0;font-family:var(--mono);font-weight:700}
     .pcard.rec{background:var(--ink-2);outline:2.5px solid var(--c5-permits);outline-offset:-2.5px;position:relative}
+    .pcard-cta{margin-top:auto;display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:var(--cream);color:var(--ink);font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;transition:background .15s,color .15s}
+    .pcard-cta:hover{background:var(--yellow)}
+    .pcard.rec .pcard-cta{background:var(--c5-permits);color:var(--cream)}
+    .pcard.rec .pcard-cta:hover{background:var(--yellow);color:var(--ink)}
 
     /* FAQ */
     .faq{background:var(--c5-permits);color:var(--cream);padding:120px 0;border-bottom:2.5px solid var(--ink)}

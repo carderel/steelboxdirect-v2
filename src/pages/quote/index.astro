@@ -7,29 +7,29 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   description="Request a quote for a shipping container. We'll provide accurate pricing based on your size, condition, and delivery location."
   pageType="quote"
 >
-  <div class="guide-header">
+  <div class="guide-header quote_header">
     <div class="wrap">
-      <div class="sh">
+      <div class="sh quote_eyebrow">
         <span class="idx">Step 06</span>
         <span class="nm">Finalize</span>
         <span class="tg">Quote Request</span>
       </div>
-      <h1 class="big">Ready?<br><em>Let's talk.</em></h1>
-      <p class="guide-lede">
+      <h1 class="big quote_headline">Ready?<br><em>Let's talk.</em></h1>
+      <p class="guide-lede quote_lede">
         A quote is just information. Tell us what you're protecting — we'll send a real number and a delivery window. Usually same day.
       </p>
     </div>
   </div>
 
-  <section class="guide-content">
+  <section class="guide-content quote_content">
     <div class="wrap">
-      <div class="row">
-        <div class="main-col">
-          <form id="quote-form" class="quote-form">
-            <div class="form-section">
+      <div class="row quote_main_row">
+        <div class="main-col quote_main_col">
+          <form id="quote-form" class="quote-form quote_form">
+            <div class="form-section quote_form_section">
               <h3>The Hardware</h3>
-              <div class="form-grid">
-                <div class="form-group">
+              <div class="form-grid quote_form_grid">
+                <div class="form-group quote_field">
                   <label for="size_preference">Container size</label>
                   <select id="size_preference" name="size_preference" required>
                     <option value="">Select size...</option>
@@ -39,7 +39,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
                     <option value="not_sure">Not sure yet</option>
                   </select>
                 </div>
-                <div class="form-group">
+                <div class="form-group quote_field">
                   <label for="condition_preference">Condition</label>
                   <select id="condition_preference" name="condition_preference" required>
                     <option value="">Select condition...</option>
@@ -50,11 +50,11 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
                   </select>
                 </div>
               </div>
-              <div class="form-group">
+              <div class="form-group quote_field">
                 <label for="primary_use">Primary use</label>
                 <input type="text" id="primary_use" name="primary_use" placeholder="e.g., Farm equipment storage, workshop" required />
               </div>
-              <div class="form-group">
+              <div class="form-group quote_field">
                 <label for="timeline">Timeline</label>
                 <select id="timeline" name="timeline" required>
                   <option value="">Select timeline...</option>
@@ -66,14 +66,14 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
               </div>
             </div>
 
-            <div class="form-section">
+            <div class="form-section quote_form_section">
               <h3>The Logistics</h3>
-              <div class="form-grid">
-                <div class="form-group">
+              <div class="form-grid quote_form_grid">
+                <div class="form-group quote_field">
                   <label for="delivery_zip">Delivery ZIP</label>
                   <input type="text" id="delivery_zip" name="delivery_zip" placeholder="e.g., 45202" pattern="[0-9]{5}" maxlength="5" required />
                 </div>
-                <div class="form-group">
+                <div class="form-group quote_field">
                   <label for="site_access">Site access</label>
                   <select id="site_access" name="site_access" required>
                     <option value="">Select access type...</option>
@@ -85,35 +85,35 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
               </div>
             </div>
 
-            <div class="form-section">
+            <div class="form-section quote_form_section">
               <h3>The Contact</h3>
-              <div class="form-group">
+              <div class="form-group quote_field">
                 <label for="name">Name</label>
                 <input type="text" id="name" name="name" required />
               </div>
-              <div class="form-grid">
-                <div class="form-group">
+              <div class="form-grid quote_form_grid">
+                <div class="form-group quote_field">
                   <label for="email">Email</label>
                   <input type="email" id="email" name="email" required />
                 </div>
-                <div class="form-group">
+                <div class="form-group quote_field">
                   <label for="phone">Phone</label>
                   <input type="tel" id="phone" name="phone" required />
                 </div>
               </div>
-              <div class="form-group">
+              <div class="form-group quote_field">
                 <label for="buyer_notes">Notes (Optional)</label>
                 <textarea id="buyer_notes" name="buyer_notes" rows="3" placeholder="Driveway concerns, questions..."></textarea>
               </div>
             </div>
 
-            <div class="form-submit">
-              <button type="submit" class="btn">Request My Quote <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
+            <div class="form-submit quote_submit">
+              <button type="submit" class="btn quote_submit_btn">Request My Quote <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
               <p class="m" style="margin-top: 20px; opacity: .5; text-align: center;">One business day response · No obligation</p>
             </div>
           </form>
 
-          <div id="form-success" class="success-message" style="display: none;">
+          <div id="form-success" class="success-message quote_success" style="display: none;">
             <div class="m" style="color: var(--c4-cost); margin-bottom: 12px;">Success</div>
             <h2>Thanks! Your request is in.</h2>
             <p>We'll review your requirements and send a detailed quote to your email within 1 business day.</p>
@@ -121,16 +121,26 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
           </div>
         </div>
 
-        <aside class="sidebar-col">
-          <div class="authority-card">
+        <aside class="sidebar-col quote_sidebar">
+          <div class="authority-card quote_authority_card">
             <div class="m">Service Area</div>
             <p style="font-size: 15px; line-height: 1.45;">We deliver within 250 miles of Cincinnati, OH. Covering OH, IN, and KY.</p>
           </div>
-          
-          <div class="reassure-list">
+
+          <div class="reassure-list quote_reassure_list">
             <div class="item"><span>●</span> No obligation</div>
             <div class="item"><span>●</span> Real human replies</div>
             <div class="item"><span>●</span> All-in pricing</div>
+          </div>
+
+          <div class="note-card">
+            <div class="note-label">Pricing</div>
+            <p>Prices shown are recent market averages — container, delivery, and flat-ground placement included. Container pricing tracks global shipping rates and steel supply, which can shift from week to week. We update these figures regularly. Your confirmed quote locks the actual number.</p>
+          </div>
+
+          <div class="note-card">
+            <div class="note-label">Lead Time</div>
+            <p>Most deliveries land within 1–2 weeks of deposit. Depot inventory is stacked and sequenced — units aren't staged for quick pull — and drivers book out several weeks in advance. We'll give you an honest window before you commit and keep you updated at every step.</p>
           </div>
         </aside>
       </div>
@@ -289,6 +299,31 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       letter-spacing: .05em;
     }
     .reassure-list .item span { color: var(--c4-cost); margin-right: 8px; }
+
+    .note-card {
+      margin-top: 28px;
+      padding: 24px;
+      border: 1.5px solid var(--ink);
+      background: white;
+    }
+    .note-card .note-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      opacity: .55;
+      margin-bottom: 10px;
+    }
+    .note-card p {
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: .04em;
+      font-weight: 500;
+      line-height: 1.75;
+      text-transform: uppercase;
+      opacity: .7;
+      margin: 0;
+    }
 
     .success-message {
       background: white;

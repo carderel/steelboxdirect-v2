@@ -48,6 +48,10 @@ User Provided Data/
 Design Inspiration/
 Container - Freedom Conex/
 User Provided Files/
+user uploads/
+
+# Brainstorm workspace
+.superpowers/
 
 # Legacy deployment files
 netlify.toml

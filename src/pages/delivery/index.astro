@@ -8,53 +8,55 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   title="Shipping Container Delivery Requirements | Steel Box Direct"
   description="Learn how shipping container delivery works, site requirements, access needs, and how to prepare your property."
 >
-  <div class="guide-header" style="background: var(--c3-deliver); color: var(--cream);">
+  <div class="guide-header guide_header" style="background: var(--c3-deliver); color: var(--cream);">
     <div class="wrap">
-      <div class="sh" style="border-color: var(--cream);">
+      <div class="sh guide_eyebrow" style="border-color: var(--cream);">
         <span class="idx">§ 03</span>
         <span class="nm" style="color: var(--cream);">Decision: Delivery</span>
         <span class="tg" style="color: var(--cream);">Logistics Standards</span>
       </div>
-      <h1 class="big" style="color: var(--cream);">Will it even<br><em>Get there?</em></h1>
-      <p class="guide-lede" style="opacity: .9;">
+      <h1 class="big guide_headline" style="color: var(--cream);">Will it even<br><em>Get there?</em></h1>
+      <p class="guide-lede guide_lede" style="opacity: .9;">
         Narrow lanes, soft ground, low branches — we plan for it. Most rural properties can receive a container,
         but you need to know the clearance requirements before you buy.
       </p>
     </div>
   </div>
 
-  <section class="guide-content">
+  <section class="guide-content guide_content">
     <div class="wrap">
-      <div class="row">
-        <div class="main-col">
+      <div class="row guide_main_row">
+        <div class="main-col guide_main_col">
           <h2>How Containers Are Delivered</h2>
           <p>The delivery method depends on your property access. A 65-foot truck combination needs room to maneuver.</p>
 
-          <div class="method-card" style="border-left-color: var(--c3-deliver);">
+          <div class="method-card guide_comparison_item" style="border-left-color: var(--c3-deliver);">
             <h3>Tilt-Bed Truck</h3>
-            <div class="m" style="color: var(--c3-deliver); margin-bottom: 12px;">The Farm Standard</div>
+            <div class="m guide_comparison_item_meta" style="color: var(--c3-deliver); margin-bottom: 12px;">The Farm Standard</div>
             <p>The truck tilts its bed and slides the container off onto the ground. Requires 100+ feet of straight approach.</p>
-            <div class="who">→ Best for clear driveways</div>
+            <div class="who guide_comparison_item_tag">→ Best for clear driveways</div>
           </div>
 
-          <div class="method-card" style="border-left-color: var(--c2-cond);">
+          <div class="method-card guide_comparison_item" style="border-left-color: var(--c2-cond);">
             <h3>Crane-Set</h3>
-            <div class="m" style="color: var(--c2-cond); margin-bottom: 12px;">Tight Access Solution</div>
+            <div class="m guide_comparison_item_meta" style="color: var(--c2-cond); margin-bottom: 12px;">Tight Access Solution</div>
             <p>A separate crane lifts the container into place. Solves sharp turns, fencelines, or soft ground issues.</p>
-            <div class="who" style="background: var(--c2-cond); color: var(--cream);">→ Mike · rural access</div>
+            <div class="who guide_comparison_item_tag" style="background: var(--c2-cond); color: var(--cream);">→ Mike · rural access</div>
           </div>
 
-          <h3>The Quick Clearance Checklist</h3>
-          <ul class="check-list">
-            <li><strong>Width:</strong> 12 feet minimum clearance.</li>
-            <li><strong>Height:</strong> 14 feet overhead (branches/wires).</li>
-            <li><strong>Ground:</strong> Must support a 30,000 lb truck.</li>
-          </ul>
+          <div class="guide_section">
+            <h3>The Quick Clearance Checklist</h3>
+            <ul class="check-list guide_section_body">
+              <li><strong>Width:</strong> 12 feet minimum clearance.</li>
+              <li><strong>Height:</strong> 14 feet overhead (branches/wires).</li>
+              <li><strong>Ground:</strong> Must support a 30,000 lb truck.</li>
+            </ul>
+          </div>
         </div>
 
-        <aside class="sidebar-col">
-          <div class="authority-card">
-            <div class="m">Logistics Data</div>
+        <aside class="sidebar-col guide_sidebar_col">
+          <div class="authority-card guide_callout">
+            <div class="m guide_callout_label">Logistics Data</div>
             <ul>
               <li><strong>92%</strong> of rural properties can receive tilt-bed delivery.</li>
               <li><strong>60 feet</strong> is the average truck length.</li>
@@ -62,10 +64,10 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
             </ul>
           </div>
 
-          <div class="cta-card">
-            <h4>Not sure?</h4>
+          <div class="cta-card guide_cta">
+            <h4 class="guide_cta_headline">Not sure?</h4>
             <p>Send us a photo of your driveway with your quote request.</p>
-            <a href="/quote/" class="btn">Check My Access <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+            <a href="/quote/" class="btn guide_cta_btn">Check My Access <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
           </div>
         </aside>
       </div>

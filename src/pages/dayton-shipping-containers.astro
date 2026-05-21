@@ -9,24 +9,24 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 >
   <section class="local-hero">
     <div class="wrap">
-      <div class="sh">
+      <div class="sh local_hero_eyebrow">
         <span class="idx">Region</span>
         <span class="nm">Dayton · Miami Valley</span>
         <span class="tg">Local Delivery Expert</span>
       </div>
-      <h1 class="big">Shipping Containers<br>in <em>Dayton.</em></h1>
-      <p class="lede">From the tech hubs near Wright-Patterson to the manufacturing floors of the Miami Valley, we provide the steel-clad storage that keeps Dayton moving.</p>
+      <h1 class="big local_hero_headline">Shipping Containers<br>in <em>Dayton.</em></h1>
+      <p class="lede local_hero_lede">From the tech hubs near Wright-Patterson to the manufacturing floors of the Miami Valley, we provide the steel-clad storage that keeps Dayton moving.</p>
     </div>
   </section>
 
   <section class="local-details">
     <div class="wrap">
-      <div class="grid">
-        <div class="card">
-          <div class="m">Delivery Areas</div>
-          <h3>Montgomery, Greene, & Miami</h3>
-          <p>We're regulars on I-75 and I-675. Whether you're near the Air Force Base or have a farm out in Miami County, our local knowledge ensures a smooth delivery.</p>
-          <ul class="check-list">
+      <div class="grid local_details_grid">
+        <div class="card local_details_delivery_card">
+          <div class="m local_card_label">Delivery Areas</div>
+          <h3 class="local_card_headline">Montgomery, Greene, & Miami</h3>
+          <p class="local_card_body">We're regulars on I-75 and I-675. Whether you're near the Air Force Base or have a farm out in Miami County, our local knowledge ensures a smooth delivery.</p>
+          <ul class="check-list local_card_county_list">
             <li>Montgomery County</li>
             <li>Greene County</li>
             <li>Miami County</li>
@@ -34,13 +34,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             <li>Preble County</li>
           </ul>
         </div>
-        <div class="card">
-          <div class="m">Pricing</div>
-          <h3>Local Rates, No Fluff</h3>
-          <p>Dayton buyers benefit from our regional proximity. No long-haul surcharges — just honest, transparent pricing for the entire Miami Valley.</p>
-          <div class="price-box">
-            <span class="label">Average 20ft Delivery</span>
-            <span class="value">$275 - $475</span>
+        <div class="card local_details_pricing_card">
+          <div class="m local_card_label">Pricing</div>
+          <h3 class="local_card_headline">Local Rates, No Fluff</h3>
+          <p class="local_card_body">Dayton buyers benefit from our regional proximity. No long-haul surcharges — just honest, transparent pricing for the entire Miami Valley.</p>
+          <div class="price-box local_card_price_box">
+            <span class="label local_card_price_label">Average 20ft Delivery</span>
+            <span class="value local_card_price_value">$275 - $475</span>
           </div>
         </div>
       </div>
@@ -50,35 +50,35 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   <section class="local-content">
     <div class="wrap">
       <div class="row">
-        <div class="main-col">
+        <div class="main-col local_content_main">
           <h2>Why Dayton buyers choose Steel Box Direct</h2>
           <p>The "Birthplace of Aviation" knows the value of good engineering. Our containers are built to the highest ISO standards, providing the same durability Dayton's manufacturing sector expects.</p>
-          
-          <div class="feature">
-            <h4>Manufacturing Storage</h4>
-            <p>Dayton's industrial heritage means businesses often need quick, secure overflow storage. Our units are perfect for parts, tools, and inventory protection.</p>
+
+          <div class="feature local_feature">
+            <h4 class="local_feature_headline">Manufacturing Storage</h4>
+            <p class="local_feature_body">Dayton's industrial heritage means businesses often need quick, secure overflow storage. Our units are perfect for parts, tools, and inventory protection.</p>
           </div>
 
-          <div class="feature">
-            <h4>Wright-Patt Proximity</h4>
-            <p>We understand the specific needs of contractors and personnel near the AFB. Secure, weather-tight storage is non-negotiable, and we deliver exactly that.</p>
+          <div class="feature local_feature">
+            <h4 class="local_feature_headline">Wright-Patt Proximity</h4>
+            <p class="local_feature_body">We understand the specific needs of contractors and personnel near the AFB. Secure, weather-tight storage is non-negotiable, and we deliver exactly that.</p>
           </div>
 
-          <div class="feature">
-            <h4>Miami Valley Expertise</h4>
-            <p>From Beavercreek to Tipp City, we know the local zoning trends and can help you determine the best placement for your container.</p>
+          <div class="feature local_feature">
+            <h4 class="local_feature_headline">Miami Valley Expertise</h4>
+            <p class="local_feature_body">From Beavercreek to Tipp City, we know the local zoning trends and can help you determine the best placement for your container.</p>
           </div>
         </div>
-        <aside class="side-col">
-          <div class="m-card">
+        <aside class="side-col local_content_sidebar">
+          <div class="m-card local_stats_card">
             <div class="m">Local Stats</div>
-            <div class="stat">
-              <span class="v">85+</span>
-              <span class="l">Units placed in Miami Valley</span>
+            <div class="stat local_stat">
+              <span class="v local_stat_value">85+</span>
+              <span class="l local_stat_label">Units placed in Miami Valley</span>
             </div>
-            <div class="stat">
-              <span class="v">4.8/5</span>
-              <span class="l">Local review average</span>
+            <div class="stat local_stat">
+              <span class="v local_stat_value">4.8/5</span>
+              <span class="l local_stat_label">Local review average</span>
             </div>
           </div>
         </aside>
@@ -88,10 +88,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
   <section class="cta-section">
     <div class="wrap">
-      <div class="cta-box">
-        <h2>Ready for a Dayton quote?</h2>
-        <p>Most requests in the Miami Valley are answered within 4 business hours.</p>
-        <a href="/quote/" class="btn">Get My Local Quote <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+      <div class="cta-box local_cta_box">
+        <h2 class="local_cta_headline">Ready for a Dayton quote?</h2>
+        <p class="local_cta_body">Most requests in the Miami Valley are answered within 4 business hours.</p>
+        <a href="/quote/" class="btn local_cta_btn">Get My Local Quote <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
       </div>
     </div>
   </section>
