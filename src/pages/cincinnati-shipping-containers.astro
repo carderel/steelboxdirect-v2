@@ -34,14 +34,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             <li>Boone/Kenton/Campbell (KY)</li>
           </ul>
         </div>
-        <div class="card local_details_pricing_card">
-          <div class="m local_card_label">Pricing</div>
-          <h3 class="local_card_headline">Local Rates, No Fluff</h3>
-          <p class="local_card_body">Because we're based right here, you don't pay "long-haul" premiums. Our delivery fees are transparent and flat-rate within the 275 loop and surrounding counties.</p>
-          <div class="price-box local_card_price_box">
-            <span class="label local_card_price_label">Average 20ft Delivery</span>
-            <span class="value local_card_price_value">$250 - $450</span>
-          </div>
+        <div class="card local_details_card_2">
+          <iframe
+            class="local-map"
+            src="https://www.openstreetmap.org/export/embed.html?bbox=-84.712%2C38.903%2C-84.312%2C39.303&layer=mapnik&marker=39.1031%2C-84.5120"
+            title="Cincinnati, OH delivery area map"
+            loading="lazy"
+          ></iframe>
         </div>
       </div>
     </div>
@@ -109,9 +108,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     .check-list li { font-family: var(--mono); font-size: 11px; text-transform: uppercase; display: flex; align-items: center; gap: 8px; letter-spacing: .05em; }
     .check-list li::before { content: "✓"; color: var(--c4-cost); font-weight: 800; }
     
-    .price-box { margin-top: 32px; padding: 20px; background: var(--ink); color: var(--yellow); display: flex; flex-direction: column; gap: 4px; }
-    .price-box .label { font-family: var(--mono); font-size: 10px; text-transform: uppercase; opacity: .7; }
-    .price-box .value { font-family: var(--narrow); font-size: 28px; font-weight: 700; }
+    .local_details_card_2 { padding: 0; overflow: hidden; }
+    .local-map { width: 100%; height: 100%; min-height: 320px; display: block; border: none; }
 
     .local-content { padding: 96px 0; background: white; }
     .row { display: grid; grid-template-columns: 2fr 1fr; gap: 80px; }
