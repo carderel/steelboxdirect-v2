@@ -75,8 +75,8 @@ const {
           </div>
         </nav>
         <a class="cta-hd" href="/quote/">Get a Quote <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
-        <div class="agent-strip">Authorised Independent Agent · FreedomConex.com</div>
       </div>
+      <div class="agent-strip"><span>Authorised Independent Agent · FreedomConex.com</span></div>
     </header>
 
     <main class={pageType === 'home' ? 'home-main' : ''}>
@@ -254,7 +254,7 @@ const {
 
       /* ============ HEADER ============ */
       header.site{position:sticky;top:0;z-index:100;background:var(--yellow);border-bottom:2.5px solid var(--ink)}
-      .nav{display:flex;align-items:stretch;justify-content:space-between;min-height:60px;flex-wrap:wrap}
+      .nav{display:flex;align-items:stretch;justify-content:space-between;min-height:60px}
       .brand-group{display:flex;flex-direction:column;justify-content:center;gap:4px;padding:10px 0}
       .brand{display:flex;align-items:center;gap:10px;font-family:var(--narrow);font-weight:700;font-size:22px;letter-spacing:-.02em;text-transform:uppercase}
       .brand .bx{width:30px;height:30px;background:var(--ink);color:var(--yellow);display:grid;place-items:center;font-weight:900;font-size:15px;font-family:var(--display)}
@@ -306,7 +306,7 @@ const {
       .cta-hd{display:inline-flex;align-items:center;gap:8px;padding:0 22px;background:var(--ink);color:var(--yellow);font-family:var(--narrow);font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:.02em;border-left:2.5px solid var(--ink)}
       .cta-hd:hover{background:var(--cream);color:var(--ink)}
       .cta-hd svg{width:14px;height:14px;stroke:currentColor;stroke-width:2.6;fill:none}
-      .agent-strip{width:100%;font-family:var(--mono);font-size:9px;letter-spacing:.06em;text-transform:uppercase;opacity:.5;text-align:right;padding:5px 0 4px;border-top:1.5px solid var(--ink)}
+      .agent-strip{display:flex;justify-content:flex-end;padding:4px 32px;border-top:1.5px solid var(--ink);font-family:var(--mono);font-size:9px;letter-spacing:.06em;text-transform:uppercase;opacity:.5}
       .agent-credit{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--yellow);opacity:.75;margin-top:20px;line-height:1.65;border-top:1px solid rgba(246,241,231,.2);padding-top:16px}
 
       /* ============ BUTTONS ============ */
@@ -404,7 +404,7 @@ const {
         .brand { font-size: 19px; }
         .nav { height: auto; align-items: stretch; }
         .cta-hd { align-self: stretch; height: auto; padding: 0 16px; border-left: 2px solid var(--ink); background: var(--ink) !important; color: var(--yellow) !important; font-size: 12px !important; }
-        .agent-strip { display: none; }
+        .agent-strip{display:none}
         .brand-group { padding: 14px 0; gap: 8px; }
         
         .menu-toggle {
