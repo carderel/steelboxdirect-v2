@@ -198,11 +198,9 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     .loc-intro p{font-size:17px;line-height:1.75;opacity:.75;margin:0;max-width:760px}
 
     /* City grid */
-    .city-section{background:var(--ink);padding:0;border-bottom:2.5px solid var(--ink)}
-    .city-grid{display:grid;grid-template-columns:1fr 1fr;border-top:2.5px solid rgba(246,241,231,.15)}
-    .city-card{display:flex;flex-direction:column;overflow:hidden;border-right:2.5px solid rgba(246,241,231,.15);border-bottom:2.5px solid rgba(246,241,231,.15);text-decoration:none;transition:transform .2s}
-    .city-card:nth-child(2n){border-right:none}
-    .city-card:nth-last-child(-n+2){border-bottom:none}
+    .city-section{background:var(--ink);padding:2em 0;border-bottom:2.5px solid var(--ink)}
+    .city-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75em;border-top:none}
+    .city-card{display:flex;flex-direction:column;overflow:hidden;text-decoration:none;transition:transform .2s}
     .city-card:hover{transform:translateY(-3px)}
     .city-body{background:var(--cream);padding:28px 24px 22px;position:relative;flex:1;overflow:hidden}
     .city-state-bg{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-family:var(--narrow);font-weight:700;font-size:96px;letter-spacing:-.04em;color:rgba(11,15,26,.07);text-transform:uppercase;pointer-events:none;line-height:1}
@@ -253,7 +251,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     /* Out-of-area CTA — cta-section style */
     .outofarea{background:var(--yellow);color:var(--ink);padding:140px 0 120px;border-bottom:2.5px solid var(--ink);position:relative;overflow:hidden}
     .outofarea .inner{max-width:1200px;margin:0 auto;padding:0 32px;text-align:center;position:relative;z-index:1}
-    .outofarea .big{font-size:clamp(60px,11vw,180px);line-height:.84;margin-bottom:32px}
+    .outofarea .big{font-size:clamp(30px,5.5vw,90px);line-height:.84;margin-bottom:32px}
     .outofarea .big em{color:var(--c3-deliver)}
     .outofarea p{font-size:22px;line-height:1.4;max-width:640px;margin:0 auto 40px;font-weight:500}
     .outofarea .btn{padding:22px 32px;font-size:18px}
@@ -271,10 +269,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
     @media(max-width:720px){
       .city-grid{grid-template-columns:1fr}
-      .city-card{border-right:none!important;border-bottom:2.5px solid rgba(246,241,231,.15)!important}
-      .city-card:last-child{border-bottom:none!important}
-      .outofarea .big{font-size:clamp(44px,12vw,80px)}
-      .sh{grid-template-columns:auto 1fr;row-gap:6px}
+.sh{grid-template-columns:auto 1fr;row-gap:6px}
       .sh .tg{grid-column:1 / -1;text-align:left;opacity:.5}
       .big{font-size:clamp(36px,9vw,64px)}
     }
