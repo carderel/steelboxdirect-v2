@@ -74,7 +74,10 @@ const {
             </div>
           </div>
         </nav>
-        <a class="cta-hd" href="/quote/">Get a Quote <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+        <div class="hd-cta-group">
+          <a class="cta-hd" href="/quote/">Get a Quote <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+          <span class="agent-tag">Authorised Independent Agent · FreedomConex.com</span>
+        </div>
       </div>
     </header>
 
@@ -88,6 +91,7 @@ const {
           <div>
             <h3 class="fbrand">Steel Box<br><em>Direct.</em></h3>
             <p class="tag">Educational shipping-container buying for OH · IN · KY. Family-owned, based outside Cincinnati. No jargon. Just clarity.</p>
+            <p class="agent-credit">Authorised Independent Agent<br>FreedomConex.com</p>
           </div>
           <div>
             <h5>The Five</h5>
@@ -301,9 +305,12 @@ const {
       .nav-loc-drop a .dc{color:var(--yellow)}
       .nav-loc-drop a:hover .dc{color:var(--ink)}
 
-      .cta-hd{display:inline-flex;align-items:center;gap:8px;padding:0 22px;background:var(--ink);color:var(--yellow);font-family:var(--narrow);font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:.02em;border-left:2.5px solid var(--ink)}
+      .hd-cta-group{display:flex;flex-direction:column;align-items:stretch;border-left:2.5px solid var(--ink)}
+      .cta-hd{display:flex;align-items:center;justify-content:center;gap:8px;padding:0 22px;background:var(--ink);color:var(--yellow);font-family:var(--narrow);font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:.02em;flex:1}
       .cta-hd:hover{background:var(--cream);color:var(--ink)}
       .cta-hd svg{width:14px;height:14px;stroke:currentColor;stroke-width:2.6;fill:none}
+      .agent-tag{font-family:var(--mono);font-size:8.5px;letter-spacing:.06em;text-transform:uppercase;opacity:.5;text-align:center;padding:4px 14px;white-space:nowrap;border-top:1.5px solid var(--ink)}
+      .agent-credit{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--yellow);opacity:.75;margin-top:20px;line-height:1.65;border-top:1px solid rgba(246,241,231,.2);padding-top:16px}
 
       /* ============ BUTTONS ============ */
       .btn{display:inline-flex;align-items:center;gap:10px;padding:18px 26px;background:var(--ink);color:var(--yellow);font-family:var(--narrow);font-weight:700;font-size:16px;text-transform:uppercase;letter-spacing:.02em;border:2.5px solid var(--ink);transition:background .15s,color .15s; cursor: pointer;}
@@ -399,7 +406,9 @@ const {
         .brand .bx { display: none; } /* Hide square 'S' on mobile per request */
         .brand { font-size: 19px; }
         .nav { height: auto; align-items: stretch; }
-        .cta-hd { align-self: stretch; height: auto; padding: 0 16px; border-left: 2px solid var(--ink); background: var(--ink) !important; color: var(--yellow) !important; font-size: 12px !important; }
+        .hd-cta-group { align-self: stretch; border-left: 2px solid var(--ink); }
+        .cta-hd { height: auto; padding: 0 16px; background: var(--ink) !important; color: var(--yellow) !important; font-size: 12px !important; }
+        .agent-tag { display: none; }
         .brand-group { padding: 14px 0; gap: 8px; }
         
         .menu-toggle {
