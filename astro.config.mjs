@@ -6,7 +6,17 @@ import partytown from '@astrojs/partytown';
 
 export default defineConfig({
   output: 'hybrid',
-  adapter: cloudflare(),
+  adapter: cloudflare({
+    routes: {
+      extend: {
+        exclude: [
+          { pattern: '/sitemap-index.xml' },
+          { pattern: '/sitemap-0.xml' },
+          { pattern: '/~partytown/*' },
+        ],
+      },
+    },
+  }),
   site: 'https://steelboxdirect.com',
   integrations: [
     react(),
