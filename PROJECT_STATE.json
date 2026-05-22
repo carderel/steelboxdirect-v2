@@ -1,7 +1,9 @@
 {
   "project_name": "Steel Box Direct - Container Decision Engine",
   "phase": "optimization_expansion",
-  "status": "ready_for_seo_expansion",
+  "status": "active_development",
+  "last_session": "2026-05-21",
+  "last_commit": "30fd4a8",
   "completed": [
     "Project relocation to workspace root",
     "Git repository initialization and cleanup (steelboxdirect-v2)",
@@ -9,12 +11,25 @@
     "Seller Console MVP with secure login and pipeline management (2026-05-18)",
     "Performance optimization: image compression and script refactoring",
     "UI/UX Polishing: H1 resizing, FAQ layout, and Mobile Header",
-    "Google Tag Manager (GTM) Integration"
+    "Google Tag Manager (GTM) Integration",
+    "Google Search Console verification meta tag",
+    "Fix: form 500 error on live site (PUBLIC_SUPABASE_URL env var mismatch)",
+    "Homepage: 40ft container hero image with arrow doodle",
+    "Homepage: 250-mile radius chip, stat copy rewrite, pricing avg/vary, SEO CTA buttons",
+    "Homepage: BEM semantic class pass across all pages",
+    "New page: /locations/ hub with city grid, why section, FAQ, out-of-area CTA",
+    "Nav: Locations dropdown (hover, airport code style CIN/DAY/IND/LOU)",
+    "Nav: Footer Locations column",
+    "Nav: Agent strip 'Authorised Independent Agent · FreedomConex.com'",
+    "Nav: Ink header background with yellow nav wrap (mockup match)",
+    "Cincinnati page: pricing card replaced with OSM map embed"
   ],
   "todos": [
-    "Regional SEO Landing Pages (Cincinnati, Dayton, Indy, Louisville)",
+    "City page template: build Astro template for all 4 city pages",
+    "Apply map card to Dayton, Indianapolis, Louisville pages",
     "FAQ Schema & Snippet Optimization",
-    "Final Cloudflare DNS/Domain configuration"
+    "Final Cloudflare DNS/Domain configuration",
+    "Switch Cloudflare secrets from Plaintext to Secret type (RESEND_API_KEY, SUPABASE_SERVICE_ROLE_KEY)"
   ],
-  "notes": "System is FULLY FUNCTIONAL and deployment-ready. Git repo cleaned of non-site assets. Cloudflare config instructions provided. Port 3003 active for testing."
+  "notes": "System is FULLY FUNCTIONAL on Cloudflare Pages. steelboxdirect-v2 GitHub repo. Dev server runs on localhost:4322. City page template brainstorm was started but not completed — next session should pick this up."
 }
