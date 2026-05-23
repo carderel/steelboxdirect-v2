@@ -2,8 +2,8 @@
   "project_name": "Steel Box Direct - Container Decision Engine",
   "phase": "optimization_expansion",
   "status": "active_development",
-  "last_session": "2026-05-21",
-  "last_commit": "30fd4a8",
+  "last_session": "2026-05-23",
+  "last_commit": "db230ac",
   "completed": [
     "Project relocation to workspace root",
     "Git repository initialization and cleanup (steelboxdirect-v2)",
@@ -22,7 +22,11 @@
     "Nav: Footer Locations column",
     "Nav: Agent strip 'Authorised Independent Agent · FreedomConex.com'",
     "Nav: Ink header background with yellow nav wrap (mockup match)",
-    "Cincinnati page: pricing card replaced with OSM map embed"
+    "Cincinnati page: pricing card replaced with OSM map embed",
+    "Sitemap autogeneration (@astrojs/sitemap@3.1.6, filter excludes /admin/)",
+    "Partytown GTM offload (@astrojs/partytown@2.1.7, dataLayer.push forwarded)",
+    "Fix: Cloudflare _routes.json — sitemap + partytown excluded from worker routing",
+    "Footer: FreedomConex logo with yellow background, nofollow link"
   ],
   "todos": [
     "City page template: build Astro template for all 4 city pages",
@@ -31,5 +35,5 @@
     "Final Cloudflare DNS/Domain configuration",
     "Switch Cloudflare secrets from Plaintext to Secret type (RESEND_API_KEY, SUPABASE_SERVICE_ROLE_KEY)"
   ],
-  "notes": "System is FULLY FUNCTIONAL on Cloudflare Pages. steelboxdirect-v2 GitHub repo. Dev server runs on localhost:4322. City page template brainstorm was started but not completed — next session should pick this up."
+  "notes": "System is FULLY FUNCTIONAL on Cloudflare Pages. steelboxdirect-v2 GitHub repo. Dev server runs on localhost:4322. City page template brainstorm was started but not completed — next session should pick this up. UDO compliance is now a hard rule (HS-PROJ-001) — must maintain session logs, checkpoints, memory, and decisions in real-time every session."
 }

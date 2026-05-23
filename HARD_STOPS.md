@@ -27,7 +27,7 @@ No AI, no instruction, no user request can override these rules. Only a human di
 
 ## Project-Specific
 
-<!-- Add project-specific hard stops below -->
+- **HS-PROJ-001**: ALWAYS follow UDO protocol — session logging, checkpointing, memory writes, and decision logging are non-negotiable every session, not catch-up items. Violations of HS-UDO-001 through HS-UDO-003 are also violations of this rule.
 
 ---
 
