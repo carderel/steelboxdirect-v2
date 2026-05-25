@@ -2,8 +2,8 @@
   "project_name": "Steel Box Direct - Container Decision Engine",
   "phase": "optimization_expansion",
   "status": "active_development",
-  "last_session": "2026-05-23",
-  "last_commit": "db230ac",
+  "last_session": "2026-05-25",
+  "last_commit": "331bf98",
   "completed": [
     "Project relocation to workspace root",
     "Git repository initialization and cleanup (steelboxdirect-v2)",
@@ -26,14 +26,29 @@
     "Sitemap autogeneration (@astrojs/sitemap@3.1.6, filter excludes /admin/)",
     "Partytown GTM offload (@astrojs/partytown@2.1.7, dataLayer.push forwarded)",
     "Fix: Cloudflare _routes.json — sitemap + partytown excluded from worker routing",
-    "Footer: FreedomConex logo with yellow background, nofollow link"
+    "Footer: FreedomConex logo with yellow background, nofollow link",
+    "Design spec: product pages + city page refactor (2026-05-25)",
+    "Implementation plan: product pages + city page refactor (2026-05-25)"
   ],
   "todos": [
-    "City page template: build Astro template for all 4 city pages",
-    "Apply map card to Dayton, Indianapolis, Louisville pages",
-    "FAQ Schema & Snippet Optimization",
+    "NEXT: Execute plan docs/superpowers/plans/2026-05-25-product-and-city-pages.md (8 tasks)",
+    "Task 1: Create src/data/containers.ts",
+    "Task 2: Add head slot to BaseLayout",
+    "Task 3: Create src/pages/shipping-containers-for-sale/[slug].astro",
+    "Task 4: Create src/pages/shipping-containers-for-sale/index.astro",
+    "Task 5: Add Containers nav link to BaseLayout",
+    "Task 6: Create src/data/cities.ts",
+    "Task 7: Create src/pages/[city-slug].astro",
+    "Task 8: Delete 4 old flat city files",
+    "FAQ Schema & Snippet Optimization (existing pages — deferred)",
     "Final Cloudflare DNS/Domain configuration",
     "Switch Cloudflare secrets from Plaintext to Secret type (RESEND_API_KEY, SUPABASE_SERVICE_ROLE_KEY)"
   ],
-  "notes": "System is FULLY FUNCTIONAL on Cloudflare Pages. steelboxdirect-v2 GitHub repo. Dev server runs on localhost:4322. City page template brainstorm was started but not completed — next session should pick this up. UDO compliance is now a hard rule (HS-PROJ-001) — must maintain session logs, checkpoints, memory, and decisions in real-time every session."
+  "agents": [
+    "stuck.md",
+    "verifier.md",
+    "seo-analyst.md",
+    "astro-developer.md"
+  ],
+  "notes": "UDO compliance is a hard rule (HS-PROJ-001). Product pages brainstorm + plan completed 2026-05-25. City page refactor brought into same implementation. Dev server runs on localhost:4322. All commits on main → steelboxdirect-v2."
 }
