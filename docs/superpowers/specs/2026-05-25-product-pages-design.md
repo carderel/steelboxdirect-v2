@@ -199,7 +199,96 @@ No price numbers anywhere. Explanation: steel and freight costs shift weekly. Pu
 
 ## Out of Scope
 
-- City page refactor (noted as follow-up for when more cities are added)
 - High cube, refrigerated, or other container variants
 - Interactive size quiz or configurator
 - Inventory management or live stock display
+
+---
+
+## City Page Refactor (In Scope — Same Implementation)
+
+### Problem
+
+Four flat `.astro` files with 47 lines of duplicated CSS each. Adding a city = copy-pasting a file. Changing shared layout = editing 4 files. Three of four pages (Dayton, Indianapolis, Louisville) still show dollar price ranges on the second card, inconsistent with the no-numbers pricing policy.
+
+### Solution
+
+Same pattern as product pages: a single data file + dynamic template.
+
+**New files:**
+```
+src/data/cities.ts          ← all city data + OSM map coordinates
+src/pages/[city-slug].astro ← single template replacing 4 flat files
+```
+
+**Deleted after template confirmed working:**
+```
+src/pages/cincinnati-shipping-containers.astro
+src/pages/dayton-shipping-containers.astro
+src/pages/indianapolis-shipping-containers.astro
+src/pages/louisville-shipping-containers.astro
+```
+
+### URL Preservation
+
+URLs stay exactly the same — no redirects, no SEO impact. `getStaticPaths()` returns the original slugs from the data array.
+
+```
+/cincinnati-shipping-containers/
+/dayton-shipping-containers/
+/indianapolis-shipping-containers/
+/louisville-shipping-containers/
+```
+
+### Pricing Card → Map Card
+
+Cincinnati already has an OSM map as the second card. Dayton, Indianapolis, and Louisville still show dollar amounts. All three are replaced with OSM maps matching the Cincinnati pattern. No price numbers on any city page.
+
+### Data Structure (`cities.ts`)
+
+```typescript
+export interface City {
+  slug: string;
+  city: string;
+  region: string;
+  eyebrow: string;          // e.g. "Cincinnati · Tri-State"
+  lede: string;
+  delivery: {
+    headline: string;       // e.g. "Hamilton, Clermont, & Warren"
+    body: string;
+    counties: string[];     // exactly 5 per city
+  };
+  map: {
+    bbox: string;           // OSM bbox string
+    marker: string;         // "lat,lng"
+    title: string;
+  };
+  content: {
+    h2: string;
+    intro: string;
+    features: Array<{ title: string; body: string }>;  // exactly 3
+  };
+  stats: Array<{ value: string; label: string }>;      // exactly 2
+  cta: {
+    headline: string;       // e.g. "Ready for a Cincinnati quote?"
+    body: string;
+  };
+  seo: {
+    title: string;
+    description: string;
+  };
+}
+```
+
+### OSM Map Coordinates
+
+| City | Marker | BBox |
+|------|--------|------|
+| Cincinnati | 39.1031, -84.5120 | -84.712,38.903,-84.312,39.303 |
+| Dayton | 39.7589, -84.1916 | -84.392,39.559,-83.992,39.959 |
+| Indianapolis | 39.7684, -86.1581 | -86.358,39.568,-85.958,39.968 |
+| Louisville | 38.2527, -85.7585 | -85.959,38.053,-85.559,38.453 |
+
+### Adding a New City
+
+Add one object to the `cities` array in `cities.ts`. The template, CSS, and OSM map pattern are inherited automatically. No other files touched.
