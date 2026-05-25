@@ -1,6 +1,6 @@
 ---
 interface Props {
-  pageType: 'home' | 'guide' | 'tool' | 'quote' | 'legal';
+  pageType: 'home' | 'guide' | 'tool' | 'quote' | 'legal' | 'product';
   pageTitle: string;
   pageDescription: string;
   guideTopic?: 'size' | 'condition' | 'delivery' | 'cost' | 'permits';
@@ -341,7 +341,10 @@ const webpageSchema = {
 };
 
 // Build schema array based on page type
-let schemas: any[] = [organizationSchema, localBusinessSchema, breadcrumbSchema, webpageSchema];
+// 'product' pages inject their own BreadcrumbList/FAQPage via the head slot — skip generics
+let schemas: any[] = pageType === 'product'
+  ? [organizationSchema, localBusinessSchema, webpageSchema]
+  : [organizationSchema, localBusinessSchema, breadcrumbSchema, webpageSchema];
 
 if (pageType === 'home') {
   schemas.push(faqSchema);
