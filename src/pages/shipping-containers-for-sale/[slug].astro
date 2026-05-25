@@ -1,0 +1,208 @@
+---
+export const prerender = true;
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { containers } from '../../data/containers';
+import type { Container } from '../../data/containers';
+
+export function getStaticPaths() {
+  return containers.map((c) => ({ params: { slug: c.slug }, props: { container: c } }));
+}
+
+interface Props { container: Container }
+const { container: c } = Astro.props;
+const others = containers.filter((x) => x.slug !== c.slug);
+
+const breadcrumb = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://steelboxdirect.com/" },
+    { "@type": "ListItem", "position": 2, "name": "Shipping Containers for Sale", "item": "https://steelboxdirect.com/shipping-containers-for-sale/" },
+    { "@type": "ListItem", "position": 3, "name": c.name, "item": `https://steelboxdirect.com/shipping-containers-for-sale/${c.slug}/` },
+  ]
+};
+---
+
+<BaseLayout title={c.seo.title} description={c.seo.description} pageType="guide">
+  <script type="application/ld+json" slot="head" is:inline set:html={JSON.stringify(breadcrumb)} />
+
+  <!-- HERO -->
+  <section class="prod-hero">
+    <div class="wrap">
+      <div class="breadcrumb-nav">
+        <a href="/shipping-containers-for-sale/">Shipping Containers for Sale</a>
+        <span>›</span>
+        <span>{c.name}</span>
+      </div>
+      <h1 class="big prod-h1">{c.name}</h1>
+      <div class="key-specs">
+        {c.keySpecs.map((s) => <span class="spec-chip">{s}</span>)}
+      </div>
+      <p class="lede">{c.tagline}</p>
+      <a href="/quote/" class="btn prod-cta">Get a Quote <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+    </div>
+  </section>
+
+  <!-- SPECS TABLE -->
+  <section class="prod-specs">
+    <div class="wrap">
+      <h2 class="section-title">Specifications</h2>
+      <div class="specs-card">
+        <table class="specs-table">
+          <tbody>
+            <tr><th>External Dimensions</th><td>{c.specs.externalDims}</td></tr>
+            <tr><th>Internal Dimensions</th><td>{c.specs.internalDims}</td></tr>
+            <tr><th>Door Opening</th><td>{c.specs.doorOpening}</td></tr>
+            <tr><th>Payload Capacity</th><td>{c.specs.payload}</td></tr>
+            <tr><th>Tare Weight</th><td>{c.specs.tare}</td></tr>
+            <tr><th>Cubic Capacity</th><td>{c.specs.cubicCap}</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- SIZE COMPARE -->
+  <section class="prod-compare">
+    <div class="wrap">
+      <h2 class="section-title">How It Compares</h2>
+      <div class="compare-card">
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th></th>
+              {containers.map((x) => (
+                <th class={x.slug === c.slug ? 'current-col' : ''}>
+                  {x.slug === c.slug
+                    ? <span>{x.shortName}</span>
+                    : <a href={`/shipping-containers-for-sale/${x.slug}/`}>{x.shortName}</a>
+                  }
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>External</th>
+              {containers.map((x) => <td class={x.slug === c.slug ? 'current-col' : ''}>{x.specs.externalDims}</td>)}
+            </tr>
+            <tr>
+              <th>Internal</th>
+              {containers.map((x) => <td class={x.slug === c.slug ? 'current-col' : ''}>{x.specs.internalDims}</td>)}
+            </tr>
+            <tr>
+              <th>Capacity</th>
+              {containers.map((x) => <td class={x.slug === c.slug ? 'current-col' : ''}>{x.specs.cubicCap}</td>)}
+            </tr>
+            <tr>
+              <th>Best for</th>
+              {containers.map((x) => <td class={x.slug === c.slug ? 'current-col' : ''}>{x.compareNote}</td>)}
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- USE CASES -->
+  <section class="prod-uses">
+    <div class="wrap">
+      <h2 class="section-title">Common Uses</h2>
+      <div class="uses-grid">
+        {c.useCases.map((u) => (
+          <div class="feature">
+            <h4>{u.title}</h4>
+            <p>{u.body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="prod-pricing">
+    <div class="wrap">
+      <div class="pricing-card">
+        <div class="m">Pricing</div>
+        <p>We don't post fixed prices — steel and freight costs change weekly, and a real number matters more than a stale one on a webpage.</p>
+        <a href="/quote/" class="btn">Get a Current Quote <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+        <p class="response-note">Most requests answered within 4 business hours.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="wrap">
+      <div class="cta-box">
+        <h2>Ready for a {c.shortName} quote?</h2>
+        <p>Tell us your zip code and we'll get you a real number — fast.</p>
+        <a href="/quote/" class="btn">Get My Quote <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style>
+  /* HERO */
+  .prod-hero { padding: 100px 0 72px; background: var(--yellow); border-bottom: 2.5px solid var(--ink); }
+  .breadcrumb-nav { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; opacity: .6; margin-bottom: 24px; display: flex; align-items: center; gap: 8px; }
+  .breadcrumb-nav a { color: inherit; text-decoration: none; }
+  .breadcrumb-nav a:hover { opacity: 1; }
+  .prod-h1 { margin-bottom: 24px; }
+  .key-specs { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 24px; }
+  .spec-chip { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; background: var(--ink); color: var(--yellow); padding: 6px 14px; }
+  .lede { font-size: 22px; line-height: 1.4; max-width: 680px; font-weight: 500; margin-bottom: 32px; }
+  .prod-cta { margin-top: 8px; }
+
+  /* SPECS TABLE */
+  .prod-specs { padding: 96px 0; background: var(--cream); border-bottom: 1.5px solid rgba(11,15,26,.1); }
+  .section-title { font-family: var(--narrow); font-size: 36px; text-transform: uppercase; margin-bottom: 32px; }
+  .specs-card { background: white; border: 2.5px solid var(--ink); box-shadow: 8px 8px 0 var(--ink); overflow: hidden; }
+  .specs-table { width: 100%; border-collapse: collapse; }
+  .specs-table tr { border-bottom: 1.5px solid rgba(11,15,26,.1); }
+  .specs-table tr:last-child { border-bottom: none; }
+  .specs-table th { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; opacity: .55; text-align: left; padding: 18px 24px; width: 40%; font-weight: 500; }
+  .specs-table td { font-family: var(--narrow); font-size: 20px; font-weight: 600; padding: 18px 24px; }
+
+  /* COMPARE */
+  .prod-compare { padding: 96px 0; background: white; border-bottom: 1.5px solid rgba(11,15,26,.1); }
+  .compare-card { background: var(--cream); border: 2.5px solid var(--ink); overflow-x: auto; }
+  .compare-table { width: 100%; border-collapse: collapse; min-width: 520px; }
+  .compare-table th, .compare-table td { padding: 16px 20px; text-align: left; border-bottom: 1.5px solid rgba(11,15,26,.1); font-size: 14px; }
+  .compare-table thead th { font-family: var(--narrow); font-size: 18px; font-weight: 700; text-transform: uppercase; background: var(--cream); }
+  .compare-table tbody th { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; opacity: .55; font-weight: 500; background: var(--cream); }
+  .compare-table tr:last-child td, .compare-table tr:last-child th { border-bottom: none; }
+  .current-col { background: var(--ink); color: var(--yellow); }
+  .current-col a { color: var(--yellow); }
+  .compare-table a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+
+  /* USE CASES */
+  .prod-uses { padding: 96px 0; background: var(--cream); border-bottom: 1.5px solid rgba(11,15,26,.1); }
+  .uses-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+  .feature { border-left: 4px solid var(--yellow); padding-left: 24px; }
+  .feature h4 { font-family: var(--narrow); font-size: 22px; text-transform: uppercase; margin-bottom: 10px; }
+  .feature p { opacity: .8; line-height: 1.5; font-size: 15px; }
+
+  /* PRICING */
+  .prod-pricing { padding: 80px 0; background: white; }
+  .pricing-card { background: var(--ink); color: var(--cream); padding: 48px; border: 2.5px solid var(--ink); max-width: 600px; }
+  .pricing-card .m { color: var(--yellow); font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .1em; margin-bottom: 16px; }
+  .pricing-card p { font-size: 17px; line-height: 1.6; opacity: .8; margin-bottom: 28px; }
+  .response-note { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; opacity: .45; margin-top: 16px; margin-bottom: 0; }
+
+  /* CTA */
+  .cta-section { padding: 80px 0 120px; background: var(--cream); }
+  .cta-box { background: var(--ink); color: var(--cream); padding: 64px; text-align: center; border: 2.5px solid var(--ink); box-shadow: 12px 12px 0 var(--yellow); }
+  .cta-box h2 { font-family: var(--narrow); font-size: 48px; text-transform: uppercase; margin-bottom: 16px; }
+  .cta-box p { font-size: 18px; opacity: .8; margin-bottom: 40px; }
+
+  @media (max-width: 768px) {
+    .uses-grid { grid-template-columns: 1fr; }
+    .cta-box { padding: 40px 24px; }
+    .cta-box h2 { font-size: 32px; }
+    .pricing-card { padding: 32px 24px; }
+  }
+</style>
