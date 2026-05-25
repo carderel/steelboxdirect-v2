@@ -1,0 +1,140 @@
+---
+export const prerender = true;
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { cities } from '../data/cities';
+import type { City } from '../data/cities';
+
+export function getStaticPaths() {
+  return cities.map((c) => ({ params: { citySlug: c.slug }, props: { city: c } }));
+}
+
+interface Props { city: City }
+const { city: c } = Astro.props;
+---
+
+<BaseLayout title={c.seo.title} description={c.seo.description} pageType="guide">
+
+  <section class="local-hero">
+    <div class="wrap">
+      <div class="sh local_hero_eyebrow">
+        <span class="idx">Region</span>
+        <span class="nm">{c.eyebrow}</span>
+        <span class="tg">Local Delivery Expert</span>
+      </div>
+      <h1 class="big local_hero_headline">Shipping Containers<br>in <em>{c.city}.</em></h1>
+      <p class="lede local_hero_lede">{c.lede}</p>
+    </div>
+  </section>
+
+  <section class="local-details">
+    <div class="wrap">
+      <div class="grid local_details_grid">
+
+        <div class="card local_details_delivery_card">
+          <div class="m local_card_label">Delivery Areas</div>
+          <h3 class="local_card_headline">{c.delivery.headline}</h3>
+          <p class="local_card_body">{c.delivery.body}</p>
+          <ul class="check-list local_card_county_list">
+            {c.delivery.counties.map((county) => <li>{county}</li>)}
+          </ul>
+        </div>
+
+        <div class="card local_details_card_2">
+          <iframe
+            class="local-map"
+            src={`https://www.openstreetmap.org/export/embed.html?bbox=${c.map.bbox}&layer=mapnik&marker=${c.map.marker}`}
+            title={c.map.title}
+            loading="lazy"
+          ></iframe>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="local-content">
+    <div class="wrap">
+      <div class="row">
+        <div class="main-col local_content_main">
+          <h2>{c.content.h2}</h2>
+          <p>{c.content.intro}</p>
+          {c.content.features.map((f) => (
+            <div class="feature local_feature">
+              <h4 class="local_feature_headline">{f.title}</h4>
+              <p class="local_feature_body">{f.body}</p>
+            </div>
+          ))}
+        </div>
+        <aside class="side-col local_content_sidebar">
+          <div class="m-card local_stats_card">
+            <div class="m">Local Stats</div>
+            {c.stats.map((s) => (
+              <div class="stat local_stat">
+                <span class="v local_stat_value">{s.value}</span>
+                <span class="l local_stat_label">{s.label}</span>
+              </div>
+            ))}
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <div class="wrap">
+      <div class="cta-box local_cta_box">
+        <h2 class="local_cta_headline">{c.cta.headline}</h2>
+        <p class="local_cta_body">{c.cta.body}</p>
+        <a href="/quote/" class="btn local_cta_btn">
+          Get My Local Quote
+          <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style>
+  .local-hero { padding: 120px 0 80px; background: var(--yellow); border-bottom: 2.5px solid var(--ink); }
+  .lede { font-size: 24px; line-height: 1.4; max-width: 800px; margin-top: 32px; font-weight: 500; }
+
+  .local-details { padding: 96px 0; background: var(--cream); border-bottom: 1.5px solid rgba(11,15,26,.1); }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+  .card { background: white; border: 2.5px solid var(--ink); padding: 40px; box-shadow: 8px 8px 0 var(--ink); }
+  .card h3 { font-family: var(--narrow); font-size: 32px; text-transform: uppercase; margin: 16px 0; }
+
+  .check-list { list-style: none; padding: 0; margin: 24px 0 0; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .check-list li { font-family: var(--mono); font-size: 11px; text-transform: uppercase; display: flex; align-items: center; gap: 8px; letter-spacing: .05em; }
+  .check-list li::before { content: "✓"; color: var(--c4-cost); font-weight: 800; }
+
+  .local_details_card_2 { padding: 0; overflow: hidden; }
+  .local-map { width: 100%; height: 100%; min-height: 320px; display: block; border: none; }
+
+  .local-content { padding: 96px 0; background: white; }
+  .row { display: grid; grid-template-columns: 2fr 1fr; gap: 80px; }
+  .main-col h2 { font-family: var(--narrow); font-size: 40px; text-transform: uppercase; margin-bottom: 24px; }
+  .feature { margin-top: 40px; border-left: 4px solid var(--yellow); padding-left: 24px; }
+  .feature h4 { font-family: var(--narrow); font-size: 22px; text-transform: uppercase; margin-bottom: 8px; }
+  .feature p { opacity: .8; line-height: 1.5; }
+
+  .m-card { background: var(--ink); color: white; padding: 32px; border: 2.5px solid var(--ink); }
+  .m-card .m { color: var(--yellow); margin-bottom: 24px; }
+  .stat { margin-bottom: 24px; }
+  .stat:last-child { margin-bottom: 0; }
+  .stat .v { display: block; font-family: var(--narrow); font-size: 44px; font-weight: 700; color: var(--yellow); line-height: 1; }
+  .stat .l { font-family: var(--mono); font-size: 10px; text-transform: uppercase; opacity: .6; letter-spacing: .1em; margin-top: 4px; display: block; }
+
+  .cta-section { padding: 80px 0 120px; background: var(--cream); }
+  .cta-box { background: var(--ink); color: var(--cream); padding: 64px; text-align: center; border: 2.5px solid var(--ink); box-shadow: 12px 12px 0 var(--yellow); }
+  .cta-box h2 { font-family: var(--narrow); font-size: 48px; text-transform: uppercase; margin-bottom: 16px; }
+  .cta-box p { font-size: 18px; opacity: .8; margin-bottom: 40px; }
+
+  @media (max-width: 960px) { .row { grid-template-columns: 1fr; gap: 48px; } }
+  @media (max-width: 768px) {
+    .grid { grid-template-columns: 1fr; }
+    .cta-box { padding: 40px 24px; }
+    .cta-box h2 { font-size: 32px; }
+  }
+</style>
