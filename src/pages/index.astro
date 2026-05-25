@@ -9,6 +9,9 @@ import containerHero from '../assets/photos/40ft-container-hero-reduced2.png';
   title="Steel Box Direct — Protect what you've built"
   pageType="home"
 >
+  <link slot="head" rel="preconnect" href="https://fonts.googleapis.com" />
+  <link slot="head" rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link slot="head" href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet" />
   <!-- ============ HERO ============ -->
   <section class="hero">
     <div class="hero-right hero_image_panel">
@@ -21,10 +24,7 @@ import containerHero from '../assets/photos/40ft-container-hero-reduced2.png';
     <div class="wrap hero_wrap">
       <div class="top hero_top">
         <div class="chip hero_chip"><span class="pulse"></span> Ohio · Indiana · Kentucky — 250-mile radius of Cincinnati</div>
-        <span class="m" style="opacity:.6">Est. 2009 · Family owned</span>
       </div>
-      <div class="mil-badge hero_mil_badge">★ Military &amp; Veteran discount available</div>
-
       <h1 class="billboard">
         <span class="l1">Protect what</span>
         <span class="l2 swap">you've built.</span>
@@ -44,14 +44,24 @@ import containerHero from '../assets/photos/40ft-container-hero-reduced2.png';
   <!-- Ticker under hero -->
   <div class="ticker" aria-hidden="true">
     <div class="track ticker_track">
-      <span>40-ft cargo-worthy from <em>$3,200</em></span><span>●</span>
-      <span>20-ft one-trip <em>next week</em></span><span>●</span>
-      <span>Delivery included within <em>100 miles</em></span><span>●</span>
-      <span>No farm-access upcharge</span><span>●</span>
+      <span>Delivery included within <em>250 miles</em></span><span>●</span>
+      <span>Great for <em>farm &amp; ranch storage</em></span><span>●</span>
+      <span>Perfect for <em>job site security</em></span><span>●</span>
       <span>Most farm storage is <em>zoned exempt</em></span><span>●</span>
+      <span>Ideal for <em>backyard workshops</em></span><span>●</span>
       <span>400+ containers placed across OH · IN · KY</span><span>●</span>
-      <span>40-ft cargo-worthy from <em>$3,200</em></span><span>●</span>
-      <span>20-ft one-trip <em>next week</em></span><span>●</span>
+      <span>Built for <em>commercial inventory</em></span><span>●</span>
+      <span>No farm-access upcharge</span><span>●</span>
+      <span>Convert into an <em>office or studio</em></span><span>●</span>
+      <span>Delivery included within <em>250 miles</em></span><span>●</span>
+      <span>Great for <em>farm &amp; ranch storage</em></span><span>●</span>
+      <span>Perfect for <em>job site security</em></span><span>●</span>
+      <span>Most farm storage is <em>zoned exempt</em></span><span>●</span>
+      <span>Ideal for <em>backyard workshops</em></span><span>●</span>
+      <span>400+ containers placed across OH · IN · KY</span><span>●</span>
+      <span>Built for <em>commercial inventory</em></span><span>●</span>
+      <span>No farm-access upcharge</span><span>●</span>
+      <span>Convert into an <em>office or studio</em></span><span>●</span>
     </div>
   </div>
 
@@ -67,7 +77,11 @@ import containerHero from '../assets/photos/40ft-container-hero-reduced2.png';
       <div class="row problem_row">
         <div class="problem_lede_col">
           <p class="lede problem_lede">A container is a <mark>25-year investment.</mark> The difference between the right one and the wrong one is years of protection — or a rusted-out headache. Before you sign anything, you deserve to understand what you're buying.</p>
-          <p style="font-size:15px;line-height:1.55;opacity:.75;max-width:520px">We're a small shop, not a call-center. You'll talk to the same person from first question to day-of-delivery. No jargon. Just clarity.</p>
+          <div class="warranty-stamp problem_warranty">
+            <span class="w-small">Lifetime</span>
+            <span class="w-outline">Warranty.</span>
+            <span class="warranty-sub">on every unit we place.</span>
+          </div>
         </div>
         <div class="problem_stats">
           <div class="stat problem_stat">
@@ -360,7 +374,6 @@ import containerHero from '../assets/photos/40ft-container-hero-reduced2.png';
     .hero .top{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:28px;gap:24px;flex-wrap:wrap}
     .hero .chip{display:inline-flex;align-items:center;gap:10px;padding:6px 12px;background:var(--ink);color:var(--yellow);font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
     .hero .chip .pulse{width:8px;height:8px;background:var(--c4-cost);border-radius:50%;display:inline-block;box-shadow:0 0 0 0 var(--c4-cost);animation:p 1.8s infinite}
-    .hero .mil-badge{font-family:var(--mono);font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink);opacity:.65;margin-top:-18px;margin-bottom:36px}
     @keyframes p{0%{box-shadow:0 0 0 0 rgba(11,143,78,.6)}70%{box-shadow:0 0 0 8px rgba(11,143,78,0)}100%{box-shadow:0 0 0 0 rgba(11,143,78,0)}}
 
     .billboard{font-family:var(--narrow);font-weight:700;font-size:var(--t-billboard);line-height:.84;letter-spacing:-.03em;text-transform:uppercase;margin:3% 0 0;position:relative;z-index:1}
@@ -393,10 +406,15 @@ import containerHero from '../assets/photos/40ft-container-hero-reduced2.png';
     .big em{font-style:italic;color:var(--c5-permits);font-weight:700}
 
     /* Problem */
-    .problem{background:var(--cream);padding:120px 0 96px;border-bottom:2.5px solid var(--ink);position:relative;overflow:hidden}
+    .problem{background:var(--cream);padding:120px 0 2em;border-bottom:2.5px solid var(--ink);position:relative;overflow:hidden}
     .problem .row{display:grid;grid-template-columns:1.1fr 1fr;gap:72px;align-items:start;margin-top:56px}
+    .problem .problem_lede_col{display:flex;flex-direction:column}
     .problem .lede{font-size:22px;line-height:1.45;margin:0 0 32px;max-width:560px;font-weight:500}
     .problem .lede mark{background:var(--yellow);color:var(--ink);padding:1px 6px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+    .warranty-stamp{margin-top:auto;margin-left:auto;margin-right:auto;display:flex;flex-direction:column;gap:0;transform:rotate(-15deg);transform-origin:left bottom;padding-top:2em}
+    .w-small{font-family:'Permanent Marker',cursive;font-size:clamp(60px,8vw,92px);color:var(--ink);line-height:1;margin-bottom:-10px}
+    .w-outline{font-family:'Permanent Marker',cursive;font-size:clamp(52px,7vw,80px);color:var(--ink);line-height:1;margin-left:0.7em}
+    .warranty-sub{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;opacity:.5;margin-top:10px;transform:rotate(15deg);transform-origin:left center}
     .stat{display:grid;grid-template-columns:auto 1fr;gap:22px;padding:22px 0;border-top:1.5px solid var(--ink);align-items:baseline}
     .stat:last-child{border-bottom:1.5px solid var(--ink)}
     .stat .num{font-family:var(--narrow);font-weight:700;font-size:64px;line-height:.85;letter-spacing:-.02em}
