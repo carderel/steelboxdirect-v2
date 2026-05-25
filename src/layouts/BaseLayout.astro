@@ -1,18 +1,27 @@
 ---
 import Schema from '../components/Schema.astro';
 
+interface CityOverride {
+  name: string;
+  addressRegion: string;
+  latitude: string;
+  longitude: string;
+}
+
 interface Props {
   title: string;
   description?: string;
-  pageType?: 'home' | 'guide' | 'tool' | 'quote' | 'legal';
+  pageType?: 'home' | 'guide' | 'tool' | 'quote' | 'legal' | 'product';
   guideTopic?: 'size' | 'condition' | 'delivery' | 'cost' | 'permits';
+  cityOverride?: CityOverride;
 }
 
 const {
   title,
   description = 'Make informed decisions about shipping containers. Size guides, condition comparisons, delivery requirements, and expert guidance.',
   pageType = 'home',
-  guideTopic
+  guideTopic,
+  cityOverride
 } = Astro.props;
 ---
 
@@ -39,7 +48,7 @@ const {
     <link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@500;600;700&family=Archivo:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
     <!-- Schema Markup -->
-    <Schema pageType={pageType} pageTitle={title} pageDescription={description} guideTopic={guideTopic} />
+    <Schema pageType={pageType} pageTitle={title} pageDescription={description} guideTopic={guideTopic} cityOverride={cityOverride} />
     <slot name="head" />
 
     <!-- Attribution tracking initialization -->

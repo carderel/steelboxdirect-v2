@@ -9,6 +9,7 @@ export interface CityMap {
 export interface City {
   slug: string;
   city: string;
+  state: string;
   region: string;
   eyebrow: string;
   lede: string;
@@ -38,6 +39,7 @@ export const cities: City[] = [
   {
     slug: 'cincinnati-shipping-containers',
     city: 'Cincinnati',
+    state: 'OH',
     region: 'Tri-State',
     eyebrow: 'Cincinnati · Tri-State',
     lede: 'From the suburbs of Mason to the farms of Brown County, we deliver steel-clad protection to the Queen City. No middleman, no call centers — just local expertise.',
@@ -76,6 +78,7 @@ export const cities: City[] = [
   {
     slug: 'dayton-shipping-containers',
     city: 'Dayton',
+    state: 'OH',
     region: 'Miami Valley',
     eyebrow: 'Dayton · Miami Valley',
     lede: 'From the tech hubs near Wright-Patterson to the manufacturing floors of the Miami Valley, we provide the steel-clad storage that keeps Dayton moving.',
@@ -114,6 +117,7 @@ export const cities: City[] = [
   {
     slug: 'indianapolis-shipping-containers',
     city: 'Indianapolis',
+    state: 'IN',
     region: 'Crossroads',
     eyebrow: 'Indianapolis · Crossroads',
     lede: 'From the tech corridors of Fishers to the industrial hubs of Marion County, we deliver steel-clad protection to the Crossroads of America.',
@@ -152,6 +156,7 @@ export const cities: City[] = [
   {
     slug: 'louisville-shipping-containers',
     city: 'Louisville',
+    state: 'KY',
     region: 'Derby City',
     eyebrow: 'Louisville · Derby City',
     lede: 'From the historic riverfront to the sprawling horse farms of Oldham County, we deliver steel-clad protection to the gateway of the South.',

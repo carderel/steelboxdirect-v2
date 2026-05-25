@@ -13,7 +13,17 @@ interface Props { city: City }
 const { city: c } = Astro.props;
 ---
 
-<BaseLayout title={c.seo.title} description={c.seo.description} pageType="guide">
+<BaseLayout
+  title={c.seo.title}
+  description={c.seo.description}
+  pageType="guide"
+  cityOverride={{
+    name: c.city,
+    addressRegion: c.state,
+    latitude: c.map.marker.split(',')[0],
+    longitude: c.map.marker.split(',')[1],
+  }}
+>
 
   <section class="local-hero">
     <div class="wrap">

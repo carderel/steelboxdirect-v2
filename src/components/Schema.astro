@@ -1,12 +1,20 @@
 ---
+interface CityOverride {
+  name: string;
+  addressRegion: string;
+  latitude: string;
+  longitude: string;
+}
+
 interface Props {
   pageType: 'home' | 'guide' | 'tool' | 'quote' | 'legal' | 'product';
   pageTitle: string;
   pageDescription: string;
   guideTopic?: 'size' | 'condition' | 'delivery' | 'cost' | 'permits';
+  cityOverride?: CityOverride;
 }
 
-const { pageType, pageTitle, pageDescription, guideTopic } = Astro.props;
+const { pageType, pageTitle, pageDescription, guideTopic, cityOverride } = Astro.props;
 
 // Organization Schema
 const organizationSchema = {
@@ -34,7 +42,12 @@ const organizationSchema = {
   'sameAs': ['https://steelboxdirect.com']
 };
 
-// LocalBusiness Schema (250-mile radius from Cincinnati)
+// LocalBusiness Schema (250-mile radius from Cincinnati, or city-specific)
+const lbCity = cityOverride?.name ?? 'Cincinnati';
+const lbRegion = cityOverride?.addressRegion ?? 'OH';
+const lbLat = cityOverride?.latitude ?? '39.1582';
+const lbLng = cityOverride?.longitude ?? '-84.4704';
+
 const localBusinessSchema = {
   '@context': 'https://schema.org',
   '@type': 'LocalBusiness',
@@ -43,18 +56,14 @@ const localBusinessSchema = {
   'description': 'Shipping container buyer\'s guide and sales service',
   'address': {
     '@type': 'PostalAddress',
-    'addressLocality': 'Cincinnati',
-    'addressRegion': 'OH',
+    'addressLocality': lbCity,
+    'addressRegion': lbRegion,
     'addressCountry': 'US'
   },
   'geo': {
-    '@type': 'Circle',
-    'geoMidpoint': {
-      '@type': 'GeoCoordinates',
-      'latitude': '39.1582',
-      'longitude': '-84.4704'
-    },
-    'geoRadius': '402.336' // 250 miles in km
+    '@type': 'GeoCoordinates',
+    'latitude': lbLat,
+    'longitude': lbLng
   },
   'serviceArea': {
     '@type': 'Place',
@@ -346,8 +355,24 @@ let schemas: any[] = pageType === 'product'
   ? [organizationSchema, localBusinessSchema, webpageSchema]
   : [organizationSchema, localBusinessSchema, breadcrumbSchema, webpageSchema];
 
+// WebSite Schema (Google Sitelinks — homepage only)
+const webSiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  'name': 'Steel Box Direct',
+  'url': 'https://steelboxdirect.com',
+  'potentialAction': {
+    '@type': 'SearchAction',
+    'target': {
+      '@type': 'EntryPoint',
+      'urlTemplate': 'https://steelboxdirect.com/quote/'
+    },
+    'query-input': 'required name=search_term_string'
+  }
+};
+
 if (pageType === 'home') {
-  schemas.push(faqSchema);
+  schemas.push(webSiteSchema, faqSchema);
 } else if (pageType === 'guide') {
   schemas.push(articleSchema, faqSchema);
   if (guideTopic === 'size') schemas.push(sizeGuideSchema);

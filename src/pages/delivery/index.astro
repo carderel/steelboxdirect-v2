@@ -171,5 +171,22 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       .guide-header { padding: 48px 0; }
       .big { font-size: clamp(48px, 10vw, 80px); }
     }
+    .guide-next { padding: 48px 0; background: var(--ink); border-top: 2px solid rgba(255,255,255,.08); }
+    .guide-next-label { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: .1em; color: var(--yellow); margin-bottom: 16px; }
+    .guide-next-links { display: flex; flex-wrap: wrap; gap: 20px; }
+    .guide-next-links a { font-family: var(--narrow); font-size: 17px; font-weight: 600; color: var(--cream); text-decoration: none; border-bottom: 2px solid rgba(255,255,255,.2); padding-bottom: 2px; }
+    .guide-next-links a:hover { color: var(--yellow); border-color: var(--yellow); }
   </style>
+
+  <section class="guide-next">
+    <div class="wrap">
+      <p class="guide-next-label">Continue researching</p>
+      <div class="guide-next-links">
+        <a href="/cost/">What does a container cost?</a>
+        <a href="/permits/">Do I need a permit?</a>
+        <a href="/size/">What size do I need?</a>
+        <a href="/shipping-containers-for-sale/">Browse container specs</a>
+      </div>
+    </div>
+  </section>
 </BaseLayout>
