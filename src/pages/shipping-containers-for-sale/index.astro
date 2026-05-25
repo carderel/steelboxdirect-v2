@@ -1,0 +1,288 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { containers } from '../../data/containers';
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What size shipping container do I need?",
+      "acceptedAnswer": { "@type": "Answer", "text": "A 20ft container fits most residential lots and single-car driveways, storing roughly the equivalent of a full garage. A 40ft container doubles that capacity and is the standard for farm, commercial, and conversion projects. If you need near-new condition for a conversion or sensitive storage, choose a 40ft one-trip." }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the difference between cargo-worthy and one-trip?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Cargo-worthy containers have been used for multiple shipping voyages but are structurally sound and wind/water tight. One-trip containers made a single ocean crossing — they are essentially new and show minimal wear. One-trip units cost more and are best for conversions or applications requiring pristine interiors." }
+    },
+    {
+      "@type": "Question",
+      "name": "Do you deliver to my area?",
+      "acceptedAnswer": { "@type": "Answer", "text": "We deliver within 250 miles of Cincinnati, covering Ohio, Indiana, Kentucky, and surrounding areas. This includes the Cincinnati, Dayton, Indianapolis, and Louisville metros and their surrounding counties." }
+    },
+    {
+      "@type": "Question",
+      "name": "How long does delivery take?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Most quote requests are answered within 4 business hours. Delivery scheduling depends on inventory and your location, but we typically place units within days of your order being confirmed." }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I modify or convert a shipping container?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. Containers can be cut, insulated, electrified, and fitted with doors and windows. For conversions we recommend one-trip units for the cleanest starting point. Local permit requirements vary — contact us and we can point you toward the right resources for your county." }
+    },
+  ]
+};
+---
+
+<BaseLayout
+  title="Shipping Containers for Sale | Steel Box Direct"
+  description="Buy a 20ft, 40ft, or 40ft one-trip shipping container delivered within 250 miles of Cincinnati. No broker markup. Get a quote within 4 business hours."
+  pageType="guide"
+>
+  <script type="application/ld+json" slot="head" is:inline set:html={JSON.stringify(faqSchema)} />
+
+  <!-- HERO -->
+  <section class="hub-hero">
+    <div class="wrap">
+      <div class="sh">
+        <span class="idx">Products</span>
+        <span class="nm">Steel Box Direct</span>
+        <span class="tg">No broker · Local delivery · Est. 2009</span>
+      </div>
+      <h1 class="big">Shipping Containers<br>for <em>Sale.</em></h1>
+      <p class="lede">Three sizes. Cargo-worthy and one-trip condition. Delivered within 250 miles of Cincinnati — to your driveway, job site, or farm.</p>
+    </div>
+  </section>
+
+  <!-- PRODUCT CARDS -->
+  <section class="hub-products">
+    <div class="wrap">
+      <div class="products-grid">
+        {containers.map((c) => (
+          <a class="product-card" href={`/shipping-containers-for-sale/${c.slug}/`}>
+            <div class="pc-eyebrow">{c.shortName}</div>
+            <h2 class="pc-name">{c.name}</h2>
+            <div class="pc-dims">{c.specs.externalDims}</div>
+            <div class="pc-cap">{c.specs.cubicCap} capacity</div>
+            <p class="pc-tag">{c.tagline}</p>
+            <div class="pc-cta">See specs <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPARISON TABLE -->
+  <section class="hub-compare">
+    <div class="wrap">
+      <h2 class="section-title">Compare All Sizes</h2>
+      <div class="compare-wrap">
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th></th>
+              {containers.map((c) => (
+                <th><a href={`/shipping-containers-for-sale/${c.slug}/`}>{c.shortName}</a></th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>External</th>
+              {containers.map((c) => <td>{c.specs.externalDims}</td>)}
+            </tr>
+            <tr>
+              <th>Internal</th>
+              {containers.map((c) => <td>{c.specs.internalDims}</td>)}
+            </tr>
+            <tr>
+              <th>Door Opening</th>
+              {containers.map((c) => <td>{c.specs.doorOpening}</td>)}
+            </tr>
+            <tr>
+              <th>Cubic Capacity</th>
+              {containers.map((c) => <td>{c.specs.cubicCap}</td>)}
+            </tr>
+            <tr>
+              <th>Payload</th>
+              {containers.map((c) => <td>{c.specs.payload}</td>)}
+            </tr>
+            <tr>
+              <th>Best For</th>
+              {containers.map((c) => <td>{c.compareNote}</td>)}
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- USE CASE MATCHER -->
+  <section class="hub-matcher">
+    <div class="wrap">
+      <h2 class="section-title">Not Sure Which Size?</h2>
+      <div class="matcher-grid">
+        <a class="matcher-card" href="/shipping-containers-for-sale/20-foot-shipping-container/">
+          <div class="mc-label">Tight on space</div>
+          <h3>Standard driveway, suburban lot, or job site with limited clearance</h3>
+          <div class="mc-rec">→ 20ft container</div>
+        </a>
+        <a class="matcher-card" href="/shipping-containers-for-sale/40-foot-shipping-container/">
+          <div class="mc-label">Maximum storage</div>
+          <h3>Farm, commercial property, or wide-open land where size isn't a constraint</h3>
+          <div class="mc-rec">→ 40ft container</div>
+        </a>
+        <a class="matcher-card" href="/shipping-containers-for-sale/40-foot-one-trip-container/">
+          <div class="mc-label">Conversion or build</div>
+          <h3>You're turning the container into something — office, studio, or living space</h3>
+          <div class="mc-rec">→ 40ft one-trip</div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY STEEL BOX -->
+  <div class="why-grid">
+    <div class="why-blk why-1">
+      <span class="why-lbl">§ 01 · Pricing</span>
+      <div class="why-num">$0</div>
+      <h3>No broker<br>markup</h3>
+      <p>You deal directly with us. No middleman adding margin between you and the container yard.</p>
+      <span class="why-tag">All-in pricing, always</span>
+    </div>
+    <div class="why-blk why-2">
+      <span class="why-lbl">§ 02 · Delivery</span>
+      <div class="why-num">250</div>
+      <h3>Regional<br>depots</h3>
+      <p>Containers pull from yards near your city. Shorter haul means lower freight and faster scheduling.</p>
+      <span class="why-tag">Miles of coverage</span>
+    </div>
+    <div class="why-blk why-3">
+      <span class="why-lbl">§ 03 · Service</span>
+      <div class="why-num">4h</div>
+      <h3>Real<br>follow-through</h3>
+      <p>Most quote requests answered within 4 business hours. We pick up the phone.</p>
+      <span class="why-tag">Response guarantee</span>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <section class="hub-faq">
+    <div class="wrap">
+      <h2 class="section-title">Common Questions</h2>
+      <div class="faq-list">
+        <div class="faq-item">
+          <h3>What size shipping container do I need?</h3>
+          <p>A 20ft fits most residential lots and single-car driveways — roughly a full garage worth of storage. A 40ft doubles that and is the standard for farm, commercial, and conversion projects. If you need near-new condition for a build, choose a 40ft one-trip.</p>
+        </div>
+        <div class="faq-item">
+          <h3>What's the difference between cargo-worthy and one-trip?</h3>
+          <p>Cargo-worthy containers have completed multiple shipping voyages but are structurally sound and wind/water tight. One-trip containers made a single ocean crossing — essentially new with minimal wear. One-trip costs more and is best for conversions or applications requiring pristine interiors.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Do you deliver to my area?</h3>
+          <p>We deliver within 250 miles of Cincinnati, covering Ohio, Indiana, Kentucky, and surrounding areas — including the Cincinnati, Dayton, Indianapolis, and Louisville metros and their surrounding counties.</p>
+        </div>
+        <div class="faq-item">
+          <h3>How long does delivery take?</h3>
+          <p>Most quote requests are answered within 4 business hours. Delivery scheduling depends on inventory and your location, but we typically place units within days of your order being confirmed.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Can I modify or convert a shipping container?</h3>
+          <p>Yes — containers can be cut, insulated, electrified, and fitted with doors and windows. For conversions we recommend one-trip units for the cleanest starting point. Local permit requirements vary; contact us and we'll point you toward the right resources for your county.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="wrap">
+      <div class="cta-box">
+        <h2>Ready to get a quote?</h2>
+        <p>Tell us your size, zip code, and intended use — we'll get back to you within 4 business hours.</p>
+        <a href="/quote/" class="btn">Get My Quote <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style>
+  /* HERO */
+  .hub-hero { padding: 120px 0 80px; background: var(--yellow); border-bottom: 2.5px solid var(--ink); }
+  .lede { font-size: 22px; line-height: 1.4; max-width: 720px; font-weight: 500; margin-top: 28px; }
+
+  /* PRODUCT CARDS */
+  .hub-products { padding: 96px 0; background: var(--cream); border-bottom: 1.5px solid rgba(11,15,26,.1); }
+  .products-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+  .product-card { display: flex; flex-direction: column; gap: 10px; background: white; border: 2.5px solid var(--ink); padding: 40px; box-shadow: 8px 8px 0 var(--ink); text-decoration: none; color: var(--ink); transition: transform .15s, box-shadow .15s; }
+  .product-card:hover { transform: translate(-2px, -2px); box-shadow: 10px 10px 0 var(--ink); }
+  .pc-eyebrow { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .1em; color: var(--ink); opacity: .5; }
+  .pc-name { font-family: var(--narrow); font-size: 28px; text-transform: uppercase; font-weight: 700; margin: 0; line-height: 1.1; }
+  .pc-dims { font-family: var(--mono); font-size: 12px; opacity: .6; }
+  .pc-cap { font-family: var(--mono); font-size: 12px; opacity: .6; }
+  .pc-tag { font-size: 15px; opacity: .75; line-height: 1.5; flex: 1; margin: 8px 0 0; }
+  .pc-cta { font-family: var(--narrow); font-size: 16px; font-weight: 700; text-transform: uppercase; display: flex; align-items: center; gap: 6px; color: var(--ink); margin-top: auto; padding-top: 16px; border-top: 1.5px solid rgba(11,15,26,.1); }
+  .pc-cta svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; }
+
+  /* COMPARE */
+  .hub-compare { padding: 96px 0; background: white; border-bottom: 1.5px solid rgba(11,15,26,.1); }
+  .section-title { font-family: var(--narrow); font-size: 36px; text-transform: uppercase; margin-bottom: 32px; }
+  .compare-wrap { overflow-x: auto; border: 2.5px solid var(--ink); }
+  .compare-table { width: 100%; border-collapse: collapse; min-width: 520px; }
+  .compare-table th, .compare-table td { padding: 16px 20px; text-align: left; border-bottom: 1.5px solid rgba(11,15,26,.1); font-size: 14px; }
+  .compare-table thead th { font-family: var(--narrow); font-size: 20px; font-weight: 700; text-transform: uppercase; background: var(--ink); color: var(--yellow); }
+  .compare-table thead th:first-child { background: var(--ink); color: transparent; }
+  .compare-table thead a { color: var(--yellow); text-decoration: none; }
+  .compare-table thead a:hover { text-decoration: underline; }
+  .compare-table tbody th { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; opacity: .55; font-weight: 500; background: var(--cream); width: 20%; }
+  .compare-table tr:last-child td, .compare-table tr:last-child th { border-bottom: none; }
+
+  /* MATCHER */
+  .hub-matcher { padding: 96px 0; background: var(--cream); border-bottom: 1.5px solid rgba(11,15,26,.1); }
+  .matcher-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .matcher-card { display: flex; flex-direction: column; gap: 12px; padding: 32px; border: 2.5px solid var(--ink); background: white; text-decoration: none; color: var(--ink); box-shadow: 6px 6px 0 var(--ink); transition: transform .15s, box-shadow .15s; }
+  .matcher-card:hover { transform: translate(-2px,-2px); box-shadow: 8px 8px 0 var(--ink); }
+  .mc-label { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: .1em; background: var(--yellow); padding: 4px 10px; align-self: flex-start; }
+  .matcher-card h3 { font-size: 15px; line-height: 1.5; font-weight: 500; margin: 0; flex: 1; }
+  .mc-rec { font-family: var(--narrow); font-size: 18px; font-weight: 700; text-transform: uppercase; margin-top: auto; }
+
+  /* WHY GRID */
+  .why-grid { display: grid; grid-template-columns: repeat(3, 1fr); }
+  .why-blk { padding: 64px 48px; display: flex; flex-direction: column; gap: 16px; border-right: 1.5px solid rgba(11,15,26,.15); }
+  .why-blk:last-child { border-right: none; }
+  .why-lbl { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: .1em; opacity: .5; }
+  .why-num { font-family: var(--narrow); font-size: 72px; font-weight: 800; line-height: 1; }
+  .why-blk h3 { font-family: var(--narrow); font-size: 32px; text-transform: uppercase; line-height: 1.1; margin: 0; }
+  .why-blk p { opacity: .7; line-height: 1.6; font-size: 15px; flex: 1; }
+  .why-tag { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: .08em; opacity: .45; }
+  .why-1 { background: var(--yellow); }
+  .why-2 { background: var(--cobalt, #2d3ab1); color: white; }
+  .why-3 { background: var(--green, #2a7d4f); color: white; }
+
+  /* FAQ */
+  .hub-faq { padding: 96px 0; background: var(--cream); border-bottom: 1.5px solid rgba(11,15,26,.1); }
+  .faq-list { display: flex; flex-direction: column; gap: 0; border: 2.5px solid var(--ink); }
+  .faq-item { padding: 32px 40px; border-bottom: 1.5px solid rgba(11,15,26,.1); }
+  .faq-item:last-child { border-bottom: none; }
+  .faq-item h3 { font-family: var(--narrow); font-size: 22px; text-transform: uppercase; margin-bottom: 12px; }
+  .faq-item p { opacity: .75; line-height: 1.6; max-width: 740px; }
+
+  /* CTA */
+  .cta-section { padding: 80px 0 120px; background: var(--cream); }
+  .cta-box { background: var(--ink); color: var(--cream); padding: 64px; text-align: center; border: 2.5px solid var(--ink); box-shadow: 12px 12px 0 var(--yellow); }
+  .cta-box h2 { font-family: var(--narrow); font-size: 48px; text-transform: uppercase; margin-bottom: 16px; }
+  .cta-box p { font-size: 18px; opacity: .8; margin-bottom: 40px; }
+
+  @media (max-width: 960px) {
+    .products-grid, .matcher-grid, .why-grid { grid-template-columns: 1fr; }
+    .why-blk { border-right: none; border-bottom: 1.5px solid rgba(11,15,26,.15); }
+  }
+  @media (max-width: 768px) {
+    .cta-box { padding: 40px 24px; }
+    .cta-box h2 { font-size: 32px; }
+    .faq-item { padding: 24px; }
+  }
+</style>
