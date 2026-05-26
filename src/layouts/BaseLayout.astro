@@ -68,7 +68,18 @@ const {
           </button>
         </div>
         <nav class="p" id="main-nav">
-          <a href="/shipping-containers-for-sale/">Containers</a>
+          <div class="nav-con">
+            <a href="/shipping-containers-for-sale/" class="nav-con-trigger">
+              Containers
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+            </a>
+            <div class="nav-con-drop">
+              <a href="/shipping-containers-for-sale/"><span class="dc">ALL</span><span>All Containers</span></a>
+              <a href="/shipping-containers-for-sale/20-foot-shipping-container/"><span class="dc">20FT</span><span>20ft Standard</span></a>
+              <a href="/shipping-containers-for-sale/40-foot-shipping-container/"><span class="dc">40FT</span><span>40ft Standard</span></a>
+              <a href="/shipping-containers-for-sale/40-foot-one-trip-container/"><span class="dc">1-TR</span><span>40ft One-Trip</span></a>
+            </div>
+          </div>
           <a href="/size/">The Five</a>
           <a href="/delivery/">The Rig</a>
           <a href="/cost/">Pricing</a>
@@ -323,6 +334,20 @@ const {
       .nav-loc-drop a .dc{color:var(--yellow)}
       .nav-loc-drop a:hover .dc{color:var(--ink)}
 
+      /* Nav containers dropdown */
+      .nav-con{position:relative;display:flex;align-items:stretch}
+      .nav-con-trigger{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+      .nav-con-trigger svg{width:10px;height:10px;stroke:currentColor;stroke-width:2.8;fill:none;transition:transform .2s;flex-shrink:0}
+      .nav-con:hover .nav-con-trigger{background:var(--ink);color:var(--yellow)}
+      .nav-con:hover .nav-con-trigger svg{transform:rotate(180deg)}
+      .nav-con-drop{position:absolute;top:100%;left:0;min-width:210px;background:var(--ink);border:2.5px solid var(--ink);display:none;z-index:200}
+      .nav-con:hover .nav-con-drop{display:block}
+      .nav-con-drop a{display:flex;align-items:center;gap:14px;padding:13px 18px;border-bottom:1px solid rgba(246,241,231,.1);color:var(--cream);font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;border-right:none!important}
+      .nav-con-drop a:last-child{border-bottom:none}
+      .nav-con-drop a:hover{background:var(--yellow);color:var(--ink)}
+      .nav-con-drop a .dc{color:var(--yellow)}
+      .nav-con-drop a:hover .dc{color:var(--ink)}
+
       .cta-hd{display:inline-flex;align-items:center;gap:8px;padding:0 22px;background:var(--ink);color:var(--yellow);font-family:var(--narrow);font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:.02em;border-left:2.5px solid var(--ink)}
       .cta-hd:hover{background:var(--cream);color:var(--ink)}
       .cta-hd svg{width:14px;height:14px;stroke:currentColor;stroke-width:2.6;fill:none}
@@ -475,6 +500,14 @@ const {
         .dc{color:var(--ink)!important;font-size:18px!important}
         .nav-loc-drop a:hover .dc{color:var(--yellow)!important}
         .nav-loc-trigger svg{display:none}
+        .nav-con{flex-direction:column;width:100%}
+        .nav-con-trigger{width:100%;padding:20px 24px!important;border-right:none!important;border-bottom:1.5px solid var(--ink);justify-content:space-between;font-size:18px!important}
+        .nav-con:hover .nav-con-trigger{background:inherit;color:inherit}
+        .nav-con-drop{position:static;display:block;background:rgba(11,15,26,.06);border:none;min-width:0}
+        .nav-con-drop a{padding:15px 24px 15px 44px!important;color:var(--ink)!important;border-bottom:1px solid rgba(11,15,26,.1);font-size:14px!important}
+        .nav-con-drop a:hover{background:var(--ink);color:var(--yellow)!important}
+        .nav-con-drop a:hover .dc{color:var(--yellow)!important}
+        .nav-con-trigger svg{display:none}
         footer.site .inner{grid-template-columns:1fr 1fr}
       }
 
