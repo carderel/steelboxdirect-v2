@@ -17,29 +17,12 @@ import rigDiagram from '../assets/photos/delivery-rig-diagram.png';
   <!-- ============ HERO ============ -->
   <section class="hero">
     <div class="wrap">
-      <!-- Full-width H1 + H2 band -->
-      <div class="hero-hd">
-        <div class="chip"><span class="pulse"></span> Ohio · Indiana · Kentucky — 250-mile radius of Cincinnati</div>
-        <h1 class="billboard">
-          <span class="l1">Shipping Containers</span>
-          <span class="l2 swap">That Actually</span>
-          <span class="l3 italic">Show Up.</span>
-        </h1>
-        <p class="hero-sub">20ft &amp; 40ft units delivered to your door. No call centers, no runaround.</p>
-      </div>
-      <!-- Two-column body -->
-      <div class="hero-bd">
-        <div class="hero-text">
-          <p class="dek-lede">From <strong>farm equipment</strong> to job site tools to business inventory — a shipping container is the most cost-effective storage you'll buy. Tell us what you need and we'll get you a real number fast.</p>
-          <div class="dek-acts">
-            <a class="btn" href="/size/calculator/">What size do I need? <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
-            <a class="btn-ghost" href="/shipping-containers-for-sale/">→ Browse containers</a>
-            <a class="btn-ghost" href="/quote/">→ Just get me a quote</a>
-          </div>
-        </div>
-        <div class="hero-img">
-          <Image src={containerHero} alt="40ft shipping container" class="hero-container-img" />
-        </div>
+      <div class="hero-grid">
+        <div class="hz hz-1"><span>1</span></div>
+        <div class="hz hz-2"><span>2</span></div>
+        <div class="hz hz-3"><span>3</span></div>
+        <div class="hz hz-4"><span>4</span></div>
+        <div class="hz hz-5"><span>5</span></div>
       </div>
     </div>
   </section>
@@ -372,30 +355,22 @@ import rigDiagram from '../assets/photos/delivery-rig-diagram.png';
   </section>
 
   <style>
-    /* Hero */
-    .hero{background:var(--yellow);color:var(--ink);border-bottom:2.5px solid var(--ink)}
-    .hero .chip{display:inline-flex;align-items:center;gap:10px;padding:6px 12px;background:var(--ink);color:var(--yellow);font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:24px}
-    .hero .chip .pulse{width:8px;height:8px;background:var(--c4-cost);border-radius:50%;display:inline-block;box-shadow:0 0 0 0 var(--c4-cost);animation:p 1.8s infinite}
-    @keyframes p{0%{box-shadow:0 0 0 0 rgba(11,143,78,.6)}70%{box-shadow:0 0 0 8px rgba(11,143,78,0)}100%{box-shadow:0 0 0 0 rgba(11,143,78,0)}}
-
-    /* Full-width headline band */
-    .hero-hd{padding:48px 0 40px;border-bottom:2px solid var(--ink)}
-    .billboard{font-family:var(--narrow);font-weight:700;font-size:var(--t-billboard);line-height:.84;letter-spacing:-.03em;text-transform:uppercase;margin:0 0 20px}
-    .billboard .l1{display:block;white-space:nowrap}
-    .billboard .l2{display:block;white-space:nowrap;margin-left:4%}
-    .billboard .l3{display:block;white-space:nowrap;margin-left:2%}
-    .billboard .italic{font-style:italic;font-weight:600}
-    .billboard .swap{color:var(--c3-deliver)}
-    .hero-sub{font-family:var(--narrow);font-size:clamp(16px,1.8vw,26px);font-weight:600;line-height:1.2;margin:0;opacity:.85}
-
-    /* Two-column body */
-    .hero-bd{display:grid;grid-template-columns:3fr 2fr;align-items:center;border-top:none}
-    .hero-text{padding:48px 48px 56px 0;border-right:2px solid var(--ink);display:flex;flex-direction:column;gap:32px}
-    .dek-lede{font-size:20px;line-height:1.45;margin:0;font-weight:500}
-    .dek-lede strong{background:var(--ink);color:var(--yellow);padding:1px 8px;box-decoration-break:clone;-webkit-box-decoration-break:clone;font-weight:700}
-    .dek-acts{display:flex;flex-direction:column;gap:14px;align-items:flex-start}
-    .hero-img{display:flex;align-items:flex-end;justify-content:center;padding:24px 0 0}
-    .hero-container-img{width:100%;height:auto;display:block}
+    /* Hero scaffold */
+    .hero{background:var(--yellow);color:var(--ink);border-bottom:2.5px solid var(--ink);padding:32px 0}
+    .hero-grid{
+      display:grid;
+      grid-template-areas:"one one" "two three" "four five";
+      grid-template-columns:3fr 2fr;
+      border:2.5px solid var(--ink);
+    }
+    .hz{display:flex;align-items:center;justify-content:center;border:2px solid var(--ink);font-family:var(--mono);font-size:32px;font-weight:700;color:white}
+    .hz span{background:rgba(0,0,0,.35);padding:8px 18px;border-radius:2px}
+    .hz-1{grid-area:one;background:#2d6a35;min-height:120px}
+    .hz-2{grid-area:two;background:#ffffff;color:var(--ink);min-height:220px}
+    .hz-2 span{background:rgba(0,0,0,.08)}
+    .hz-3{grid-area:three;background:#8b4d4d;min-height:220px}
+    .hz-4{grid-area:four;background:#2d0a0a;min-height:120px}
+    .hz-5{grid-area:five;background:#4a6fa5;min-height:120px}
 
     /* Ticker */
     .ticker{background:var(--ink);color:var(--yellow);border-top:2.5px solid var(--ink);border-bottom:2.5px solid var(--ink);overflow:hidden;white-space:nowrap;padding:14px 0;font-family:var(--narrow);font-weight:700;font-size:20px;text-transform:uppercase;letter-spacing:-.01em}
@@ -556,9 +531,7 @@ import rigDiagram from '../assets/photos/delivery-rig-diagram.png';
     .cta .reassure span::before{content:"●";margin-right:8px;color:var(--c4-cost)}
 
     @media (max-width:960px){
-      .hero-bd{grid-template-columns:1fr}
-      .hero-text{padding:32px 0;border-right:none}
-      .hero-img{padding:0 0 32px}
+      .hero-grid{grid-template-areas:"one" "two" "three" "four" "five";grid-template-columns:1fr}
       .problem .row,.five .intro,.personas .intro{grid-template-columns:1fr;gap:32px}
       .grid5{grid-template-columns:1fr 1fr}
       .blk{min-height:380px;border-right:2px solid var(--ink);border-bottom:2px solid var(--ink)}
