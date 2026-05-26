@@ -202,7 +202,9 @@ import rigDiagram from '../assets/photos/delivery-rig-diagram.png';
         </div>
       </div>
       <div class="rig-diagram-wrap">
-        <Image src={rigDiagram} alt="Labeled diagram of a shipping container showing structural components including corner posts, rails, corrugated roof, locking bars, door sill, and floor cross members" class="rig-diagram-img" />
+        <div class="rig-diagram-inner">
+          <Image src={rigDiagram} alt="Labeled diagram of a shipping container showing structural components including corner posts, rails, corrugated roof, locking bars, door sill, and floor cross members" class="rig-diagram-img" />
+        </div>
       </div>
     </div>
   </section>
@@ -484,7 +486,8 @@ import rigDiagram from '../assets/photos/delivery-rig-diagram.png';
     .rig .spec .val{font-family:var(--narrow);font-weight:700;font-size:40px;line-height:1;letter-spacing:-.02em;text-transform:uppercase}
     .rig .spec .note{font-size:13px;line-height:1.45;opacity:.85}
     .rig-diagram-wrap{max-width:1100px;margin:48px auto 0;padding:0 32px}
-    .rig-diagram-img{width:100%;height:auto;display:block;border:2.5px solid rgba(246,241,231,.3)}
+    .rig-diagram-inner{background:white;padding:32px;border:2.5px solid var(--ink)}
+    .rig-diagram-img{width:100%;height:auto;display:block}
 
     /* Personas */
     .personas{background:var(--cream);padding:120px 0;border-bottom:2.5px solid var(--ink)}
