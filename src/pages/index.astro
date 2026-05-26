@@ -16,29 +16,25 @@ import rigDiagram from '../assets/photos/delivery-rig-diagram.png';
   <link slot="head" href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet" />
   <!-- ============ HERO ============ -->
   <section class="hero">
-    <div class="hero-right hero_image_panel">
-      <svg class="doodle" viewBox="0 0 100 100" aria-hidden="true">
-        <path d="M10 20 Q 50 5, 85 35" />
-        <path d="M78 25 L 85 35 L 72 40" />
-      </svg>
-      <Image src={containerHero} alt="40ft shipping container" class="hero-container-img" />
-    </div>
-    <div class="wrap hero_wrap">
-      <div class="top hero_top">
-        <div class="chip hero_chip"><span class="pulse"></span> Ohio · Indiana · Kentucky — 250-mile radius of Cincinnati</div>
+    <div class="wrap">
+      <!-- Full-width headline band -->
+      <div class="hero-hd">
+        <div class="chip"><span class="pulse"></span> Ohio · Indiana · Kentucky — 250-mile radius of Cincinnati</div>
+        <h1 class="billboard">Shipping Containers That Actually Show Up.</h1>
+        <p class="hero-sub">20ft &amp; 40ft units delivered to your door. No call centers, no runaround.</p>
       </div>
-      <h1 class="billboard">
-        <span class="l1">Protect what</span>
-        <span class="l2 swap">you've built.</span>
-        <span class="l3 italic">No hard sell.</span>
-      </h1>
-
-      <div class="dek hero_dek">
-        <p class="dek-lede hero_dek_lede">From <strong>expensive farm equipment</strong> to business inventory to specialized tools — containers protect what matters, if you choose the right size, condition, and delivery method. We'll walk you through <strong>five decisions</strong> so you can buy with confidence.</p>
-        <div class="dek-acts hero_cta_group">
-          <a class="btn" href="/size/">Start: what size? <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
-          <a class="btn-ghost" href="/shipping-containers-for-sale/">→ Browse containers</a>
-          <a class="btn-ghost" href="/quote/">→ Skip ahead · just send me a quote</a>
+      <!-- Two-column body -->
+      <div class="hero-bd">
+        <div class="hero-text">
+          <p class="dek-lede">From <strong>farm equipment</strong> to job site tools to business inventory — a shipping container is the most cost-effective storage you'll buy. Tell us what you need and we'll get you a real number fast.</p>
+          <div class="dek-acts">
+            <a class="btn" href="/size/calculator/">What size do I need? <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+            <a class="btn-ghost" href="/shipping-containers-for-sale/">→ Browse containers</a>
+            <a class="btn-ghost" href="/quote/">→ Just get me a quote</a>
+          </div>
+        </div>
+        <div class="hero-img">
+          <Image src={containerHero} alt="40ft shipping container" class="hero-container-img" />
         </div>
       </div>
     </div>
@@ -373,28 +369,24 @@ import rigDiagram from '../assets/photos/delivery-rig-diagram.png';
 
   <style>
     /* Hero */
-    .hero{background:var(--yellow);color:var(--ink);padding:40px 0 0;border-bottom:2.5px solid var(--ink);position:relative;overflow:hidden}
-    .hero-right{position:absolute;right:0;top:0;bottom:0;display:none;flex-direction:column;align-items:flex-start;justify-content:center;pointer-events:none;z-index:0;gap:8px}
-    @media(min-width:1100px){.hero-right{display:flex}}
-    .hero-container-img{width:30vw;max-width:420px;height:auto;display:block}
-    .hero .top{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:28px;gap:24px;flex-wrap:wrap}
-    .hero .chip{display:inline-flex;align-items:center;gap:10px;padding:6px 12px;background:var(--ink);color:var(--yellow);font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+    .hero{background:var(--yellow);color:var(--ink);border-bottom:2.5px solid var(--ink)}
+    .hero .chip{display:inline-flex;align-items:center;gap:10px;padding:6px 12px;background:var(--ink);color:var(--yellow);font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:24px}
     .hero .chip .pulse{width:8px;height:8px;background:var(--c4-cost);border-radius:50%;display:inline-block;box-shadow:0 0 0 0 var(--c4-cost);animation:p 1.8s infinite}
     @keyframes p{0%{box-shadow:0 0 0 0 rgba(11,143,78,.6)}70%{box-shadow:0 0 0 8px rgba(11,143,78,0)}100%{box-shadow:0 0 0 0 rgba(11,143,78,0)}}
 
-    .billboard{font-family:var(--narrow);font-weight:700;font-size:var(--t-billboard);line-height:.84;letter-spacing:-.03em;text-transform:uppercase;margin:3% 0 0;position:relative;z-index:1}
-    .billboard .l1{display:block;white-space:nowrap;transform:translateX(-1%)}
-    .billboard .l2{display:block;white-space:nowrap;margin-left:4%}
-    .billboard .l3{display:block;white-space:nowrap}
-    .billboard .italic{font-style:italic;font-weight:600}
-    .billboard .swap{color:var(--c3-deliver)}
+    /* Headline band — full width */
+    .hero-hd{padding:48px 0 40px;border-bottom:2px solid var(--ink)}
+    .billboard{font-family:var(--narrow);font-weight:700;font-size:clamp(36px,7vw,108px);line-height:.88;letter-spacing:-.03em;text-transform:uppercase;margin:0 0 20px}
+    .hero-sub{font-family:var(--narrow);font-size:clamp(18px,2.4vw,30px);font-weight:600;line-height:1.2;margin:0;opacity:.85}
 
-    .hero .doodle{width:90px;height:90px;stroke:var(--ink);stroke-width:2.4;fill:none;transform:rotate(8deg);display:block;flex-shrink:0}
-
-    .hero .dek{display:grid;grid-template-columns:1fr 1fr 1fr;gap:40px;align-items:end;padding:60px 0 48px;border-top:2px solid var(--ink);margin-top:40px}
-    .hero .dek-lede{grid-column:span 2;font-size:22px;line-height:1.35;margin:0;max-width:720px;font-weight:500}
-    .hero .dek-lede strong{background:var(--ink);color:var(--yellow);padding:1px 8px;box-decoration-break:clone;-webkit-box-decoration-break:clone;font-weight:700}
-    .hero .dek-acts{display:flex;flex-direction:column;gap:14px;align-items:flex-start}
+    /* Two-column body */
+    .hero-bd{display:grid;grid-template-columns:1fr 1fr;align-items:stretch;min-height:320px}
+    .hero-text{padding:48px 48px 48px 0;border-right:2px solid var(--ink);display:flex;flex-direction:column;justify-content:center;gap:32px}
+    .dek-lede{font-size:18px;line-height:1.5;margin:0;font-weight:500}
+    .dek-lede strong{background:var(--ink);color:var(--yellow);padding:1px 8px;box-decoration-break:clone;-webkit-box-decoration-break:clone;font-weight:700}
+    .dek-acts{display:flex;flex-direction:column;gap:14px;align-items:flex-start}
+    .hero-img{overflow:hidden;display:flex;align-items:center;justify-content:center;background:var(--yellow)}
+    .hero-container-img{width:100%;height:100%;object-fit:cover;display:block}
 
     /* Ticker */
     .ticker{background:var(--ink);color:var(--yellow);border-top:2.5px solid var(--ink);border-bottom:2.5px solid var(--ink);overflow:hidden;white-space:nowrap;padding:14px 0;font-family:var(--narrow);font-weight:700;font-size:20px;text-transform:uppercase;letter-spacing:-.01em}
@@ -555,8 +547,9 @@ import rigDiagram from '../assets/photos/delivery-rig-diagram.png';
     .cta .reassure span::before{content:"●";margin-right:8px;color:var(--c4-cost)}
 
     @media (max-width:960px){
-      .hero .dek{grid-template-columns:1fr;gap:24px}
-      .hero .dek-lede{grid-column:auto}
+      .hero-bd{grid-template-columns:1fr}
+      .hero-text{padding:32px 0;border-right:none;border-bottom:2px solid var(--ink)}
+      .hero-img{min-height:240px}
       .problem .row,.five .intro,.personas .intro{grid-template-columns:1fr;gap:32px}
       .grid5{grid-template-columns:1fr 1fr}
       .blk{min-height:380px;border-right:2px solid var(--ink);border-bottom:2px solid var(--ink)}
@@ -575,6 +568,7 @@ import rigDiagram from '../assets/photos/delivery-rig-diagram.png';
     }
 
     @media (max-width:720px){
+      .hero-hd{padding:32px 0 28px}
       .billboard{line-height:.92}
       .grid5{grid-template-columns:1fr}
       .blk{border-right:none!important;min-height:auto;padding:24px 20px 28px}
