@@ -21,7 +21,7 @@ import rigDiagram from '../assets/photos/delivery-rig-diagram.png';
         <div class="hz hz-1">
           <h1 class="billboard">
             <span class="l1">Shipping Containers</span>
-            <span class="l2 italic">That Actually Show Up.</span>
+            <span class="l2"><span class="swap">That Actually</span> <span class="italic">Show Up.</span></span>
           </h1>
           <p class="hero-sub">20ft &amp; 40ft units delivered to your door. No call centers, no runaround.</p>
         </div>
@@ -372,10 +372,9 @@ import rigDiagram from '../assets/photos/delivery-rig-diagram.png';
     .hz{display:flex;align-items:center;justify-content:center;border:2px solid var(--ink);font-family:var(--mono);font-size:32px;font-weight:700;color:white}
     .hz span{background:rgba(0,0,0,.35);padding:8px 18px;border-radius:2px}
     .hz-1{grid-area:one;background:var(--yellow);color:var(--ink);align-items:flex-start;flex-direction:column;padding:48px 40px 40px;gap:16px}
-    .billboard{font-family:var(--narrow);font-weight:700;font-size:clamp(32px,6.5vw,125px);line-height:.88;letter-spacing:-.03em;text-transform:uppercase;margin:0}
+    .billboard{font-family:var(--narrow);font-weight:700;font-size:clamp(28px,5vw,88px);line-height:.9;letter-spacing:-.03em;text-transform:uppercase;margin:0}
     .billboard .l1{display:block}
-    .billboard .l2{display:block;margin-left:4%}
-    .billboard .l3{display:block;margin-left:2%}
+    .billboard .l2{display:block;margin-left:4%;white-space:nowrap}
     .billboard .italic{font-style:italic;font-weight:600}
     .billboard .swap{color:var(--c3-deliver)}
     .hero-sub{font-family:var(--narrow);font-size:clamp(16px,1.8vw,26px);font-weight:600;line-height:1.2;margin:0;opacity:.85}
