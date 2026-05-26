@@ -1,5 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { Image } from 'astro:assets';
+import rigDiagram from '../../assets/photos/delivery-rig-diagram.png';
 ---
 
 <BaseLayout
@@ -71,6 +73,14 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
           </div>
         </aside>
       </div>
+    </div>
+  </section>
+
+  <!-- CONTAINER DIAGRAM -->
+  <section class="rig-diagram">
+    <div class="wrap">
+      <p class="diagram-label">Container anatomy</p>
+      <Image src={rigDiagram} alt="Labeled diagram of a shipping container showing structural components including corner posts, rails, corrugated roof, locking bars, door sill, and floor cross members" class="diagram-img" />
     </div>
   </section>
 
@@ -171,6 +181,10 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       .guide-header { padding: 48px 0; }
       .big { font-size: clamp(48px, 10vw, 80px); }
     }
+    .rig-diagram { padding: 72px 0; background: var(--cream); border-bottom: 1.5px solid rgba(11,15,26,.1); }
+    .diagram-label { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: .1em; opacity: .5; margin-bottom: 24px; }
+    .diagram-img { width: 100%; height: auto; display: block; border: 2.5px solid var(--ink); }
+
     .guide-next { padding: 48px 0; background: var(--ink); border-top: 2px solid rgba(255,255,255,.08); }
     .guide-next-label { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: .1em; color: var(--yellow); margin-bottom: 16px; }
     .guide-next-links { display: flex; flex-wrap: wrap; gap: 20px; }
