@@ -1,0 +1,73 @@
+---
+---
+<!-- ============ §07 FAQ ============ -->
+<section class="faq" id="faq">
+  <div class="wrap faq_wrap">
+    <div class="sh">
+      <span class="idx">§ 05</span>
+      <span class="nm">Straight answers</span>
+      <span class="tg">Before you ask</span>
+    </div>
+    <h2 class="big">The questions <em>everyone</em> asks<br>before they send a deposit.</h2>
+
+    <div class="faq-list faq_list">
+      <div class="faq-item faq_item">
+        <span class="n">Q · 01</span>
+        <h3 class="q">Won't it rust out on me?</h3>
+        <p class="a">Corten steel, painted inside and out. On crushed-stone pads with airflow underneath, 25 years is realistic. We'll show you how to prep the site.</p>
+      </div>
+      <div class="faq-item faq_item">
+        <span class="n">Q · 02</span>
+        <h3 class="q">Can you get it back my driveway?</h3>
+        <p class="a">Usually yes. Tilt-bed needs ~100 ft of approach and firm ground. For tight or soft sites, crane-set works — no lane damage. We'll scout before we schedule.</p>
+      </div>
+      <div class="faq-item faq_item">
+        <span class="n">Q · 03</span>
+        <h3 class="q">Do I need a permit?</h3>
+        <p class="a">For farm storage in OH, IN, and KY: almost never. Commercial use or an HOA changes things — we'll flag it on the call, not after you pay.</p>
+      </div>
+      <div class="faq-item faq_item">
+        <span class="n">Q · 04</span>
+        <h3 class="q">Is used actually safe for my equipment?</h3>
+        <p class="a">Cargo-worthy units are structurally certified and weather-tight. Surface rust is cosmetic. For anything irreplaceable, we still steer you to one-trip.</p>
+      </div>
+      <div class="faq-item faq_item">
+        <span class="n">Q · 05</span>
+        <h3 class="q">How quickly can you get it here?</h3>
+        <p class="a">Most deliveries land within 1–2 weeks of deposit. Depot inventory is stacked and sequenced — units aren't staged for quick pull — and drivers book out several weeks in advance, so exact timing depends on current availability. We'll give you an honest window before you commit, and you'll hear from us at every step until it's on your property.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Sections Shared */
+  .sh{display:grid;grid-template-columns:auto 1fr auto;gap:20px;align-items:center;padding:18px 0;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);margin-bottom:72px}
+  .sh .idx{font-family:var(--mono);font-size:var(--t-meta);letter-spacing:.08em;text-transform:uppercase}
+  .sh .nm{font-family:var(--narrow);font-weight:700;font-size:22px;text-transform:uppercase;letter-spacing:-.01em}
+  .sh .tg{font-family:var(--mono);font-size:var(--t-meta);letter-spacing:.08em;text-transform:uppercase;opacity:.55;text-align:right}
+  .big{font-family:var(--narrow);font-weight:700;font-size:var(--t-big);line-height:.9;letter-spacing:-.02em;text-transform:uppercase;margin:0}
+  .big em{font-style:italic;color:var(--c5-permits);font-weight:700}
+
+  /* FAQ */
+  .faq{background:var(--c5-permits);color:var(--cream);padding:120px 0;border-bottom:2.5px solid var(--ink)}
+  .faq .sh{border-color:var(--cream);color:var(--cream)}
+  .faq .big{color:var(--cream);margin-bottom:48px}
+  .faq .big em{color:var(--ink);font-style:italic}
+  .faq-list{border-top:2px solid var(--cream)}
+  .faq-item{border-bottom:2px solid var(--cream);padding:32px 0;display:grid;grid-template-columns:60px 1fr;row-gap:16px;column-gap:32px;align-items:start}
+  .faq-item .n{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;opacity:.85;padding-top:8px}
+  .faq-item .q{font-family:var(--narrow);font-weight:700;font-size:clamp(26px,3.2vw,44px);line-height:1;letter-spacing:-.015em;text-transform:uppercase;margin:0;grid-column:2}
+  .faq-item .a{font-size:18px;line-height:1.5;opacity:.9;grid-column:2;margin:0;max-width:760px;font-weight:500}
+
+  @media (max-width:960px){
+    .faq-item{grid-template-columns:1fr;gap:12px}
+    .faq-item .q, .faq-item .a{grid-column:1}
+  }
+
+  @media (max-width:720px){
+    .big{font-size:clamp(36px,9vw,64px)}
+    .sh{grid-template-columns:auto 1fr;row-gap:6px}
+    .sh .tg{grid-column:1 / -1;text-align:left;opacity:.5}
+  }
+</style>

@@ -1,0 +1,86 @@
+---
+---
+<header class="site">
+  <div class="wrap nav">
+    <div class="brand-group">
+      <a class="brand" href="/"><span class="bx">S</span><span>Steel Box Direct</span></a>
+      <button class="menu-toggle" id="menu-toggle" aria-label="Open Menu">
+        <svg viewBox="0 0 24 24"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+        <span>Menu</span>
+      </button>
+    </div>
+    <nav class="p" id="main-nav">
+      <div class="nav-con">
+        <a href="/shipping-containers-for-sale/" class="nav-con-trigger">
+          Shipping Containers
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </a>
+        <div class="nav-con-drop">
+          <a href="/shipping-containers-for-sale/"><span class="dc">ALL</span><span>All Containers</span></a>
+          <a href="/shipping-containers-for-sale/20-foot-shipping-container/"><span class="dc">20FT</span><span>20ft Standard</span></a>
+          <a href="/shipping-containers-for-sale/40-foot-shipping-container/"><span class="dc">40FT</span><span>40ft Standard</span></a>
+          <a href="/shipping-containers-for-sale/40-foot-one-trip-container/"><span class="dc">1-TR</span><span>40ft One-Trip</span></a>
+        </div>
+      </div>
+      <div class="nav-gd">
+        <a href="/size/" class="nav-gd-trigger">
+          Guides
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </a>
+        <div class="nav-gd-drop">
+          <a href="/size/"><span class="dc">SZ</span><span>Size Guide</span></a>
+          <a href="/condition/"><span class="dc">CND</span><span>Condition Guide</span></a>
+          <a href="/delivery/"><span class="dc">DLV</span><span>Delivery Guide</span></a>
+          <a href="/cost/"><span class="dc">CST</span><span>Cost Guide</span></a>
+          <a href="/permits/"><span class="dc">PRM</span><span>Permits &amp; Zoning</span></a>
+        </div>
+      </div>
+      <div class="nav-tl">
+        <a href="/size/calculator/" class="nav-tl-trigger">
+          Tools
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </a>
+        <div class="nav-tl-drop">
+          <a href="/size/calculator/"><span class="dc">CAL</span><span>Size Calculator</span></a>
+          <a href="/delivery/"><span class="dc">DEL</span><span>Delivery Checker</span></a>
+          <a href="/quote/"><span class="dc">QTE</span><span>Get a Quote</span></a>
+        </div>
+      </div>
+      <div class="nav-loc">
+        <a href="/locations/" class="nav-loc-trigger">
+          Locations
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </a>
+        <div class="nav-loc-drop">
+          <a href="/cincinnati-shipping-containers/"><span class="dc">CIN</span><span>Cincinnati</span></a>
+          <a href="/dayton-shipping-containers/"><span class="dc">DAY</span><span>Dayton</span></a>
+          <a href="/indianapolis-shipping-containers/"><span class="dc">IND</span><span>Indianapolis</span></a>
+          <a href="/louisville-shipping-containers/"><span class="dc">LOU</span><span>Louisville</span></a>
+        </div>
+      </div>
+    </nav>
+    <a class="cta-hd" href="/quote/">Get a Quote <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+  </div>
+  <div class="agent-strip">
+    <div class="wrap agent-strip-inner">
+      <span class="mil-strip">★ Military &amp; Veteran discount available ★</span>
+      <span>Authorised Independent Agent · FreedomConex.com</span>
+    </div>
+  </div>
+</header>
+
+<script is:inline>
+  // Optimized Mobile menu toggle logic
+  window.addEventListener('DOMContentLoaded', () => {
+    const menuBtn = document.getElementById('menu-toggle');
+    const nav = document.getElementById('main-nav');
+
+    if (menuBtn && nav) {
+      menuBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        nav.classList.toggle('is-open');
+        menuBtn.classList.toggle('is-active');
+      });
+    }
+  });
+</script>

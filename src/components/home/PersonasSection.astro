@@ -1,0 +1,105 @@
+---
+---
+<!-- ============ §05 PERSONAS TABLE ============ -->
+<section class="personas">
+  <div class="wrap personas_wrap">
+    <div class="sh">
+      <span class="idx">§ 03</span>
+      <span class="nm">Who buys from us</span>
+      <span class="tg">Three common stories</span>
+    </div>
+    <div class="intro personas_intro">
+      <h2 class="big">If any of this<br>sounds like <em>you</em> —<br>we've done it before.</h2>
+      <p>We've placed 400+ containers across the region. Most of our customers are one of three people. Here's what they bought and why.</p>
+    </div>
+
+    <table class="ptbl">
+      <thead>
+        <tr>
+          <th>Buyer</th>
+          <th>They said</th>
+          <th>We recommended</th>
+          <th>Why it fit</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div class="pname persona_name">
+              <span class="dot" style="background:var(--c1-size)"></span>
+              <span class="pcol"><b>Tom</b><small>Equipment farmer</small></span>
+            </div>
+          </td>
+          <td class="quote">"Won't it rust? Will it protect my equipment long-term?"</td>
+          <td><a href="/shipping-containers-for-sale/40-foot-one-trip-container/" class="rec-link"><span class="rec">40-ft · one-trip</span></a></td>
+          <td>New steel for 25-year weather protection on a John Deere and a grain drill. Sited on crushed stone, leveled with railroad ties.</td>
+        </tr>
+        <tr>
+          <td>
+            <div class="pname persona_name">
+              <span class="dot" style="background:var(--c3-deliver)"></span>
+              <span class="pcol"><b>Sarah</b><small>Diversified business owner</small></span>
+            </div>
+          </td>
+          <td class="quote">"Can we make this look professional? Scale to multiple units?"</td>
+          <td><a href="/shipping-containers-for-sale/40-foot-shipping-container/" class="rec-link"><span class="rec">2 × 40-ft · mixed</span></a></td>
+          <td>One one-trip for customer-facing inventory, one cargo-worthy for back-stock. Painted to match the barn.</td>
+        </tr>
+        <tr>
+          <td>
+            <div class="pname persona_name">
+              <span class="dot" style="background:var(--c5-permits)"></span>
+              <span class="pcol"><b>Mike</b><small>Hobby / rural</small></span>
+            </div>
+          </td>
+          <td class="quote">"Can you deliver to my property? Is used okay?"</td>
+          <td><a href="/shipping-containers-for-sale/20-foot-shipping-container/" class="rec-link"><span class="rec">20-ft · cargo-worthy</span></a></td>
+          <td>Crane-set over a fenceline at the end of a gravel lane. Cargo-worthy for a 2/3 cost savings — horse trailer and tools stay dry.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<style>
+  /* Sections Shared */
+  .sh{display:grid;grid-template-columns:auto 1fr auto;gap:20px;align-items:center;padding:18px 0;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);margin-bottom:72px}
+  .sh .idx{font-family:var(--mono);font-size:var(--t-meta);letter-spacing:.08em;text-transform:uppercase}
+  .sh .nm{font-family:var(--narrow);font-weight:700;font-size:22px;text-transform:uppercase;letter-spacing:-.01em}
+  .sh .tg{font-family:var(--mono);font-size:var(--t-meta);letter-spacing:.08em;text-transform:uppercase;opacity:.55;text-align:right}
+  .big{font-family:var(--narrow);font-weight:700;font-size:var(--t-big);line-height:.9;letter-spacing:-.02em;text-transform:uppercase;margin:0}
+  .big em{font-style:italic;color:var(--c5-permits);font-weight:700}
+
+  /* Personas */
+  .personas{background:var(--cream);padding:120px 0;border-bottom:2.5px solid var(--ink)}
+  .personas .intro{display:grid;grid-template-columns:1.2fr 1fr;gap:56px;align-items:end;margin:56px 0 56px}
+  .personas .intro p{font-size:var(--t-lede);line-height:1.5;margin:0;max-width:460px;font-weight:500}
+
+  .ptbl{width:100%;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);border-collapse:collapse}
+  .ptbl thead th{padding:14px 16px;text-align:left;border-bottom:2px solid var(--ink);font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:500;opacity:.6;background:var(--yellow)}
+  .ptbl tbody td{padding:22px 16px;border-bottom:1.5px solid rgba(11,15,26,.12);vertical-align:top;font-size:15px;line-height:1.45}
+  .ptbl tbody tr:last-child td{border-bottom:none}
+  .ptbl tbody td:first-child{width:18%}
+  .ptbl .pname{display:flex;align-items:center;gap:12px}
+  .ptbl .pname .dot{width:14px;height:14px;border-radius:50%;flex-shrink:0}
+  .ptbl .pname b{font-family:var(--narrow);font-weight:700;font-size:22px;text-transform:uppercase;letter-spacing:-.01em;line-height:1}
+  .ptbl .pname small{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;opacity:.55;margin-top:4px}
+  .ptbl .quote{font-style:italic;font-family:var(--narrow);font-weight:500;font-size:17px;line-height:1.3}
+  .ptbl .rec{font-family:var(--mono);font-size:12px;letter-spacing:.04em;background:var(--ink);color:var(--yellow);padding:4px 8px;display:inline-block}
+  .ptbl .rec-link{text-decoration:none}.ptbl .rec-link:hover .rec{opacity:.8}
+
+  @media (max-width:960px){
+    .personas .intro{grid-template-columns:1fr;gap:32px}
+    .ptbl thead{display:none}
+    .ptbl,.ptbl tbody,.ptbl tr,.ptbl td{display:block;width:100%}
+    .ptbl tbody tr{border-bottom:2px solid var(--ink);padding:16px 0}
+    .ptbl tbody td{border-bottom:none;padding:6px 0}
+    .ptbl tbody td:first-child{width:auto}
+  }
+
+  @media (max-width:720px){
+    .big{font-size:clamp(36px,9vw,64px)}
+    .sh{grid-template-columns:auto 1fr;row-gap:6px}
+    .sh .tg{grid-column:1 / -1;text-align:left;opacity:.5}
+  }
+</style>

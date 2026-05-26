@@ -1,0 +1,122 @@
+---
+---
+<!-- ============ §02 THE FIVE ============ -->
+<section class="five" id="five">
+  <div class="wrap wrap-top five_header">
+    <div class="sh">
+      <span class="idx">§ 02</span>
+      <span class="nm">The Five Decisions</span>
+      <span class="tg">Est. 5 min / decision</span>
+    </div>
+    <div class="intro five_intro">
+      <h2 class="big">Five decisions<br>stand between you<br>and <em>the right container.</em></h2>
+      <p>Work through them in order. Each guide answers the question buyers like you — Tom, Sarah, Mike — actually ask. No sales pitch, no jargon.</p>
+    </div>
+  </div>
+
+  <div class="grid5 five_grid">
+    <a class="blk blk-1" href="/size/">
+      <span class="lbl">§ 01 · Size</span>
+      <div class="num">01</div>
+      <h3>What size do you need?</h3>
+      <p>A 20-foot holds one tractor. A 40-foot is your full arsenal. 40 High-Cube if you've got a tall implement.</p>
+      <span class="who">→ Tom · 40-ft primary</span>
+      <span class="go">Open size guide <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+    </a>
+    <a class="blk blk-2" href="/condition/">
+      <span class="lbl">§ 02 · Condition</span>
+      <div class="num">02</div>
+      <h3>New or used?</h3>
+      <p>New guarantees protection. Used saves money. Both work — it just depends on what you're protecting and for how long.</p>
+      <span class="who">→ The Sweet Spot: cargo-worthy</span>
+      <span class="go">Open condition guide <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+    </a>
+    <a class="blk blk-3" href="/delivery/">
+      <span class="lbl">§ 03 · Delivery</span>
+      <div class="num">03</div>
+      <h3>Will it even get here?</h3>
+      <p>Narrow lanes, soft ground, low branches — we plan for it. Tilt-bed for firm ground, crane-set for tight or rural access.</p>
+      <span class="who">→ Mike · rural access</span>
+      <span class="go">Open delivery guide <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+    </a>
+    <a class="blk blk-4" href="/cost/">
+      <span class="lbl">§ 04 · Cost</span>
+      <div class="num">04</div>
+      <h3>What will it really cost?</h3>
+      <p>All-in. Container, delivery, setup. No surprise fees. Fair regional pricing — no premium just because you're rural.</p>
+      <span class="who">→ Sarah · multi-unit</span>
+      <span class="go">Open pricing guide <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+    </a>
+    <a class="blk blk-5" href="/permits/">
+      <span class="lbl">§ 05 · Permits</span>
+      <div class="num">05</div>
+      <h3>Do I need a permit?</h3>
+      <p>Usually no. Most farm storage is zoned-exempt in OH, IN, and KY. Commercial use or HOAs — we'll tell you straight.</p>
+      <span class="who">→ Ag-exempt in most counties</span>
+      <span class="go">Open permit guide <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+    </a>
+  </div>
+</section>
+
+<style>
+  /* Sections Shared */
+  .sh{display:grid;grid-template-columns:auto 1fr auto;gap:20px;align-items:center;padding:18px 0;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);margin-bottom:72px}
+  .sh .idx{font-family:var(--mono);font-size:var(--t-meta);letter-spacing:.08em;text-transform:uppercase}
+  .sh .nm{font-family:var(--narrow);font-weight:700;font-size:22px;text-transform:uppercase;letter-spacing:-.01em}
+  .sh .tg{font-family:var(--mono);font-size:var(--t-meta);letter-spacing:.08em;text-transform:uppercase;opacity:.55;text-align:right}
+  .big{font-family:var(--narrow);font-weight:700;font-size:var(--t-big);line-height:.9;letter-spacing:-.02em;text-transform:uppercase;margin:0}
+  .big em{font-style:italic;color:var(--c5-permits);font-weight:700}
+
+  /* Five */
+  .five{background:var(--ink);color:var(--cream);padding:0;border-bottom:2.5px solid var(--ink)}
+  .five .wrap-top{padding-top:96px;padding-bottom:48px}
+  .five .sh{border-color:var(--cream);color:var(--cream)}
+  .five .big{color:var(--cream)}
+  .five .big em{color:var(--yellow)}
+  .five .intro{display:grid;grid-template-columns:1.2fr 1fr;gap:56px;align-items:end;margin:56px 0 0}
+  .five .intro p{font-size:var(--t-lede);line-height:1.5;margin:0;max-width:460px;opacity:.85}
+
+  .grid5{display:grid;grid-template-columns:repeat(5,1fr);border-top:2.5px solid var(--ink)}
+  .blk{position:relative;padding:32px 24px 28px;display:flex;flex-direction:column;gap:14px;min-height:520px;border-right:2.5px solid var(--ink);color:var(--ink);transition:transform .2s}
+  .blk:last-child{border-right:none}
+  .blk:hover{transform:translateY(-4px)}
+  .blk .num{font-family:var(--narrow);font-weight:700;font-size:clamp(90px,8vw,140px);line-height:.8;letter-spacing:-.04em;margin:0}
+  .blk .lbl{font-family:var(--mono);font-size:var(--t-meta);letter-spacing:.08em;text-transform:uppercase;position:absolute;top:16px;right:20px}
+  .blk h3{font-family:var(--narrow);font-weight:700;font-size:var(--t-card);line-height:.95;text-transform:uppercase;letter-spacing:-.01em;margin:0;max-width:90%}
+  .blk p{font-size:15px;line-height:1.5;margin:0;flex:1;font-weight:500}
+  .blk .who{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:4px 8px;background:var(--ink);color:var(--cream);align-self:flex-start;margin-top:4px}
+  .blk .go{font-family:var(--narrow);font-weight:700;font-size:15px;text-transform:uppercase;letter-spacing:.01em;display:inline-flex;align-items:center;gap:10px;border-top:1.5px solid var(--ink);padding-top:14px;margin-top:auto}
+  .blk .go svg{width:16px;height:16px;stroke:currentColor;stroke-width:2.6;fill:none;transition:transform .15s}
+  .blk:hover .go svg{transform:translateX(6px)}
+
+  .blk-1{background:var(--c1-size)}
+  .blk-2{background:var(--c2-cond);color:var(--cream)}
+  .blk-2 .go{border-top-color:var(--cream)}
+  .blk-2 .who{background:var(--cream);color:var(--c2-cond)}
+  .blk-3{background:var(--c3-deliver);color:var(--cream)}
+  .blk-3 .go{border-top-color:var(--cream)}
+  .blk-3 .who{background:var(--cream);color:var(--c3-deliver)}
+  .blk-4{background:var(--c4-cost);color:var(--cream)}
+  .blk-4 .go{border-top-color:var(--cream)}
+  .blk-4 .who{background:var(--cream);color:var(--c4-cost)}
+  .blk-5{background:var(--c5-permits);color:var(--cream)}
+  .blk-5 .go{border-top-color:var(--cream)}
+  .blk-5 .who{background:var(--cream);color:var(--c5-permits)}
+
+  @media (max-width:960px){
+    .five .intro{grid-template-columns:1fr;gap:32px}
+    .grid5{grid-template-columns:1fr 1fr}
+    .blk{min-height:380px;border-right:2px solid var(--ink);border-bottom:2px solid var(--ink)}
+    .blk:nth-child(2n){border-right:none}
+    .blk:last-child{grid-column:1 / -1;border-bottom:none;border-right:none;min-height:240px}
+  }
+
+  @media (max-width:720px){
+    .big{font-size:clamp(36px,9vw,64px)}
+    .grid5{grid-template-columns:1fr}
+    .blk{border-right:none!important;min-height:auto;padding:24px 20px 28px}
+    .blk:last-child{min-height:auto}
+    .sh{grid-template-columns:auto 1fr;row-gap:6px}
+    .sh .tg{grid-column:1 / -1;text-align:left;opacity:.5}
+  }
+</style>

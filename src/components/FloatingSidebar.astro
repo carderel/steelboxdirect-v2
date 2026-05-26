@@ -1,0 +1,72 @@
+---
+---
+<aside class="sidebar-float" id="sbf" role="complementary" aria-label="Lead capture">
+  <div class="sbf-hd">
+    <span class="tag"><span class="dot"></span>Two ways to start</span>
+    <button class="close" id="sbf-close" aria-label="Hide">×</button>
+  </div>
+  <div class="sbf-primary">
+    <div class="mini">→ Recommended · Takes 5 min</div>
+    <h4>Not sure what you need?</h4>
+    <p>Answer 5 quick questions. We'll recommend the right size, condition, and delivery method for your property — before you pay a cent.</p>
+    <a class="sbf-btn" href="/size/">
+      <span>Start the container guide</span>
+      <span class="arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+    </a>
+  </div>
+  <div class="sbf-or"><span>OR</span></div>
+  <div class="sbf-secondary">
+    <div class="mini">Already know what you need?</div>
+    <h5>Skip ahead — just get me a quote.</h5>
+    <a class="sbf-ghost" href="/quote/">
+      <span>Send me a quote →</span>
+      <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</aside>
+
+<button class="sbf-handle" id="sbf-open" aria-label="Show lead capture">
+  Get a quote
+  <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+</button>
+
+<script is:inline>
+  (function(){
+    const sbf = document.getElementById('sbf');
+    const handle = document.getElementById('sbf-open');
+    const closeBtn = document.getElementById('sbf-close');
+    const hero = document.querySelector('.hero');
+    if (!sbf || !handle || !closeBtn || !hero) return;
+
+    let dismissed = false;
+
+    closeBtn.addEventListener('click', () => {
+      dismissed = true;
+      sbf.classList.add('is-hidden');
+      handle.classList.add('is-visible');
+    });
+    handle.addEventListener('click', () => {
+      dismissed = false;
+      sbf.classList.remove('is-hidden');
+      handle.classList.remove('is-visible');
+    });
+
+    // Use IntersectionObserver for better performance than scroll listeners
+    const observer = new IntersectionObserver((entries) => {
+      if (dismissed) return;
+      entries.forEach(entry => {
+        // If hero is NOT intersecting (scrolled past 65%), show the sidebar
+        if (!entry.isIntersecting) {
+          sbf.classList.remove('is-hidden');
+        } else {
+          sbf.classList.add('is-hidden');
+        }
+      });
+    }, {
+      threshold: 0.35 // Trigger when only 35% of hero is visible
+    });
+
+    observer.observe(hero);
+    sbf.classList.add('is-hidden');
+  })();
+</script>

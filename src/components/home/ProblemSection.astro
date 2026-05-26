@@ -1,0 +1,85 @@
+---
+---
+<!-- ============ §01 PROBLEM ============ -->
+<section class="problem">
+  <div class="wrap problem_wrap">
+    <div class="sh">
+      <span class="idx">§ 01</span>
+      <span class="nm">The Problem</span>
+      <span class="tg">Why we built this</span>
+    </div>
+    <h2 class="big">Most sellers jump<br>straight to <em>the sale.</em></h2>
+    <div class="row problem_row">
+      <div class="problem_lede_col">
+        <p class="lede problem_lede">A container is a <mark>25-year investment.</mark> The difference between the right one and the wrong one is years of protection — or a rusted-out headache. Before you sign anything, you deserve to understand what you're buying.</p>
+        <div class="warranty-stamp problem_warranty">
+          <span class="w-small">Lifetime</span>
+          <span class="w-outline">Warranty.</span>
+          <span class="warranty-sub">on every unit we place.</span>
+        </div>
+      </div>
+      <div class="problem_stats">
+        <div class="stat problem_stat">
+          <div class="num c2">25yr</div>
+          <div class="problem_stat_copy">
+            <div class="lbl problem_stat_label">Useful life</div>
+            <div class="txt problem_stat_text">A properly-placed steel box outlasts most pole barns for a fraction of the price.</div>
+          </div>
+        </div>
+        <div class="stat problem_stat">
+          <div class="num c3">400+</div>
+          <div class="problem_stat_copy">
+            <div class="lbl problem_stat_label">Units placed</div>
+            <div class="txt problem_stat_text">Across farms, workshops, breweries, and hobby properties — wherever the truck can reach — since 2009.</div>
+          </div>
+        </div>
+        <div class="stat problem_stat">
+          <div class="num c4">0</div>
+          <div class="problem_stat_copy">
+            <div class="lbl problem_stat_label">Hidden fees</div>
+            <div class="txt problem_stat_text">All-in pricing. Container, delivery, setup. What we quote is what you pay.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Sections Shared */
+  .sh{display:grid;grid-template-columns:auto 1fr auto;gap:20px;align-items:center;padding:18px 0;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);margin-bottom:72px}
+  .sh .idx{font-family:var(--mono);font-size:var(--t-meta);letter-spacing:.08em;text-transform:uppercase}
+  .sh .nm{font-family:var(--narrow);font-weight:700;font-size:22px;text-transform:uppercase;letter-spacing:-.01em}
+  .sh .tg{font-family:var(--mono);font-size:var(--t-meta);letter-spacing:.08em;text-transform:uppercase;opacity:.55;text-align:right}
+  .big{font-family:var(--narrow);font-weight:700;font-size:var(--t-big);line-height:.9;letter-spacing:-.02em;text-transform:uppercase;margin:0}
+  .big em{font-style:italic;color:var(--c5-permits);font-weight:700}
+
+  /* Problem */
+  .problem{background:var(--cream);padding:120px 0 2em;border-bottom:2.5px solid var(--ink);position:relative;overflow:hidden}
+  .problem .row{display:grid;grid-template-columns:1.1fr 1fr;gap:72px;align-items:start;margin-top:56px}
+  .problem .problem_lede_col{display:flex;flex-direction:column}
+  .problem .lede{font-size:22px;line-height:1.45;margin:0 0 32px;max-width:560px;font-weight:500}
+  .problem .lede mark{background:var(--yellow);color:var(--ink);padding:1px 6px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+  .warranty-stamp{margin-top:auto;margin-left:auto;margin-right:auto;display:flex;flex-direction:column;gap:0;transform:rotate(-15deg);transform-origin:left bottom;padding-top:2em}
+  .w-small{font-family:'Permanent Marker',cursive;font-size:clamp(60px,8vw,92px);color:var(--ink);line-height:1;margin-bottom:-10px}
+  .w-outline{font-family:'Permanent Marker',cursive;font-size:clamp(52px,7vw,80px);color:var(--ink);line-height:1;margin-left:0.7em}
+  .warranty-sub{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;opacity:.5;margin-top:10px;transform:rotate(15deg);transform-origin:left center}
+  .stat{display:grid;grid-template-columns:auto 1fr;gap:22px;padding:22px 0;border-top:1.5px solid var(--ink);align-items:baseline}
+  .stat:last-child{border-bottom:1.5px solid var(--ink)}
+  .stat .num{font-family:var(--narrow);font-weight:700;font-size:64px;line-height:.85;letter-spacing:-.02em}
+  .stat .num.c2{color:var(--c2-cond)}
+  .stat .num.c3{color:var(--c3-deliver)}
+  .stat .num.c4{color:var(--c4-cost)}
+  .stat .lbl{font-family:var(--mono);font-size:var(--t-meta);letter-spacing:.08em;text-transform:uppercase;opacity:.55;margin-bottom:4px}
+  .stat .txt{font-size:16px;line-height:1.45}
+
+  @media (max-width:960px){
+    .problem .row{grid-template-columns:1fr;gap:32px}
+  }
+
+  @media (max-width:720px){
+    .big{font-size:clamp(36px,9vw,64px)}
+    .sh{grid-template-columns:auto 1fr;row-gap:6px}
+    .sh .tg{grid-column:1 / -1;text-align:left;opacity:.5}
+  }
+</style>

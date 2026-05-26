@@ -1,0 +1,108 @@
+---
+import { Image } from 'astro:assets';
+import containerHero from '../../assets/photos/40ft-container-hero-reduced2.png';
+---
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="hz hz-1">
+        <h1 class="billboard">Shipping Containers<br><span class="swap">That Actually Show Up.</span></h1>
+        <p class="hero-sub">20ft &amp; 40ft units delivered to your door. No call centers, no runaround.</p>
+      </div>
+      <div class="hz hz-2">
+        <div class="hz2-text">
+          <p class="hz2-copy">Container storage, done right.</p>
+          <p class="hz2-secondary">No hard sell.</p>
+        </div>
+        <div class="hz2-arrow-wrap">
+          <svg class="hz2-arrow-svg" viewBox="0 0 60 90" fill="none" aria-hidden="true">
+            <path d="M 12 8 C 50 20 8 55 38 82" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
+            <path d="M 38 82 L 22 78 M 38 82 L 32 66" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+      <div class="hz hz-3">
+        <Image src={containerHero} alt="40ft shipping container" class="hz3-img" />
+      </div>
+      <div class="hz hz-4">
+        <p class="hz4-copy">From <mark class="hz4-mark">expensive farm equipment</mark> to business inventory to specialized tools — containers protect what matters, if you choose the right size, condition, and delivery method. We'll walk you through <mark class="hz4-mark">five decisions</mark> so you can buy with confidence.</p>
+      </div>
+      <div class="hz hz-5">
+        <a href="/size/" class="hz5-btn">Start: What Size? &rarr;</a>
+        <a href="/shipping-containers-for-sale/" class="hz5-link">Browse Containers</a>
+        <a href="/quote/" class="hz5-link">Skip ahead &middot; Just send me a quote</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Ticker under hero -->
+<div class="ticker" aria-hidden="true">
+  <div class="track ticker_track">
+    <span>Delivery included within <em>250 miles</em></span><span>●</span>
+    <span>Great for <em>farm &amp; ranch storage</em></span><span>●</span>
+    <span>Perfect for <em>job site security</em></span><span>●</span>
+    <span>Most farm storage is <em>zoned exempt</em></span><span>●</span>
+    <span>Ideal for <em>backyard workshops</em></span><span>●</span>
+    <span>400+ containers placed across OH · IN · KY</span><span>●</span>
+    <span>Built for <em>commercial inventory</em></span><span>●</span>
+    <span>No farm-access upcharge</span><span>●</span>
+    <span>Convert into an <em>office or studio</em></span><span>●</span>
+    <span>Delivery included within <em>250 miles</em></span><span>●</span>
+    <span>Great for <em>farm &amp; ranch storage</em></span><span>●</span>
+    <span>Perfect for <em>job site security</em></span><span>●</span>
+    <span>Most farm storage is <em>zoned exempt</em></span><span>●</span>
+    <span>Ideal for <em>backyard workshops</em></span><span>●</span>
+    <span>400+ containers placed across OH · IN · KY</span><span>●</span>
+    <span>Built for <em>commercial inventory</em></span><span>●</span>
+    <span>No farm-access upcharge</span><span>●</span>
+    <span>Convert into an <em>office or studio</em></span><span>●</span>
+  </div>
+</div>
+
+<style>
+  /* Hero scaffold */
+  .hero{background:var(--yellow);color:var(--ink);border-bottom:2.5px solid var(--ink);padding:32px 0}
+  .hero-grid{
+    display:grid;
+    grid-template-areas:"one one" "two three" "four five";
+    grid-template-columns:3fr 2fr;
+  }
+  .hz{display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:32px;font-weight:700;color:white}
+  .hz span{padding:8px 18px}
+  .hz-1{grid-area:one;background:var(--yellow);color:var(--ink);align-items:flex-start;flex-direction:column;padding:24px 32px 20px;gap:12px;container-type:inline-size}
+  .billboard{font-family:var(--narrow);font-weight:700;font-size:7.5cqi;line-height:1;letter-spacing:-.02em;text-transform:uppercase;margin:0}
+  .billboard .swap{color:var(--c3-deliver)}
+  .hero-sub{font-size:.75em;font-weight:400;line-height:1.4;margin:0;opacity:.6;text-align:right;width:100%}
+  .hz-2{grid-area:two;background:var(--yellow);color:var(--ink);min-height:220px;flex-direction:row;align-items:center;padding:20px 16px 20px 28px;gap:0;container-type:inline-size}
+  .hz2-text{flex:1;display:flex;flex-direction:column;gap:10px;container-type:inline-size}
+  .hz2-arrow-wrap{flex:0 0 72px;display:flex;align-items:center;justify-content:center}
+  .hz2-arrow-svg{width:52px;height:auto;color:var(--ink)}
+  .hz2-copy{font-family:var(--narrow);font-size:9cqi;font-weight:700;text-transform:uppercase;line-height:1;letter-spacing:-.02em;margin:0}
+  .hz2-secondary{font-family:var(--mono);font-size:1.8cqi;text-transform:uppercase;letter-spacing:.1em;margin:0;opacity:.55;padding:0}
+  .hz-3{grid-area:three;min-height:220px;padding:0;overflow:hidden}
+  .hz3-img{width:100%;height:100%;object-fit:cover;display:block}
+  .hz-4{grid-area:four;background:var(--yellow);color:var(--ink);min-height:120px;align-items:center;justify-content:center;padding:28px 36px;container-type:inline-size}
+  .hz4-copy{font-size:clamp(14px,2.2cqi,18px);font-weight:600;line-height:1.55;margin:0}
+  .hz4-mark{background:var(--ink);color:var(--cream);padding:1px 7px;font-style:normal}
+  .hz-5{grid-area:five;background:var(--yellow);color:var(--ink);min-height:120px;align-items:flex-start;justify-content:center;flex-direction:column;padding:28px 32px;gap:16px;container-type:inline-size}
+  .hz5-btn{display:inline-flex;align-items:center;background:var(--ink);color:var(--cream);font-family:var(--mono);font-size:clamp(11px,1.8cqi,15px);font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:14px 20px;text-decoration:none;white-space:nowrap}
+  .hz5-link{font-family:var(--mono);font-size:clamp(10px,1.4cqi,12px);font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--ink);text-decoration:none;border-bottom:1.5px solid var(--ink);padding-bottom:2px}
+  .hz5-link::before{content:'→  '}
+
+  /* Ticker */
+  .ticker{background:var(--ink);color:var(--yellow);border-top:2.5px solid var(--ink);border-bottom:2.5px solid var(--ink);overflow:hidden;white-space:nowrap;padding:14px 0;font-family:var(--narrow);font-weight:700;font-size:20px;text-transform:uppercase;letter-spacing:-.01em}
+  .ticker .track{display:inline-block;animation:tkr 38s linear infinite;padding-left:100%}
+  .ticker span{margin:0 24px}
+  .ticker em{font-style:normal;color:var(--c5-permits)}
+  @keyframes tkr{from{transform:translateX(0)}to{transform:translateX(-100%)}}
+
+  @media (max-width:960px){
+    .hero-grid{grid-template-areas:"one" "two" "three" "four" "five";grid-template-columns:1fr}
+  }
+
+  @media (max-width:720px){
+    .billboard{line-height:.92}
+  }
+</style>
