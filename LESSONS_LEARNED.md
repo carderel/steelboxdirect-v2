@@ -34,7 +34,9 @@ This file captures recent/situational lessons. It's **Layer 3** of the rule hier
 
 ## Active Lessons (Layer 3)
 
-<!-- Add lessons below -->
+### L001 — Always check UDO first
+**Date:** 2026-05-25  
+Before deciding how to handle any situation — execution approach, compliance gaps, agent usage, mode selection — check what the UDO protocol already specifies. Do not improvise, offer options, or ask the user when ORCHESTRATOR.md has already answered the question. UDO is the operating system; consult it before acting.
 
 ---
 
