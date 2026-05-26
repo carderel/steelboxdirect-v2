@@ -3,10 +3,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { Image } from 'astro:assets';
 import heroImage from '../assets/photos/container-blue-weathered.jpg';
 import containerHero from '../assets/photos/40ft-container-hero-reduced2.png';
+import rigDiagram from '../assets/photos/delivery-rig-diagram.png';
 ---
 
 <BaseLayout
-  title="Steel Box Direct — Protect what you've built"
+  title="Shipping Containers for Sale — Ohio, Indiana & Kentucky | Steel Box Direct"
+  description="Buy a 20ft or 40ft shipping container delivered within 250 miles of Cincinnati. No broker markup. Cargo-worthy and one-trip units. Quote within 4 business hours."
   pageType="home"
 >
   <link slot="head" rel="preconnect" href="https://fonts.googleapis.com" />
@@ -35,6 +37,7 @@ import containerHero from '../assets/photos/40ft-container-hero-reduced2.png';
         <p class="dek-lede hero_dek_lede">From <strong>expensive farm equipment</strong> to business inventory to specialized tools — containers protect what matters, if you choose the right size, condition, and delivery method. We'll walk you through <strong>five decisions</strong> so you can buy with confidence.</p>
         <div class="dek-acts hero_cta_group">
           <a class="btn" href="/size/">Start: what size? <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+          <a class="btn-ghost" href="/shipping-containers-for-sale/">→ Browse containers</a>
           <a class="btn-ghost" href="/quote/">→ Skip ahead · just send me a quote</a>
         </div>
       </div>
@@ -198,6 +201,9 @@ import containerHero from '../assets/photos/40ft-container-hero-reduced2.png';
           <span class="note">Double cargo doors open 270° and lock flat to the sidewall. No ramp required for most equipment.</span>
         </div>
       </div>
+      <div class="rig-diagram-wrap">
+        <Image src={rigDiagram} alt="Labeled diagram of a shipping container showing structural components including corner posts, rails, corrugated roof, locking bars, door sill, and floor cross members" class="rig-diagram-img" />
+      </div>
     </div>
   </section>
 
@@ -232,7 +238,7 @@ import containerHero from '../assets/photos/40ft-container-hero-reduced2.png';
               </div>
             </td>
             <td class="quote">"Won't it rust? Will it protect my equipment long-term?"</td>
-            <td><span class="rec">40-ft · one-trip</span></td>
+            <td><a href="/shipping-containers-for-sale/40-foot-one-trip-container/" class="rec-link"><span class="rec">40-ft · one-trip</span></a></td>
             <td>New steel for 25-year weather protection on a John Deere and a grain drill. Sited on crushed stone, leveled with railroad ties.</td>
           </tr>
           <tr>
@@ -243,7 +249,7 @@ import containerHero from '../assets/photos/40ft-container-hero-reduced2.png';
               </div>
             </td>
             <td class="quote">"Can we make this look professional? Scale to multiple units?"</td>
-            <td><span class="rec">2 × 40-ft · mixed</span></td>
+            <td><a href="/shipping-containers-for-sale/40-foot-shipping-container/" class="rec-link"><span class="rec">2 × 40-ft · mixed</span></a></td>
             <td>One one-trip for customer-facing inventory, one cargo-worthy for back-stock. Painted to match the barn.</td>
           </tr>
           <tr>
@@ -254,7 +260,7 @@ import containerHero from '../assets/photos/40ft-container-hero-reduced2.png';
               </div>
             </td>
             <td class="quote">"Can you deliver to my property? Is used okay?"</td>
-            <td><span class="rec">20-ft · cargo-worthy</span></td>
+            <td><a href="/shipping-containers-for-sale/20-foot-shipping-container/" class="rec-link"><span class="rec">20-ft · cargo-worthy</span></a></td>
             <td>Crane-set over a fenceline at the end of a gravel lane. Cargo-worthy for a 2/3 cost savings — horse trailer and tools stay dry.</td>
           </tr>
         </tbody>
@@ -275,38 +281,35 @@ import containerHero from '../assets/photos/40ft-container-hero-reduced2.png';
 
       <div class="pgrid pricing_grid">
         <div class="pcard pricing_card">
-          <div class="tag pricing_name"><span class="name">20-ft cargo</span><span class="chip">From</span></div>
-          <div class="num pricing_price">$2,400<small>/ avg. · prices vary</small></div>
+          <div class="tag pricing_name"><span class="name">20-ft cargo</span><span class="chip">Most available</span></div>
           <ul class="pricing_features">
             <li>~160 sq ft · fits a tractor or a lot of tools</li>
             <li>Wind &amp; Water Tight, minor surface rust</li>
             <li>Next-week delivery usually available</li>
           </ul>
-          <a href="/quote/?size=20ft" class="pcard-cta pricing_cta">Get current price on a 20ft cargo container <span>→</span></a>
+          <a href="/shipping-containers-for-sale/20-foot-shipping-container/" class="pcard-cta pricing_cta">See full specs <span>→</span></a>
         </div>
         <div class="pcard rec pricing_card">
           <div class="tag pricing_name"><span class="name">40-ft cargo</span><span class="chip">Most popular</span></div>
-          <div class="num pricing_price">$3,200<small>/ avg. · prices vary</small></div>
           <ul class="pricing_features">
             <li>~320 sq ft · equipment + implements + shelving</li>
-            <li>The Sweet Spot — price of used, life of new</li>
-            <li>Best $ / sq ft on the lot</li>
+            <li>The Sweet Spot — best value per square foot</li>
+            <li>Fits farms, job sites, and commercial properties</li>
           </ul>
-          <a href="/quote/?size=40ft" class="pcard-cta pricing_cta">Get current price on a 40ft cargo container <span>→</span></a>
+          <a href="/shipping-containers-for-sale/40-foot-shipping-container/" class="pcard-cta pricing_cta">See full specs <span>→</span></a>
         </div>
         <div class="pcard pricing_card">
           <div class="tag pricing_name"><span class="name">40-ft one-trip</span><span class="chip">New</span></div>
-          <div class="num pricing_price">$5,800<small>/ avg. · prices vary</small></div>
           <ul class="pricing_features">
             <li>Single trip from factory · factory finish</li>
             <li>25-year weather protection, warranty-backed</li>
-            <li>Tom's pick for high-value equipment</li>
+            <li>Best choice for conversions and builds</li>
           </ul>
-          <a href="/quote/?size=40ft_hc" class="pcard-cta pricing_cta">Get current price on a 40ft one-trip container <span>→</span></a>
+          <a href="/shipping-containers-for-sale/40-foot-one-trip-container/" class="pcard-cta pricing_cta">See full specs <span>→</span></a>
         </div>
       </div>
       <p style="font-family:var(--mono);font-size:13px;letter-spacing:.04em;font-weight:500;opacity:.7;text-transform:uppercase;margin-top:2rem;line-height:1.75">
-        Prices shown are recent market averages — container, delivery, and flat-ground placement included. Container pricing tracks global shipping rates and steel supply, which can shift from week to week. We update these figures regularly to reflect current conditions. Request a quote to confirm the number that applies to your order.
+        Container pricing tracks global shipping rates and steel supply — it shifts week to week. We don't post numbers that will be wrong by the time you read them. Request a quote for the current price that applies to your order.
       </p>
     </div>
   </section>
@@ -362,6 +365,7 @@ import containerHero from '../assets/photos/40ft-container-hero-reduced2.png';
         <span>Real human replies</span>
         <span>All-in pricing, always</span>
       </div>
+      <p style="margin-top:2rem;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;opacity:.6">Serving <a href="/cincinnati-shipping-containers/" style="color:inherit;border-bottom:1px solid currentColor">Cincinnati</a> · <a href="/dayton-shipping-containers/" style="color:inherit;border-bottom:1px solid currentColor">Dayton</a> · <a href="/indianapolis-shipping-containers/" style="color:inherit;border-bottom:1px solid currentColor">Indianapolis</a> · <a href="/louisville-shipping-containers/" style="color:inherit;border-bottom:1px solid currentColor">Louisville</a> and surrounding areas — <a href="/locations/" style="color:inherit;border-bottom:1px solid currentColor">see full delivery map</a></p>
     </div>
   </section>
 
@@ -479,6 +483,8 @@ import containerHero from '../assets/photos/40ft-container-hero-reduced2.png';
     .rig .spec .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;opacity:.7}
     .rig .spec .val{font-family:var(--narrow);font-weight:700;font-size:40px;line-height:1;letter-spacing:-.02em;text-transform:uppercase}
     .rig .spec .note{font-size:13px;line-height:1.45;opacity:.85}
+    .rig-diagram-wrap{max-width:1100px;margin:48px auto 0;padding:0 32px}
+    .rig-diagram-img{width:100%;height:auto;display:block;border:2.5px solid rgba(246,241,231,.3)}
 
     /* Personas */
     .personas{background:var(--cream);padding:120px 0;border-bottom:2.5px solid var(--ink)}
@@ -496,6 +502,7 @@ import containerHero from '../assets/photos/40ft-container-hero-reduced2.png';
     .ptbl .pname small{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;opacity:.55;margin-top:4px}
     .ptbl .quote{font-style:italic;font-family:var(--narrow);font-weight:500;font-size:17px;line-height:1.3}
     .ptbl .rec{font-family:var(--mono);font-size:12px;letter-spacing:.04em;background:var(--ink);color:var(--yellow);padding:4px 8px;display:inline-block}
+    .ptbl .rec-link{text-decoration:none}.ptbl .rec-link:hover .rec{opacity:.8}
 
     /* Price */
     .price{background:var(--ink);color:var(--cream);padding:120px 0;border-bottom:2.5px solid var(--ink)}
