@@ -17,6 +17,9 @@ interface Props {
   pageType?: 'home' | 'guide' | 'tool' | 'quote' | 'legal' | 'product';
   guideTopic?: 'size' | 'condition' | 'delivery' | 'cost' | 'permits';
   cityOverride?: CityOverride;
+  noindex?: boolean;
+  datePublished?: string;
+  dateModified?: string;
 }
 
 const {
@@ -24,7 +27,10 @@ const {
   description = 'Make informed decisions about shipping containers. Size guides, condition comparisons, delivery requirements, and expert guidance.',
   pageType = 'home',
   guideTopic,
-  cityOverride
+  cityOverride,
+  noindex = false,
+  datePublished,
+  dateModified,
 } = Astro.props;
 ---
 
@@ -45,16 +51,26 @@ const {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={`https://steelboxdirect.com${Astro.url.pathname}`} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:site_name" content="Steel Box Direct" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
     <link rel="canonical" href={`https://steelboxdirect.com${Astro.url.pathname}`} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title}</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@500;600;700&family=Archivo:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&family=Permanent+Marker&display=swap" rel="stylesheet">
+    <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@500;600;700&family=Archivo:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&family=Permanent+Marker&display=swap" />
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@500;600;700&family=Archivo:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&family=Permanent+Marker&display=swap" /></noscript>
 
     <!-- Schema Markup -->
-    <Schema pageType={pageType} pageTitle={title} pageDescription={description} guideTopic={guideTopic} cityOverride={cityOverride} />
+    <Schema pageType={pageType} pageTitle={title} pageDescription={description} guideTopic={guideTopic} cityOverride={cityOverride} datePublished={datePublished} dateModified={dateModified} />
     <slot name="head" />
 
     <!-- Attribution tracking initialization -->
