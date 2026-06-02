@@ -3,7 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import AdminDashboard from '../../components/AdminDashboard';
 ---
 
-<BaseLayout title="Seller Dashboard | Steel Box Direct" pageType="legal">
+<BaseLayout title="Seller Dashboard | Steel Box Direct" pageType="legal" noindex={true}>
   <div class="admin-wrapper">
     <AdminDashboard client:only="react" />
   </div>
