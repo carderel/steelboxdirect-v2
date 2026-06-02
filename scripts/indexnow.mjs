@@ -1,4 +1,5 @@
 import { readFileSync } from 'fs';
+import { fileURLToPath } from 'url';
 
 const KEY = '00a37f3071714d8fbd653e15611f3ad3';
 const HOST = 'steelboxdirect.com';
@@ -54,6 +55,6 @@ async function main() {
 }
 
 // Guard: only run when executed directly, not when imported by tests
-if (process.argv[1] === new URL(import.meta.url).pathname) {
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
   main();
 }
