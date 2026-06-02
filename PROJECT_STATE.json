@@ -3,7 +3,7 @@
   "phase": "optimization_expansion",
   "status": "active_development",
   "last_session": "2026-06-02",
-  "last_commit": "b5fecae",
+  "last_commit": "5ca8632",
   "completed": [
     "Project relocation to workspace root",
     "Git repository initialization and cleanup (steelboxdirect-v2)",
@@ -32,10 +32,14 @@
     "Product pages: /shipping-containers-for-sale/ hub + 3 spec subpages (20ft, 40ft, 40ft one-trip)",
     "City page refactor: [citySlug].astro template replacing 4 flat files, all URLs preserved",
     "Containers nav link added to BaseLayout",
-    "IndexNow integration: key file, submission script, npm scripts (2026-06-02)"
+    "IndexNow integration: key file, submission script, npm scripts (2026-06-02)",
+    "SEO audit + fixes: schema cleanup, noindex admin, OG tags, non-blocking fonts, internal links, city FAQ schema (2026-06-02)"
   ],
   "todos": [
-    "Cloudflare Pages build command: change to 'npm run build && npm run indexnow' (manual dashboard step)",
+    "Create Google Business Profile + add URL to Organization.sameAs",
+    "Verify GA4 firing through Partytown (Network tab check)",
+    "Add og:image when hero asset confirmed",
+    "/size/calculator/ static content fallback for Googlebot",
     "FAQ Schema & Snippet Optimization (existing pages — deferred)",
     "Final Cloudflare DNS/Domain configuration",
     "Switch Cloudflare secrets from Plaintext to Secret type (RESEND_API_KEY, SUPABASE_SERVICE_ROLE_KEY)"
