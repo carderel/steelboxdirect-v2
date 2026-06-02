@@ -12,9 +12,11 @@ interface Props {
   pageDescription: string;
   guideTopic?: 'size' | 'condition' | 'delivery' | 'cost' | 'permits';
   cityOverride?: CityOverride;
+  datePublished?: string;
+  dateModified?: string;
 }
 
-const { pageType, pageTitle, pageDescription, guideTopic, cityOverride } = Astro.props;
+const { pageType, pageTitle, pageDescription, guideTopic, cityOverride, datePublished, dateModified } = Astro.props;
 
 // Organization Schema
 const organizationSchema = {
@@ -38,8 +40,7 @@ const organizationSchema = {
     '@type': 'ContactPoint',
     'contactType': 'Sales',
     'url': 'https://steelboxdirect.com/quote/'
-  },
-  'sameAs': ['https://steelboxdirect.com']
+  }
 };
 
 // LocalBusiness Schema (250-mile radius from Cincinnati, or city-specific)
@@ -51,7 +52,9 @@ const lbLng = cityOverride?.longitude ?? '-84.4704';
 const localBusinessSchema = {
   '@context': 'https://schema.org',
   '@type': 'LocalBusiness',
+  '@id': 'https://steelboxdirect.com/#localbusiness',
   'name': 'Steel Box Direct',
+  'telephone': '+15135462543',
   'image': 'https://steelboxdirect.com/logo.svg',
   'description': 'Shipping container buyer\'s guide and sales service',
   'address': {
@@ -266,62 +269,14 @@ const quotePageSchema = {
   }
 };
 
-// FAQ Schema (for all guides)
-const faqSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  'mainEntity': [
-    {
-      '@type': 'Question',
-      'name': 'How do I know what size container I need?',
-      'acceptedAnswer': {
-        '@type': 'Answer',
-        'text': 'Measure your equipment and compare to 20-foot (1,160 cubic feet) and 40-foot (2,385 cubic feet) containers. Use our size calculator for exact recommendations.'
-      }
-    },
-    {
-      '@type': 'Question',
-      'name': 'What is the difference between new and used containers?',
-      'acceptedAnswer': {
-        '@type': 'Answer',
-        'text': 'New (One-Trip) containers guarantee weatherproofing but cost more. Used containers (Cargo Worthy, Wind & Water Tight) are cheaper and suitable for most uses. Condition grade determines durability and cost.'
-      }
-    },
-    {
-      '@type': 'Question',
-      'name': 'Do I need a permit for a shipping container?',
-      'acceptedAnswer': {
-        '@type': 'Answer',
-        'text': 'Most rural agricultural properties have exemptions. Urban and residential areas may require permits. Check with your local zoning office for specific requirements.'
-      }
-    },
-    {
-      '@type': 'Question',
-      'name': 'How much does a shipping container cost?',
-      'acceptedAnswer': {
-        '@type': 'Answer',
-        'text': 'Costs vary based on condition, size, and delivery distance. New 20-foot containers cost more than used 40-foot containers. We provide accurate quotes after consultation.'
-      }
-    },
-    {
-      '@type': 'Question',
-      'name': 'What areas do you serve?',
-      'acceptedAnswer': {
-        '@type': 'Answer',
-        'text': 'We serve approximately 250 miles from Cincinnati, Ohio. This includes Ohio, Indiana, Kentucky, and surrounding regions.'
-      }
-    }
-  ]
-};
-
 // Article Schema (for guides)
 const articleSchema = {
   '@context': 'https://schema.org',
   '@type': 'Article',
   'headline': pageTitle,
   'description': pageDescription,
-  'datePublished': '2026-03-10',
-  'dateModified': '2026-03-23',
+  'datePublished': datePublished ?? '2026-03-10',
+  'dateModified': dateModified ?? datePublished ?? '2026-03-10',
   'author': {
     '@type': 'Organization',
     'name': 'Steel Box Direct'
@@ -360,21 +315,13 @@ const webSiteSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
   'name': 'Steel Box Direct',
-  'url': 'https://steelboxdirect.com',
-  'potentialAction': {
-    '@type': 'SearchAction',
-    'target': {
-      '@type': 'EntryPoint',
-      'urlTemplate': 'https://steelboxdirect.com/quote/'
-    },
-    'query-input': 'required name=search_term_string'
-  }
+  'url': 'https://steelboxdirect.com'
 };
 
 if (pageType === 'home') {
-  schemas.push(webSiteSchema, faqSchema);
+  schemas.push(webSiteSchema);
 } else if (pageType === 'guide') {
-  schemas.push(articleSchema, faqSchema);
+  schemas.push(articleSchema);
   if (guideTopic === 'size') schemas.push(sizeGuideSchema);
   if (guideTopic === 'condition') schemas.push(conditionGuideSchema);
   if (guideTopic === 'delivery') schemas.push(deliveryGuideSchema);
