@@ -17,6 +17,8 @@ const { city: c } = Astro.props;
   title={c.seo.title}
   description={c.seo.description}
   pageType="guide"
+  datePublished="2026-04-15"
+  dateModified="2026-05-26"
   cityOverride={{
     name: c.city,
     addressRegion: c.state,
@@ -24,6 +26,39 @@ const { city: c } = Astro.props;
     longitude: c.map.marker.split(',')[1],
   }}
 >
+
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": `Do you deliver shipping containers to ${c.city}, ${c.state}?`,
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": `Yes. We deliver to ${c.delivery.counties.join(', ')} and surrounding areas. ${c.delivery.body}`
+          }
+        },
+        {
+          "@type": "Question",
+          "name": `What counties near ${c.city} do you serve?`,
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": `We serve ${c.delivery.counties.join(', ')} with flat-fee delivery from Cincinnati, Ohio.`
+          }
+        },
+        {
+          "@type": "Question",
+          "name": `How quickly can I get a container quote in ${c.city}?`,
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": c.cta.body
+          }
+        }
+      ]
+    })} />
+  </Fragment>
 
   <section class="local-hero">
     <div class="wrap">
