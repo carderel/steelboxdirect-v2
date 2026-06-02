@@ -14,4 +14,4 @@ Allow: /
 
 # Discovery Hints
 Sitemap: https://steelboxdirect.com/sitemap-index.xml
-LLMS: https://steelboxdirect.com/llms.txt
+# llms.txt: https://steelboxdirect.com/llms.txt
