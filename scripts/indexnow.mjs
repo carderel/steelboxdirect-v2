@@ -5,7 +5,7 @@ const HOST = 'steelboxdirect.com';
 const ENDPOINT = 'https://api.indexnow.org/indexnow';
 
 export function extractUrls(xml) {
-  return [...xml.matchAll(/<loc>(https?:\/\/[^<]+)<\/loc>/g)].map(m => m[1]);
+  return [...xml.matchAll(/<loc>(https?:\/\/[^<]+)<\/loc>/g)].map(m => m[1].trim());
 }
 
 async function main() {
