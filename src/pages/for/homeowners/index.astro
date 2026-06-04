@@ -4,10 +4,42 @@ import { pricing, monthlyOver5yr } from '../../../data/pricing';
 const own20 = pricing['20ftCargo'];
 const ownMonthlyDisplay = `$${monthlyOver5yr(own20.price)}`;        // "$33"
 const ownPurchaseDisplay = `$${own20.price.toLocaleString('en-US')}`; // "$2,007"
+
+// --- Visible FAQ set (single source of truth → drives both the rendered FAQ and the JSON-LD) ---
+const faqs = [
+  {
+    q: 'Will a 20ft container fit in a standard suburban driveway?',
+    a: 'Usually, yes. A 20ft container is 8 feet wide and 20 feet long — roughly the footprint of a large SUV and a half-car length. Most standard suburban driveways are wide enough, though placement depends on attached garages, fence lines, or utility setbacks. More important than the footprint is delivery clearance: the truck needs about 50 feet of unobstructed approach. A standard residential street with traffic is typically workable. Include your address when requesting a quote and we can assess the approach.',
+  },
+  {
+    q: 'Do I need a permit to have a shipping container on my residential property in Ohio?',
+    a: "It depends on your location. Properties zoned agricultural are almost universally exempt. Residential properties inside city limits in Ohio have varying rules — some municipalities require a permit, some have a size threshold below which no permit is required, and some have no restriction at all. Most unincorporated township properties in Ohio, Indiana, and Kentucky don't require a permit. The fastest way to find out is to call your county auditor or zoning office. When you request a quote, tell us your county and we'll share what we know from working in your area.",
+  },
+  {
+    q: 'How does delivery work in a residential neighborhood?',
+    a: "A tilt-bed truck backs in, tilts, and slides the container into position. The process takes 30–45 minutes from truck arrival to completion. We minimize impact on neighboring traffic, but neighbors may need to move vehicles temporarily if the approach is tight. We don't require street closures or permits for delivery in most cases. If your street has weight limits or parking restrictions, mention that when you request a quote.",
+  },
+  {
+    q: 'How does buying a container compare to renting a storage unit long-term?',
+    a: `The math usually favors ownership for anything beyond 2–3 years. A climate-controlled 10×10 storage unit in the Cincinnati metro averages $150–200 per month and increases annually. Over 5 years, that's $9,000–$12,000 in fees for space you never own. A 20ft container is a one-time purchase of ${ownPurchaseDisplay} today — far less over that horizon, and you can sell it when you're done. The container also holds more than a 10×10 unit and sits on your property. The tradeoff: you need the outdoor space, and a storage facility protects climate-sensitive items better since containers have no HVAC.`,
+  },
+  {
+    q: 'Can I add shelving, electricity, or other modifications to a container?',
+    a: "Yes — containers are commonly modified for exactly this purpose. Shelving mounts directly to the corrugated side walls using standard fasteners. Electrical can be run from your home's panel to the container if it's placed within practical distance; an electrician can wire a standard outlet and light in a few hours. We don't sell modified containers, but we can point you toward local fabricators who handle electrical, shelving, ventilation, and insulation.",
+  },
+  {
+    q: 'What does a container sit on, and do I need a foundation?',
+    a: "No foundation is required. A container rests on its four corner castings, so most homeowners place a concrete block, a railroad tie, or a paver under each corner to keep it level and lift the steel floor off wet ground. Level, firm ground — a driveway, a gravel pad, or compacted grass — is all you need. A foundation or slab is optional and only matters if you're building something permanent. Because it isn't anchored to a foundation, the container stays personal property, which is part of why it's often exempt from permits that apply to permanent structures.",
+  },
+  {
+    q: 'Will my stuff get damp or moldy inside a steel container?',
+    a: 'It can if you don\'t plan for it. Containers are weathertight against rain and snow, but a sealed steel box with no airflow can build condensation when warm, humid air meets cold steel — sometimes called "container rain." The fix is simple: add a couple of passive roof vents or louver vents for cross-flow, keep items off the floor on pallets or shelving, and toss in moisture-absorber buckets for anything sensitive. For most home storage — tools, furniture, equipment, seasonal items — basic ventilation is plenty. Climate-sensitive belongings (electronics, paper, anything that fears humidity swings) are still better off in a conditioned space, since containers have no HVAC.',
+  },
+];
 ---
 
 <BaseLayout
-  title="Shipping Containers for Home Storage in Ohio, Indiana & Kentucky | Steel Box Direct"
+  title="Shipping Containers for Home Storage in OH, IN & KY | Steel Box Direct"
   description="Own your storage instead of renting it. Steel Box Direct delivers 20ft and 40ft containers to homes across OH/IN/KY. No monthly fees, no storage unit hassle."
   pageType="guide"
   datePublished="2026-06-04"
@@ -18,58 +50,36 @@ const ownPurchaseDisplay = `$${own20.price.toLocaleString('en-US')}`; // "$2,007
     <script type="application/ld+json" set:html={JSON.stringify({
       "@context": "https://schema.org",
       "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "Will a 20ft container fit in a standard suburban driveway?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Usually, yes. A 20ft container is 8 feet wide and 20 feet long — roughly the footprint of a large SUV and a half-car length. Most standard suburban driveways are wide enough, though placement depends on attached garages, fence lines, or utility setbacks. More important than the footprint is delivery clearance: the truck needs about 50 feet of unobstructed approach. A standard residential street with traffic is typically workable. Include your address when requesting a quote and we can assess the approach."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Do I need a permit to have a shipping container on my residential property in Ohio?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "It depends on your location. Properties zoned agricultural are almost universally exempt. Residential properties inside city limits in Ohio have varying rules — some municipalities require a permit, some have a size threshold below which no permit is required, and some have no restriction at all. Most unincorporated township properties in Ohio, Indiana, and Kentucky don't require a permit. The fastest way to find out is to call your county auditor or zoning office. When you request a quote, tell us your county and we'll share what we know from working in your area."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How does delivery work in a residential neighborhood?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "A tilt-bed truck backs in, tilts, and slides the container into position. The process takes 30–45 minutes from truck arrival to completion. We minimize impact on neighboring traffic, but neighbors may need to move vehicles temporarily if the approach is tight. We don't require street closures or permits for delivery in most cases. If your street has weight limits or parking restrictions, mention that when you request a quote."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How does buying a container compare to renting a storage unit long-term?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": `The math usually favors ownership for anything beyond 2–3 years. A climate-controlled 10×10 storage unit in the Cincinnati metro averages $150–200 per month and increases annually. Over 5 years, that's $9,000–$12,000 in fees for space you never own. A 20ft container is a one-time purchase of ${ownPurchaseDisplay} today — far less over that horizon, and you can sell it when you're done. The container also holds more than a 10×10 unit and sits on your property. The tradeoff: you need the outdoor space, and a storage facility protects climate-sensitive items better since containers have no HVAC.`
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Can I add shelving, electricity, or other modifications to a container?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Yes — containers are commonly modified for exactly this purpose. Shelving mounts directly to the corrugated side walls using standard fasteners. Electrical can be run from your home's panel to the container if it's placed within practical distance; an electrician can wire a standard outlet and light in a few hours. We don't sell modified containers, but we can point you toward local fabricators who handle electrical, shelving, ventilation, and insulation."
-          }
-        }
-      ]
+      "mainEntity": faqs.map((f) => ({
+        "@type": "Question",
+        "name": f.q,
+        "acceptedAnswer": { "@type": "Answer", "text": f.a },
+      })),
     })} />
   </Fragment>
 
   <!-- 1. HERO -->
   <section class="uc-hero">
-    <div class="wrap">
-      <span class="uc-eyebrow">For Homeowners</span>
-      <h1 class="uc-h1">Backyard Storage Without the Monthly Bill.</h1>
-      <p class="uc-lede">One purchase. No renewal notices. No unit fee increases. Weatherproof storage that lives on your property — not in a facility across town.</p>
-      <div class="uc-accent" style="background: var(--c2-cond);"></div>
+    <div class="wrap uc-hero-grid">
+      <div class="uc-hero-copy">
+        <span class="uc-eyebrow">For Homeowners</span>
+        <h1 class="uc-h1">Backyard Storage Without the Monthly Bill.</h1>
+        <p class="uc-lede">One purchase. No renewal notices. No unit fee increases. Weatherproof storage that lives on your property — not in a facility across town. We deliver 20ft and 40ft containers to homes across Ohio, Indiana, and Kentucky, and most arrive on a standard driveway in well under an hour.</p>
+        <div class="uc-accent" style="background: var(--c2-cond);"></div>
+        <p class="uc-trust-strip m">Delivered within 250 mi of Cincinnati · Quote in 4 business hours · No monthly fees, ever</p>
+      </div>
+
+      <!-- IMAGE SLOT 1 — hero. Swap data-URI src for the real photo; alt + dimensions stay. -->
+      <!-- filename: homeowner-20ft-container-suburban-driveway.jpg -->
+      <figure class="uc-img uc-img-hero" data-img-slot="hero">
+        <img
+          class="uc-img-real"
+          width="640" height="480"
+          alt="20ft shipping container delivered to a suburban home driveway in Ohio for backyard storage"
+          src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='640'%20height='480'%3E%3C/svg%3E"
+        />
+        <span class="uc-img-tag m">Photo · 20ft container on a suburban driveway</span>
+      </figure>
     </div>
   </section>
 
@@ -80,25 +90,106 @@ const ownPurchaseDisplay = `$${own20.price.toLocaleString('en-US')}`; // "$2,007
         <span class="m">Why It Works</span>
         <h2 class="uc-h2">Why containers work for homeowners</h2>
       </div>
+      <p class="uc-section-intro">A shipping container solves the same problem as a rented storage unit or a backyard shed — but it does it once, for a single price, on ground you already own. Here's why homeowners across the Cincinnati region keep choosing steel over a recurring bill.</p>
       <div class="uc-why-grid">
         <div class="uc-block">
           <h3>Own it instead of renting it</h3>
-          <p>A 10×10 climate-controlled storage unit in Cincinnati runs $150–250 per month. Over five years, that's $9,000–$15,000 in fees — for a space you never own. A 20ft container is a one-time purchase of {ownPurchaseDisplay} today, or about {ownMonthlyDisplay} per month amortized over five years — and it belongs to you permanently. When you no longer need it, it can be resold — containers hold their value well because steel doesn't depreciate like wood. The math works strongly in favor of ownership for anyone storing long-term.</p>
+          <p>A 10×10 climate-controlled storage unit in Cincinnati runs $150–250 per month. Over five years, that's $9,000–$15,000 in fees — for a space you never own, that you have to drive to, and that raises its rate almost every year. A 20ft container is a one-time purchase of {ownPurchaseDisplay} today — roughly {ownMonthlyDisplay} per month if you spread it across the same five years — and it belongs to you permanently. There is no renewal notice and no annual increase. When you no longer need it, you can resell it: steel holds its value because it doesn't rot, warp, or depreciate the way a wood shed does. For anyone storing longer than two or three years, the math runs strongly in favor of ownership.</p>
           <p class="uc-price-note">Container pricing reflects current market · updated June 2026.</p>
         </div>
         <div class="uc-block">
           <h3>More secure than a shed, more accessible than a storage facility</h3>
-          <p>A shipping container is built from the same Cor-Ten steel used in ocean freight. There's no OSB or vinyl skin to cut through, no plastic windows, and no flat roof that accumulates water. The double door locks with a steel hasp designed for padlocks or puck locks. And it's on your property — you access it any time, day or night, without driving anywhere.</p>
+          <p>A shipping container is built from Cor-Ten steel — the same weathering steel used to cross oceans loaded with freight. There's no OSB, no vinyl skin to cut through, no plastic windows, and no flat roof to pool water and rot. The double cargo doors close onto a steel hasp built for a padlock or a puck lock, so the most vulnerable point on a typical shed simply isn't there. And because it sits on your property, access is yours alone: no facility gate code, no business hours, no drive across town at 9pm when you remember the camping gear is in unit 214. You open the doors when you want them open.</p>
+
+          <!-- IMAGE SLOT 2 — security detail. Swap data-URI src for the real photo; alt + dimensions stay. -->
+          <!-- filename: container-door-puck-lock-residential.jpg -->
+          <figure class="uc-img uc-img-inline" data-img-slot="security">
+            <img class="uc-img-real" width="640" height="360"
+              alt="Steel container cargo door secured with a puck lock in a residential lockbox hasp"
+              src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='640'%20height='360'%3E%3C/svg%3E" />
+            <span class="uc-img-tag m">Photo · Container door with puck lock</span>
+          </figure>
         </div>
         <div class="uc-block">
           <h3>A 20ft container fits most suburban properties</h3>
-          <p>The most common residential size is the 20ft container: 8 feet wide, 8'6" tall, and 20 feet long — roughly the footprint of two standard parking spaces end-to-end. Most suburban driveways and backyards in Ohio, Indiana, and Kentucky can accommodate a 20ft unit. The delivery truck needs about 50 feet of clear approach — a standard residential street is typically sufficient.</p>
+          <p>The most common residential size is the 20ft container: 8 feet wide, 8'6" tall, and 20 feet long — about the footprint of two standard parking spaces parked end to end. Most suburban driveways and backyards in Ohio, Indiana, and Kentucky can take a 20ft unit without any special site work. What matters more than the footprint is the <em>approach</em>: the delivery truck needs roughly 50 feet of clear, reasonably level run to back in and tilt the container off. A standard residential street is usually enough. Low branches, tight gate posts, and soft spring ground are the things to flag — and we'd rather hear about them before delivery day than discover them on it.</p>
         </div>
         <div class="uc-block">
           <h3>Permit requirements vary — we can help you figure yours out</h3>
-          <p>Some municipalities require a zoning permit for a storage container; many don't. Agricultural properties almost always have exemptions. Residential properties inside city limits are most likely to need a permit. When you request a quote, include your county and whether you're inside city limits — we'll tell you what we know and help you find out what we don't.</p>
+          <p>Some municipalities require a zoning permit for a storage container; many don't. Properties zoned agricultural are almost always exempt. Residential lots inside city limits are the most likely to need a permit, and the rules differ from one town to the next — some have a size threshold, some require a setback from the property line, some have no rule at all. The fastest answer comes from your county auditor or zoning office. When you request a quote, tell us your county and whether you're inside city limits; we'll share what we already know from delivering in your area and point you to the right office for anything we don't.</p>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- 2.5 RENT VS OWN — COST COMPARISON CENTERPIECE -->
+  <section class="uc-compare">
+    <div class="wrap">
+      <div class="uc-sh" style="border-color: var(--c2-cond);">
+        <span class="m">The 5-Year Math</span>
+        <h2 class="uc-h2">Rent vs. own, over five years</h2>
+      </div>
+      <p class="uc-compare-lead">Renting a 10×10 climate-controlled storage unit in the Cincinnati area costs <strong>$150–250 a month</strong> and climbs almost every year. Buying a 20ft container is a single payment of <strong>{ownPurchaseDisplay}</strong> — about <strong>{ownMonthlyDisplay} a month</strong> spread over five years — after which you own an asset you can resell.</p>
+
+      <table class="uc-compare-table">
+        <caption class="uc-compare-caption">Renting a 10×10 storage unit versus owning a 20ft container, over a five-year horizon.</caption>
+        <thead>
+          <tr>
+            <th scope="col" class="uc-ct-rowhead"><span class="m">Over 5 years</span></th>
+            <th scope="col" class="uc-ct-rent">
+              <span class="uc-ct-kicker m">Rent</span>
+              <span class="uc-ct-title">10×10 storage unit</span>
+            </th>
+            <th scope="col" class="uc-ct-own">
+              <span class="uc-ct-kicker m">Own</span>
+              <span class="uc-ct-title">20ft cargo container</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">What it costs</th>
+            <td>~$150–250 / month</td>
+            <td class="is-own"><strong>{ownPurchaseDisplay}</strong> one time (~{ownMonthlyDisplay}/mo over 5 yrs)</td>
+          </tr>
+          <tr>
+            <th scope="row">5-year total</th>
+            <td>~$9,000–$15,000 in fees</td>
+            <td class="is-own">No monthly fee · no annual increase</td>
+          </tr>
+          <tr>
+            <th scope="row">Rate over time</th>
+            <td>Rises most years</td>
+            <td class="is-own">Fixed — you already paid</td>
+          </tr>
+          <tr>
+            <th scope="row">Access</th>
+            <td>Drive to it · facility hours</td>
+            <td class="is-own">On your property · access anytime</td>
+          </tr>
+          <tr>
+            <th scope="row">At the end</th>
+            <td>Own nothing</td>
+            <td class="is-own">Resells — steel holds value</td>
+          </tr>
+          <tr>
+            <th scope="row">The tradeoff</th>
+            <td>Climate control included</td>
+            <td class="is-own">Needs outdoor space · no HVAC for climate-sensitive items</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p class="uc-price-note uc-compare-note">Container pricing reflects current market · updated June 2026. Storage-unit ranges are typical Cincinnati-metro figures, not a Steel Box Direct rate.</p>
+
+      <!-- IMAGE SLOT 3 — cost comparison. Swap data-URI src for the real photo; alt + dimensions stay. -->
+      <!-- filename: storage-unit-vs-container-comparison.jpg -->
+      <figure class="uc-img uc-img-wide" data-img-slot="cost">
+        <img class="uc-img-real" width="1260" height="540"
+          alt="Self-storage units versus an owned backyard shipping container for home storage"
+          src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='1260'%20height='540'%3E%3C/svg%3E" />
+        <span class="uc-img-tag m">Photo · Storage units vs owned container</span>
+      </figure>
     </div>
   </section>
 
@@ -109,20 +200,31 @@ const ownPurchaseDisplay = `$${own20.price.toLocaleString('en-US')}`; // "$2,007
         <span class="m">Which Container Fits</span>
         <h2 class="uc-h2">Which container fits your situation</h2>
       </div>
+      <p class="uc-section-intro">Three sizes cover almost every home use. Here's the quick way to choose.</p>
+
+      <!-- IMAGE SLOT 4 — delivery. Swap data-URI src for the real photo; alt + dimensions stay. -->
+      <!-- filename: tilt-bed-delivery-residential-driveway.jpg -->
+      <figure class="uc-img uc-img-wide uc-img-recs" data-img-slot="delivery">
+        <img class="uc-img-real" width="1260" height="540"
+          alt="Tilt-bed truck delivering a shipping container to a home driveway in a neighborhood"
+          src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='1260'%20height='540'%3E%3C/svg%3E" />
+        <span class="uc-img-tag m">Photo · Tilt-bed container home delivery</span>
+      </figure>
+
       <div class="uc-rec-grid">
         <a href="/shipping-containers-for-sale/20-foot-shipping-container/" class="uc-rec" style="border-top-color: var(--c2-cond);">
           <span class="uc-rec-size">20ft</span>
-          <p class="uc-rec-body">Best for: most residential properties. Fits the footprint of a large shed, stores the equivalent of a two-car garage.</p>
+          <p class="uc-rec-body"><strong>Best for: most residential properties.</strong> Fits the footprint of a large shed and holds about what a two-car garage holds — lawn equipment, seasonal decor, furniture between moves, the overflow from a finished basement. Sits on most driveways and backyards without special site prep.</p>
           <span class="uc-rec-link">View 20ft container →</span>
         </a>
         <a href="/shipping-containers-for-sale/40-foot-shipping-container/" class="uc-rec" style="border-top-color: var(--c2-cond);">
           <span class="uc-rec-size">40ft</span>
-          <p class="uc-rec-body">Best for: large properties with a full driveway or dedicated storage area. Roughly twice the capacity of a 20ft.</p>
+          <p class="uc-rec-body"><strong>Best for: larger lots with a full driveway or a dedicated storage spot.</strong> Roughly twice the capacity of a 20ft — the right call if you're storing a vehicle, a workshop's worth of equipment, or a whole household mid-renovation. Needs a longer, straighter approach for delivery.</p>
           <span class="uc-rec-link">View 40ft container →</span>
         </a>
         <a href="/shipping-containers-for-sale/40-foot-one-trip-container/" class="uc-rec" style="border-top-color: var(--c2-cond);">
           <span class="uc-rec-size">One-Trip</span>
-          <p class="uc-rec-body">Best for: placement in a visible location — front yard, property entrance, or anywhere appearance matters.</p>
+          <p class="uc-rec-body"><strong>Best for: a spot where appearance matters.</strong> A near-new container with a clean exterior and factory paint — the choice when the unit will sit somewhere visible, like a front yard, a property entrance, or anywhere an HOA or a neighbor's sightline is in play.</p>
           <span class="uc-rec-link">View one-trip container →</span>
         </a>
       </div>
@@ -137,7 +239,7 @@ const ownPurchaseDisplay = `$${own20.price.toLocaleString('en-US')}`; // "$2,007
         <span class="m">Where We Deliver</span>
         <h2 class="uc-h2">Where we deliver</h2>
       </div>
-      <p class="uc-deliver-lede">We deliver within 250 miles of Cincinnati — across Ohio, Indiana, and Kentucky. Here are the metro areas we serve most:</p>
+      <p class="uc-deliver-lede">We deliver to driveways, backyards, and side lots within 250 miles of Cincinnati — across Ohio, Indiana, and Kentucky. If you're in or around one of these metro areas, a residential delivery is routine for us; if you're between them, you're very likely still in range. These are the markets we serve most:</p>
       <div class="uc-city-grid">
         <a href="/cincinnati-shipping-containers/" class="uc-city"><span class="uc-city-code">CIN</span><span class="uc-city-name">Cincinnati, OH</span><span class="uc-city-arrow">→</span></a>
         <a href="/dayton-shipping-containers/" class="uc-city"><span class="uc-city-code">DAY</span><span class="uc-city-name">Dayton, OH</span><span class="uc-city-arrow">→</span></a>
@@ -155,26 +257,30 @@ const ownPurchaseDisplay = `$${own20.price.toLocaleString('en-US')}`; // "$2,007
         <h2 class="uc-h2">Common questions</h2>
       </div>
       <div class="uc-faq-list">
-        <div class="uc-faq-item" style="border-left-color: var(--c2-cond);">
-          <h3>Will a 20ft container fit in a standard suburban driveway?</h3>
-          <p>Usually, yes. A 20ft container is 8 feet wide and 20 feet long — roughly the footprint of a large SUV and a half-car length. Most standard suburban driveways are wide enough, though placement depends on attached garages, fence lines, or utility setbacks. More important than the footprint is delivery clearance: the truck needs about 50 feet of unobstructed approach. A standard residential street with traffic is typically workable. Include your address when requesting a quote and we can assess the approach.</p>
-        </div>
-        <div class="uc-faq-item" style="border-left-color: var(--c2-cond);">
-          <h3>Do I need a permit to have a shipping container on my residential property in Ohio?</h3>
-          <p>It depends on your location. Properties zoned agricultural are almost universally exempt. Residential properties inside city limits in Ohio have varying rules — some municipalities require a permit, some have a size threshold below which no permit is required, and some have no restriction at all. Most unincorporated township properties in Ohio, Indiana, and Kentucky don't require a permit. The fastest way to find out is to call your county auditor or zoning office. When you request a quote, tell us your county and we'll share what we know from working in your area.</p>
-        </div>
-        <div class="uc-faq-item" style="border-left-color: var(--c2-cond);">
-          <h3>How does delivery work in a residential neighborhood?</h3>
-          <p>A tilt-bed truck backs in, tilts, and slides the container into position. The process takes 30–45 minutes from truck arrival to completion. We minimize impact on neighboring traffic, but neighbors may need to move vehicles temporarily if the approach is tight. We don't require street closures or permits for delivery in most cases. If your street has weight limits or parking restrictions, mention that when you request a quote.</p>
-        </div>
-        <div class="uc-faq-item" style="border-left-color: var(--c2-cond);">
-          <h3>How does buying a container compare to renting a storage unit long-term?</h3>
-          <p>The math usually favors ownership for anything beyond 2–3 years. A climate-controlled 10×10 storage unit in the Cincinnati metro averages $150–200 per month and increases annually. Over 5 years, that's $9,000–$12,000 in fees for space you never own. A 20ft container is a one-time purchase of {ownPurchaseDisplay} today — far less over that horizon, and you can sell it when you're done. The container also holds more than a 10×10 unit and sits on your property. The tradeoff: you need the outdoor space, and a storage facility protects climate-sensitive items better since containers have no HVAC.</p>
-        </div>
-        <div class="uc-faq-item" style="border-left-color: var(--c2-cond);">
-          <h3>Can I add shelving, electricity, or other modifications to a container?</h3>
-          <p>Yes — containers are commonly modified for exactly this purpose. Shelving mounts directly to the corrugated side walls using standard fasteners. Electrical can be run from your home's panel to the container if it's placed within practical distance; an electrician can wire a standard outlet and light in a few hours. We don't sell modified containers, but we can point you toward local fabricators who handle electrical, shelving, ventilation, and insulation.</p>
-        </div>
+        {faqs.map((f, i) => (
+          <div class="uc-faq-item" style="border-left-color: var(--c2-cond);">
+            <h3>{f.q}</h3>
+            <p>{f.a}</p>
+            {i === 5 && (
+              /* IMAGE SLOT 5 — foundation / placement. filename: container-corner-block-gravel-pad.jpg */
+              <figure class="uc-img uc-img-inline uc-img-faq" data-img-slot="foundation">
+                <img class="uc-img-real" width="520" height="293"
+                  alt="Shipping container corner casting set on a concrete block over a gravel pad, no foundation"
+                  src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='520'%20height='293'%3E%3C/svg%3E" />
+                <span class="uc-img-tag m">Photo · Container on pier block, no foundation</span>
+              </figure>
+            )}
+            {i === 6 && (
+              /* IMAGE SLOT 6 — condensation / venting. filename: container-louver-vent-condensation.jpg */
+              <figure class="uc-img uc-img-inline uc-img-faq" data-img-slot="condensation">
+                <img class="uc-img-real" width="520" height="293"
+                  alt="Passive louver vent on a steel storage container wall to reduce interior condensation"
+                  src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='520'%20height='293'%3E%3C/svg%3E" />
+                <span class="uc-img-tag m">Photo · Container vent reduces condensation</span>
+              </figure>
+            )}
+          </div>
+        ))}
       </div>
     </div>
   </section>
@@ -184,7 +290,7 @@ const ownPurchaseDisplay = `$${own20.price.toLocaleString('en-US')}`; // "$2,007
     <div class="wrap" style="display: flex; flex-direction: column; align-items: flex-start; gap: 24px; max-width: 680px;">
       <p class="m" style="color: var(--yellow); margin: 0;">Ready when you are</p>
       <h2 style="font-family: var(--narrow); font-size: clamp(28px, 4vw, 44px); font-weight: 700; text-transform: uppercase; margin: 0; line-height: 1.05;">Get a quote for your property.</h2>
-      <p style="font-size: 17px; opacity: .75; margin: 0; line-height: 1.5;">Tell us your size, condition, and delivery zip. We respond within 4 business hours.</p>
+      <p style="font-size: 17px; opacity: .75; margin: 0; line-height: 1.5;">Tell us your delivery zip, the size you're considering, and where it's going on the lot. We'll confirm the approach, flag anything permit-related for your county, and get you an all-in delivered number within 4 business hours.</p>
       <div style="display: flex; gap: 16px; flex-wrap: wrap;">
         <a href="/quote/" class="btn" style="background: var(--yellow); color: var(--ink); border-color: var(--yellow);">Get My Quote →</a>
         <a href="/shipping-containers-for-sale/" class="btn-ghost" style="color: var(--cream);">Browse containers first</a>
@@ -197,15 +303,48 @@ const ownPurchaseDisplay = `$${own20.price.toLocaleString('en-US')}`; // "$2,007
 <style>
   /* ---- HERO ---- */
   .uc-hero { padding: 110px 0 72px; background: var(--yellow); border-bottom: 2.5px solid var(--ink); }
+  .uc-hero-grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 56px; align-items: center; }
   .uc-eyebrow { display: inline-block; font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; background: var(--ink); color: var(--cream); padding: 7px 14px; }
-  .uc-h1 { font-family: var(--narrow); font-weight: 700; font-size: clamp(44px, 8vw, 78px); line-height: .92; letter-spacing: -.02em; text-transform: uppercase; margin: 28px 0 0; }
-  .uc-lede { font-size: 22px; line-height: 1.45; max-width: 760px; margin: 28px 0 0; font-weight: 500; }
-  .uc-accent { height: 10px; width: 180px; margin-top: 40px; }
+  .uc-h1 { font-family: var(--narrow); font-weight: 700; font-size: clamp(44px, 6.5vw, 72px); line-height: .92; letter-spacing: -.02em; text-transform: uppercase; margin: 28px 0 0; }
+  .uc-lede { font-size: 20px; line-height: 1.5; max-width: 640px; margin: 28px 0 0; font-weight: 500; }
+  .uc-accent { height: 10px; width: 180px; margin-top: 36px; }
+  .uc-trust-strip { margin: 20px 0 0; opacity: .72; letter-spacing: .06em; line-height: 1.6; }
 
   /* ---- SHARED SECTION HEADER ---- */
-  .uc-sh { border-top: 4px solid var(--ink); padding-top: 18px; margin-bottom: 48px; }
+  .uc-sh { border-top: 4px solid var(--ink); padding-top: 18px; margin-bottom: 32px; }
   .uc-sh .m { display: block; opacity: .55; margin-bottom: 10px; }
   .uc-h2 { font-family: var(--narrow); font-weight: 700; font-size: clamp(30px, 4.5vw, 48px); line-height: 1; letter-spacing: -.01em; text-transform: uppercase; margin: 0; }
+  .uc-section-intro { font-size: 19px; line-height: 1.55; max-width: 820px; margin: 0 0 48px; font-weight: 500; opacity: .9; }
+
+  /* ---- IMAGE PLACEHOLDERS (no external requests, fixed ratio → zero CLS) ---- */
+  .uc-img {
+    position: relative; margin: 0; background: var(--ink);
+    border: 2px solid var(--ink); overflow: hidden;
+    display: flex; align-items: flex-end;
+    background-image:
+      repeating-linear-gradient(45deg, rgba(246,241,231,.04) 0 14px, transparent 14px 28px);
+  }
+  .uc-img::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background:
+      radial-gradient(circle at 28% 32%, rgba(229,57,53,.22), transparent 60%),
+      radial-gradient(circle at 78% 72%, rgba(246,241,231,.06), transparent 55%);
+  }
+  .uc-img-real {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; z-index: 0;
+  }
+  .uc-img-tag {
+    position: relative; z-index: 1; margin: 0;
+    color: var(--cream); opacity: .7; padding: 14px 16px;
+    border-top: 1px solid rgba(246,241,231,.18);
+    background: linear-gradient(transparent, rgba(11,15,26,.55));
+    width: 100%; letter-spacing: .06em; line-height: 1.4;
+  }
+  .uc-img-hero { aspect-ratio: 4 / 3; box-shadow: 12px 12px 0 var(--ink); width: 100%; }
+  .uc-img-wide { aspect-ratio: 21 / 9; box-shadow: 8px 8px 0 var(--ink); margin-top: 40px; }
+  .uc-img-inline { aspect-ratio: 16 / 9; margin-top: 24px; }
+  .uc-img-faq { max-width: 520px; }
 
   /* ---- WHY ---- */
   .uc-why { padding: 96px 0; background: var(--cream); border-bottom: 1.5px solid rgba(11,15,26,.1); }
@@ -215,19 +354,48 @@ const ownPurchaseDisplay = `$${own20.price.toLocaleString('en-US')}`; // "$2,007
   .uc-block p { font-size: 16px; line-height: 1.55; opacity: .82; margin: 0; }
   .uc-price-note { font-family: var(--mono); font-size: 11px; letter-spacing: .04em; text-transform: uppercase; opacity: .55; margin: 12px 0 0; }
 
+  /* ---- COMPARE (rent vs own) ---- */
+  .uc-compare { padding: 96px 0; background: var(--ink); color: var(--cream); border-bottom: 1.5px solid rgba(11,15,26,.1); }
+  .uc-compare .uc-sh { border-top-color: var(--c2-cond); }
+  .uc-compare .uc-sh .m { color: var(--cream); }
+  .uc-compare .uc-h2 { color: var(--cream); }
+  .uc-compare-lead { font-size: 19px; line-height: 1.6; max-width: 860px; margin: 0 0 44px; opacity: .9; }
+  .uc-compare-lead strong { color: var(--yellow); font-weight: 700; }
+
+  .uc-compare-table { width: 100%; border-collapse: collapse; background: var(--cream); color: var(--ink); border: 2.5px solid var(--ink); box-shadow: 12px 12px 0 var(--c2-cond); table-layout: fixed; }
+  .uc-compare-caption { caption-side: top; text-align: left; font-family: var(--mono); font-size: 11px; letter-spacing: .04em; text-transform: uppercase; color: var(--cream); opacity: .5; margin-bottom: 14px; line-height: 1.4; }
+  .uc-compare-table thead th { vertical-align: bottom; padding: 22px 22px 18px; border-bottom: 2.5px solid var(--ink); text-align: left; }
+  .uc-ct-rowhead { width: 22%; background: var(--ink); color: var(--cream); }
+  .uc-ct-rent { width: 39%; background: var(--cream); }
+  .uc-ct-own { width: 39%; background: var(--c2-cond); color: var(--cream); }
+  .uc-ct-kicker { display: block; opacity: .7; margin-bottom: 8px; }
+  .uc-ct-own .uc-ct-kicker { opacity: .85; }
+  .uc-ct-title { font-family: var(--narrow); font-weight: 700; font-size: 22px; line-height: 1.05; text-transform: uppercase; letter-spacing: -.01em; }
+  .uc-compare-table tbody th { text-align: left; font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; font-weight: 500; padding: 18px 22px; background: var(--ink); color: var(--cream); border-bottom: 1px solid rgba(11,15,26,.12); vertical-align: top; }
+  .uc-compare-table tbody td { padding: 18px 22px; font-size: 16px; line-height: 1.45; border-bottom: 1px solid rgba(11,15,26,.12); border-left: 1px solid rgba(11,15,26,.12); vertical-align: top; }
+  .uc-compare-table tbody td.is-own { background: rgba(229,57,53,.07); font-weight: 600; }
+  .uc-compare-table tbody td.is-own strong { color: var(--c2-cond); font-size: 18px; }
+  .uc-compare-table tbody tr:last-child th,
+  .uc-compare-table tbody tr:last-child td { border-bottom: none; }
+  .uc-compare-table tbody tr:last-child td { font-style: italic; opacity: .85; }
+  .uc-compare-note { color: var(--cream); opacity: .5; margin-top: 18px; }
+  .uc-compare .uc-img-tag { color: var(--cream); }
+
   /* ---- RECOMMENDATIONS ---- */
   .uc-recs { padding: 96px 0; background: white; border-bottom: 1.5px solid rgba(11,15,26,.1); }
+  .uc-img-recs { margin-top: 0; margin-bottom: 48px; }
   .uc-rec-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
   .uc-rec { display: flex; flex-direction: column; background: var(--cream); border: 2px solid var(--ink); border-top: 8px solid var(--ink); padding: 28px; transition: transform .15s, box-shadow .15s; }
   .uc-rec:hover { transform: translate(-3px, -3px); box-shadow: 6px 6px 0 var(--ink); }
   .uc-rec-size { font-family: var(--narrow); font-weight: 700; font-size: 34px; text-transform: uppercase; line-height: 1; margin-bottom: 14px; }
   .uc-rec-body { font-size: 15px; line-height: 1.5; opacity: .82; margin: 0 0 20px; flex: 1; }
+  .uc-rec-body strong { opacity: 1; }
   .uc-rec-link { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; font-weight: 500; margin-top: auto; }
   .uc-framing { margin: 40px 0 0; font-size: 18px; line-height: 1.5; font-weight: 500; max-width: 760px; border-left: 4px solid var(--yellow); padding-left: 24px; }
 
   /* ---- WHERE WE DELIVER ---- */
   .uc-deliver { padding: 96px 0; background: var(--cream); border-bottom: 1.5px solid rgba(11,15,26,.1); }
-  .uc-deliver-lede { font-size: 18px; line-height: 1.5; max-width: 720px; margin: 0 0 40px; opacity: .85; }
+  .uc-deliver-lede { font-size: 18px; line-height: 1.5; max-width: 820px; margin: 0 0 40px; opacity: .85; }
   .uc-city-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
   .uc-city { display: flex; flex-direction: column; gap: 6px; background: white; border: 2px solid var(--ink); padding: 22px 24px; transition: background .15s, color .15s; }
   .uc-city:hover { background: var(--ink); color: var(--cream); }
@@ -244,6 +412,10 @@ const ownPurchaseDisplay = `$${own20.price.toLocaleString('en-US')}`; // "$2,007
   .uc-faq-item p { font-size: 16px; line-height: 1.6; opacity: .82; margin: 0; }
 
   /* ---- RESPONSIVE ---- */
+  @media (max-width: 960px) {
+    .uc-hero-grid { grid-template-columns: 1fr; gap: 40px; }
+    .uc-img-hero { aspect-ratio: 16 / 9; }
+  }
   @media (max-width: 768px) {
     .uc-hero { padding: 72px 0 56px; }
     .uc-why-grid { grid-template-columns: 1fr; gap: 20px; }
@@ -251,5 +423,16 @@ const ownPurchaseDisplay = `$${own20.price.toLocaleString('en-US')}`; // "$2,007
     .uc-city-grid { grid-template-columns: 1fr 1fr; }
     .uc-block { padding: 24px; }
     .uc-faq-item { padding-left: 20px; }
+    .uc-img-wide { aspect-ratio: 16 / 9; }
+    /* Comparison table → stack so it stays readable on phones */
+    .uc-compare-table, .uc-compare-table thead, .uc-compare-table tbody,
+    .uc-compare-table tr, .uc-compare-table th, .uc-compare-table td { display: block; width: 100% !important; }
+    .uc-compare-table thead { border-bottom: 2.5px solid var(--ink); }
+    .uc-compare-table thead tr { display: grid; grid-template-columns: 1fr 1fr; }
+    .uc-ct-rowhead { display: none !important; }
+    .uc-compare-table tbody tr { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 2px solid var(--ink); }
+    .uc-compare-table tbody th { grid-column: 1 / -1; background: var(--ink); }
+    .uc-compare-table tbody td { border-left: none; border-bottom: none; }
+    .uc-compare-table tbody td:first-of-type { border-right: 1px solid rgba(11,15,26,.12); }
   }
 </style>
