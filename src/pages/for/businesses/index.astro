@@ -3,10 +3,42 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { pricing, perSqFt, roundToHalf } from '../../../data/pricing';
 const std40 = pricing['40ftStandard'];                                  // 40ft Standard, NOT HC
 const perSqFtDisplay = `$${roundToHalf(perSqFt(std40.price, std40.sqft)).toFixed(2)}`; // "$8.50"
+
+// --- Visible FAQ set (single source of truth → drives both the rendered FAQ and the JSON-LD) ---
+const faqs = [
+  {
+    q: 'Can a container be placed at a loading dock or commercial facility?',
+    a: "Containers can be placed adjacent to a loading dock, in a parking lot, or in a designated staging area. They cannot be directly docked to a raised loading platform — the container door sill sits at ground level, not at dock height. For dock-height access, a yard ramp or a dock plate bridges the gap; both are widely available from material-handling suppliers, and a forklift can load at ground level without either. Describe your placement area when requesting a quote and we'll confirm feasibility before scheduling.",
+  },
+  {
+    q: 'What are your lead times for commercial delivery?',
+    a: "For standard cargo-worthy 20ft and 40ft units, most commercial orders in our service area are delivered within 3–5 business days of quote approval, subject to inventory availability. One-trip units may carry a slightly longer lead time. If you have a project start date or a specific delivery window, include it in the quote request and we'll confirm upfront.",
+  },
+  {
+    q: 'Can we get multiple containers for a single location?',
+    a: "Yes — and most multi-unit commercial setups are about organization, not just capacity. Run separate units by product line, by season, or by department, and you can stage inventory the way your operation actually flows instead of cramming everything into one box. Need to scale up for a peak and back down afterward? Add a unit for Q4 and retrieve it in January. We position multiple containers adjacent with every door accessible, and for recurring needs we'll plan a delivery cadence around your inventory cycle rather than a single drop. Delivery mechanics — trip sequencing, alignment, and site access — are covered in our contractors guide and on each city page.",
+  },
+  {
+    q: 'How do businesses typically handle container storage for accounting or tax purposes?',
+    a: "A purchased container is generally treated as tangible personal property and depreciates under MACRS as a 5- or 7-year asset under standard IRS classifications — though your accountant should confirm the right treatment for your specific use. The container is not real property, so it does not typically trigger a real-estate assessment or a property-tax reclassification. A leased container would instead be expensed as an operating cost. We provide a standard bill of sale for every purchase for your records.",
+  },
+  {
+    q: 'Do you work with businesses that need deliveries across different locations?',
+    a: "Yes. We serve the full 250-mile radius from Cincinnati, which covers the major commercial corridors of Ohio, Indiana, and Kentucky. If your business runs multiple facilities inside our service area, each location gets its own delivery. For ongoing commercial relationships, contact us directly to discuss volume arrangements.",
+  },
+  {
+    q: 'Can I store inventory in a container year-round, or only seasonally?',
+    a: "Either works. A cargo-worthy container holds a positive weathertight seal against rain, wind, and snow, so it's suited to permanent on-site storage as well as seasonal overflow. For year-round use on a fixed footprint, most businesses set the unit on a level surface — compacted gravel, asphalt, or leveling blocks under the corner castings — to keep the floor off standing water and protect against long-term moisture. For seasonal cycles, we drop the unit when your peak begins and retrieve it when it ends. Tell us your timeline in the quote and we'll plan around it.",
+  },
+  {
+    q: 'Is a shipping container secure enough for valuable commercial inventory?',
+    a: "For most commercial inventory, yes. The container body is Cor-Ten steel with no soft panels or roofline gaps, and the recessed lockbox shields a puck-lock hasp from bolt cutters — substantially harder to breach than a job-site trailer or a wood structure. That construction is why most commercial property insurance policies cover goods stored in a sealed, locked container. For high-value loads, businesses commonly add a secondary lock, motion lighting, or a camera, and we can document placement and serial numbers for your insurer. If your carrier has specific requirements, tell us and we'll accommodate them.",
+  },
+];
 ---
 
 <BaseLayout
-  title="Commercial Container Storage in Ohio, Indiana & Kentucky | Steel Box Direct"
+  title="Commercial Storage Containers in OH, IN & KY | Steel Box Direct"
   description="Overflow inventory, equipment storage, and secure commercial storage containers. Delivered within 250 miles of Cincinnati across OH/IN/KY. Quote in 4 hours."
   pageType="guide"
   datePublished="2026-06-04"
@@ -17,58 +49,36 @@ const perSqFtDisplay = `$${roundToHalf(perSqFt(std40.price, std40.sqft)).toFixed
     <script type="application/ld+json" set:html={JSON.stringify({
       "@context": "https://schema.org",
       "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "Can a container be placed at a loading dock or commercial facility?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Containers can be placed adjacent to a loading dock, in a parking lot, or in a designated staging area. They cannot be directly docked to a raised loading platform — the container door sill sits at ground level, not at dock height. For dock-height access, a yard ramp or dock plate bridges the gap; these are widely available from material handling suppliers. Describe your placement area when requesting a quote and we'll confirm feasibility."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "What are your lead times for commercial delivery?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "For standard cargo-worthy 20ft and 40ft units, most commercial orders in our service area are delivered within 3–5 business days of quote approval, subject to inventory availability. One-trip units may have a slightly longer lead time. If you have a project start date or a specific delivery window, include it in the quote request and we'll confirm upfront."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Can we get multiple containers for a single location?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Yes. Multiple containers can be delivered to a single site in one trip or staggered across multiple trips. If you need units placed adjacent in a specific configuration — side-by-side with aligned doors — include a description of the layout in your quote request. We'll plan the delivery sequence to ensure the footprint works and all doors remain accessible."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How do businesses typically handle container storage for accounting or tax purposes?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "A purchased container is generally treated as tangible personal property and depreciates under MACRS as a 5 or 7-year asset under standard IRS classifications, though your accountant should confirm based on your specific use. The container is not real property and does not typically trigger real estate assessments or property tax reclassification. A leased container would be expensed as an operating cost. We provide a standard bill of sale for all purchases."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Do you work with businesses that need deliveries across different locations?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Yes. We serve the full 250-mile radius from Cincinnati, which includes major commercial corridors in Ohio, Indiana, and Kentucky. If your business has multiple facilities within our service area, each location gets its own delivery. For recurring commercial relationships, contact us directly to discuss volume arrangements."
-          }
-        }
-      ]
+      "mainEntity": faqs.map((f) => ({
+        "@type": "Question",
+        "name": f.q,
+        "acceptedAnswer": { "@type": "Answer", "text": f.a },
+      })),
     })} />
   </Fragment>
 
   <!-- 1. HERO -->
   <section class="uc-hero">
-    <div class="wrap">
-      <span class="uc-eyebrow">For Businesses &amp; Commercial Use</span>
-      <h1 class="uc-h1">Overflow Storage That Scales With Your Operation.</h1>
-      <p class="uc-lede">Seasonal inventory spikes. Equipment overflow. On-site document archive. Delivered to your loading area, configured to your timeline.</p>
-      <div class="uc-accent" style="background: var(--c5-permits);"></div>
+    <div class="wrap uc-hero-grid">
+      <div class="uc-hero-copy">
+        <span class="uc-eyebrow">For Businesses &amp; Commercial Use</span>
+        <h1 class="uc-h1">Overflow Storage That Scales With Your Operation.</h1>
+        <p class="uc-lede">Seasonal inventory spikes. Equipment overflow. On-site document archive. Delivered to your loading area and configured to your operation. Own a 40ft container outright and your storage works out to roughly <strong>{perSqFtDisplay} per square foot — one time, not per month.</strong> Below, we break down where that number comes from and how it stacks up against renting space you'll never own.</p>
+        <div class="uc-accent" style="background: var(--c5-permits);"></div>
+        <p class="uc-trust-strip m">Delivered within 250 mi of Cincinnati · Quote in 4 business hours · Buy or arrange recurring delivery</p>
+      </div>
+
+      <!-- IMAGE SLOT 1 — hero. Swap data-URI src for the real photo; alt + dimensions stay. -->
+      <!-- filename: 40ft-commercial-overflow-container-loading-area.webp -->
+      <figure class="uc-img uc-img-hero" data-img-slot="hero">
+        <img
+          class="uc-img-real"
+          width="640" height="480"
+          alt="40ft commercial storage container with open doors in a business loading area in Ohio"
+          src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='640'%20height='480'%3E%3C/svg%3E"
+        />
+        <span class="uc-img-tag m">Photo · 40ft container in a commercial loading area</span>
+      </figure>
     </div>
   </section>
 
@@ -79,25 +89,112 @@ const perSqFtDisplay = `$${roundToHalf(perSqFt(std40.price, std40.sqft)).toFixed
         <span class="m">Why It Works</span>
         <h2 class="uc-h2">Why containers work for businesses</h2>
       </div>
+      <p class="uc-section-intro">A container puts storage on your own site, on your own hours, for a single price — instead of a recurring invoice from a facility across town. Here's why operations across the Cincinnati region keep choosing owned steel over rented square footage.</p>
       <div class="uc-why-grid">
         <div class="uc-block">
           <h3>Avoid the cost of off-site commercial storage</h3>
-          <p>Commercial storage facilities charge by the pallet, the square foot, or the cubic foot — every month — and access windows are limited by facility hours. Own a 40ft container outright and your storage works out to about {perSqFtDisplay} per square foot, one time. An on-site container gives you same-day access to inventory, eliminates inbound/outbound freight costs to and from a third-party facility, and removes a logistics dependency from your operation. For businesses with predictable seasonal peaks, a container that arrives in spring and departs in fall is significantly cheaper than 6 months of commercial rack storage charged per square foot every month.</p>
+          <p>Commercial storage facilities bill you the same way every month — by the pallet, the square foot, or the cubic foot — and they cap your access to facility hours. Own a 40ft container outright and the math inverts: your storage works out to about <strong>{perSqFtDisplay} per square foot, one time.</strong> There is no renewal, no annual rate increase, and no line item that grows every quarter.</p>
+          <p>An on-site container also removes costs that never show up on a storage invoice. You stop paying inbound and outbound freight to shuttle inventory to and from a third-party warehouse. You get on-demand access to your own stock instead of scheduling a retrieval. And you take a logistics dependency — someone else's hours, someone else's dock, someone else's lost-pallet policy — off your operation entirely.</p>
+          <p>For businesses with predictable seasonal peaks, the gap widens fast. A container that arrives in spring and leaves in fall is dramatically cheaper than six months of rack storage charged per square foot every single month — and unlike that rented space, the container holds resale value when the season ends.</p>
           <p class="uc-price-note">Container pricing reflects current market · updated June 2026.</p>
         </div>
         <div class="uc-block">
           <h3>Ground-level, forklift-compatible access</h3>
-          <p>Container doors open at ground level to a hardwood or steel floor. Standard ISO containers have forklift pockets on the underside, so repositioning on site doesn't require a crane. Pallet jacks and forklifts enter directly — no dock required. Interior height is 7'10" for standard containers.</p>
+          <p>Container doors open at ground level to a hardwood or steel plate floor rated for the weight of loaded pallets. Standard ISO containers have <strong>forklift pockets on the underside</strong>, so repositioning a unit on your site doesn't require a crane — a forklift of adequate capacity can lift and shift it. Pallet jacks and forklifts drive straight in through the doors. No dock, no lift gate, no ramp required for ground-level loading.</p>
+          <p>Interior height is a <a href="https://www.icontainers.com/help/40-foot-container/" target="_blank" rel="noopener">standard 7'10"</a> for standard containers, which clears a standard 48"×40" pallet stacked to typical warehouse height with room to maneuver. If your loads run taller, a high-cube unit adds a foot of interior clearance — tell us your stack height in the quote request and we'll confirm the right spec.</p>
+
+          <!-- IMAGE SLOT 2 — forklift access. Swap data-URI src for the real photo; alt + dimensions stay. -->
+          <!-- filename: forklift-pallet-ground-level-container-access.webp -->
+          <figure class="uc-img uc-img-inline" data-img-slot="forklift">
+            <img class="uc-img-real" width="640" height="360"
+              alt="Forklift loading a pallet into a ground-level shipping container through open doors"
+              src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='640'%20height='360'%3E%3C/svg%3E" />
+            <span class="uc-img-tag m">Photo · Forklift loading a ground-level container</span>
+          </figure>
         </div>
         <div class="uc-block">
           <h3>Scales up or down with your inventory cycle</h3>
-          <p>Need three containers for Q4 and one for the rest of the year? We can drop and retrieve on your schedule. Multiple units can be positioned adjacent with doors accessible. For businesses that want to own rather than manage a recurring delivery contract, purchase with resale when no longer needed is also straightforward.</p>
+          <p>Need three containers for Q4 and one for the rest of the year? We drop and retrieve on your schedule, so your storage footprint matches your inventory cycle instead of a fixed lease term. Multiple units can be positioned adjacent with all doors accessible, letting you organize by product line, season, or department.</p>
+          <p>There's also a buy-versus-rent decision baked in here. Businesses that prefer to own rather than manage a recurring delivery contract can purchase outright — and because steel containers hold their value, reselling a unit you no longer need recovers a meaningful share of the original cost. You're not locked into a perpetual monthly bill for capacity you only use part of the year.</p>
         </div>
         <div class="uc-block">
           <h3>Secure enough for most commercial insurance policies</h3>
-          <p>A Cor-Ten steel container with a puck-lock hasp meets the standard for covered business property storage under most commercial property insurance policies. We provide delivery documentation for your records. If your carrier has specific requirements, let us know and we can accommodate.</p>
+          <p>A <a href="https://en.wikipedia.org/wiki/Weathering_steel" target="_blank" rel="noopener">Cor-Ten steel</a> container fitted with a puck-lock hasp meets the bar for covered business-property storage under most commercial property insurance policies. There's no soft aluminum skin, no roofline gap, and no plastic panel to cut through — the recessed lockbox shields the lock shackle from bolt cutters. We provide delivery documentation for your records, and if your carrier has a specific requirement — a particular lock type, a documented placement, a serial number for the schedule — let us know and we'll accommodate it.</p>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- 2b. THE COST OF SPACE — comparison centerpiece -->
+  <section class="uc-compare">
+    <div class="wrap">
+      <div class="uc-sh" style="border-color: var(--c5-permits);">
+        <span class="m">The Cost of Space</span>
+        <h2 class="uc-h2">What your storage actually costs</h2>
+      </div>
+      <p class="uc-compare-lead">Rented commercial space is priced to recur. Owned steel is priced once. The cleanest way to compare them is per square foot — so that's how we frame it. A 40ft container gives you roughly <strong>320 square feet of floor space</strong>. Purchased outright, that lands at about <strong>{perSqFtDisplay} per square foot as a one-time cost</strong>. A commercial rack or warehouse bay charges per square foot too — but every month, with annual escalators written into the lease. The longer your storage need runs, the further the two diverge.</p>
+
+      <table class="uc-compare-table">
+        <caption class="uc-compare-caption">Owning a 40ft container versus renting off-site commercial storage, compared per square foot of floor space.</caption>
+        <thead>
+          <tr>
+            <th scope="col" class="uc-ct-rowhead"><span class="m">Cost factor</span></th>
+            <th scope="col" class="uc-ct-rent">
+              <span class="uc-ct-kicker m">Rent</span>
+              <span class="uc-ct-title">Off-site storage</span>
+            </th>
+            <th scope="col" class="uc-ct-own">
+              <span class="uc-ct-kicker m">Own</span>
+              <span class="uc-ct-title">On-site container</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">How you're billed</th>
+            <td>Every month, often with annual increases</td>
+            <td class="is-own">One time, at purchase</td>
+          </tr>
+          <tr>
+            <th scope="row">Cost basis</th>
+            <td>Per sq ft / pallet / cubic foot, recurring</td>
+            <td class="is-own"><strong>~{perSqFtDisplay}/sq ft</strong>, once (40ft Standard)</td>
+          </tr>
+          <tr>
+            <th scope="row">Access</th>
+            <td>Limited to facility hours</td>
+            <td class="is-own">On-site, on your own hours</td>
+          </tr>
+          <tr>
+            <th scope="row">Freight</th>
+            <td>Inbound + outbound to a third-party facility</td>
+            <td class="is-own">None — inventory stays on site</td>
+          </tr>
+          <tr>
+            <th scope="row">End of need</th>
+            <td>Lease ends, you own nothing</td>
+            <td class="is-own">Resell the unit, recover value</td>
+          </tr>
+          <tr>
+            <th scope="row">Seasonal use</th>
+            <td>Pay the full term regardless</td>
+            <td class="is-own">Drop in spring, retrieve in fall</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p class="uc-compare-pull">Over any horizon longer than a season or two, the question isn't whether owning is cheaper — it's how much sooner the container pays for itself.</p>
+
+      <p class="uc-price-note uc-compare-note">Per-sq-ft figure reflects current market · updated June 2026. It is a one-time cost for a 40ft Standard unit (gross floor footprint, ~320 sq ft = 8×40), not a Steel Box Direct quote for a specific site.</p>
+
+      <!-- IMAGE SLOT 3 — cost of space. Swap data-URI src for the real photo; alt + dimensions stay. -->
+      <!-- filename: container-interior-pallet-inventory-storage.webp -->
+      <figure class="uc-img uc-img-wide" data-img-slot="cost">
+        <img class="uc-img-real" width="1260" height="540"
+          alt="Interior of a 40ft shipping container holding palletized business inventory storage"
+          src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='1260'%20height='540'%3E%3C/svg%3E" />
+        <span class="uc-img-tag m">Photo · Container interior with palletized inventory</span>
+      </figure>
     </div>
   </section>
 
@@ -108,24 +205,35 @@ const perSqFtDisplay = `$${roundToHalf(perSqFt(std40.price, std40.sqft)).toFixed
         <span class="m">Which Container Fits</span>
         <h2 class="uc-h2">Which container fits your situation</h2>
       </div>
+      <p class="uc-section-intro">Three configurations cover almost every commercial use. Here's the quick way to choose.</p>
+
+      <!-- IMAGE SLOT 4 — size comparison. Swap data-URI src for the real photo; alt + dimensions stay. -->
+      <!-- filename: 20ft-40ft-commercial-container-size-comparison.webp -->
+      <figure class="uc-img uc-img-wide uc-img-recs" data-img-slot="sizes">
+        <img class="uc-img-real" width="1260" height="540"
+          alt="20ft and 40ft commercial storage containers side by side for size comparison"
+          src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='1260'%20height='540'%3E%3C/svg%3E" />
+        <span class="uc-img-tag m">Photo · 20ft and 40ft containers side by side</span>
+      </figure>
+
       <div class="uc-rec-grid">
         <a href="/shipping-containers-for-sale/20-foot-shipping-container/" class="uc-rec" style="border-top-color: var(--c5-permits);">
           <span class="uc-rec-size">20ft</span>
-          <p class="uc-rec-body">Best for: single-product overflow, document archive, small equipment. Compact footprint for sites with limited staging area.</p>
+          <p class="uc-rec-body"><strong>Best for:</strong> single-product overflow, on-site document archive, small-parts inventory, tool and equipment storage. Its compact footprint fits sites with limited staging area — a back lot, a corner of the parking lot, a tight loading zone — and still gives you ground-level, lockable storage.</p>
           <span class="uc-rec-link">View 20ft container →</span>
         </a>
         <a href="/shipping-containers-for-sale/40-foot-shipping-container/" class="uc-rec" style="border-top-color: var(--c5-permits);">
           <span class="uc-rec-size">40ft</span>
-          <p class="uc-rec-body">Best for: pallet-level inventory, seasonal goods, multi-product overflow. Handles full pallet entry with a forklift.</p>
+          <p class="uc-rec-body"><strong>Best for:</strong> pallet-level inventory, seasonal goods, and multi-product overflow. Handles full pallet entry with a forklift and holds the most volume per dollar — the reason it's the default choice for commercial buyers weighing cost per square foot.</p>
           <span class="uc-rec-link">View 40ft container →</span>
         </a>
         <a href="/shipping-containers-for-sale/40-foot-one-trip-container/" class="uc-rec" style="border-top-color: var(--c5-permits);">
           <span class="uc-rec-size">One-Trip</span>
-          <p class="uc-rec-body">Best for: food-adjacent storage, pharmaceutical overflow, electronics, or any application with contamination or odor sensitivity requirements.</p>
+          <p class="uc-rec-body"><strong>Best for:</strong> food-adjacent storage, pharmaceutical or electronics overflow, or any application with contamination, odor, or appearance sensitivity. A near-new interior with no prior cargo residue — the right call when what you store, or who sees it, demands a clean unit.</p>
           <span class="uc-rec-link">View one-trip container →</span>
         </a>
       </div>
-      <p class="uc-framing">Most commercial buyers choose the 40ft cargo-worthy unit for inventory overflow — it handles standard pallet configurations and costs significantly less per cubic foot than the 20ft.</p>
+      <p class="uc-framing">Most commercial buyers choose the 40ft cargo-worthy unit for inventory overflow — it handles standard pallet configurations and costs significantly less per cubic foot than the 20ft. If clean interior or on-site appearance matters more than price, the one-trip unit is the upgrade worth paying for.</p>
     </div>
   </section>
 
@@ -136,7 +244,7 @@ const perSqFtDisplay = `$${roundToHalf(perSqFt(std40.price, std40.sqft)).toFixed
         <span class="m">Where We Deliver</span>
         <h2 class="uc-h2">Where we deliver</h2>
       </div>
-      <p class="uc-deliver-lede">We deliver within 250 miles of Cincinnati — across Ohio, Indiana, and Kentucky. Here are the metro areas we serve most:</p>
+      <p class="uc-deliver-lede">Commercial demand clusters along the freight corridors, and so do we. We deliver to loading areas, back lots, and staging yards within <strong>250 miles of Cincinnati</strong> — across the manufacturing, distribution, and retail centers of Ohio, Indiana, and Kentucky. If your operation runs multiple sites in the region, each one gets its own delivery. These are the metros we serve most:</p>
       <div class="uc-city-grid">
         <a href="/cincinnati-shipping-containers/" class="uc-city"><span class="uc-city-code">CIN</span><span class="uc-city-name">Cincinnati, OH</span><span class="uc-city-arrow">→</span></a>
         <a href="/dayton-shipping-containers/" class="uc-city"><span class="uc-city-code">DAY</span><span class="uc-city-name">Dayton, OH</span><span class="uc-city-arrow">→</span></a>
@@ -154,26 +262,36 @@ const perSqFtDisplay = `$${roundToHalf(perSqFt(std40.price, std40.sqft)).toFixed
         <h2 class="uc-h2">Common questions</h2>
       </div>
       <div class="uc-faq-list">
-        <div class="uc-faq-item" style="border-left-color: var(--c5-permits);">
-          <h3>Can a container be placed at a loading dock or commercial facility?</h3>
-          <p>Containers can be placed adjacent to a loading dock, in a parking lot, or in a designated staging area. They cannot be directly docked to a raised loading platform — the container door sill sits at ground level, not at dock height. For dock-height access, a yard ramp or dock plate bridges the gap; these are widely available from material handling suppliers. Describe your placement area when requesting a quote and we'll confirm feasibility.</p>
-        </div>
-        <div class="uc-faq-item" style="border-left-color: var(--c5-permits);">
-          <h3>What are your lead times for commercial delivery?</h3>
-          <p>For standard cargo-worthy 20ft and 40ft units, most commercial orders in our service area are delivered within 3–5 business days of quote approval, subject to inventory availability. One-trip units may have a slightly longer lead time. If you have a project start date or a specific delivery window, include it in the quote request and we'll confirm upfront.</p>
-        </div>
-        <div class="uc-faq-item" style="border-left-color: var(--c5-permits);">
-          <h3>Can we get multiple containers for a single location?</h3>
-          <p>Yes. Multiple containers can be delivered to a single site in one trip or staggered across multiple trips. If you need units placed adjacent in a specific configuration — side-by-side with aligned doors — include a description of the layout in your quote request. We'll plan the delivery sequence to ensure the footprint works and all doors remain accessible.</p>
-        </div>
-        <div class="uc-faq-item" style="border-left-color: var(--c5-permits);">
-          <h3>How do businesses typically handle container storage for accounting or tax purposes?</h3>
-          <p>A purchased container is generally treated as tangible personal property and depreciates under MACRS as a 5 or 7-year asset under standard IRS classifications, though your accountant should confirm based on your specific use. The container is not real property and does not typically trigger real estate assessments or property tax reclassification. A leased container would be expensed as an operating cost. We provide a standard bill of sale for all purchases.</p>
-        </div>
-        <div class="uc-faq-item" style="border-left-color: var(--c5-permits);">
-          <h3>Do you work with businesses that need deliveries across different locations?</h3>
-          <p>Yes. We serve the full 250-mile radius from Cincinnati, which includes major commercial corridors in Ohio, Indiana, and Kentucky. If your business has multiple facilities within our service area, each location gets its own delivery. For recurring commercial relationships, contact us directly to discuss volume arrangements.</p>
-        </div>
+        {faqs.map((f, i) => (
+          <div class="uc-faq-item" style="border-left-color: var(--c5-permits);">
+            <h3>{f.q}</h3>
+            {i === 2 ? (
+              <p>Yes — and most multi-unit commercial setups are about organization, not just capacity. Run separate units by product line, by season, or by department, and you can stage inventory the way your operation actually flows instead of cramming everything into one box. Need to scale up for a peak and back down afterward? Add a unit for Q4 and retrieve it in January. We position multiple containers adjacent with every door accessible, and for recurring needs we'll plan a delivery cadence around your inventory cycle rather than a single drop. Delivery mechanics — trip sequencing, alignment, and site access — are covered in our <a href="/for/contractors/">contractors guide</a> and on each city page.</p>
+            ) : i === 3 ? (
+              <p>A purchased container is generally treated as tangible personal property and depreciates under <a href="https://www.irs.gov/publications/p946" target="_blank" rel="noopener">MACRS (IRS Publication 946)</a> as a 5- or 7-year asset under standard IRS classifications — though your accountant should confirm the right treatment for your specific use. The container is not real property, so it does not typically trigger a real-estate assessment or a property-tax reclassification. A leased container would instead be expensed as an operating cost. We provide a standard bill of sale for every purchase for your records.</p>
+            ) : (
+              <p>{f.a}</p>
+            )}
+            {i === 6 && (
+              /* IMAGE SLOT 5 — security. filename: container-puck-lock-lockbox-security.webp */
+              <figure class="uc-img uc-img-inline uc-img-faq" data-img-slot="security">
+                <img class="uc-img-real" width="520" height="293"
+                  alt="Puck lock in recessed lockbox hasp on a steel commercial storage container door"
+                  src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='520'%20height='293'%3E%3C/svg%3E" />
+                <span class="uc-img-tag m">Photo · Puck lock in container lockbox</span>
+              </figure>
+            )}
+          </div>
+        ))}
+      </div>
+
+      <div class="uc-sources">
+        <span class="m">Sources</span>
+        <ul>
+          <li>Container interior height &amp; 40ft dimensions — <a href="https://www.icontainers.com/help/40-foot-container/" target="_blank" rel="noopener">iContainers, 40-foot container spec</a></li>
+          <li>Container steel — <a href="https://en.wikipedia.org/wiki/Weathering_steel" target="_blank" rel="noopener">Weathering (Cor-Ten) steel</a></li>
+          <li>Depreciation treatment — <a href="https://www.irs.gov/publications/p946" target="_blank" rel="noopener">IRS Publication 946, How To Depreciate Property</a></li>
+        </ul>
       </div>
     </div>
   </section>
@@ -183,7 +301,7 @@ const perSqFtDisplay = `$${roundToHalf(perSqFt(std40.price, std40.sqft)).toFixed
     <div class="wrap" style="display: flex; flex-direction: column; align-items: flex-start; gap: 24px; max-width: 680px;">
       <p class="m" style="color: var(--yellow); margin: 0;">Ready when you are</p>
       <h2 style="font-family: var(--narrow); font-size: clamp(28px, 4vw, 44px); font-weight: 700; text-transform: uppercase; margin: 0; line-height: 1.05;">Get a quote for your operation.</h2>
-      <p style="font-size: 17px; opacity: .75; margin: 0; line-height: 1.5;">Tell us your size, condition, and delivery zip. We respond within 4 business hours.</p>
+      <p style="font-size: 17px; opacity: .75; margin: 0; line-height: 1.5;">Tell us your inventory volume, how many units you need, and your delivery zip — single site or several. We respond within 4 business hours with an all-in number.</p>
       <div style="display: flex; gap: 16px; flex-wrap: wrap;">
         <a href="/quote/" class="btn" style="background: var(--yellow); color: var(--ink); border-color: var(--yellow);">Get My Quote →</a>
         <a href="/shipping-containers-for-sale/" class="btn-ghost" style="color: var(--cream);">Browse containers first</a>
@@ -196,37 +314,103 @@ const perSqFtDisplay = `$${roundToHalf(perSqFt(std40.price, std40.sqft)).toFixed
 <style>
   /* ---- HERO ---- */
   .uc-hero { padding: 110px 0 72px; background: var(--yellow); border-bottom: 2.5px solid var(--ink); }
+  .uc-hero-grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 56px; align-items: center; }
   .uc-eyebrow { display: inline-block; font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; background: var(--ink); color: var(--cream); padding: 7px 14px; }
-  .uc-h1 { font-family: var(--narrow); font-weight: 700; font-size: clamp(44px, 8vw, 78px); line-height: .92; letter-spacing: -.02em; text-transform: uppercase; margin: 28px 0 0; }
-  .uc-lede { font-size: 22px; line-height: 1.45; max-width: 760px; margin: 28px 0 0; font-weight: 500; }
-  .uc-accent { height: 10px; width: 180px; margin-top: 40px; }
+  .uc-h1 { font-family: var(--narrow); font-weight: 700; font-size: clamp(44px, 6.5vw, 72px); line-height: .92; letter-spacing: -.02em; text-transform: uppercase; margin: 28px 0 0; }
+  .uc-lede { font-size: 20px; line-height: 1.5; max-width: 640px; margin: 28px 0 0; font-weight: 500; }
+  .uc-lede strong { font-weight: 700; }
+  .uc-accent { height: 10px; width: 180px; margin-top: 36px; }
+  .uc-trust-strip { margin: 20px 0 0; opacity: .72; letter-spacing: .06em; line-height: 1.6; }
 
   /* ---- SHARED SECTION HEADER ---- */
-  .uc-sh { border-top: 4px solid var(--ink); padding-top: 18px; margin-bottom: 48px; }
+  .uc-sh { border-top: 4px solid var(--ink); padding-top: 18px; margin-bottom: 32px; }
   .uc-sh .m { display: block; opacity: .55; margin-bottom: 10px; }
   .uc-h2 { font-family: var(--narrow); font-weight: 700; font-size: clamp(30px, 4.5vw, 48px); line-height: 1; letter-spacing: -.01em; text-transform: uppercase; margin: 0; }
+  .uc-section-intro { font-size: 19px; line-height: 1.55; max-width: 820px; margin: 0 0 48px; font-weight: 500; opacity: .9; }
+
+  /* ---- IMAGE PLACEHOLDERS (no external requests, fixed ratio → zero CLS) ---- */
+  .uc-img {
+    position: relative; margin: 0; background: var(--ink);
+    border: 2px solid var(--ink); overflow: hidden;
+    display: flex; align-items: flex-end;
+    background-image:
+      repeating-linear-gradient(45deg, rgba(246,241,231,.04) 0 14px, transparent 14px 28px);
+  }
+  .uc-img::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background:
+      radial-gradient(circle at 28% 32%, rgba(245,124,0,.24), transparent 60%),
+      radial-gradient(circle at 78% 72%, rgba(246,241,231,.06), transparent 55%);
+  }
+  .uc-img-real {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; z-index: 0;
+  }
+  .uc-img-tag {
+    position: relative; z-index: 1; margin: 0;
+    color: var(--cream); opacity: .7; padding: 14px 16px;
+    border-top: 1px solid rgba(246,241,231,.18);
+    background: linear-gradient(transparent, rgba(11,15,26,.55));
+    width: 100%; letter-spacing: .06em; line-height: 1.4;
+  }
+  .uc-img-hero { aspect-ratio: 4 / 3; box-shadow: 12px 12px 0 var(--ink); width: 100%; }
+  .uc-img-wide { aspect-ratio: 21 / 9; box-shadow: 8px 8px 0 var(--ink); margin-top: 40px; }
+  .uc-img-inline { aspect-ratio: 16 / 9; margin-top: 24px; }
+  .uc-img-faq { max-width: 520px; }
 
   /* ---- WHY ---- */
   .uc-why { padding: 96px 0; background: var(--cream); border-bottom: 1.5px solid rgba(11,15,26,.1); }
   .uc-why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
   .uc-block { background: white; border: 2px solid var(--ink); padding: 32px; box-shadow: 8px 8px 0 var(--ink); }
   .uc-block h3 { font-family: var(--narrow); font-weight: 700; font-size: 24px; text-transform: uppercase; line-height: 1.05; margin: 0 0 14px; }
-  .uc-block p { font-size: 16px; line-height: 1.55; opacity: .82; margin: 0; }
+  .uc-block p { font-size: 16px; line-height: 1.55; opacity: .82; margin: 0 0 14px; }
+  .uc-block p:last-child { margin-bottom: 0; }
+  .uc-block p strong { opacity: 1; }
+  .uc-block p a, .uc-faq-item p a { color: inherit; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 2px; }
   .uc-price-note { font-family: var(--mono); font-size: 11px; letter-spacing: .04em; text-transform: uppercase; opacity: .55; margin: 12px 0 0; }
+
+  /* ---- COMPARE (cost of space) ---- */
+  .uc-compare { padding: 96px 0; background: var(--ink); color: var(--cream); border-bottom: 1.5px solid rgba(11,15,26,.1); }
+  .uc-compare .uc-sh { border-top-color: var(--c5-permits); }
+  .uc-compare .uc-sh .m { color: var(--cream); }
+  .uc-compare .uc-h2 { color: var(--cream); }
+  .uc-compare-lead { font-size: 19px; line-height: 1.6; max-width: 860px; margin: 0 0 44px; opacity: .9; }
+  .uc-compare-lead strong { color: var(--yellow); font-weight: 700; }
+
+  .uc-compare-table { width: 100%; border-collapse: collapse; background: var(--cream); color: var(--ink); border: 2.5px solid var(--ink); box-shadow: 12px 12px 0 var(--c5-permits); table-layout: fixed; }
+  .uc-compare-caption { caption-side: top; text-align: left; font-family: var(--mono); font-size: 11px; letter-spacing: .04em; text-transform: uppercase; color: var(--cream); opacity: .5; margin-bottom: 14px; line-height: 1.4; }
+  .uc-compare-table thead th { vertical-align: bottom; padding: 22px 22px 18px; border-bottom: 2.5px solid var(--ink); text-align: left; }
+  .uc-ct-rowhead { width: 22%; background: var(--ink); color: var(--cream); }
+  .uc-ct-rent { width: 39%; background: var(--cream); }
+  .uc-ct-own { width: 39%; background: var(--c5-permits); color: var(--cream); }
+  .uc-ct-kicker { display: block; opacity: .7; margin-bottom: 8px; }
+  .uc-ct-own .uc-ct-kicker { opacity: .9; }
+  .uc-ct-title { font-family: var(--narrow); font-weight: 700; font-size: 22px; line-height: 1.05; text-transform: uppercase; letter-spacing: -.01em; }
+  .uc-compare-table tbody th { text-align: left; font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; font-weight: 500; padding: 18px 22px; background: var(--ink); color: var(--cream); border-bottom: 1px solid rgba(11,15,26,.12); vertical-align: top; }
+  .uc-compare-table tbody td { padding: 18px 22px; font-size: 16px; line-height: 1.45; border-bottom: 1px solid rgba(11,15,26,.12); border-left: 1px solid rgba(11,15,26,.12); vertical-align: top; }
+  .uc-compare-table tbody td.is-own { background: rgba(245,124,0,.10); font-weight: 600; }
+  .uc-compare-table tbody td.is-own strong { color: #c2570a; font-size: 18px; }
+  .uc-compare-table tbody tr:last-child th,
+  .uc-compare-table tbody tr:last-child td { border-bottom: none; }
+  .uc-compare-pull { font-family: var(--narrow); font-weight: 700; font-size: clamp(20px, 2.6vw, 26px); line-height: 1.2; text-transform: uppercase; letter-spacing: -.01em; max-width: 860px; margin: 40px 0 0; padding-left: 24px; border-left: 4px solid var(--c5-permits); color: var(--cream); }
+  .uc-compare-note { color: var(--cream); opacity: .5; margin-top: 18px; }
+  .uc-compare .uc-img-tag { color: var(--cream); }
 
   /* ---- RECOMMENDATIONS ---- */
   .uc-recs { padding: 96px 0; background: white; border-bottom: 1.5px solid rgba(11,15,26,.1); }
+  .uc-img-recs { margin-top: 0; margin-bottom: 48px; }
   .uc-rec-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
   .uc-rec { display: flex; flex-direction: column; background: var(--cream); border: 2px solid var(--ink); border-top: 8px solid var(--ink); padding: 28px; transition: transform .15s, box-shadow .15s; }
   .uc-rec:hover { transform: translate(-3px, -3px); box-shadow: 6px 6px 0 var(--ink); }
   .uc-rec-size { font-family: var(--narrow); font-weight: 700; font-size: 34px; text-transform: uppercase; line-height: 1; margin-bottom: 14px; }
   .uc-rec-body { font-size: 15px; line-height: 1.5; opacity: .82; margin: 0 0 20px; flex: 1; }
+  .uc-rec-body strong { opacity: 1; }
   .uc-rec-link { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; font-weight: 500; margin-top: auto; }
-  .uc-framing { margin: 40px 0 0; font-size: 18px; line-height: 1.5; font-weight: 500; max-width: 760px; border-left: 4px solid var(--yellow); padding-left: 24px; }
+  .uc-framing { margin: 40px 0 0; font-size: 18px; line-height: 1.5; font-weight: 500; max-width: 760px; border-left: 4px solid var(--c5-permits); padding-left: 24px; }
 
   /* ---- WHERE WE DELIVER ---- */
   .uc-deliver { padding: 96px 0; background: var(--cream); border-bottom: 1.5px solid rgba(11,15,26,.1); }
-  .uc-deliver-lede { font-size: 18px; line-height: 1.5; max-width: 720px; margin: 0 0 40px; opacity: .85; }
+  .uc-deliver-lede { font-size: 18px; line-height: 1.5; max-width: 820px; margin: 0 0 40px; opacity: .85; }
   .uc-city-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
   .uc-city { display: flex; flex-direction: column; gap: 6px; background: white; border: 2px solid var(--ink); padding: 22px 24px; transition: background .15s, color .15s; }
   .uc-city:hover { background: var(--ink); color: var(--cream); }
@@ -242,7 +426,18 @@ const perSqFtDisplay = `$${roundToHalf(perSqFt(std40.price, std40.sqft)).toFixed
   .uc-faq-item h3 { font-family: var(--narrow); font-weight: 700; font-size: 22px; line-height: 1.15; text-transform: uppercase; margin: 0 0 12px; }
   .uc-faq-item p { font-size: 16px; line-height: 1.6; opacity: .82; margin: 0; }
 
+  /* ---- SOURCES ---- */
+  .uc-sources { margin-top: 56px; max-width: 860px; border-top: 2px solid rgba(11,15,26,.15); padding-top: 24px; }
+  .uc-sources .m { display: block; opacity: .55; margin-bottom: 14px; }
+  .uc-sources ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+  .uc-sources li { font-size: 14px; line-height: 1.5; opacity: .82; }
+  .uc-sources a { color: inherit; text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 2px; }
+
   /* ---- RESPONSIVE ---- */
+  @media (max-width: 960px) {
+    .uc-hero-grid { grid-template-columns: 1fr; gap: 40px; }
+    .uc-img-hero { aspect-ratio: 16 / 9; }
+  }
   @media (max-width: 768px) {
     .uc-hero { padding: 72px 0 56px; }
     .uc-why-grid { grid-template-columns: 1fr; gap: 20px; }
@@ -250,5 +445,16 @@ const perSqFtDisplay = `$${roundToHalf(perSqFt(std40.price, std40.sqft)).toFixed
     .uc-city-grid { grid-template-columns: 1fr 1fr; }
     .uc-block { padding: 24px; }
     .uc-faq-item { padding-left: 20px; }
+    .uc-img-wide { aspect-ratio: 16 / 9; }
+    /* Comparison table → stack so it stays readable on phones */
+    .uc-compare-table, .uc-compare-table thead, .uc-compare-table tbody,
+    .uc-compare-table tr, .uc-compare-table th, .uc-compare-table td { display: block; width: 100% !important; }
+    .uc-compare-table thead { border-bottom: 2.5px solid var(--ink); }
+    .uc-compare-table thead tr { display: grid; grid-template-columns: 1fr 1fr; }
+    .uc-ct-rowhead { display: none !important; }
+    .uc-compare-table tbody tr { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 2px solid var(--ink); }
+    .uc-compare-table tbody th { grid-column: 1 / -1; background: var(--ink); }
+    .uc-compare-table tbody td { border-left: none; border-bottom: none; }
+    .uc-compare-table tbody td:first-of-type { border-right: 1px solid rgba(11,15,26,.12); }
   }
 </style>
