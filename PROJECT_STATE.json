@@ -2,8 +2,8 @@
   "project_name": "Steel Box Direct - Container Decision Engine",
   "phase": "optimization_expansion",
   "status": "active_development",
-  "last_session": "2026-06-02",
-  "last_commit": "5ca8632",
+  "last_session": "2026-06-05",
+  "last_commit": "96a7d4b",
   "completed": [
     "Project relocation to workspace root",
     "Git repository initialization and cleanup (steelboxdirect-v2)",
@@ -33,7 +33,10 @@
     "City page refactor: [citySlug].astro template replacing 4 flat files, all URLs preserved",
     "Containers nav link added to BaseLayout",
     "IndexNow integration: key file, submission script, npm scripts (2026-06-02)",
-    "SEO audit + fixes: schema cleanup, noindex admin, OG tags, non-blocking fonts, internal links, city FAQ schema (2026-06-02)"
+    "SEO audit + fixes: schema cleanup, noindex admin, OG tags, non-blocking fonts, internal links, city FAQ schema (2026-06-02)",
+    "Use-case pages: /for/farmers,contractors,homeowners,businesses/ + src/data/pricing.ts — built, content-expanded, cited (real GOV/EDU/standards sources), verified; FAQPage schema parity; image placeholders pending real assets (2026-06-04/05)",
+    "Nav: secondary 'Containers Use Type' strip (right-aligned) + borderless Call Now (tel:) with hover number-morph; main menu centered; Military/Veteran line moved under brand; FreedomConex disclosure pinned right; footer FreedomConex logo chip background -> ink (2026-06-05)",
+    "DEPLOYED to production: pushed main -> 96a7d4b -> Cloudflare (2026-06-05). Use-case pages LIVE with placeholder image boxes pending real images."
   ],
   "todos": [
     "Create Google Business Profile + add URL to Organization.sameAs",
@@ -42,7 +45,9 @@
     "/size/calculator/ static content fallback for Googlebot",
     "FAQ Schema & Snippet Optimization (existing pages — deferred)",
     "Final Cloudflare DNS/Domain configuration",
-    "Switch Cloudflare secrets from Plaintext to Secret type (RESEND_API_KEY, SUPABASE_SERVICE_ROLE_KEY)"
+    "Switch Cloudflare secrets from Plaintext to Secret type (RESEND_API_KEY, SUPABASE_SERVICE_ROLE_KEY)",
+    "FUTURE SEO PAGE (user-requested 2026-06-04, tabled): dedicated cost-comparison page — shipping container vs. other storage options (self-storage, PODS, pole barn, etc.). Heavy schema/AI markup for AI-citation visibility. Build after use-case pages + nav + city expansion.",
+    "FUTURE PARTNERSHIPS (user-idea 2026-06-04, research later): container accessories — A/C, lighting, shelving, ventilation, etc. Find 2+ reputable vendors and build relationships → backlink opportunities + potential affiliate/revenue stream. Could seed an /accessories/ resource page that links out (ties into backlink strategy)."
   ],
   "agents": [
     "stuck.md",

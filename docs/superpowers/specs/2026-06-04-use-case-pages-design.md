@@ -1,13 +1,24 @@
-# Destination Pages — Design Spec
+# Use-Case Pages — Design Spec
 **Date:** 2026-06-04
-**Status:** Approved
+**Status:** Approved (terminology realigned 2026-06-04)
 **Project:** Steel Box Direct (steelboxdirect.com)
+
+---
+
+## Terminology (locked)
+
+Two **separate** page types — do not conflate:
+
+- **Use-case pages** — SEO pages targeting a specific *usage* of a container. Seed set: Farming, Contractors, Home, Business — **open-ended; more added later**. Built **off-template with unique content** to avoid duplicate-content penalties (they may share some structural elements, but the content is bespoke per page). Main-nav placement is **deferred until the pages are built**. They create outward internal-linking opportunities (e.g. a "Where we deliver" section linking to city pages). This spec's "ICP page" = use-case page.
+- **Destination pages** — the City/Local landing pages (Cincinnati, Dayton, Indianapolis, Louisville — live; Columbus, Lexington, Fort Wayne — planned expansion). These already exist as a page type.
+
+This spec's primary new deliverable is the **use-case pages**. The earlier "destination pages" framing was a project-name collision and is corrected here.
 
 ---
 
 ## Goal
 
-Build 4 ICP audience pages (`/for/[audience]/`) and expand to 3 new cities, creating the destination layer that directory backlinks and internal links will flow into. Guiding principle: **optimise for ranking, SEO, and AI visibility.**
+Build the initial set of use-case pages (`/for/[use-case]/`, seed set of 4) and expand the destination (city) layer by 3 new cities. Use-case pages and destination pages cross-link, so directory backlinks and internal links flow through both. Guiding principle: **optimise for ranking, SEO, and AI visibility.**
 
 ---
 

@@ -51,8 +51,37 @@ Designing 4 ICP pages + 3 city expansion pages:
 
 ---
 
-## Pending
-- Complete brainstorm → write spec → get user approval → writing-plans → execute
+## Pending (from earlier in day)
 - User action: Create Google Business Profile (backlink strategy hard block #1)
 - User action: Prepare logo SVG + 1024px square for directory submissions
 - User action: Create Facebook Business Page + LinkedIn Company Page
+
+---
+
+## Session continuation — Use-Case Pages (agent-orchestrated)
+
+**Terminology resolved:** use-case pages (`/for/[x]/`, container-usage SEO pages) vs destination pages (city/local pages) — two separate layers. Spec retitled/renamed → `docs/superpowers/specs/2026-06-04-use-case-pages-design.md`. CAPABILITIES.json → Opus 4.8.
+
+**Built (all agent-driven; orchestrator did no page implementation per user directive):**
+- `src/data/pricing.ts` (dated single source of truth) + 4 use-case pages: `/for/farmers|contractors|homeowners|businesses/`.
+- Plan: `docs/superpowers/plans/2026-06-04-use-case-pages.md` (agent-written, orchestrator QA'd: fixed .ts import + dollar-grep gate).
+- Build sequence: pricing.ts → farmers canary → contractors/homeowners/businesses → verifier + seo-analyst review (PASS, ship-ready).
+- Content expansion: 4 content-writer drafts (`.outputs/use-case-content/*.md`) → frontend-designer integration (hero 2-col, comparison tables home/biz, image placeholders, single faqs-array for schema parity).
+- Citations: verified library (`.outputs/use-case-content/citations.md`); real GOV/EDU/standards URLs added as outbound links.
+
+**Content policy locked:** commercial-informational (not pure sales); NO time/speed delivery promises (liability); cite real sources only (no fabrication). Homeowners self-storage corrected $150–250→national ~$120/mo + disclaimer. Contractors tare 4,850→~5,000 lb.
+
+**Agents created:** `.agents/content-writer.md`, `.agents/frontend-designer.md`. Decisions logged in `.project-catalog/decisions/` (terminology, agent-orchestration, cost-comparison/dollar-exception, frontend-integration). Checkpoints in `.checkpoints/`.
+
+**State:** all 4 pages committed LOCAL main (not pushed); dev server localhost:4321. Pages live + in sitemap but NOT yet in nav (deferred).
+
+## Pending (use-case work)
+- User: review all 4 on localhost → supply real images (placeholders drop-in by filename) → push to deploy.
+- Deferred sequence: nav "Who We Serve" → city expansion (Columbus/Lexington/Fort Wayne).
+- Minor: verify/strengthen KY ag citation (county page vs KRS 100); confirm 40ft HC price (< Standard).
+- Backlog: dedicated cost-comparison page; container-accessories partnerships.
+
+## Deployed (2026-06-05)
+- Committed final nav/footer code; pushed `main` -> `96a7d4b` -> Cloudflare auto-deploy. All 4 use-case pages + nav now LIVE (with placeholder image boxes; real images pending — user generating via Gemini Ultra from `.outputs/use-case-content/image-generation-brief.md`).
+- Image brief: 21 paste-ready Gemini prompts (4 heroes flagged), built against real slots; 3 plan images dropped (no slots) — flagged for optional future slots.
+- Open next: swap real images into placeholders (quick follow-up push); mobile main-nav issues (user flagged); city expansion (Columbus/Lexington/Fort Wayne).

@@ -1,6 +1,6 @@
 {
-  "environment": "Claude Code CLI (macOS Darwin 25.3.0)",
-  "llm": "Claude Opus 4.6 (claude-opus-4-6)",
+  "environment": "Claude Code CLI (macOS Darwin 25.5.0)",
+  "llm": "Claude Opus 4.8 (claude-opus-4-8) — 1M context",
   "tools_available": {
     "file_read": true,
     "file_write": true,
