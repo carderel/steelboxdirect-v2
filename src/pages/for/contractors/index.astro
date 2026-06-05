@@ -1,10 +1,34 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
+
+// --- Visible FAQ set (single source of truth → drives both the rendered FAQ and the JSON-LD) ---
+const faqs = [
+  {
+    q: 'Can a container be delivered directly to an active construction site?',
+    a: "Yes, and it's one of the most common setups we handle. Our delivery truck uses a tilt-bed or boom-off method depending on site conditions. We need enough space to maneuver the truck (typically 50+ feet of clear approach), a stable surface to set the container on, and overhead clearance of at least 14 feet. For tight urban sites, we do a site assessment upfront. Tell us about the site when you request a quote — entry width, surface type, and any overhead obstacles — and we'll confirm feasibility before scheduling.",
+  },
+  {
+    q: 'What kind of lock works best on a shipping container?',
+    a: 'The door hasp on most cargo-worthy containers accepts a standard discus or puck lock — Abloy, Medeco, or Master Lock "puck" series. These fit inside the lockbox recess on the door handle and are virtually impossible to cut without heavy equipment. Avoid standard padlocks with exposed shackles — they\'re vulnerable to bolt cutters. If you need to key multiple containers to the same lock for a large project, let us know and we can coordinate.',
+  },
+  {
+    q: 'How much space does the truck need to deliver a container?',
+    a: "For a 20ft container, the truck needs approximately 50 feet of clear approach with at least 12 feet of width. For a 40ft container, plan for 70+ feet of clear approach. Overhead clearance should be at least 14 feet along the entire approach path. The container will be placed roughly 3–5 feet from where the truck stops. If the site is tight, describe the layout in your quote request — our drivers are experienced with constrained job sites.",
+  },
+  {
+    q: 'Can you stage containers across the phases of a build?',
+    a: "Yes — phased delivery is one of the main reasons contractors choose us over a rental yard. We can drop multiple units at once for a large early phase, then pull them one at a time as each section closes out, or stagger drops so storage arrives as new trades mobilize. If you need boxes positioned in a specific configuration — side-by-side with doors aligned for a shared staging run, for example — describe the layout in your quote request and we'll sequence the delivery so the footprint works and every door stays accessible. Tie the schedule to your phase plan and we'll match it.",
+  },
+  {
+    q: 'What happens if we need to move the container mid-project?',
+    a: "We can relocate the container within our service area for a repositioning fee. Alternatively, if you have a forklift or excavator on site with sufficient capacity (empty 20ft containers weigh about 5,000 lbs; 40ft units run 8,000+ lbs), your crew can reposition using the corner castings or forklift pockets on the underside.",
+  },
+];
 ---
 
 <BaseLayout
-  title="Shipping Containers for Job Sites in Ohio, Indiana & Kentucky | Steel Box Direct"
-  description="Job site storage containers delivered across OH/IN/KY. Ground-level access, standard padlock hasp, dropped and picked up when the job's done."
+  title="Shipping Containers for Job Sites in OH, IN & KY | Steel Box Direct"
+  description="Job site storage containers delivered across OH/IN/KY. Ground-level access, theft-resistant lockbox hasp, dropped and picked up when the job's done."
   pageType="guide"
   datePublished="2026-06-04"
   dateModified="2026-06-04"
@@ -14,58 +38,36 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
     <script type="application/ld+json" set:html={JSON.stringify({
       "@context": "https://schema.org",
       "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "Can a container be delivered directly to an active construction site?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Yes, and it's one of the most common setups we handle. Our delivery truck uses a tilt-bed or boom-off method depending on site conditions. We need enough space to maneuver the truck (typically 50+ feet of clear approach), a stable surface to set the container on, and overhead clearance of at least 14 feet. For tight urban sites, we do a site assessment upfront. Tell us about the site when you request a quote — entry width, surface type, and any overhead obstacles — and we'll confirm feasibility before scheduling."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "What kind of lock works best on a shipping container?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "The door hasp on most cargo-worthy containers accepts a standard discus or puck lock — Abloy, Medeco, or Master Lock \"puck\" series. These fit inside the lockbox recess on the door handle and are virtually impossible to cut without heavy equipment. Avoid standard padlocks with exposed shackles — they're vulnerable to bolt cutters. If you need to key multiple containers to the same lock for a large project, let us know and we can coordinate."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How much space does the truck need to deliver a container?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "For a 20ft container, the truck needs approximately 50 feet of clear approach with at least 12 feet of width. For a 40ft container, plan for 70+ feet of clear approach. Overhead clearance should be at least 14 feet along the entire approach path. The container will be placed roughly 3–5 feet from where the truck stops. If the site is tight, describe the layout in your quote request — our drivers are experienced with constrained job sites."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Can you deliver multiple containers to the same site?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Yes. Multiple containers can be delivered to a single project in one trip or staggered across multiple trips. If you need units placed adjacent in a specific configuration — side-by-side with aligned doors, for example — include that in your quote request. We'll plan the delivery sequence to ensure the footprint works and all doors stay accessible."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "What happens if we need to move the container mid-project?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "We can relocate the container within our service area for a repositioning fee. Alternatively, if you have a forklift or excavator on site with sufficient capacity (empty 20ft containers weigh about 4,850 lbs; 40ft units run 8,000+ lbs), your crew can reposition using the corner castings or forklift pockets on the underside."
-          }
-        }
-      ]
+      "mainEntity": faqs.map((f) => ({
+        "@type": "Question",
+        "name": f.q,
+        "acceptedAnswer": { "@type": "Answer", "text": f.a },
+      })),
     })} />
   </Fragment>
 
   <!-- 1. HERO -->
   <section class="uc-hero">
-    <div class="wrap">
-      <span class="uc-eyebrow">For Contractors &amp; Construction</span>
-      <h1 class="uc-h1">Job Site Storage That Locks and Stays.</h1>
-      <p class="uc-lede">Standard padlock hasp. Ground-level door access. No forklift needed to load it. Delivered when you need it, retrieved when the job's done.</p>
-      <div class="uc-accent" style="background: var(--c3-deliver);"></div>
+    <div class="wrap uc-hero-grid">
+      <div class="uc-hero-copy">
+        <span class="uc-eyebrow">For Contractors &amp; Construction</span>
+        <h1 class="uc-h1">Job Site Storage That Locks and Stays.</h1>
+        <p class="uc-lede">A steel box that bolt cutters can't open, doors that meet you at ground level, and a truck that comes back for it when the job wraps. We drop containers on active sites across Ohio, Indiana, and Kentucky — no rental contract, no CDL on your end, no forklift to load it.</p>
+        <div class="uc-accent" style="background: var(--c3-deliver);"></div>
+        <p class="uc-trust-strip m">Theft-resistant lockbox hasp · Ground-level door access · Delivered &amp; retrieved on your schedule · Quote back within 4 business hours</p>
+      </div>
+
+      <!-- IMAGE SLOT 1 — hero. Swap data-URI src for the real photo; alt + dimensions stay. -->
+      <!-- filename: contractors-hero-jobsite-container.webp -->
+      <figure class="uc-img uc-img-hero" data-img-slot="hero">
+        <img
+          class="uc-img-real"
+          width="640" height="480"
+          alt="Locked steel shipping container on an active Ohio construction job site with crew vehicles behind"
+          src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='640'%20height='480'%3E%3C/svg%3E"
+        />
+        <span class="uc-img-tag m">Photo · Job site storage container, locked</span>
+      </figure>
     </div>
   </section>
 
@@ -76,23 +78,68 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
         <span class="m">Why It Works</span>
         <h2 class="uc-h2">Why containers work for contractors</h2>
       </div>
+      <p class="uc-section-intro">Four reasons a steel box beats a job-site trailer, a cargo van, or a wood toolshed on an active build — and the specifics that back each one up.</p>
       <div class="uc-why-grid">
         <div class="uc-block">
           <h3>Harder to break into than a job site trailer</h3>
-          <p>ISO shipping containers are built from Cor-Ten steel — the same material used in ocean freight. The standard door lock mechanism accepts a padlock or puck lock through a lockbox hasp. Unlike a job site trailer, there's no gap at the roofline, no plastic panels, and no soft aluminum skin to cut through. It's substantially more secure than a wood toolbox, a cargo trailer, or an open van.</p>
+          <p>ISO shipping containers are built from <a href="https://en.wikipedia.org/wiki/Weathering_steel" target="_blank" rel="noopener">weathering (Cor-Ten) steel</a> — the same corrosion-resistant alloy used for ocean freight that crosses the Pacific stacked nine high. The cargo doors close onto a steel hasp built to take a discus or puck lock, and there's no soft spot to exploit: no gap at the roofline, no plastic skylight, no aluminum skin a battery grinder chews through in seconds.</p>
+          <p>Compare that to a standard job site trailer — single-skin walls, a residential-grade door lock, windows. For a crew that's lost a generator or a pallet of copper overnight, the difference isn't cosmetic. A container is the closest thing to a vault you can set on dirt.</p>
+
+          <!-- IMAGE SLOT 2 — puck lock closeup. Swap data-URI src for the real photo; alt + dimensions stay. -->
+          <!-- filename: contractors-puck-lock-closeup.webp -->
+          <figure class="uc-img uc-img-inline" data-img-slot="lock">
+            <img class="uc-img-real" width="640" height="360"
+              alt="Puck lock seated in a shipping container lockbox recess, secure against bolt cutters"
+              src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='640'%20height='360'%3E%3C/svg%3E" />
+            <span class="uc-img-tag m">Photo · Puck lock in container lockbox</span>
+          </figure>
         </div>
         <div class="uc-block">
           <h3>Ground-level access — no dock, no ramp</h3>
-          <p>Container doors open to ground level. Tools, materials, and equipment go straight in and out without a lift gate or dock plate. The floor is 5/4" hardwood or steel plate — rated for forklift entry if needed. Standard interior height is 7'10".</p>
+          <p>Container doors swing open at grade. Tools, materials, scaffold sections, and rolling equipment go straight in and out without a lift gate, dock plate, or pallet hand-off. The floor is marine-grade plywood over steel cross-members — rated to take a forklift if you need to drive pallets in.</p>
+          <p>Interior height is a <a href="https://www.mobilemodularcontainers.com/blog/how-much-does-a-shipping-containers-weigh" target="_blank" rel="noopener">standard 7'10"</a> and the door opening is roughly 7'5" wide by 7'5" tall, so a standard pallet jack and most walk-behind equipment clear it without a fight.</p>
         </div>
         <div class="uc-block">
           <h3>Delivered and retrieved on your schedule</h3>
-          <p>We deliver within 250 miles of Cincinnati. You call when you're ready; we drop it. When the project ends, we pick it up. No rental center, no trailer registration, no CDL required on your end. The container sits on site until you need it gone.</p>
+          <p>We deliver within 250 miles of Cincinnati. You call when the site's ready; we drop the box. When the punch list is done, we come pick it up — you're not stuck reselling steel or hauling it yourself.</p>
+          <p>There's no rental center to visit, no trailer to register, no CDL required on your end, and no monthly meter running while the unit sits idle between phases. The container stays exactly as long as the job does, and not a day of paperwork longer.</p>
         </div>
         <div class="uc-block">
           <h3>Flexible for multi-trade and phased projects</h3>
-          <p>A single 40ft container handles material storage for multiple trades simultaneously. When you need a second container for a new phase, we can drop another. Most commercial projects in our service area get same-week delivery if inventory is available.</p>
+          <p>One 40ft container holds material and tool storage for several trades at once — electrical, plumbing, framing, finish — without anyone tripping over anyone else's gear. When a new phase opens up and you need a second box, we drop another. When an early phase closes out and you're done with the first, we pull it.</p>
+          <p>Availability depends on inventory; we confirm timing when you request a quote, so storage keeps pace with the schedule instead of dictating it.</p>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2.5 JOBSITE THEFT — NEW -->
+  <section class="uc-theft">
+    <div class="wrap">
+      <div class="uc-sh" style="border-color: var(--c3-deliver);">
+        <span class="m">Jobsite Security</span>
+        <h2 class="uc-h2">The lock matters more than the box</h2>
+      </div>
+      <div class="uc-theft-grid">
+        <div class="uc-theft-copy">
+          <p class="uc-theft-intro">A container only protects what's inside it as well as the hardware on the door. The good news: the right lock is cheap, and the wrong lock is the only real vulnerability. Here's how crews secure a unit on an active site.</p>
+          <ul class="uc-theft-list">
+            <li><span class="uc-theft-num m">01</span><span><strong>Use a puck or discus lock, not a padlock.</strong> A puck lock seats inside the lockbox recess on the door handle, leaving almost no shackle exposed. There's nothing for bolt cutters to bite. A standard padlock with an open shackle is the one thing on the whole box a thief can defeat in seconds.</span></li>
+            <li><span class="uc-theft-num m">02</span><span><strong>Add a lockbox shroud if the unit doesn't have one.</strong> Many cargo-worthy doors already have a welded lockbox; if yours doesn't, a bolt-on steel shroud covers the lock body entirely.</span></li>
+            <li><span class="uc-theft-num m">03</span><span><strong>Lock the right-hand door first.</strong> The locking bars on the right door cam behind the left, so securing it last means both doors are pinned shut.</span></li>
+            <li><span class="uc-theft-num m">04</span><span><strong>Key multiple units alike on big jobs.</strong> Running several containers across a site? We can coordinate matching locks so your super carries one key instead of a ring of them.</span></li>
+          </ul>
+          <p class="uc-theft-pull">A puck lock and thirty seconds of habit turn a steel box into the hardest target on the site — usually enough to send an opportunist to the next jobsite over.</p>
+        </div>
+
+        <!-- IMAGE SLOT 3 — lock comparison. Swap data-URI src for the real photo; alt + dimensions stay. -->
+        <!-- filename: contractors-lock-comparison.webp -->
+        <figure class="uc-img uc-img-theft" data-img-slot="lock-compare">
+          <img class="uc-img-real" width="560" height="700"
+            alt="Puck and discus locks beside a vulnerable padlock, showing the right way to secure a container"
+            src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='560'%20height='700'%3E%3C/svg%3E" />
+          <span class="uc-img-tag m">Photo · Container lock comparison</span>
+        </figure>
       </div>
     </div>
   </section>
@@ -104,20 +151,31 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
         <span class="m">Which Container Fits</span>
         <h2 class="uc-h2">Which container fits your situation</h2>
       </div>
+      <p class="uc-section-intro">The right size comes down to how many trades share the box and how tight the site is. A single crew on a residential remodel rarely needs more than a 20ft. A commercial build with four trades staging at once almost always wants the 40ft. Here's how contractors typically split it.</p>
+
+      <!-- IMAGE SLOT 4 — size comparison. Swap data-URI src for the real photo; alt + dimensions stay. -->
+      <!-- filename: contractors-20ft-vs-40ft-staging.webp -->
+      <figure class="uc-img uc-img-wide uc-img-recs" data-img-slot="sizes">
+        <img class="uc-img-real" width="1260" height="540"
+          alt="20ft and 40ft shipping containers side by side on a contractor staging lot, doors open"
+          src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='1260'%20height='540'%3E%3C/svg%3E" />
+        <span class="uc-img-tag m">Photo · 20ft vs 40ft containers on site</span>
+      </figure>
+
       <div class="uc-rec-grid">
         <a href="/shipping-containers-for-sale/20-foot-shipping-container/" class="uc-rec" style="border-top-color: var(--c3-deliver);">
           <span class="uc-rec-size">20ft</span>
-          <p class="uc-rec-body">Best for: single-trade tool storage, tight urban sites, or projects with limited staging area. Fits in a standard parking space with room to open doors.</p>
+          <p class="uc-rec-body"><strong>Best for</strong> single-trade tool storage, tight urban infill sites, and projects with limited staging room. It fits in a standard parking space with the doors still able to swing, which makes it the go-to for downtown work where you're borrowing the curb lane.</p>
           <span class="uc-rec-link">View 20ft container →</span>
         </a>
         <a href="/shipping-containers-for-sale/40-foot-shipping-container/" class="uc-rec" style="border-top-color: var(--c3-deliver);">
           <span class="uc-rec-size">40ft</span>
-          <p class="uc-rec-body">Best for: multi-trade material storage, full tool sets across crews, and projects where you want staging and secure storage in the same unit.</p>
+          <p class="uc-rec-body"><strong>Best for</strong> multi-trade material storage, full tool sets across crews, and jobs where you want staging and secure storage in one unit. Twice the floor of a 20ft for far less than twice the cost — the workhorse of any active commercial build.</p>
           <span class="uc-rec-link">View 40ft container →</span>
         </a>
         <a href="/shipping-containers-for-sale/40-foot-one-trip-container/" class="uc-rec" style="border-top-color: var(--c3-deliver);">
           <span class="uc-rec-size">One-Trip</span>
-          <p class="uc-rec-body">Best for: clients or project owners who require a presentable on-site appearance — renovation projects in occupied neighborhoods, corporate campuses, or school sites.</p>
+          <p class="uc-rec-body"><strong>Best for</strong> projects where appearance is part of the contract — renovations in occupied neighborhoods, corporate campuses, school sites, or anywhere the GC or owner doesn't want a rusty box out front. Essentially new, clean paint, presentable from day one.</p>
           <span class="uc-rec-link">View one-trip container →</span>
         </a>
       </div>
@@ -132,13 +190,51 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
         <span class="m">Where We Deliver</span>
         <h2 class="uc-h2">Where we deliver</h2>
       </div>
-      <p class="uc-deliver-lede">We deliver within 250 miles of Cincinnati — across Ohio, Indiana, and Kentucky. Here are the metro areas we serve most:</p>
+      <p class="uc-deliver-lede">We run job sites across a 250-mile radius from Cincinnati — Ohio, Indiana, and Kentucky — and our drivers know the difference between a wide-open subdivision lot and a downtown infill site with a curb lane and a power drop overhead. These are the metros we deliver to most:</p>
       <div class="uc-city-grid">
         <a href="/cincinnati-shipping-containers/" class="uc-city"><span class="uc-city-code">CIN</span><span class="uc-city-name">Cincinnati, OH</span><span class="uc-city-arrow">→</span></a>
         <a href="/dayton-shipping-containers/" class="uc-city"><span class="uc-city-code">DAY</span><span class="uc-city-name">Dayton, OH</span><span class="uc-city-arrow">→</span></a>
         <a href="/indianapolis-shipping-containers/" class="uc-city"><span class="uc-city-code">IND</span><span class="uc-city-name">Indianapolis, IN</span><span class="uc-city-arrow">→</span></a>
         <a href="/louisville-shipping-containers/" class="uc-city"><span class="uc-city-code">LOU</span><span class="uc-city-name">Louisville, KY</span><span class="uc-city-arrow">→</span></a>
       </div>
+    </div>
+  </section>
+
+  <!-- 4.5 PLANNING DELIVERY — NEW -->
+  <section class="uc-plan">
+    <div class="wrap">
+      <div class="uc-sh" style="border-color: var(--c3-deliver);">
+        <span class="m">Planning Delivery</span>
+        <h2 class="uc-h2">What a jobsite drop actually looks like</h2>
+      </div>
+      <p class="uc-section-intro">Delivery to an active site is routine for us, but it goes smoother when the crew knows what the truck needs. Three things make or break it:</p>
+      <div class="uc-plan-grid">
+        <div class="uc-plan-card">
+          <span class="uc-plan-num">01</span>
+          <h3>Clear approach</h3>
+          <p>A 20ft unit needs roughly 50 feet of straight, clear approach; a 40ft needs 70+. The container ends up about 3–5 feet from where the truck stops, so plan the drop spot with the truck's path in mind, not just the final footprint.</p>
+        </div>
+        <div class="uc-plan-card">
+          <span class="uc-plan-num">02</span>
+          <h3>Overhead clearance</h3>
+          <p>The tilt-bed lifts high during placement — you need at least 14 feet of clearance along the whole approach. Low power lines, sign trusses, and tree limbs are the usual culprits on tight sites.</p>
+        </div>
+        <div class="uc-plan-card">
+          <span class="uc-plan-num">03</span>
+          <h3>Firm, level ground</h3>
+          <p>The box needs a stable surface that won't let a loaded container settle unevenly. Compacted gravel or packed earth is fine; soft mud and steep grade are the things to flag ahead of time.</p>
+        </div>
+      </div>
+      <p class="uc-framing">Tell us your entry width, surface, and any overhead obstacles when you request a quote, and we'll confirm the site works before anyone schedules a truck. On constrained downtown sites we'll do a site assessment up front rather than send a driver to a dead end.</p>
+
+      <!-- IMAGE SLOT 5 — tilt-bed delivery. Swap data-URI src for the real photo; alt + dimensions stay. -->
+      <!-- filename: contractors-tilt-bed-delivery.webp -->
+      <figure class="uc-img uc-img-wide" data-img-slot="delivery">
+        <img class="uc-img-real" width="1260" height="540"
+          alt="Tilt-bed truck delivering a 40ft shipping container onto a construction site, bed raised"
+          src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='1260'%20height='540'%3E%3C/svg%3E" />
+        <span class="uc-img-tag m">Photo · Tilt-bed container delivery</span>
+      </figure>
     </div>
   </section>
 
@@ -150,26 +246,21 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
         <h2 class="uc-h2">Common questions</h2>
       </div>
       <div class="uc-faq-list">
-        <div class="uc-faq-item" style="border-left-color: var(--c3-deliver);">
-          <h3>Can a container be delivered directly to an active construction site?</h3>
-          <p>Yes, and it's one of the most common setups we handle. Our delivery truck uses a tilt-bed or boom-off method depending on site conditions. We need enough space to maneuver the truck (typically 50+ feet of clear approach), a stable surface to set the container on, and overhead clearance of at least 14 feet. For tight urban sites, we do a site assessment upfront. Tell us about the site when you request a quote — entry width, surface type, and any overhead obstacles — and we'll confirm feasibility before scheduling.</p>
-        </div>
-        <div class="uc-faq-item" style="border-left-color: var(--c3-deliver);">
-          <h3>What kind of lock works best on a shipping container?</h3>
-          <p>The door hasp on most cargo-worthy containers accepts a standard discus or puck lock — Abloy, Medeco, or Master Lock "puck" series. These fit inside the lockbox recess on the door handle and are virtually impossible to cut without heavy equipment. Avoid standard padlocks with exposed shackles — they're vulnerable to bolt cutters. If you need to key multiple containers to the same lock for a large project, let us know and we can coordinate.</p>
-        </div>
-        <div class="uc-faq-item" style="border-left-color: var(--c3-deliver);">
-          <h3>How much space does the truck need to deliver a container?</h3>
-          <p>For a 20ft container, the truck needs approximately 50 feet of clear approach with at least 12 feet of width. For a 40ft container, plan for 70+ feet of clear approach. Overhead clearance should be at least 14 feet along the entire approach path. The container will be placed roughly 3–5 feet from where the truck stops. If the site is tight, describe the layout in your quote request — our drivers are experienced with constrained job sites.</p>
-        </div>
-        <div class="uc-faq-item" style="border-left-color: var(--c3-deliver);">
-          <h3>Can you deliver multiple containers to the same site?</h3>
-          <p>Yes. Multiple containers can be delivered to a single project in one trip or staggered across multiple trips. If you need units placed adjacent in a specific configuration — side-by-side with aligned doors, for example — include that in your quote request. We'll plan the delivery sequence to ensure the footprint works and all doors stay accessible.</p>
-        </div>
-        <div class="uc-faq-item" style="border-left-color: var(--c3-deliver);">
-          <h3>What happens if we need to move the container mid-project?</h3>
-          <p>We can relocate the container within our service area for a repositioning fee. Alternatively, if you have a forklift or excavator on site with sufficient capacity (empty 20ft containers weigh about 4,850 lbs; 40ft units run 8,000+ lbs), your crew can reposition using the corner castings or forklift pockets on the underside.</p>
-        </div>
+        {faqs.map((f) => (
+          <div class="uc-faq-item" style="border-left-color: var(--c3-deliver);">
+            <h3>{f.q}</h3>
+            <p>{f.a}</p>
+          </div>
+        ))}
+      </div>
+
+      <div class="uc-sources">
+        <span class="m">Sources</span>
+        <ul>
+          <li>Container steel — <a href="https://en.wikipedia.org/wiki/Weathering_steel" target="_blank" rel="noopener">Weathering (Cor-Ten) steel</a></li>
+          <li>Container specs &amp; tare weights — <a href="https://www.mobilemodularcontainers.com/blog/how-much-does-a-shipping-containers-weigh" target="_blank" rel="noopener">Mobile Modular, shipping container weights</a></li>
+          <li>Cargo-worthy inspection standard — <a href="https://www.iicl.org/" target="_blank" rel="noopener">Institute of International Container Lessors (IICL)</a></li>
+        </ul>
       </div>
     </div>
   </section>
@@ -179,7 +270,7 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
     <div class="wrap" style="display: flex; flex-direction: column; align-items: flex-start; gap: 24px; max-width: 680px;">
       <p class="m" style="color: var(--yellow); margin: 0;">Ready when you are</p>
       <h2 style="font-family: var(--narrow); font-size: clamp(28px, 4vw, 44px); font-weight: 700; text-transform: uppercase; margin: 0; line-height: 1.05;">Get a quote for your job site.</h2>
-      <p style="font-size: 17px; opacity: .75; margin: 0; line-height: 1.5;">Tell us your size, condition, and delivery zip. We respond within 4 business hours.</p>
+      <p style="font-size: 17px; opacity: .75; margin: 0; line-height: 1.5;">Tell us the site — size, condition, delivery zip, and anything tight about the approach — and we'll confirm feasibility and a delivery window. We respond within 4 business hours.</p>
       <div style="display: flex; gap: 16px; flex-wrap: wrap;">
         <a href="/quote/" class="btn" style="background: var(--yellow); color: var(--ink); border-color: var(--yellow);">Get My Quote →</a>
         <a href="/shipping-containers-for-sale/" class="btn-ghost" style="color: var(--cream);">Browse containers first</a>
@@ -192,36 +283,89 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 <style>
   /* ---- HERO ---- */
   .uc-hero { padding: 110px 0 72px; background: var(--yellow); border-bottom: 2.5px solid var(--ink); }
+  .uc-hero-grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 56px; align-items: center; }
   .uc-eyebrow { display: inline-block; font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; background: var(--ink); color: var(--cream); padding: 7px 14px; }
-  .uc-h1 { font-family: var(--narrow); font-weight: 700; font-size: clamp(44px, 8vw, 78px); line-height: .92; letter-spacing: -.02em; text-transform: uppercase; margin: 28px 0 0; }
-  .uc-lede { font-size: 22px; line-height: 1.45; max-width: 760px; margin: 28px 0 0; font-weight: 500; }
-  .uc-accent { height: 10px; width: 180px; margin-top: 40px; }
+  .uc-h1 { font-family: var(--narrow); font-weight: 700; font-size: clamp(44px, 6.5vw, 72px); line-height: .92; letter-spacing: -.02em; text-transform: uppercase; margin: 28px 0 0; }
+  .uc-lede { font-size: 20px; line-height: 1.5; max-width: 640px; margin: 28px 0 0; font-weight: 500; }
+  .uc-accent { height: 10px; width: 180px; margin-top: 36px; }
+  .uc-trust-strip { margin: 20px 0 0; opacity: .72; letter-spacing: .06em; line-height: 1.6; }
 
   /* ---- SHARED SECTION HEADER ---- */
-  .uc-sh { border-top: 4px solid var(--ink); padding-top: 18px; margin-bottom: 48px; }
+  .uc-sh { border-top: 4px solid var(--ink); padding-top: 18px; margin-bottom: 32px; }
   .uc-sh .m { display: block; opacity: .55; margin-bottom: 10px; }
   .uc-h2 { font-family: var(--narrow); font-weight: 700; font-size: clamp(30px, 4.5vw, 48px); line-height: 1; letter-spacing: -.01em; text-transform: uppercase; margin: 0; }
+  .uc-section-intro { font-size: 19px; line-height: 1.55; max-width: 820px; margin: 0 0 48px; font-weight: 500; opacity: .9; }
+
+  /* ---- IMAGE PLACEHOLDERS (no external requests, fixed ratio → zero CLS) ---- */
+  .uc-img {
+    position: relative; margin: 0; background: var(--ink);
+    border: 2px solid var(--ink); overflow: hidden;
+    display: flex; align-items: flex-end;
+    background-image:
+      repeating-linear-gradient(45deg, rgba(246,241,231,.04) 0 14px, transparent 14px 28px);
+  }
+  .uc-img::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background:
+      radial-gradient(circle at 28% 32%, rgba(30,136,229,.24), transparent 60%),
+      radial-gradient(circle at 78% 72%, rgba(246,241,231,.06), transparent 55%);
+  }
+  .uc-img-real {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; z-index: 0;
+  }
+  .uc-img-tag {
+    position: relative; z-index: 1; margin: 0;
+    color: var(--cream); opacity: .7; padding: 14px 16px;
+    border-top: 1px solid rgba(246,241,231,.18);
+    background: linear-gradient(transparent, rgba(11,15,26,.55));
+    width: 100%; letter-spacing: .06em; line-height: 1.4;
+  }
+  .uc-img-hero { aspect-ratio: 4 / 3; box-shadow: 12px 12px 0 var(--ink); width: 100%; }
+  .uc-img-wide { aspect-ratio: 21 / 9; box-shadow: 8px 8px 0 var(--ink); margin-top: 40px; }
+  .uc-img-inline { aspect-ratio: 16 / 9; margin-top: 24px; }
 
   /* ---- WHY ---- */
   .uc-why { padding: 96px 0; background: var(--cream); border-bottom: 1.5px solid rgba(11,15,26,.1); }
   .uc-why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
   .uc-block { background: white; border: 2px solid var(--ink); padding: 32px; box-shadow: 8px 8px 0 var(--ink); }
   .uc-block h3 { font-family: var(--narrow); font-weight: 700; font-size: 24px; text-transform: uppercase; line-height: 1.05; margin: 0 0 14px; }
-  .uc-block p { font-size: 16px; line-height: 1.55; opacity: .82; margin: 0; }
+  .uc-block p { font-size: 16px; line-height: 1.55; opacity: .82; margin: 0 0 14px; }
+  .uc-block p:last-child { margin-bottom: 0; }
+  .uc-block p strong { opacity: 1; }
+  .uc-block p a, .uc-faq-item p a, .uc-theft-list a { color: inherit; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 2px; }
+
+  /* ---- JOBSITE THEFT ---- */
+  .uc-theft { padding: 96px 0; background: var(--ink); color: var(--cream); border-bottom: 1.5px solid rgba(11,15,26,.1); }
+  .uc-theft .uc-sh { border-top-color: var(--c3-deliver); }
+  .uc-theft .uc-sh .m { color: var(--cream); }
+  .uc-theft .uc-h2 { color: var(--cream); }
+  .uc-theft-grid { display: grid; grid-template-columns: 1.2fr .8fr; gap: 48px; align-items: start; }
+  .uc-theft-intro { font-size: 19px; line-height: 1.6; margin: 0 0 32px; opacity: .92; }
+  .uc-theft-list { list-style: none; margin: 0 0 32px; padding: 0; display: flex; flex-direction: column; gap: 22px; }
+  .uc-theft-list li { display: flex; gap: 18px; align-items: baseline; font-size: 16px; line-height: 1.5; }
+  .uc-theft-num { color: var(--c3-deliver); font-weight: 500; flex-shrink: 0; }
+  .uc-theft-list strong { color: var(--yellow); font-weight: 700; }
+  .uc-theft-list span:last-child { opacity: .9; }
+  .uc-theft-pull { font-family: var(--narrow); font-weight: 700; font-size: clamp(18px, 2.2vw, 23px); line-height: 1.25; text-transform: uppercase; letter-spacing: -.01em; margin: 0; padding-left: 24px; border-left: 4px solid var(--c3-deliver); }
+  .uc-img-theft { aspect-ratio: 4 / 5; box-shadow: 12px 12px 0 var(--c3-deliver); width: 100%; }
+  .uc-theft .uc-img-tag { color: var(--cream); }
 
   /* ---- RECOMMENDATIONS ---- */
   .uc-recs { padding: 96px 0; background: white; border-bottom: 1.5px solid rgba(11,15,26,.1); }
+  .uc-img-recs { margin-top: 0; margin-bottom: 48px; }
   .uc-rec-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
   .uc-rec { display: flex; flex-direction: column; background: var(--cream); border: 2px solid var(--ink); border-top: 8px solid var(--ink); padding: 28px; transition: transform .15s, box-shadow .15s; }
   .uc-rec:hover { transform: translate(-3px, -3px); box-shadow: 6px 6px 0 var(--ink); }
   .uc-rec-size { font-family: var(--narrow); font-weight: 700; font-size: 34px; text-transform: uppercase; line-height: 1; margin-bottom: 14px; }
   .uc-rec-body { font-size: 15px; line-height: 1.5; opacity: .82; margin: 0 0 20px; flex: 1; }
+  .uc-rec-body strong { opacity: 1; }
   .uc-rec-link { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; font-weight: 500; margin-top: auto; }
-  .uc-framing { margin: 40px 0 0; font-size: 18px; line-height: 1.5; font-weight: 500; max-width: 760px; border-left: 4px solid var(--yellow); padding-left: 24px; }
+  .uc-framing { margin: 40px 0 0; font-size: 18px; line-height: 1.5; font-weight: 500; max-width: 760px; border-left: 4px solid var(--c3-deliver); padding-left: 24px; }
 
   /* ---- WHERE WE DELIVER ---- */
   .uc-deliver { padding: 96px 0; background: var(--cream); border-bottom: 1.5px solid rgba(11,15,26,.1); }
-  .uc-deliver-lede { font-size: 18px; line-height: 1.5; max-width: 720px; margin: 0 0 40px; opacity: .85; }
+  .uc-deliver-lede { font-size: 18px; line-height: 1.5; max-width: 820px; margin: 0 0 40px; opacity: .85; }
   .uc-city-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
   .uc-city { display: flex; flex-direction: column; gap: 6px; background: white; border: 2px solid var(--ink); padding: 22px 24px; transition: background .15s, color .15s; }
   .uc-city:hover { background: var(--ink); color: var(--cream); }
@@ -230,6 +374,14 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
   .uc-city-name { font-family: var(--mono); font-size: 11px; letter-spacing: .05em; text-transform: uppercase; }
   .uc-city-arrow { font-family: var(--narrow); font-weight: 700; font-size: 20px; margin-top: 8px; }
 
+  /* ---- PLANNING DELIVERY ---- */
+  .uc-plan { padding: 96px 0; background: white; border-bottom: 1.5px solid rgba(11,15,26,.1); }
+  .uc-plan-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .uc-plan-card { background: var(--cream); border: 2px solid var(--ink); padding: 28px; box-shadow: 8px 8px 0 var(--ink); }
+  .uc-plan-num { font-family: var(--narrow); font-weight: 700; font-size: 34px; line-height: 1; color: var(--c3-deliver); display: block; margin-bottom: 14px; }
+  .uc-plan-card h3 { font-family: var(--narrow); font-weight: 700; font-size: 22px; text-transform: uppercase; line-height: 1.05; margin: 0 0 12px; }
+  .uc-plan-card p { font-size: 16px; line-height: 1.55; opacity: .82; margin: 0; }
+
   /* ---- FAQ ---- */
   .uc-faq { padding: 96px 0; background: white; }
   .uc-faq-list { display: flex; flex-direction: column; gap: 28px; }
@@ -237,13 +389,28 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
   .uc-faq-item h3 { font-family: var(--narrow); font-weight: 700; font-size: 22px; line-height: 1.15; text-transform: uppercase; margin: 0 0 12px; }
   .uc-faq-item p { font-size: 16px; line-height: 1.6; opacity: .82; margin: 0; }
 
+  /* ---- SOURCES ---- */
+  .uc-sources { margin-top: 56px; max-width: 860px; border-top: 2px solid rgba(11,15,26,.15); padding-top: 24px; }
+  .uc-sources .m { display: block; opacity: .55; margin-bottom: 14px; }
+  .uc-sources ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+  .uc-sources li { font-size: 14px; line-height: 1.5; opacity: .82; }
+  .uc-sources a { color: inherit; text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 2px; }
+
   /* ---- RESPONSIVE ---- */
+  @media (max-width: 960px) {
+    .uc-hero-grid { grid-template-columns: 1fr; gap: 40px; }
+    .uc-img-hero { aspect-ratio: 16 / 9; }
+    .uc-theft-grid { grid-template-columns: 1fr; gap: 40px; }
+    .uc-img-theft { aspect-ratio: 16 / 9; }
+  }
   @media (max-width: 768px) {
     .uc-hero { padding: 72px 0 56px; }
     .uc-why-grid { grid-template-columns: 1fr; gap: 20px; }
+    .uc-plan-grid { grid-template-columns: 1fr; gap: 20px; }
     .uc-rec-grid { grid-template-columns: 1fr; }
     .uc-city-grid { grid-template-columns: 1fr 1fr; }
     .uc-block { padding: 24px; }
     .uc-faq-item { padding-left: 20px; }
+    .uc-img-wide { aspect-ratio: 16 / 9; }
   }
 </style>
