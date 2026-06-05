@@ -1,9 +1,41 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
+
+// --- Visible FAQ set (single source of truth → drives both the rendered FAQ and the JSON-LD) ---
+const faqs = [
+  {
+    q: 'Do I need a permit for a shipping container on my farm in Ohio, Indiana, or Kentucky?',
+    a: "In most cases, no — agricultural land in all three states typically qualifies for a zoning exemption on storage structures. If your property is classified as agricultural — actively used for crop production, livestock, or ag-related purposes — it generally falls outside the residential and commercial zoning rules that require permits. Ohio's exemption (ORC §519.21) requires no zoning certificate for buildings used for agriculture. Indiana and Kentucky have comparable protections, though Kentucky's agricultural exemption generally applies to tracts of five or more contiguous acres. Rules vary by county and sometimes by township, so we recommend a quick call to your county zoning office to confirm. We've helped hundreds of farm buyers navigate this, and the vast majority move forward without a permit of any kind.",
+  },
+  {
+    q: 'Can a container be delivered to a field or gravel area, or does the truck need a paved road?',
+    a: "No pavement required. Our trucks handle gravel lanes, packed-dirt drives, and field access roads in most conditions. What we need is a delivery path that's at least 12 feet wide with no overhead obstructions below 14 feet — low branches, power lines, gate arches. Soft ground, mud, or steep grades can create challenges, but our drivers have placed containers on farm properties across Ohio, Indiana, and Kentucky for years and know how to work around difficult terrain. When you request a quote, describe your access path and we'll flag anything that might affect delivery before we schedule.",
+  },
+  {
+    q: 'What size container do I need for farm equipment storage?',
+    a: "It depends on what you're storing. A 20ft container (roughly 1,170 cubic feet of interior space) fits small equipment like ATVs, implements, and a full complement of hand tools and supplies. A 40ft container (about 2,385 cubic feet) handles larger equipment — round balers, combine headers, grain carts — and still leaves room for feed, chemicals, and parts. Most buyers storing equipment that includes anything with a wide header or large footprint go with the 40ft. If you're unsure, describe your largest piece of equipment in the quote form and we'll confirm fit.",
+  },
+  {
+    q: 'Can I put a container on grass or unpaved ground?',
+    a: "Yes, with light prep. Containers sit on compacted gravel, packed earth, or level grass as long as the ground is firm and level enough that the unit won't shift. For permanent placement, most farm buyers put down a layer of crushed gravel or set concrete blocks under the corner castings — this keeps the floor off wet ground and prevents long-term warping. For temporary or seasonal placement, flat grass works fine. Our drivers can advise on placement when they arrive.",
+  },
+  {
+    q: "What's the difference between cargo-worthy and one-trip for farm use?",
+    a: "A cargo-worthy container has made multiple international shipping voyages. It's structurally sound, passes a weathertight inspection, and will keep rain, wind, and pests out — but the interior may show rust staining, dents, or residual cargo odor from previous loads. For equipment and feed storage, this is typically irrelevant. A one-trip container made a single ocean crossing before being sold — the interior is essentially new, free of contamination, and odor-neutral. One-trip units cost more but are the right choice for seed storage, chemical storage, or any situation where interior cleanliness matters.",
+  },
+  {
+    q: 'Will a steel container get too hot or cause condensation for stored items?',
+    a: 'Bare steel holds heat and can sweat when warm, humid air meets a cool interior overnight — the same "container rain" that affects any metal building. For most farm storage — equipment, tools, hay, bagged feed — it\'s a non-issue. If you\'re storing anything moisture-sensitive, simple steps handle it: raise items off the floor on pallets, add roof or wall vents for airflow, and run a vapor barrier or spray-foam insulation if you want full climate control. We can point you to local fabricators who do venting and insulation.',
+  },
+  {
+    q: 'How long does a shipping container last sitting outside on a farm?',
+    a: 'Decades. These containers are engineered for 20-plus years of stacking on open ocean decks in salt spray — sitting on dry ground in the Midwest is an easy retirement. A cargo-worthy unit will show some surface rust and cosmetic wear, but the weathering (Cor-Ten) steel keeps its structural and weathertight integrity for the long haul. Keeping it off wet ground on gravel or blocks and touching up any scratches in the paint is all the upkeep most farms ever do.',
+  },
+];
 ---
 
 <BaseLayout
-  title="Shipping Containers for Farms in Ohio, Indiana & Kentucky | Steel Box Direct"
+  title="Shipping Containers for Farms in OH, IN & KY | Steel Box Direct"
   description="Farm storage containers delivered to your field. Most agricultural land in OH, IN, and KY qualifies for zoning exemptions — no permit, no foundation, no monthly fees."
   pageType="guide"
   datePublished="2026-06-04"
@@ -14,58 +46,37 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
     <script type="application/ld+json" set:html={JSON.stringify({
       "@context": "https://schema.org",
       "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "Do I need a permit for a shipping container on my farm in Ohio, Indiana, or Kentucky?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "In most cases, no. Ohio, Indiana, and Kentucky all have agricultural use exemptions that typically apply to storage structures on working farm land. If your property is classified as agricultural — meaning it's actively used for crop production, livestock, or ag-related purposes — it generally falls outside the residential and commercial zoning rules that require permits for storage structures. That said, rules vary by county and sometimes by municipality, so we recommend a quick call to your county zoning office to confirm. We've helped hundreds of farm buyers navigate this question, and the vast majority move forward without a permit of any kind."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Can a container be delivered to a field or gravel area, or does the truck need a paved road?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Delivery trucks can handle gravel lanes, packed dirt drives, and field access roads in most conditions. What we need is a delivery path that's at least 12 feet wide with no overhead obstructions below 14 feet — low branches, power lines, gate arches. Soft ground, mud, or steep grades can create challenges, but our drivers have placed containers on farm properties across Ohio, Indiana, and Kentucky for years and know how to work around difficult terrain. When you request a quote, describe your access path and we'll flag anything that might affect delivery before we schedule."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "What size container do I need for farm equipment storage?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "It depends on what you're storing. A 20ft container (roughly 1,170 cubic feet of interior space) fits small equipment like ATVs, implements, and a full complement of hand tools and supplies. A 40ft container (about 2,385 cubic feet) handles larger equipment — round balers, combine headers, grain carts — and still leaves room for feed, chemicals, and parts. Most buyers storing equipment that includes anything with a wide header or large footprint go with the 40ft. If you're unsure, describe your largest piece of equipment in the quote form and we'll confirm fit."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Can I put a container on grass or unpaved ground?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Yes, with some preparation. Containers can be placed on compacted gravel, packed earth, or level grass, but they need reasonably level, firm ground to sit without shifting. For permanent placement, most farm buyers put down a layer of crushed gravel or concrete blocks under the corner castings — this keeps the floor off wet ground and prevents long-term warping. For temporary or seasonal placement, flat grass works fine. Our drivers can advise on placement when they arrive."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "What's the difference between cargo-worthy and one-trip for farm use?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "A cargo-worthy container has made multiple international shipping voyages. It's structurally sound, passes a weathertight inspection, and will keep rain, wind, and pests out — but the interior may show rust staining, dents, or residual cargo odor from previous loads. For equipment and feed storage, this is typically irrelevant. A one-trip container made a single ocean crossing before being sold — the interior is essentially new, free of contamination, and odor-neutral. One-trip units cost more but are the right choice for seed storage, chemical storage, or any situation where interior cleanliness matters."
-          }
-        }
-      ]
+      "mainEntity": faqs.map((f) => ({
+        "@type": "Question",
+        "name": f.q,
+        "acceptedAnswer": { "@type": "Answer", "text": f.a },
+      })),
     })} />
   </Fragment>
 
   <!-- 1. HERO -->
   <section class="uc-hero">
-    <div class="wrap">
-      <span class="uc-eyebrow">For Farmers &amp; Ag Operations</span>
-      <h1 class="uc-h1">Farm Storage That Holds Up to Ohio Winters.</h1>
-      <p class="uc-lede">No permit on most agricultural land. No foundation required. Delivered to your field — not just your driveway. One purchase, no monthly storage fees.</p>
-      <div class="uc-accent" style="background: var(--c4-cost);"></div>
+    <div class="wrap uc-hero-grid">
+      <div class="uc-hero-copy">
+        <span class="uc-eyebrow">For Farmers &amp; Ag Operations</span>
+        <h1 class="uc-h1">Farm Storage That Holds Up to Ohio Winters.</h1>
+        <p class="uc-lede">No permit on most agricultural land. No foundation required. Delivered to your field — not just your driveway. One purchase, no monthly storage fees.</p>
+        <p class="uc-lede-support">A steel shipping container gives you weather-sealed, lockable storage that sits on the ground where you need it — beside the shop, at the back of a field, or next to the grain bins. We sell cargo-worthy and one-trip containers and deliver them across Ohio, Indiana, and Kentucky within 250 miles of Cincinnati. You buy it once and it's yours: no rental contract, no monthly invoice, no permit on most ag-classified land.</p>
+        <div class="uc-accent" style="background: var(--c4-cost);"></div>
+        <p class="uc-trust-strip m">Cargo-worthy &amp; one-trip units · Delivered to the field, not just the driveway · No permit on most ag land in OH / IN / KY · Quote back within 4 business hours</p>
+      </div>
+
+      <!-- IMAGE SLOT 1 — hero. Swap data-URI src for the real photo; alt + dimensions stay. -->
+      <!-- filename: farm-storage-container-crop-field-hero.jpg -->
+      <figure class="uc-img uc-img-hero" data-img-slot="hero">
+        <img
+          class="uc-img-real"
+          width="640" height="480"
+          alt="40ft shipping container used for farm storage at the edge of an Ohio crop field"
+          src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='640'%20height='480'%3E%3C/svg%3E"
+        />
+        <span class="uc-img-tag m">Photo · Farm shipping container in a field</span>
+      </figure>
     </div>
   </section>
 
@@ -76,24 +87,105 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
         <span class="m">Why It Works</span>
         <h2 class="uc-h2">Why containers work for farmers</h2>
       </div>
+      <p class="uc-section-intro">Farmers were buying surplus shipping containers long before it became a trend — because the math and the practicality both hold up. Here's what makes them work on a working farm.</p>
       <div class="uc-why-grid">
         <div class="uc-block">
           <h3>Most farm properties qualify for zoning exemptions</h3>
-          <p>Zoning rules in Ohio, Indiana, and Kentucky typically exempt agricultural land from the permit requirements that apply to residential or commercial properties. If you're farming — crops, livestock, or equipment — you're likely exempt. We can help you confirm based on your county and property type. No permit paperwork, no waiting period, no variance hearings.</p>
+          <p>Zoning rules in Ohio, Indiana, and Kentucky typically exempt agricultural land from the permit requirements that apply to residential or commercial properties. If your property is classified as agricultural — actively used for crops, livestock, or ag-related operations — a storage container is usually treated as farm equipment, not a permanent structure. In Ohio, the <a href="https://codes.ohio.gov/ohio-revised-code/section-519.21" target="_blank" rel="noopener">agricultural zoning exemption (ORC §519.21)</a> means no zoning certificate is required for buildings used for agriculture; <a href="https://www.extension.purdue.edu/extmedia/ID/ID-233/ID-233.html" target="_blank" rel="noopener">Indiana</a> and <a href="https://laruecountyky.gov/wp-content/uploads/2023/01/krs100_2004_09_16.pdf" target="_blank" rel="noopener">Kentucky (KRS 100.203)</a> carry comparable protections. That generally means no permit paperwork, no waiting period, and no variance hearing.</p>
+          <p>The catch is that rules vary by county and sometimes by township, so the exemption isn't automatic everywhere — and Kentucky's exemption generally applies to tracts of five or more contiguous acres. We've worked with hundreds of farm buyers across our service area and can tell you what we've seen in your county; a five-minute call to your county auditor or zoning office confirms the rest before you commit.</p>
         </div>
         <div class="uc-block">
           <h3>Weather-sealed storage without a permanent structure</h3>
-          <p>A cargo-worthy ISO container holds a positive pressure seal against rain, wind, and snow. Unlike a barn addition or pole building, a container doesn't require a foundation, a concrete slab, or a building permit in most counties. It's technically personal property — meaning it can be placed, relocated, or removed without triggering a permanent structure review.</p>
+          <p>A cargo-worthy ISO container is built from <a href="https://en.wikipedia.org/wiki/Weathering_steel" target="_blank" rel="noopener">weathering (Cor-Ten) steel</a> and seals against rain, wind, snow, and pests with marine-grade door gaskets — the same construction that protects cargo across the ocean. Unlike a pole barn or a lean-to addition, it needs no foundation, no concrete slab, and no building permit in most counties.</p>
+          <p>Because it isn't anchored to the ground, it stays classified as personal property. You can place it, relocate it across the farm, or sell it off without triggering a permanent-structure review or a reassessment of your land. That flexibility is the difference between an asset you control and a building you're committed to for good.</p>
+
+          <!-- IMAGE SLOT 2 — weather-sealed doors. Swap data-URI src for the real photo; alt + dimensions stay. -->
+          <!-- filename: weather-sealed-container-doors-winter.jpg -->
+          <figure class="uc-img uc-img-inline" data-img-slot="weather">
+            <img class="uc-img-real" width="640" height="360"
+              alt="Weather-sealed shipping container doors and lockbox holding up in winter weather"
+              src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='640'%20height='360'%3E%3C/svg%3E" />
+            <span class="uc-img-tag m">Photo · Sealed container doors in winter</span>
+          </figure>
         </div>
         <div class="uc-block">
           <h3>One purchase, no monthly bill</h3>
-          <p>A container is a one-time purchase, not a recurring expense. There's no monthly fee, no renewal notice, and no contract — you own it outright the day it's delivered. Compared to building a permanent pole barn or hauling equipment to off-farm storage, it pays for itself, and because steel holds its value, a container resells well when you no longer need it. It's an asset that stays on your books, not a cost that recurs every month.</p>
+          <p>A container is a one-time purchase, not a recurring expense. There's no monthly fee, no renewal notice, and no contract — you own it outright the day it's delivered. Compared to renting off-farm storage season after season, or building a permanent structure you can't move, the numbers tend to favor owning.</p>
+          <p>Steel also holds its value. When the operation changes or you no longer need the space, a sound used container resells well — so it stays on your books as an asset, not a cost that comes due every month.</p>
         </div>
         <div class="uc-block">
           <h3>Sized for equipment, feed, and tools</h3>
-          <p>A 20ft container stores a full set of small equipment and supplies. A 40ft container fits a combine header, round bales, seed inventory, and toolboxes with room to walk through. One-trip units — essentially new — give you a clean interior for seed storage, chemical storage, or anything requiring pristine conditions.</p>
+          <p>A 20ft container holds roughly <a href="https://www.shippingcontainerdepot.com/20-foot-shipping-container-dimensions/" target="_blank" rel="noopener">1,170 cubic feet</a> — enough for a full set of small equipment, hand tools, fertilizer, and seed bags. A 40ft container roughly doubles that to about <a href="https://www.icontainers.com/help/40-foot-container/" target="_blank" rel="noopener">2,385 cubic feet</a>, with room for a combine header, round bales, seed inventory, and toolboxes while still leaving an aisle to walk through.</p>
+          <p>Condition matters as much as size. A cargo-worthy unit is the workhorse for equipment, hay, and general storage. A one-trip container — essentially new inside — gives you a clean, odor-free interior for seed, chemical, or anything that can't sit next to old cargo residue.</p>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- 2.5 PLACEMENT & SETUP — NEW -->
+  <section class="uc-setup">
+    <div class="wrap">
+      <div class="uc-sh" style="border-color: var(--c4-cost);">
+        <span class="m">Placement &amp; Setup</span>
+        <h2 class="uc-h2">Getting a container onto your land</h2>
+      </div>
+      <div class="uc-setup-grid">
+        <div class="uc-setup-copy">
+          <p class="uc-setup-intro">Most farm deliveries are simpler than buyers expect. Our trucks routinely run gravel lanes, packed-dirt drives, and field access roads. What the driver needs is a clear path and firm ground to set the box on — not pavement.</p>
+          <ul class="uc-setup-list">
+            <li><span class="uc-setup-num m">01</span><span>A delivery path at least <strong>12 feet wide</strong>.</span></li>
+            <li><span class="uc-setup-num m">02</span><span>Overhead clearance of at least <strong>14 feet</strong> the whole way in — watch for low branches, power lines, and gate arches.</span></li>
+            <li><span class="uc-setup-num m">03</span><span><strong>Reasonably level, firm ground</strong> at the drop point so the container sits square and doesn't shift.</span></li>
+            <li><span class="uc-setup-num m">04</span><span>Enough room for the truck to maneuver and tilt or roll the unit off.</span></li>
+          </ul>
+          <p class="uc-setup-body">For permanent placement, most farm buyers lay a few inches of crushed gravel or set concrete blocks under the four corner castings. That keeps the floor off wet ground, lets water drain, and prevents the long-term warping that comes from sitting a steel box directly on bare soil. For seasonal or temporary placement, level grass or packed earth is usually fine.</p>
+          <p class="uc-setup-pull">Soft ground, mud, and steep grades are the usual challenges — none of them are dealbreakers. Describe your access path when you request a quote and we'll flag anything that affects delivery before we ever schedule a truck.</p>
+        </div>
+
+        <!-- IMAGE SLOT 3 — delivery onto gravel pad. Swap data-URI src for the real photo; alt + dimensions stay. -->
+        <!-- filename: container-delivery-farm-gravel-pad.jpg -->
+        <figure class="uc-img uc-img-setup" data-img-slot="delivery">
+          <img class="uc-img-real" width="560" height="700"
+            alt="Delivery truck placing a shipping container on a gravel pad on a farm access lane"
+            src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='560'%20height='700'%3E%3C/svg%3E" />
+          <span class="uc-img-tag m">Photo · Container delivery onto farm lane</span>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2.7 SEASONAL USE — NEW -->
+  <section class="uc-season">
+    <div class="wrap">
+      <div class="uc-sh" style="border-color: var(--c4-cost);">
+        <span class="m">Through The Seasons</span>
+        <h2 class="uc-h2">How farms put them to work all year</h2>
+      </div>
+      <p class="uc-section-intro">A container earns its keep because the same box does different jobs as the calendar turns.</p>
+      <div class="uc-season-grid">
+        <div class="uc-season-card">
+          <span class="uc-season-tag m">Planting &amp; Spring</span>
+          <p>Dry, secure storage for seed, fertilizer, and chemicals — a one-trip unit keeps treated seed away from contamination and odor.</p>
+        </div>
+        <div class="uc-season-card">
+          <span class="uc-season-tag m">Growing Season</span>
+          <p>Sprayer parts, irrigation supplies, hand tools, and fuel jugs stay locked and out of the weather, steps from where you're working instead of back at the shop.</p>
+        </div>
+        <div class="uc-season-card">
+          <span class="uc-season-tag m">Harvest &amp; Winter</span>
+          <p>Pull the combine header, grain cart accessories, and bagged feed inside before the snow. A 40ft unit swallows the bulky equipment that won't fit in the barn, and steel shrugs off an Ohio winter.</p>
+        </div>
+      </div>
+      <p class="uc-framing">When the season changes, so does the contents — the box doesn't care.</p>
+
+      <!-- IMAGE SLOT 4 — seasonal interior. Swap data-URI src for the real photo; alt + dimensions stay. -->
+      <!-- filename: farm-container-interior-equipment-feed.jpg -->
+      <figure class="uc-img uc-img-wide" data-img-slot="seasonal">
+        <img class="uc-img-real" width="1260" height="540"
+          alt="Inside a 40ft farm container storing a combine header, feed, and tools for winter"
+          src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='1260'%20height='540'%3E%3C/svg%3E" />
+        <span class="uc-img-tag m">Photo · Container interior with farm equipment</span>
+      </figure>
     </div>
   </section>
 
@@ -104,24 +196,35 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
         <span class="m">Which Container Fits</span>
         <h2 class="uc-h2">Which container fits your situation</h2>
       </div>
+      <p class="uc-section-intro">Three options cover almost every farm. Size handles capacity; condition handles cleanliness.</p>
+
+      <!-- IMAGE SLOT 5 — size comparison. Swap data-URI src for the real photo; alt + dimensions stay. -->
+      <!-- filename: 20ft-vs-40ft-farm-containers-comparison.jpg -->
+      <figure class="uc-img uc-img-wide uc-img-recs" data-img-slot="sizes">
+        <img class="uc-img-real" width="1260" height="540"
+          alt="20ft and 40ft shipping containers side by side for comparison on a farm yard"
+          src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='1260'%20height='540'%3E%3C/svg%3E" />
+        <span class="uc-img-tag m">Photo · 20ft vs 40ft farm containers</span>
+      </figure>
+
       <div class="uc-rec-grid">
         <a href="/shipping-containers-for-sale/20-foot-shipping-container/" class="uc-rec" style="border-top-color: var(--c4-cost);">
           <span class="uc-rec-size">20ft</span>
-          <p class="uc-rec-body">Best for: small equipment, fertilizer and chemical storage, hand tools, and seed bags. Fits most farm lane widths.</p>
+          <p class="uc-rec-body"><strong>Best for</strong> small equipment, fertilizer and chemical storage, hand tools, and seed bags. About 1,170 cubic feet, and narrow enough to fit most farm lane widths.</p>
           <span class="uc-rec-link">View 20ft container →</span>
         </a>
         <a href="/shipping-containers-for-sale/40-foot-shipping-container/" class="uc-rec" style="border-top-color: var(--c4-cost);">
           <span class="uc-rec-size">40ft</span>
-          <p class="uc-rec-body">Best for: combine headers, large tillage equipment, hay and feed, multi-item storage. Requires a firm delivery path of at least 12ft width and 14ft height clearance.</p>
+          <p class="uc-rec-body"><strong>Best for</strong> combine headers, large tillage equipment, hay and feed, and multi-item storage — about 2,385 cubic feet. Needs a firm delivery path at least 12ft wide with 14ft of overhead clearance.</p>
           <span class="uc-rec-link">View 40ft container →</span>
         </a>
         <a href="/shipping-containers-for-sale/40-foot-one-trip-container/" class="uc-rec" style="border-top-color: var(--c4-cost);">
           <span class="uc-rec-size">One-Trip</span>
-          <p class="uc-rec-body">Best for: seed storage, chemical storage, livestock equipment, or any application requiring a near-new interior without odors or previous cargo residue.</p>
+          <p class="uc-rec-body"><strong>Best for</strong> seed storage, chemical storage, livestock equipment, or anything that needs a near-new, odor-free interior with no previous cargo residue.</p>
           <span class="uc-rec-link">View one-trip container →</span>
         </a>
       </div>
-      <p class="uc-framing">Most farm buyers choose the 40ft cargo-worthy unit — it handles the widest range of equipment and feed storage at the most practical price point.</p>
+      <p class="uc-framing">Most farm buyers go with the 40ft cargo-worthy unit — it handles the widest range of equipment and feed at the most practical cost per cubic foot.</p>
     </div>
   </section>
 
@@ -132,13 +235,14 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
         <span class="m">Where We Deliver</span>
         <h2 class="uc-h2">Where we deliver</h2>
       </div>
-      <p class="uc-deliver-lede">We deliver within 250 miles of Cincinnati — across Ohio, Indiana, and Kentucky. Here are the metro areas we serve most:</p>
+      <p class="uc-deliver-lede">Our delivery radius covers 250 miles from Cincinnati — and a lot of that radius is farm country. From the grain belt of central Indiana to the horse and cattle land of Kentucky and the row-crop counties across Ohio, we bring containers straight to the field. These are the metro areas we run through most:</p>
       <div class="uc-city-grid">
         <a href="/cincinnati-shipping-containers/" class="uc-city"><span class="uc-city-code">CIN</span><span class="uc-city-name">Cincinnati, OH</span><span class="uc-city-arrow">→</span></a>
         <a href="/dayton-shipping-containers/" class="uc-city"><span class="uc-city-code">DAY</span><span class="uc-city-name">Dayton, OH</span><span class="uc-city-arrow">→</span></a>
         <a href="/indianapolis-shipping-containers/" class="uc-city"><span class="uc-city-code">IND</span><span class="uc-city-name">Indianapolis, IN</span><span class="uc-city-arrow">→</span></a>
         <a href="/louisville-shipping-containers/" class="uc-city"><span class="uc-city-code">LOU</span><span class="uc-city-name">Louisville, KY</span><span class="uc-city-arrow">→</span></a>
       </div>
+      <p class="uc-deliver-foot">Don't see your town? If you're inside the 250-mile radius, we almost certainly deliver there. Put your zip in the quote form to confirm.</p>
     </div>
   </section>
 
@@ -150,26 +254,24 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
         <h2 class="uc-h2">Common questions</h2>
       </div>
       <div class="uc-faq-list">
-        <div class="uc-faq-item" style="border-left-color: var(--c4-cost);">
-          <h3>Do I need a permit for a shipping container on my farm in Ohio, Indiana, or Kentucky?</h3>
-          <p>In most cases, no. Ohio, Indiana, and Kentucky all have agricultural use exemptions that typically apply to storage structures on working farm land. If your property is classified as agricultural — meaning it's actively used for crop production, livestock, or ag-related purposes — it generally falls outside the residential and commercial zoning rules that require permits for storage structures. That said, rules vary by county and sometimes by municipality, so we recommend a quick call to your county zoning office to confirm. We've helped hundreds of farm buyers navigate this question, and the vast majority move forward without a permit of any kind.</p>
-        </div>
-        <div class="uc-faq-item" style="border-left-color: var(--c4-cost);">
-          <h3>Can a container be delivered to a field or gravel area, or does the truck need a paved road?</h3>
-          <p>Delivery trucks can handle gravel lanes, packed dirt drives, and field access roads in most conditions. What we need is a delivery path that's at least 12 feet wide with no overhead obstructions below 14 feet — low branches, power lines, gate arches. Soft ground, mud, or steep grades can create challenges, but our drivers have placed containers on farm properties across Ohio, Indiana, and Kentucky for years and know how to work around difficult terrain. When you request a quote, describe your access path and we'll flag anything that might affect delivery before we schedule.</p>
-        </div>
-        <div class="uc-faq-item" style="border-left-color: var(--c4-cost);">
-          <h3>What size container do I need for farm equipment storage?</h3>
-          <p>It depends on what you're storing. A 20ft container (roughly 1,170 cubic feet of interior space) fits small equipment like ATVs, implements, and a full complement of hand tools and supplies. A 40ft container (about 2,385 cubic feet) handles larger equipment — round balers, combine headers, grain carts — and still leaves room for feed, chemicals, and parts. Most buyers storing equipment that includes anything with a wide header or large footprint go with the 40ft. If you're unsure, describe your largest piece of equipment in the quote form and we'll confirm fit.</p>
-        </div>
-        <div class="uc-faq-item" style="border-left-color: var(--c4-cost);">
-          <h3>Can I put a container on grass or unpaved ground?</h3>
-          <p>Yes, with some preparation. Containers can be placed on compacted gravel, packed earth, or level grass, but they need reasonably level, firm ground to sit without shifting. For permanent placement, most farm buyers put down a layer of crushed gravel or concrete blocks under the corner castings — this keeps the floor off wet ground and prevents long-term warping. For temporary or seasonal placement, flat grass works fine. Our drivers can advise on placement when they arrive.</p>
-        </div>
-        <div class="uc-faq-item" style="border-left-color: var(--c4-cost);">
-          <h3>What's the difference between cargo-worthy and one-trip for farm use?</h3>
-          <p>A cargo-worthy container has made multiple international shipping voyages. It's structurally sound, passes a weathertight inspection, and will keep rain, wind, and pests out — but the interior may show rust staining, dents, or residual cargo odor from previous loads. For equipment and feed storage, this is typically irrelevant. A one-trip container made a single ocean crossing before being sold — the interior is essentially new, free of contamination, and odor-neutral. One-trip units cost more but are the right choice for seed storage, chemical storage, or any situation where interior cleanliness matters.</p>
-        </div>
+        {faqs.map((f) => (
+          <div class="uc-faq-item" style="border-left-color: var(--c4-cost);">
+            <h3>{f.q}</h3>
+            <p>{f.a}</p>
+          </div>
+        ))}
+      </div>
+
+      <div class="uc-sources">
+        <span class="m">Sources</span>
+        <ul>
+          <li>Ohio agricultural zoning exemption — <a href="https://codes.ohio.gov/ohio-revised-code/section-519.21" target="_blank" rel="noopener">Ohio Revised Code §519.21</a> · <a href="https://ohioaglaw.wordpress.com/2013/05/22/agricultural-activities-in-ohio-can-be-exempt-from-local-zoning/" target="_blank" rel="noopener">OSU Extension explainer</a></li>
+          <li>Indiana agricultural land-use rules — <a href="https://www.extension.purdue.edu/extmedia/ID/ID-233/ID-233.html" target="_blank" rel="noopener">Purdue Extension ID-233</a></li>
+          <li>Kentucky agricultural zoning exemption — <a href="https://laruecountyky.gov/wp-content/uploads/2023/01/krs100_2004_09_16.pdf" target="_blank" rel="noopener">KRS Chapter 100 (KRS 100.203)</a></li>
+          <li>20ft container dimensions &amp; volume — <a href="https://www.shippingcontainerdepot.com/20-foot-shipping-container-dimensions/" target="_blank" rel="noopener">Shipping Container Depot</a></li>
+          <li>40ft container volume — <a href="https://www.icontainers.com/help/40-foot-container/" target="_blank" rel="noopener">iContainers, 40-foot container spec</a></li>
+          <li>Container steel — <a href="https://en.wikipedia.org/wiki/Weathering_steel" target="_blank" rel="noopener">Weathering (Cor-Ten) steel</a></li>
+        </ul>
       </div>
     </div>
   </section>
@@ -179,7 +281,7 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
     <div class="wrap" style="display: flex; flex-direction: column; align-items: flex-start; gap: 24px; max-width: 680px;">
       <p class="m" style="color: var(--yellow); margin: 0;">Ready when you are</p>
       <h2 style="font-family: var(--narrow); font-size: clamp(28px, 4vw, 44px); font-weight: 700; text-transform: uppercase; margin: 0; line-height: 1.05;">Get a quote for your farm operation.</h2>
-      <p style="font-size: 17px; opacity: .75; margin: 0; line-height: 1.5;">Tell us your size, condition, and delivery zip. We respond within 4 business hours.</p>
+      <p style="font-size: 17px; opacity: .75; margin: 0; line-height: 1.5;">Tell us your largest piece of equipment, the condition you need, and the zip you're delivering to — describe the field access while you're at it and we'll flag anything before scheduling. We respond within 4 business hours.</p>
       <div style="display: flex; gap: 16px; flex-wrap: wrap;">
         <a href="/quote/" class="btn" style="background: var(--yellow); color: var(--ink); border-color: var(--yellow);">Get My Quote →</a>
         <a href="/shipping-containers-for-sale/" class="btn-ghost" style="color: var(--cream);">Browse containers first</a>
@@ -192,36 +294,99 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 <style>
   /* ---- HERO ---- */
   .uc-hero { padding: 110px 0 72px; background: var(--yellow); border-bottom: 2.5px solid var(--ink); }
+  .uc-hero-grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 56px; align-items: center; }
   .uc-eyebrow { display: inline-block; font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; background: var(--ink); color: var(--cream); padding: 7px 14px; }
-  .uc-h1 { font-family: var(--narrow); font-weight: 700; font-size: clamp(44px, 8vw, 78px); line-height: .92; letter-spacing: -.02em; text-transform: uppercase; margin: 28px 0 0; }
-  .uc-lede { font-size: 22px; line-height: 1.45; max-width: 760px; margin: 28px 0 0; font-weight: 500; }
-  .uc-accent { height: 10px; width: 180px; margin-top: 40px; }
+  .uc-h1 { font-family: var(--narrow); font-weight: 700; font-size: clamp(44px, 6.5vw, 72px); line-height: .92; letter-spacing: -.02em; text-transform: uppercase; margin: 28px 0 0; }
+  .uc-lede { font-size: 20px; line-height: 1.5; max-width: 640px; margin: 28px 0 0; font-weight: 500; }
+  .uc-lede-support { font-size: 16px; line-height: 1.6; max-width: 640px; margin: 20px 0 0; opacity: .82; }
+  .uc-accent { height: 10px; width: 180px; margin-top: 36px; }
+  .uc-trust-strip { margin: 20px 0 0; opacity: .72; letter-spacing: .06em; line-height: 1.6; }
 
   /* ---- SHARED SECTION HEADER ---- */
-  .uc-sh { border-top: 4px solid var(--ink); padding-top: 18px; margin-bottom: 48px; }
+  .uc-sh { border-top: 4px solid var(--ink); padding-top: 18px; margin-bottom: 32px; }
   .uc-sh .m { display: block; opacity: .55; margin-bottom: 10px; }
   .uc-h2 { font-family: var(--narrow); font-weight: 700; font-size: clamp(30px, 4.5vw, 48px); line-height: 1; letter-spacing: -.01em; text-transform: uppercase; margin: 0; }
+  .uc-section-intro { font-size: 19px; line-height: 1.55; max-width: 820px; margin: 0 0 48px; font-weight: 500; opacity: .9; }
+
+  /* ---- IMAGE PLACEHOLDERS (no external requests, fixed ratio → zero CLS) ---- */
+  .uc-img {
+    position: relative; margin: 0; background: var(--ink);
+    border: 2px solid var(--ink); overflow: hidden;
+    display: flex; align-items: flex-end;
+    background-image:
+      repeating-linear-gradient(45deg, rgba(246,241,231,.04) 0 14px, transparent 14px 28px);
+  }
+  .uc-img::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background:
+      radial-gradient(circle at 28% 32%, rgba(67,160,71,.24), transparent 60%),
+      radial-gradient(circle at 78% 72%, rgba(246,241,231,.06), transparent 55%);
+  }
+  .uc-img-real {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; z-index: 0;
+  }
+  .uc-img-tag {
+    position: relative; z-index: 1; margin: 0;
+    color: var(--cream); opacity: .7; padding: 14px 16px;
+    border-top: 1px solid rgba(246,241,231,.18);
+    background: linear-gradient(transparent, rgba(11,15,26,.55));
+    width: 100%; letter-spacing: .06em; line-height: 1.4;
+  }
+  .uc-img-hero { aspect-ratio: 4 / 3; box-shadow: 12px 12px 0 var(--ink); width: 100%; }
+  .uc-img-wide { aspect-ratio: 21 / 9; box-shadow: 8px 8px 0 var(--ink); margin-top: 40px; }
+  .uc-img-inline { aspect-ratio: 16 / 9; margin-top: 24px; }
 
   /* ---- WHY ---- */
   .uc-why { padding: 96px 0; background: var(--cream); border-bottom: 1.5px solid rgba(11,15,26,.1); }
   .uc-why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
   .uc-block { background: white; border: 2px solid var(--ink); padding: 32px; box-shadow: 8px 8px 0 var(--ink); }
   .uc-block h3 { font-family: var(--narrow); font-weight: 700; font-size: 24px; text-transform: uppercase; line-height: 1.05; margin: 0 0 14px; }
-  .uc-block p { font-size: 16px; line-height: 1.55; opacity: .82; margin: 0; }
+  .uc-block p { font-size: 16px; line-height: 1.55; opacity: .82; margin: 0 0 14px; }
+  .uc-block p:last-child { margin-bottom: 0; }
+  .uc-block p strong { opacity: 1; }
+  .uc-block p a, .uc-faq-item p a, .uc-setup-list a { color: inherit; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 2px; }
+
+  /* ---- PLACEMENT & SETUP ---- */
+  .uc-setup { padding: 96px 0; background: var(--ink); color: var(--cream); border-bottom: 1.5px solid rgba(11,15,26,.1); }
+  .uc-setup .uc-sh { border-top-color: var(--c4-cost); }
+  .uc-setup .uc-sh .m { color: var(--cream); }
+  .uc-setup .uc-h2 { color: var(--cream); }
+  .uc-setup-grid { display: grid; grid-template-columns: 1.2fr .8fr; gap: 48px; align-items: start; }
+  .uc-setup-intro { font-size: 19px; line-height: 1.6; margin: 0 0 32px; opacity: .92; }
+  .uc-setup-list { list-style: none; margin: 0 0 32px; padding: 0; display: flex; flex-direction: column; gap: 18px; }
+  .uc-setup-list li { display: flex; gap: 18px; align-items: baseline; font-size: 17px; line-height: 1.5; }
+  .uc-setup-num { color: var(--c4-cost); font-weight: 500; flex-shrink: 0; }
+  .uc-setup-list strong { color: var(--yellow); font-weight: 700; }
+  .uc-setup-list a { color: var(--cream); }
+  .uc-setup-body { font-size: 16px; line-height: 1.6; margin: 0 0 28px; opacity: .82; }
+  .uc-setup-pull { font-family: var(--narrow); font-weight: 700; font-size: clamp(18px, 2.2vw, 23px); line-height: 1.25; text-transform: uppercase; letter-spacing: -.01em; margin: 0; padding-left: 24px; border-left: 4px solid var(--c4-cost); }
+  .uc-img-setup { aspect-ratio: 4 / 5; box-shadow: 12px 12px 0 var(--c4-cost); width: 100%; }
+  .uc-setup .uc-img-tag { color: var(--cream); }
+
+  /* ---- SEASONAL USE ---- */
+  .uc-season { padding: 96px 0; background: var(--cream); border-bottom: 1.5px solid rgba(11,15,26,.1); }
+  .uc-season-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .uc-season-card { background: white; border: 2px solid var(--ink); border-top: 8px solid var(--c4-cost); padding: 28px; }
+  .uc-season-tag { display: block; color: var(--c4-cost); opacity: 1; margin-bottom: 14px; font-weight: 500; }
+  .uc-season-card p { font-size: 16px; line-height: 1.55; opacity: .82; margin: 0; }
 
   /* ---- RECOMMENDATIONS ---- */
   .uc-recs { padding: 96px 0; background: white; border-bottom: 1.5px solid rgba(11,15,26,.1); }
+  .uc-img-recs { margin-top: 0; margin-bottom: 48px; }
   .uc-rec-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
   .uc-rec { display: flex; flex-direction: column; background: var(--cream); border: 2px solid var(--ink); border-top: 8px solid var(--ink); padding: 28px; transition: transform .15s, box-shadow .15s; }
   .uc-rec:hover { transform: translate(-3px, -3px); box-shadow: 6px 6px 0 var(--ink); }
   .uc-rec-size { font-family: var(--narrow); font-weight: 700; font-size: 34px; text-transform: uppercase; line-height: 1; margin-bottom: 14px; }
   .uc-rec-body { font-size: 15px; line-height: 1.5; opacity: .82; margin: 0 0 20px; flex: 1; }
+  .uc-rec-body strong { opacity: 1; }
   .uc-rec-link { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; font-weight: 500; margin-top: auto; }
-  .uc-framing { margin: 40px 0 0; font-size: 18px; line-height: 1.5; font-weight: 500; max-width: 760px; border-left: 4px solid var(--yellow); padding-left: 24px; }
+  .uc-framing { margin: 40px 0 0; font-size: 18px; line-height: 1.5; font-weight: 500; max-width: 760px; border-left: 4px solid var(--c4-cost); padding-left: 24px; }
 
   /* ---- WHERE WE DELIVER ---- */
   .uc-deliver { padding: 96px 0; background: var(--cream); border-bottom: 1.5px solid rgba(11,15,26,.1); }
-  .uc-deliver-lede { font-size: 18px; line-height: 1.5; max-width: 720px; margin: 0 0 40px; opacity: .85; }
+  .uc-deliver-lede { font-size: 18px; line-height: 1.5; max-width: 820px; margin: 0 0 40px; opacity: .85; }
+  .uc-deliver-foot { font-size: 16px; line-height: 1.5; max-width: 760px; margin: 28px 0 0; opacity: .7; }
   .uc-city-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
   .uc-city { display: flex; flex-direction: column; gap: 6px; background: white; border: 2px solid var(--ink); padding: 22px 24px; transition: background .15s, color .15s; }
   .uc-city:hover { background: var(--ink); color: var(--cream); }
@@ -237,13 +402,28 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
   .uc-faq-item h3 { font-family: var(--narrow); font-weight: 700; font-size: 22px; line-height: 1.15; text-transform: uppercase; margin: 0 0 12px; }
   .uc-faq-item p { font-size: 16px; line-height: 1.6; opacity: .82; margin: 0; }
 
+  /* ---- SOURCES ---- */
+  .uc-sources { margin-top: 56px; max-width: 860px; border-top: 2px solid rgba(11,15,26,.15); padding-top: 24px; }
+  .uc-sources .m { display: block; opacity: .55; margin-bottom: 14px; }
+  .uc-sources ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+  .uc-sources li { font-size: 14px; line-height: 1.5; opacity: .82; }
+  .uc-sources a { color: inherit; text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 2px; }
+
   /* ---- RESPONSIVE ---- */
+  @media (max-width: 960px) {
+    .uc-hero-grid { grid-template-columns: 1fr; gap: 40px; }
+    .uc-img-hero { aspect-ratio: 16 / 9; }
+    .uc-setup-grid { grid-template-columns: 1fr; gap: 40px; }
+    .uc-img-setup { aspect-ratio: 16 / 9; }
+  }
   @media (max-width: 768px) {
     .uc-hero { padding: 72px 0 56px; }
     .uc-why-grid { grid-template-columns: 1fr; gap: 20px; }
+    .uc-season-grid { grid-template-columns: 1fr; gap: 20px; }
     .uc-rec-grid { grid-template-columns: 1fr; }
     .uc-city-grid { grid-template-columns: 1fr 1fr; }
     .uc-block { padding: 24px; }
     .uc-faq-item { padding-left: 20px; }
+    .uc-img-wide { aspect-ratio: 16 / 9; }
   }
 </style>
