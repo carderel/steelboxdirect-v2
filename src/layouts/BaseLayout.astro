@@ -228,6 +228,34 @@ const {
       .cta-hd{display:inline-flex;align-items:center;gap:8px;padding:0 22px;background:var(--ink);color:var(--yellow);font-family:var(--narrow);font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:.02em;border-left:2.5px solid var(--ink)}
       .cta-hd:hover{background:var(--cream);color:var(--ink)}
       .cta-hd svg{width:14px;height:14px;stroke:currentColor;stroke-width:2.6;fill:none}
+
+      /* ---- Secondary use-case strip (full-width yellow row under main nav) ---- */
+      .subnav-wrap{background:var(--yellow);border-bottom:2.5px solid var(--ink)}
+      .subnav{display:flex;align-items:stretch;justify-content:space-between;gap:16px;min-height:34px}
+      .subnav-links{display:flex;align-items:center;flex-wrap:wrap;gap:8px 4px}
+      .subnav-label{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);opacity:.65;margin-right:6px}
+      .subnav-links a{position:relative;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--yellow-d);padding:8px 14px;transition:color .12s}
+      /* tasteful separators between links (not before the first link) */
+      .subnav-links a + a::before{content:"";position:absolute;left:0;top:50%;transform:translateY(-50%);width:1px;height:11px;background:var(--yellow-d);opacity:.45}
+      .subnav-links a:hover{color:var(--ink);text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1.5px}
+
+      /* ---- Call Now button (template: .cta-hd — ink bg / yellow text) ---- */
+      .call-now{display:inline-flex;align-items:center;gap:8px;padding:0 16px;background:var(--ink);color:var(--yellow);font-family:var(--narrow);font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.02em;border-left:2.5px solid var(--ink);white-space:nowrap}
+      .call-now .call-ico{width:14px;height:14px;stroke:currentColor;stroke-width:2.2;fill:none;flex-shrink:0}
+      .call-now .call-num{font-family:var(--mono);font-weight:700;font-size:12px;letter-spacing:.04em}
+      .call-now:hover{background:var(--cream);color:var(--ink)}
+      /* Desktop hover-capable: show "Call Now"; reveal number on hover (snappy width morph) */
+      @media (hover:hover) and (pointer:fine){
+        .call-now .call-num{max-width:0;overflow:hidden;opacity:0;transition:max-width .28s ease,opacity .2s ease,margin .28s ease;margin-left:-8px}
+        .call-now:hover .call-num{max-width:160px;opacity:1;margin-left:0}
+        .call-now:hover .call-label{display:none}
+      }
+      /* Touch / no-hover: render the tappable number directly (no hover reliance) */
+      @media (hover:none){
+        .call-now .call-label{display:none}
+        .call-now .call-num{max-width:none;opacity:1}
+      }
+
       .agent-strip{padding:4px 0;font-family:var(--mono);font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:#444}
       .agent-strip-inner{display:flex;justify-content:space-between;align-items:center}
       .agent-strip .mil-strip{color:#444;font-size:10.35px;letter-spacing:.06em}
@@ -401,6 +429,16 @@ const {
         .nav-tl-drop a:hover{background:var(--ink);color:var(--yellow)!important}
         .nav-tl-drop a:hover .dc{color:var(--yellow)!important}
         .nav-tl-trigger svg{display:none}
+
+        /* ---- Secondary strip: collapse sensibly; Call Now stays prominent/tappable ---- */
+        .subnav{flex-direction:column;align-items:stretch;gap:0;min-height:0}
+        .subnav-links{padding:10px 4px 12px;gap:6px 2px;justify-content:flex-start}
+        .subnav-label{flex-basis:100%;margin:0 0 4px}
+        .subnav-links a{padding:6px 12px;font-size:11px}
+        .call-now{align-self:stretch;justify-content:center;height:auto;padding:13px 16px;border-left:none;border-top:2px solid var(--ink);font-size:14px;background:var(--ink)!important;color:var(--yellow)!important}
+        .call-now .call-label{display:none}
+        .call-now .call-num{max-width:none;opacity:1;margin-left:0;font-size:14px}
+
         footer.site .inner{grid-template-columns:1fr 1fr}
       }
 
