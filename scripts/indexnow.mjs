@@ -3,7 +3,9 @@ import { fileURLToPath } from 'url';
 
 const KEY = '00a37f3071714d8fbd653e15611f3ad3';
 const HOST = 'steelboxdirect.com';
-const ENDPOINT = 'https://api.indexnow.org/indexnow';
+// Submit to Bing directly (so Bing Webmaster Tools' IndexNow Insights register the
+// submission) AND to the shared hub (which fans out to Yandex/Seznam/etc.).
+const ENDPOINTS = ['https://www.bing.com/indexnow', 'https://api.indexnow.org/indexnow'];
 
 export function extractUrls(xml) {
   return [...xml.matchAll(/<loc>(https?:\/\/[^<]+)<\/loc>/g)].map(m => m[1].trim());
@@ -24,8 +26,6 @@ async function main() {
     process.exit(1);
   }
 
-  console.log(`IndexNow: submitting ${urlList.length} URLs to ${ENDPOINT}`);
-
   const body = JSON.stringify({
     host: HOST,
     key: KEY,
@@ -33,25 +33,30 @@ async function main() {
     urlList,
   });
 
-  let res;
-  try {
-    res = await fetch(ENDPOINT, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json; charset=utf-8' },
-      body,
-    });
-  } catch (err) {
-    console.error(`IndexNow: network error — ${err.message}`);
-    process.exit(1);
+  let anyOk = false;
+  for (const endpoint of ENDPOINTS) {
+    console.log(`IndexNow: submitting ${urlList.length} URLs to ${endpoint}`);
+    let res;
+    try {
+      res = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json; charset=utf-8' },
+        body,
+      });
+    } catch (err) {
+      console.error(`IndexNow: network error (${endpoint}) — ${err.message}`);
+      continue;
+    }
+    if (res.ok) {
+      anyOk = true;
+      console.log(`IndexNow: success (HTTP ${res.status}) — ${endpoint}`);
+    } else {
+      const text = await res.text().catch(() => '');
+      console.error(`IndexNow: error (HTTP ${res.status}) ${endpoint} — ${text}`);
+    }
   }
 
-  if (res.ok) {
-    console.log(`IndexNow: success (HTTP ${res.status})`);
-  } else {
-    const text = await res.text().catch(() => '');
-    console.error(`IndexNow: error (HTTP ${res.status}) ${text}`);
-    process.exit(1);
-  }
+  if (!anyOk) process.exit(1);
 }
 
 // Guard: only run when executed directly, not when imported by tests
