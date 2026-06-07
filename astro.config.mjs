@@ -18,6 +18,9 @@ export default defineConfig({
     },
   }),
   site: 'https://steelboxdirect.com',
+  redirects: {
+    '/admin': '/admin/login',
+  },
   integrations: [
     react(),
     sitemap({ filter: (page) => !page.includes('/admin/') }),
