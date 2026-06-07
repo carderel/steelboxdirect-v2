@@ -41,10 +41,10 @@ export const containers: Container[] = [
       { title: 'Construction Job Site',  body: "Lock up tools and materials on-site. The 20ft fits most job sites where a 40ft would block access." },
       { title: 'Backyard Workshop',      body: "Convert into a workshop, hobby room, or overflow storage. Fits most suburban lots and standard driveways." },
     ],
-    compareNote: "Half the length of a 40ft — fits tighter spaces and costs less to deliver.",
+    compareNote: "Half the length of a 40ft — fits tighter spaces and costs less to deliver. Cargo-worthy (used) by default; new (one-trip) on request.",
     seo: {
       title:       '20-Foot Shipping Container for Sale | Steel Box Direct',
-      description: 'Buy a 20ft shipping container delivered within 250 miles of Cincinnati. Cargo-worthy and one-trip units available. Get a quote within 4 business hours.',
+      description: 'Buy a 20ft shipping container delivered within 250 miles of Cincinnati. Cargo-worthy (used) by default, new (one-trip) on request. Get a quote within 4 business hours.',
     },
   },
   {
@@ -66,18 +66,18 @@ export const containers: Container[] = [
       { title: 'Commercial Storage',   body: "Inventory overflow, seasonal stock, or on-site warehousing. The 40ft is the industry standard for a reason." },
       { title: 'Permanent Structures', body: "The most popular base for container conversions — offices, workshops, and guest spaces. Enough room to split into zones." },
     ],
-    compareNote: "Twice the storage of a 20ft — needs more clearance for delivery and placement.",
+    compareNote: "Twice the storage of a 20ft — needs more clearance for delivery and placement. Cargo-worthy (used) by default; new (one-trip) on request.",
     seo: {
       title:       '40-Foot Shipping Container for Sale | Steel Box Direct',
-      description: 'Buy a 40ft shipping container delivered within 250 miles of Cincinnati. Standard cargo-worthy units with flat-fee local delivery. Get a quote in 4 hours.',
+      description: 'Buy a 40ft shipping container delivered within 250 miles of Cincinnati. Cargo-worthy (used) by default, new (one-trip) on request. Flat-fee local delivery. Get a quote in 4 hours.',
     },
   },
   {
     slug: '40-foot-high-cube-container',
     name: '40-Foot High Cube Container',
     shortName: '40ft High Cube',
-    tagline: 'Like new. One ocean crossing. Ready for anything.',
-    keySpecs: ["40' × 8' × 9'6\"", '2,694 cu ft', 'Near-new condition'],
+    tagline: 'A full foot of extra headroom. The 40ft, taller.',
+    keySpecs: ["40' × 8' × 9'6\"", '2,694 cu ft', 'Cargo-worthy · new on request'],
     specs: {
       externalDims: "40' L × 8' W × 9'6\" H",
       internalDims: "39'5\" L × 7'8\" W × 8'10\" H",
@@ -87,14 +87,14 @@ export const containers: Container[] = [
       cubicCap:     '2,694 cu ft',
     },
     useCases: [
-      { title: 'Conversions & Builds',      body: "The cleanest canvas for container homes, offices, and studios. No rust, no previous cargo residue, no surprises." },
-      { title: 'Food & Sensitive Storage',  body: "When cargo-worthy just isn't clean enough. One-trip containers haven't carried anything other than their initial load." },
-      { title: 'Long-Term Investment',      body: "Premium condition means lower maintenance over time. If it's staying on your property for 10+ years, one-trip is worth the premium." },
+      { title: 'Conversions & Builds',      body: "A full foot of extra headroom makes the High Cube the easiest 40ft to convert into a home, office, or studio — room for insulation, ceiling finishes, and lighting without losing standing height." },
+      { title: 'Tall & Stacked Storage',    body: "The extra 9'6\" exterior height clears tall equipment, racking, and stacked pallets that won't fit a standard 40ft — ~2,694 cubic feet versus 2,390." },
+      { title: 'Maximum Cubic Capacity',    body: "Same footprint as the standard 40ft, but the added height yields the most cubic capacity we offer — the right call when you're paying for volume, not floor space." },
     ],
-    compareNote: "Same footprint as the standard 40ft — premium condition, higher price point.",
+    compareNote: "Same footprint as the standard 40ft, but a foot taller — the most headroom and cubic capacity we offer. Cargo-worthy (used) by default; new (one-trip) on request.",
     seo: {
       title:       '40-Foot High Cube Shipping Container for Sale | Steel Box Direct',
-      description: 'Buy a like-new 40ft High Cube container delivered within 250 miles of Cincinnati. One ocean crossing, near-perfect condition. Get a quote in 4 hours.',
+      description: 'Buy a 40ft High Cube container delivered within 250 miles of Cincinnati. A full foot of extra headroom and ~2,694 cu ft. Cargo-worthy (used) by default, new (one-trip) on request. Get a quote in 4 hours.',
     },
   },
 ];

@@ -42,10 +42,9 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
                 <div class="form-group quote_field">
                   <label for="condition_preference">Condition</label>
                   <select id="condition_preference" name="condition_preference" required>
-                    <option value="">Select condition...</option>
-                    <option value="new">New (One-Trip)</option>
-                    <option value="used_good">Cargo Worthy (Used - Good)</option>
+                    <option value="used_good" selected>Cargo Worthy (Used - Default)</option>
                     <option value="used_budget">Wind & Water Tight (Used - Budget)</option>
+                    <option value="new">New (One-Trip) — available on request</option>
                     <option value="not_sure">Not sure yet</option>
                   </select>
                 </div>
