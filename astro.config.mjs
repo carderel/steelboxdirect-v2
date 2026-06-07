@@ -20,6 +20,7 @@ export default defineConfig({
   site: 'https://steelboxdirect.com',
   redirects: {
     '/admin': '/admin/login',
+    '/shipping-containers-for-sale/40-foot-one-trip-container': '/shipping-containers-for-sale/40-foot-high-cube-container',
   },
   integrations: [
     react(),

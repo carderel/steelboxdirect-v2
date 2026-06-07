@@ -73,18 +73,18 @@ export const containers: Container[] = [
     },
   },
   {
-    slug: '40-foot-one-trip-container',
-    name: '40-Foot One-Trip Container',
-    shortName: '40ft One-Trip',
+    slug: '40-foot-high-cube-container',
+    name: '40-Foot High Cube Container',
+    shortName: '40ft High Cube',
     tagline: 'Like new. One ocean crossing. Ready for anything.',
-    keySpecs: ["40' × 8' × 8'6\"", '2,390 cu ft', 'Near-new condition'],
+    keySpecs: ["40' × 8' × 9'6\"", '2,694 cu ft', 'Near-new condition'],
     specs: {
-      externalDims: "40' L × 8' W × 8'6\" H",
-      internalDims: "39'5\" L × 7'8\" W × 7'10\" H",
-      doorOpening:  "7'8\" W × 7'5\" H",
+      externalDims: "40' L × 8' W × 9'6\" H",
+      internalDims: "39'5\" L × 7'8\" W × 8'10\" H",
+      doorOpening:  "7'8\" W × 8'5\" H",
       payload:      '59,039 lbs',
       tare:         '8,160 lbs',
-      cubicCap:     '2,390 cu ft',
+      cubicCap:     '2,694 cu ft',
     },
     useCases: [
       { title: 'Conversions & Builds',      body: "The cleanest canvas for container homes, offices, and studios. No rust, no previous cargo residue, no surprises." },
@@ -93,8 +93,8 @@ export const containers: Container[] = [
     ],
     compareNote: "Same footprint as the standard 40ft — premium condition, higher price point.",
     seo: {
-      title:       '40-Foot One-Trip Shipping Container for Sale | Steel Box Direct',
-      description: 'Buy a like-new 40ft one-trip container delivered within 250 miles of Cincinnati. One ocean crossing, near-perfect condition. Get a quote in 4 hours.',
+      title:       '40-Foot High Cube Shipping Container for Sale | Steel Box Direct',
+      description: 'Buy a like-new 40ft High Cube container delivered within 250 miles of Cincinnati. One ocean crossing, near-perfect condition. Get a quote in 4 hours.',
     },
   },
 ];
