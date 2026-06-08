@@ -2,7 +2,6 @@ import { defineConfig } from 'astro/config';
 import cloudflare from '@astrojs/cloudflare';
 import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
-import partytown from '@astrojs/partytown';
 
 export default defineConfig({
   output: 'hybrid',
@@ -12,7 +11,6 @@ export default defineConfig({
         exclude: [
           { pattern: '/sitemap-index.xml' },
           { pattern: '/sitemap-0.xml' },
-          { pattern: '/~partytown/*' },
         ],
       },
     },
@@ -25,6 +23,5 @@ export default defineConfig({
   integrations: [
     react(),
     sitemap({ filter: (page) => !page.includes('/admin/') }),
-    partytown({ config: { forward: ['dataLayer.push'] } }),
   ],
 });

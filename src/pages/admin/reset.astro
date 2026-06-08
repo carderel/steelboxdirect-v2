@@ -1,0 +1,199 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Reset Password | Steel Box Direct" pageType="legal" noindex={true}>
+  <div class="login-container">
+    <div class="wrap">
+      <div class="login-box">
+        <div class="m" style="margin-bottom: 24px; color: var(--c5-permits);">Restricted Access</div>
+        <h1>Set a new password</h1>
+        <p>Choose a new password for your seller account.</p>
+
+        <form id="reset-form" class="login-form">
+          <div class="form-group">
+            <label for="new-password">New password</label>
+            <input type="password" id="new-password" name="new-password" required minlength="8" />
+          </div>
+          <div class="form-group">
+            <label for="confirm-password">Confirm password</label>
+            <input type="password" id="confirm-password" name="confirm-password" required minlength="8" />
+          </div>
+          <button type="submit" class="btn" style="width: 100%; justify-content: center;">Update password</button>
+          <div id="reset-error" class="error-msg" style="display: none;"></div>
+          <div id="reset-success" class="success-msg" style="display: none;"></div>
+        </form>
+
+        <div id="reset-invalid" class="invalid-msg" style="display: none;">
+          <p>This reset link is invalid or has expired. Request a new one from the login page.</p>
+          <a href="/admin/login">Back to login</a>
+        </div>
+
+        <p class="back-link"><a href="/admin/login">Back to login</a></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    import { supabase } from '../../lib/supabase';
+
+    const form = document.getElementById('reset-form') as HTMLFormElement;
+    const errorDiv = document.getElementById('reset-error');
+    const successDiv = document.getElementById('reset-success');
+    const invalidDiv = document.getElementById('reset-invalid');
+
+    let hasRecoverySession = false;
+
+    function showInvalid() {
+      if (hasRecoverySession) return;
+      if (form) form.style.display = 'none';
+      if (invalidDiv) invalidDiv.style.display = 'block';
+    }
+
+    // Supabase auto-detects the recovery token from the URL hash on load.
+    supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'PASSWORD_RECOVERY' || session) {
+        hasRecoverySession = true;
+        if (form) form.style.display = '';
+        if (invalidDiv) invalidDiv.style.display = 'none';
+      }
+    });
+
+    // Fallback: accept an existing session if one is already present.
+    (async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        hasRecoverySession = true;
+      }
+    })();
+
+    // If no recovery context shortly after load, show the invalid message.
+    setTimeout(showInvalid, 1500);
+
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+      const newPassword = formData.get('new-password') as string;
+      const confirmPassword = formData.get('confirm-password') as string;
+
+      if (errorDiv) {
+        errorDiv.style.display = 'none';
+        errorDiv.textContent = '';
+      }
+      if (successDiv) {
+        successDiv.style.display = 'none';
+        successDiv.textContent = '';
+      }
+
+      function showError(msg: string) {
+        if (errorDiv) {
+          errorDiv.style.display = 'block';
+          errorDiv.textContent = msg;
+        }
+      }
+
+      if (newPassword !== confirmPassword) {
+        showError('Passwords do not match.');
+        return;
+      }
+      if (newPassword.length < 8) {
+        showError('Password must be at least 8 characters.');
+        return;
+      }
+
+      try {
+        const { error } = await supabase.auth.updateUser({ password: newPassword });
+        if (error) {
+          showError(error.message);
+          return;
+        }
+        if (successDiv) {
+          successDiv.style.display = 'block';
+          successDiv.textContent = 'Password updated — redirecting…';
+        }
+        window.location.href = '/admin/dashboard';
+      } catch (err: any) {
+        showError('An unexpected error occurred.');
+      }
+    });
+  </script>
+
+  <style>
+    .login-container {
+      padding: 120px 0;
+      background: var(--cream);
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
+    }
+    .login-box {
+      max-width: 480px;
+      margin: 0 auto;
+      background: white;
+      border: 2px solid var(--ink);
+      padding: 48px;
+      box-shadow: 12px 12px 0 var(--ink);
+    }
+    .login-box h1 {
+      font-family: var(--narrow);
+      font-size: 32px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .login-box p {
+      opacity: .7;
+      margin-bottom: 32px;
+    }
+    .form-group {
+      margin-bottom: 24px;
+    }
+    .form-group label {
+      display: block;
+      font-family: var(--mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      opacity: .6;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 14px;
+      border: 2px solid var(--ink);
+      font-family: var(--display);
+      font-size: 16px;
+      background: var(--cream);
+    }
+    .error-msg {
+      margin-top: 20px;
+      color: var(--c2-cond);
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .success-msg {
+      margin-top: 20px;
+      color: var(--c5-permits);
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .invalid-msg {
+      margin-top: 20px;
+      font-size: 14px;
+    }
+    .invalid-msg p {
+      margin-bottom: 12px;
+      opacity: 1;
+    }
+    .invalid-msg a,
+    .back-link a {
+      font-family: var(--mono);
+      font-size: 12px;
+      text-transform: uppercase;
+      color: var(--ink);
+    }
+    .back-link {
+      margin-top: 24px;
+      margin-bottom: 0;
+    }
+  </style>
+</BaseLayout>

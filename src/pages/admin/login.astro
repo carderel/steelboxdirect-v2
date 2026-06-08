@@ -21,6 +21,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
           </div>
           <button type="submit" class="btn" style="width: 100%; justify-content: center;">Sign In</button>
           <div id="login-error" class="error-msg" style="display: none;"></div>
+          <div id="login-status" class="status-msg" style="display: none;"></div>
+          <button type="button" id="forgot-password" class="forgot-link">Forgot password?</button>
         </form>
       </div>
     </div>
@@ -31,6 +33,50 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
     const form = document.getElementById('login-form') as HTMLFormElement;
     const errorDiv = document.getElementById('login-error');
+    const statusDiv = document.getElementById('login-status');
+    const forgotBtn = document.getElementById('forgot-password');
+
+    forgotBtn?.addEventListener('click', async () => {
+      const emailInput = document.getElementById('email') as HTMLInputElement;
+      const email = emailInput?.value?.trim();
+
+      if (errorDiv) {
+        errorDiv.style.display = 'none';
+        errorDiv.textContent = '';
+      }
+      if (statusDiv) {
+        statusDiv.style.display = 'none';
+        statusDiv.textContent = '';
+      }
+
+      if (!email) {
+        if (errorDiv) {
+          errorDiv.style.display = 'block';
+          errorDiv.textContent = 'Enter your email first';
+        }
+        return;
+      }
+
+      try {
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+          redirectTo: window.location.origin + '/admin/reset',
+        });
+        if (error) {
+          if (errorDiv) {
+            errorDiv.style.display = 'block';
+            errorDiv.textContent = error.message;
+          }
+        } else if (statusDiv) {
+          statusDiv.style.display = 'block';
+          statusDiv.textContent = 'Check your email for a reset link.';
+        }
+      } catch (err: any) {
+        if (errorDiv) {
+          errorDiv.style.display = 'block';
+          errorDiv.textContent = 'An unexpected error occurred.';
+        }
+      }
+    });
 
     form?.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -130,6 +176,29 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       color: var(--c2-cond);
       font-size: 14px;
       font-weight: 600;
+    }
+    .status-msg {
+      margin-top: 20px;
+      color: var(--c5-permits);
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .forgot-link {
+      display: block;
+      margin-top: 20px;
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      font-family: var(--mono);
+      font-size: 12px;
+      text-transform: uppercase;
+      color: var(--ink);
+      opacity: .7;
+      text-decoration: underline;
+    }
+    .forgot-link:hover {
+      opacity: 1;
     }
   </style>
 </BaseLayout>
