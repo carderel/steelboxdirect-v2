@@ -72,7 +72,7 @@ export const cities: City[] = [
     },
     seo: {
       title: 'Shipping Containers for Sale in Cincinnati, OH | Steel Box Direct',
-      description: 'Buying a shipping container in Cincinnati? We provide cargo-worthy and one-trip containers with flat-fee delivery to Hamilton, Clermont, and Warren counties.',
+      description: 'Buying a shipping container in Cincinnati? We provide cargo-worthy containers (one-trip on request) with flat-fee delivery to Hamilton, Clermont, and Warren counties.',
     },
   },
   {
@@ -111,7 +111,7 @@ export const cities: City[] = [
     },
     seo: {
       title: 'Shipping Containers for Sale in Dayton, OH | Steel Box Direct',
-      description: 'Looking for a shipping container in Dayton? We offer cargo-worthy and one-trip containers with flat-fee delivery to Montgomery, Greene, and Miami counties.',
+      description: 'Looking for a shipping container in Dayton? We offer cargo-worthy containers (one-trip on request) with flat-fee delivery to Montgomery, Greene, and Miami counties.',
     },
   },
   {
@@ -150,7 +150,7 @@ export const cities: City[] = [
     },
     seo: {
       title: 'Shipping Containers for Sale in Indianapolis, IN | Steel Box Direct',
-      description: 'Buying a shipping container in Indy? We provide cargo-worthy and one-trip containers with flat-fee delivery to Marion, Hamilton, and Hendricks counties.',
+      description: 'Buying a shipping container in Indy? We provide cargo-worthy containers (one-trip on request) with flat-fee delivery to Marion, Hamilton, and Hendricks counties.',
     },
   },
   {
@@ -189,7 +189,7 @@ export const cities: City[] = [
     },
     seo: {
       title: 'Shipping Containers for Sale in Louisville, KY | Steel Box Direct',
-      description: 'Looking for a shipping container in Louisville? We offer cargo-worthy and one-trip containers with flat-fee delivery to Jefferson, Oldham, and Bullitt counties.',
+      description: 'Looking for a shipping container in Louisville? We offer cargo-worthy containers (one-trip on request) with flat-fee delivery to Jefferson, Oldham, and Bullitt counties.',
     },
   },
 ];
