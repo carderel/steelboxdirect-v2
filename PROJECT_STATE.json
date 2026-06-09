@@ -2,8 +2,8 @@
   "project_name": "Steel Box Direct - Container Decision Engine",
   "phase": "optimization_expansion",
   "status": "active_development",
-  "last_session": "2026-06-05",
-  "last_commit": "96a7d4b",
+  "last_session": "2026-06-09",
+  "last_commit": "9d55149",
   "completed": [
     "Project relocation to workspace root",
     "Git repository initialization and cleanup (steelboxdirect-v2)",
@@ -36,11 +36,16 @@
     "SEO audit + fixes: schema cleanup, noindex admin, OG tags, non-blocking fonts, internal links, city FAQ schema (2026-06-02)",
     "Use-case pages: /for/farmers,contractors,homeowners,businesses/ + src/data/pricing.ts — built, content-expanded, cited (real GOV/EDU/standards sources), verified; FAQPage schema parity; image placeholders pending real assets (2026-06-04/05)",
     "Nav: secondary 'Containers Use Type' strip (right-aligned) + borderless Call Now (tel:) with hover number-morph; main menu centered; Military/Veteran line moved under brand; FreedomConex disclosure pinned right; footer FreedomConex logo chip background -> ink (2026-06-05)",
-    "DEPLOYED to production: pushed main -> 96a7d4b -> Cloudflare (2026-06-05). Use-case pages LIVE with placeholder image boxes pending real images."
+    "DEPLOYED to production: pushed main -> 96a7d4b -> Cloudflare (2026-06-05). Use-case pages LIVE with placeholder image boxes pending real images.",
+    "POST-LAUNCH FIXES (2026-06-07/08): IndexNow -> Bing endpoint direct (6f8090c); lead-capture resilience — seller email always fires even if Supabase down (79cee9b); 404 page + /admin->login 301, kills soft-404 (e4425d4); GTM restored as standard main-thread tag + removed dead Partytown (475bfe0, 8cc312f); product relabel 40ft one-trip -> 40ft High Cube + slug/301 (71f43f4); condition reframe v1 used-default/new-on-request (62779e6, bcb4447); self-serve /admin/reset + forgot-password (8cc312f).",
+    "Admin login resolved: Supabase Auth user created via dashboard, owner logged in. (Supabase Site URL still localhost:3000 — owner to fix for reset emails to work.)",
+    "LEAD-CAPTURE EMAIL FIXED (2026-06-09): root cause was unverified Resend sending domain steelboxdirect.com -> all sends 403'd silently while DB still saved (form looked successful). Owner verified the domain in Resend; live form test delivered both emails. Leads were never lost (all in Supabase). SELLER alert inbox = carder.creative@gmail.com. Added submit-quote.ts safeguard: loud error on send failure + sellerNotified/buyerConfirmed in response + PII removed from logs (34ac04e).",
+    "CONDITION MESSAGING -> WIND & WATER TIGHT ONLY (2026-06-09, owner+sales-lead confirmed): site now sells a single grade, Wind & Water Tight (used), sold as-is, NOT certified for shipping. Removed all Cargo Worthy + New (One-Trip) references, 'on request' upsells, and 'certified for shipping' claims across 17 files + quote dropdown; condition guide reframed; uncited '87%' stat deleted. Supersedes 62779e6/bcb4447 (bf7ee70).",
+    "Footer: Doug Froh LinkedIn + Facebook social links + 'Meet Doug Froh' intro line (9d55149)."
   ],
   "todos": [
     "Create Google Business Profile + add URL to Organization.sameAs",
-    "Verify GA4 firing through Partytown (Network tab check)",
+    "Verify GA4 firing (GTM is now a standard main-thread tag; Partytown removed)",
     "Add og:image when hero asset confirmed",
     "/size/calculator/ static content fallback for Googlebot",
     "FAQ Schema & Snippet Optimization (existing pages — deferred)",
