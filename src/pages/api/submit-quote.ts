@@ -117,6 +117,9 @@ async function sendSellerNotification(
     const inServiceArea = distance === null || distance <= SERVICE_RADIUS_MILES;
     const pagesVisited = data.pages_visited?.join(', ') || 'Unknown';
     const sellerEmail = import.meta.env.SELLER_EMAIL || process.env.SELLER_EMAIL || 'seller@example.com';
+    if (sellerEmail === 'seller@example.com') {
+      console.error('🚨 SELLER_EMAIL is not set — seller lead alerts are going to the placeholder seller@example.com and will NOT be received. Set SELLER_EMAIL in the environment.');
+    }
     const dbWarning = dbSaved
       ? ''
       : '\n⚠️ DATABASE SAVE FAILED — this lead is NOT in the seller dashboard. Capture these details manually and follow up directly.\n';
@@ -152,7 +155,7 @@ export const POST: APIRoute = async ({ request }) => {
       return new Response(JSON.stringify({ error: 'Empty request body' }), { status: 400 });
     }
     data = JSON.parse(bodyText);
-    console.log('API: Processing lead for:', data.email);
+    console.log('API: Processing lead submission'); // no PII in logs (HS-DATA-001)
   } catch (err: any) {
     console.error('API: Request parsing error:', err.message);
     return new Response(JSON.stringify({ error: 'Invalid request body', details: err.message }), { status: 400 });
@@ -237,12 +240,23 @@ export const POST: APIRoute = async ({ request }) => {
       }
     }
 
+    // Loud, non-silent alerting: a 200 to the buyer must never hide a broken email path.
+    // (leadId is a UUID, not PII — safe to log per HS-DATA-001.)
+    if (!sellerNotified) {
+      console.error(`🚨 SELLER ALERT NOT SENT for lead ${leadId || '(unsaved)'} — Resend send failed or SELLER_EMAIL misconfigured. Lead ${dbSaved ? 'IS in the dashboard, follow up there.' : 'is NOT in the dashboard.'}`);
+    }
+    if (!emailId) {
+      console.error(`⚠️ Buyer confirmation send failed for lead ${leadId || '(unsaved)'}.`);
+    }
+
     // 4) Success as long as the lead was captured somewhere (DB row OR seller email).
     if (dbSaved || sellerNotified) {
       return new Response(JSON.stringify({
         success: true,
         leadId,
         saved: dbSaved,
+        sellerNotified,
+        buyerConfirmed: !!emailId,
         score: leadScore,
         priority: getPriorityLabel(leadScore),
       }), { status: 200 });
