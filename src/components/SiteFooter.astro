@@ -11,6 +11,17 @@ const pathname = Astro.url.pathname;
         <a href="https://www.freedomconex.com/" rel="nofollow noopener noreferrer" target="_blank" class="agent-logo-link">
           <img src="/assets/freedom-conex-logo.png" alt="FreedomConex — America's Storage Solutions" class="agent-logo" />
         </a>
+        <div class="footer-social">
+          <p class="social-intro">Meet <strong>Doug Froh</strong> — the independent agent who handles your quote personally, start to finish.</p>
+          <div class="social-links">
+            <a href="https://www.linkedin.com/in/doug-froh-b551aab/" target="_blank" rel="noopener noreferrer" aria-label="Doug Froh on LinkedIn">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+            </a>
+            <a href="https://www.facebook.com/doug.froh" target="_blank" rel="noopener noreferrer" aria-label="Doug Froh on Facebook">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 8H6v4h3v12h5V12h3.642L18 8h-4V6.333C14 5.378 14.192 5 15.115 5H18V0h-3.808C10.596 0 9 1.583 9 4.615V8z"/></svg>
+            </a>
+          </div>
+        </div>
       </div>
       <div>
         <h5>The Five</h5>
@@ -55,3 +66,31 @@ const pathname = Astro.url.pathname;
     </section>
   </div>
 </footer>
+
+<style>
+  .footer-social { margin-top: 20px; }
+  .social-intro {
+    font-size: 13.5px;
+    line-height: 1.5;
+    opacity: .8;
+    max-width: 320px;
+    margin: 0 0 12px;
+  }
+  .social-intro strong { color: var(--yellow); font-weight: 700; }
+  .social-links { display: flex; gap: 12px; }
+  .social-links a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    border: 1px solid rgba(246, 241, 231, .25);
+    border-radius: 4px;
+    opacity: .85;
+    transition: background .15s ease, border-color .15s ease, opacity .15s ease;
+  }
+  .social-links a:hover { background: var(--yellow); border-color: var(--yellow); opacity: 1; }
+  .social-links svg { width: 18px; height: 18px; fill: var(--cream); }
+  .social-links a:hover svg { fill: var(--ink); }
+</style>
