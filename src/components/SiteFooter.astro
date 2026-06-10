@@ -57,6 +57,7 @@ const pathname = Astro.url.pathname;
     <div class="bottom">
       <span>© 2026 Steel Box Direct · Cincinnati, OH</span>
       <span>No jargon · Just clarity</span>
+      <span class="credit">Web design by <a href="https://cardercreative.com/" target="_blank" rel="noopener">Carder Creative</a></span>
     </div>
 
     <!-- AI Discovery Layer Citation Block -->
@@ -93,4 +94,13 @@ const pathname = Astro.url.pathname;
   .social-links a:hover { background: var(--yellow); border-color: var(--yellow); opacity: 1; }
   .social-links svg { width: 18px; height: 18px; fill: var(--cream); }
   .social-links a:hover svg { fill: var(--ink); }
+  .bottom .credit a {
+    display: inline;
+    padding: 0;
+    color: inherit;
+    opacity: 1;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .bottom .credit a:hover { color: var(--yellow); }
 </style>
