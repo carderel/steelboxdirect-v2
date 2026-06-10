@@ -3,36 +3,40 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { containers } from '../../data/containers';
 import { CONDITION } from '../../data/condition';
 
+// Single source for the page FAQ. `a` (plain text) feeds BOTH the JSON-LD schema
+// and the visible list; `html` is an optional richer visible variant (e.g. with links).
+const faqs: { q: string; a: string; html?: string }[] = [
+  {
+    q: 'What size shipping container do I need?',
+    a: `A 20ft container fits most residential lots and single-car driveways, storing roughly the equivalent of a full garage. A 40ft container doubles that capacity and is the standard for farm, commercial, and conversion projects. The 40ft High Cube adds a full foot of extra headroom for tall or stacked loads. Every unit is ${CONDITION.label} — structurally sound, weather-tight steel.`,
+  },
+  {
+    q: 'What condition are your containers?',
+    a: `Every container we sell is ${CONDITION.label} — structurally sound and sealed against rain, wind, snow, and pests. Expect honest cosmetic wear (surface rust, the odd dent) over weathering (Cor-Ten) steel built to last decades. Sold as-is for storage and on-site use.`,
+  },
+  {
+    q: 'Do you deliver to my area?',
+    a: 'We deliver within 250 miles of Cincinnati, covering Ohio, Indiana, Kentucky, and surrounding areas — including the Cincinnati, Dayton, Indianapolis, and Louisville metros and their surrounding counties.',
+    html: 'We deliver within 250 miles of Cincinnati, covering Ohio, Indiana, Kentucky, and surrounding areas — including the <a href="/cincinnati-shipping-containers/">Cincinnati</a>, <a href="/dayton-shipping-containers/">Dayton</a>, <a href="/indianapolis-shipping-containers/">Indianapolis</a>, and <a href="/louisville-shipping-containers/">Louisville</a> metros and their surrounding counties.',
+  },
+  {
+    q: 'How long does delivery take?',
+    a: 'Most quote requests are answered within 4 business hours. Delivery scheduling depends on inventory and your location, but we typically place units within days of your order being confirmed.',
+  },
+  {
+    q: 'Can I modify or convert a shipping container?',
+    a: `Yes. Containers can be cut, insulated, electrified, and fitted with doors and windows. Our ${CONDITION.label} units convert well. Local permit requirements vary — contact us and we can point you toward the right resources for your county.`,
+  },
+];
+
 const faqSchema = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "What size shipping container do I need?",
-      "acceptedAnswer": { "@type": "Answer", "text": "A 20ft container fits most residential lots and single-car driveways, storing roughly the equivalent of a full garage. A 40ft container doubles that capacity and is the standard for farm, commercial, and conversion projects. The 40ft High Cube adds a full foot of extra headroom for tall or stacked loads and conversions. Every unit is Wind & Water Tight (used) — structurally sound, weather-tight steel." }
-    },
-    {
-      "@type": "Question",
-      "name": "What condition are your containers?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Every container we sell is Wind & Water Tight (used) — structurally sound and sealed against rain, wind, snow, and pests. Expect honest cosmetic wear (surface rust, the odd dent) over weathering (Cor-Ten) steel built to last decades. Sold as-is for storage and on-site use." }
-    },
-    {
-      "@type": "Question",
-      "name": "Do you deliver to my area?",
-      "acceptedAnswer": { "@type": "Answer", "text": "We deliver within 250 miles of Cincinnati, covering Ohio, Indiana, Kentucky, and surrounding areas. This includes the Cincinnati, Dayton, Indianapolis, and Louisville metros and their surrounding counties." }
-    },
-    {
-      "@type": "Question",
-      "name": "How long does delivery take?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Most quote requests are answered within 4 business hours. Delivery scheduling depends on inventory and your location, but we typically place units within days of your order being confirmed." }
-    },
-    {
-      "@type": "Question",
-      "name": "Can I modify or convert a shipping container?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Yes. Containers can be cut, insulated, electrified, and fitted with doors and windows. Our Wind & Water Tight (used) units convert well. Local permit requirements vary — contact us and we can point you toward the right resources for your county." }
-    },
-  ]
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
 };
 ---
 
@@ -173,26 +177,12 @@ const faqSchema = {
     <div class="wrap">
       <h2 class="section-title">Common Questions</h2>
       <div class="faq-list">
-        <div class="faq-item">
-          <h3>What size shipping container do I need?</h3>
-          <p>A 20ft fits most residential lots and single-car driveways — roughly a full garage worth of storage. A 40ft doubles that and is the standard for farm, commercial, and conversion projects. The 40ft High Cube adds a full foot of headroom for tall or stacked loads. Every unit is Wind &amp; Water Tight (used) — structurally sound, weather-tight steel.</p>
-        </div>
-        <div class="faq-item">
-          <h3>What condition are your containers?</h3>
-          <p>Every container we sell is Wind &amp; Water Tight (used) — structurally sound and sealed against rain, wind, snow, and pests. Expect honest cosmetic wear (surface rust, the odd dent) over weathering (Cor-Ten) steel built to last decades. Sold as-is for storage and on-site use.</p>
-        </div>
-        <div class="faq-item">
-          <h3>Do you deliver to my area?</h3>
-          <p>We deliver within 250 miles of Cincinnati, covering Ohio, Indiana, Kentucky, and surrounding areas — including the <a href="/cincinnati-shipping-containers/">Cincinnati</a>, <a href="/dayton-shipping-containers/">Dayton</a>, <a href="/indianapolis-shipping-containers/">Indianapolis</a>, and <a href="/louisville-shipping-containers/">Louisville</a> metros and their surrounding counties.</p>
-        </div>
-        <div class="faq-item">
-          <h3>How long does delivery take?</h3>
-          <p>Most quote requests are answered within 4 business hours. Delivery scheduling depends on inventory and your location, but we typically place units within days of your order being confirmed.</p>
-        </div>
-        <div class="faq-item">
-          <h3>Can I modify or convert a shipping container?</h3>
-          <p>Yes — containers can be cut, insulated, electrified, and fitted with doors and windows. Our Wind &amp; Water Tight (used) units convert well. Local permit requirements vary; contact us and we'll point you toward the right resources for your county.</p>
-        </div>
+        {faqs.map((f) => (
+          <div class="faq-item">
+            <h3>{f.q}</h3>
+            {f.html ? <p set:html={f.html} /> : <p>{f.a}</p>}
+          </div>
+        ))}
       </div>
     </div>
   </section>
