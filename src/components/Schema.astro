@@ -1,4 +1,7 @@
 ---
+import { CONDITION } from '../data/condition';
+import { STATS } from '../data/stats';
+
 interface CityOverride {
   name: string;
   addressRegion: string;
@@ -189,7 +192,7 @@ const pricingGuideSchema = {
       '@type': 'HowToStep',
       'position': 1,
       'name': 'Container Condition',
-      'text': 'Every container we sell is Wind & Water Tight (used) — structurally sound, weather-tight steel at 40–60% less than new.'
+      'text': `Every container we sell is ${CONDITION.label} — structurally sound, weather-tight steel at ${STATS.usedSavingsVsNew.value} less than new.`
     },
     {
       '@type': 'HowToStep',

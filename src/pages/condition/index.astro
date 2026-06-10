@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { STATS } from '../../data/stats';
 ---
 
 <BaseLayout
@@ -20,7 +21,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       <h1 class="big guide_headline" style="color: var(--cream);">Used Steel.<br><em>Built to Last.</em></h1>
       <p class="guide-lede guide_lede" style="opacity: .9;">
         Every container we sell is Wind & Water Tight — used steel that's structurally sound and seals out
-        rain, wind, and snow, at 40–60% less than new. Here's exactly what that means in practice.
+        rain, wind, and snow, at {STATS.usedSavingsVsNew.value} less than new. Here's exactly what that means in practice.
       </p>
     </div>
   </div>
@@ -51,7 +52,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
             <div class="m guide_callout_label">The Reality Check</div>
             <ul>
               <li><strong>Wind &amp; Water Tight</strong> — sealed against rain, wind, snow, and pests.</li>
-              <li><strong>40–60% less</strong> than buying new.</li>
+              <li><strong>{STATS.usedSavingsVsNew.value} less</strong> than buying new.</li>
               <li><strong>Decades</strong> of service life from weathering (Cor-Ten) steel.</li>
             </ul>
           </div>
