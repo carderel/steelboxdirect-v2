@@ -356,6 +356,8 @@ const {
 
         .menu-toggle {
           display: flex;
+          min-height: 44px; /* primary mobile nav control — meet 44px tap target */
+          padding: 10px 14px;
         }
 
         nav.p {
@@ -371,6 +373,13 @@ const {
           transition: transform 0.3s ease, opacity 0.3s ease;
           pointer-events: none;
           z-index: 99;
+          /* Menu can be taller than the viewport — let it scroll so the
+             Tools/Locations/Get-a-Quote items stay reachable on short phones */
+          max-height: calc(100vh - 96px);
+          max-height: calc(100dvh - 96px);
+          overflow-y: auto;
+          overscroll-behavior: contain;
+          -webkit-overflow-scrolling: touch;
         }
         nav.p.is-open {
           display: flex !important;
@@ -425,9 +434,11 @@ const {
 
         /* ---- Secondary strip: collapse sensibly; Call Now stays prominent/tappable ---- */
         .subnav{flex-direction:column;align-items:stretch;justify-content:flex-start;gap:0;min-height:0}
-        .subnav-links{padding:10px 4px 12px;gap:6px 2px;justify-content:flex-start}
+        .subnav-links{padding:10px 4px 12px;gap:8px;justify-content:flex-start}
         .subnav-label{flex-basis:100%;margin:0 0 4px}
-        .subnav-links a{padding:6px 12px;font-size:14px}
+        /* Chip-style links on mobile: clearer tap targets, no orphan pipe on wrap */
+        .subnav-links a{padding:8px 14px;font-size:14px;border:1.5px solid rgba(11,15,26,.28);border-radius:999px;line-height:1}
+        .subnav-links a + a::before{display:none}
         .call-now{align-self:stretch;justify-content:center;height:auto;padding:13px 16px;border:none;font-size:14px;background:transparent;color:var(--ink)}
         .call-now .call-label{display:none}
         .call-now .call-num{max-width:none;opacity:1;margin-left:0;font-size:14px}
