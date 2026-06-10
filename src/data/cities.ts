@@ -1,4 +1,5 @@
 // src/data/cities.ts
+import { CONDITION } from './condition';
 
 export interface CityMap {
   bbox: string;
@@ -72,7 +73,7 @@ export const cities: City[] = [
     },
     seo: {
       title: 'Shipping Containers for Sale in Cincinnati, OH | Steel Box Direct',
-      description: 'Buying a shipping container in Cincinnati? We provide Wind & Water Tight (used) containers with flat-fee delivery to Hamilton, Clermont, and Warren counties.',
+      description: `Buying a shipping container in Cincinnati? We provide ${CONDITION.label} containers with flat-fee delivery to Hamilton, Clermont, and Warren counties.`,
     },
   },
   {
@@ -111,7 +112,7 @@ export const cities: City[] = [
     },
     seo: {
       title: 'Shipping Containers for Sale in Dayton, OH | Steel Box Direct',
-      description: 'Looking for a shipping container in Dayton? We offer Wind & Water Tight (used) containers with flat-fee delivery to Montgomery, Greene, and Miami counties.',
+      description: `Looking for a shipping container in Dayton? We offer ${CONDITION.label} containers with flat-fee delivery to Montgomery, Greene, and Miami counties.`,
     },
   },
   {
@@ -150,7 +151,7 @@ export const cities: City[] = [
     },
     seo: {
       title: 'Shipping Containers for Sale in Indianapolis, IN | Steel Box Direct',
-      description: 'Buying a shipping container in Indy? We provide Wind & Water Tight (used) containers with flat-fee delivery to Marion, Hamilton, and Hendricks counties.',
+      description: `Buying a shipping container in Indy? We provide ${CONDITION.label} containers with flat-fee delivery to Marion, Hamilton, and Hendricks counties.`,
     },
   },
   {
@@ -189,7 +190,7 @@ export const cities: City[] = [
     },
     seo: {
       title: 'Shipping Containers for Sale in Louisville, KY | Steel Box Direct',
-      description: 'Looking for a shipping container in Louisville? We offer Wind & Water Tight (used) containers with flat-fee delivery to Jefferson, Oldham, and Bullitt counties.',
+      description: `Looking for a shipping container in Louisville? We offer ${CONDITION.label} containers with flat-fee delivery to Jefferson, Oldham, and Bullitt counties.`,
     },
   },
 ];

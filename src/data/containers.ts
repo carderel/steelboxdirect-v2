@@ -1,4 +1,5 @@
 // src/data/containers.ts
+import { CONDITION } from './condition';
 
 export interface ContainerSpecs {
   externalDims: string;
@@ -41,10 +42,10 @@ export const containers: Container[] = [
       { title: 'Construction Job Site',  body: "Lock up tools and materials on-site. The 20ft fits most job sites where a 40ft would block access." },
       { title: 'Backyard Workshop',      body: "Convert into a workshop, hobby room, or overflow storage. Fits most suburban lots and standard driveways." },
     ],
-    compareNote: "Half the length of a 40ft — fits tighter spaces and costs less to deliver. Wind & Water Tight (used) — structurally sound and storage-ready.",
+    compareNote: `Half the length of a 40ft — fits tighter spaces and costs less to deliver. ${CONDITION.blurb}`,
     seo: {
       title:       '20-Foot Shipping Container for Sale | Steel Box Direct',
-      description: 'Buy a 20ft shipping container delivered within 250 miles of Cincinnati. Wind & Water Tight (used) — sound, storage-ready steel. Get a quote within 4 business hours.',
+      description: `Buy a 20ft shipping container delivered within 250 miles of Cincinnati. ${CONDITION.seoTail} Get a quote within 4 business hours.`,
     },
   },
   {
@@ -66,10 +67,10 @@ export const containers: Container[] = [
       { title: 'Commercial Storage',   body: "Inventory overflow, seasonal stock, or on-site warehousing. The 40ft is the industry standard for a reason." },
       { title: 'Permanent Structures', body: "The most popular base for container conversions — offices, workshops, and guest spaces. Enough room to split into zones." },
     ],
-    compareNote: "Twice the storage of a 20ft — needs more clearance for delivery and placement. Wind & Water Tight (used) — structurally sound and storage-ready.",
+    compareNote: `Twice the storage of a 20ft — needs more clearance for delivery and placement. ${CONDITION.blurb}`,
     seo: {
       title:       '40-Foot Shipping Container for Sale | Steel Box Direct',
-      description: 'Buy a 40ft shipping container delivered within 250 miles of Cincinnati. Wind & Water Tight (used) — sound, storage-ready steel. Flat-fee local delivery. Get a quote in 4 hours.',
+      description: `Buy a 40ft shipping container delivered within 250 miles of Cincinnati. ${CONDITION.seoTail} Flat-fee local delivery. Get a quote in 4 hours.`,
     },
   },
   {
@@ -77,7 +78,7 @@ export const containers: Container[] = [
     name: '40-Foot High Cube Container',
     shortName: '40ft High Cube',
     tagline: 'A full foot of extra headroom. The 40ft, taller.',
-    keySpecs: ["40' × 8' × 9'6\"", '2,694 cu ft', 'Wind & Water Tight (used)'],
+    keySpecs: ["40' × 8' × 9'6\"", '2,694 cu ft', CONDITION.label],
     specs: {
       externalDims: "40' L × 8' W × 9'6\" H",
       internalDims: "39'5\" L × 7'8\" W × 8'10\" H",
@@ -91,10 +92,10 @@ export const containers: Container[] = [
       { title: 'Tall & Stacked Storage',    body: "The extra 9'6\" exterior height clears tall equipment, racking, and stacked pallets that won't fit a standard 40ft — ~2,694 cubic feet versus 2,390." },
       { title: 'Maximum Cubic Capacity',    body: "Same footprint as the standard 40ft, but the added height yields the most cubic capacity we offer — the right call when you're paying for volume, not floor space." },
     ],
-    compareNote: "Same footprint as the standard 40ft, but a foot taller — the most headroom and cubic capacity we offer. Wind & Water Tight (used) — structurally sound and storage-ready.",
+    compareNote: `Same footprint as the standard 40ft, but a foot taller — the most headroom and cubic capacity we offer. ${CONDITION.blurb}`,
     seo: {
       title:       '40-Foot High Cube Shipping Container for Sale | Steel Box Direct',
-      description: 'Buy a 40ft High Cube container delivered within 250 miles of Cincinnati. A full foot of extra headroom and ~2,694 cu ft. Wind & Water Tight (used) — sound, storage-ready steel. Get a quote in 4 hours.',
+      description: `Buy a 40ft High Cube container delivered within 250 miles of Cincinnati. A full foot of extra headroom and ~2,694 cu ft. ${CONDITION.seoTail} Get a quote in 4 hours.`,
     },
   },
 ];

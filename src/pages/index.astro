@@ -8,10 +8,11 @@ import PersonasSection from '../components/home/PersonasSection.astro';
 import PriceSection from '../components/home/PriceSection.astro';
 import FaqSection from '../components/home/FaqSection.astro';
 import CtaSection from '../components/home/CtaSection.astro';
+import { CONDITION } from '../data/condition';
 ---
 <BaseLayout
   title="Shipping Containers for Sale — Ohio, Indiana & Kentucky | Steel Box Direct"
-  description="Buy a 20ft, 40ft, or 40ft High Cube shipping container delivered within 250 miles of Cincinnati. No broker markup. Wind & Water Tight (used) steel. Quote within 4 business hours."
+  description={`Buy a 20ft, 40ft, or 40ft High Cube shipping container delivered within 250 miles of Cincinnati. No broker markup. ${CONDITION.label} steel. Quote within 4 business hours.`}
   pageType="home"
 >
   <HeroSection />

@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { containers } from '../../data/containers';
+import { CONDITION } from '../../data/condition';
 
 const faqSchema = {
   "@context": "https://schema.org",
@@ -37,7 +38,7 @@ const faqSchema = {
 
 <BaseLayout
   title="Shipping Containers for Sale | Steel Box Direct"
-  description="Buy a 20ft, 40ft, or 40ft High Cube shipping container delivered within 250 miles of Cincinnati. Wind & Water Tight (used) steel. No broker markup. Get a quote within 4 business hours."
+  description={`Buy a 20ft, 40ft, or 40ft High Cube shipping container delivered within 250 miles of Cincinnati. ${CONDITION.label} steel. No broker markup. Get a quote within 4 business hours.`}
   pageType="product"
 >
   <script type="application/ld+json" slot="head" is:inline set:html={JSON.stringify(faqSchema)} />
@@ -51,7 +52,7 @@ const faqSchema = {
         <span class="tg">No broker · Local delivery · Est. 2009</span>
       </div>
       <h1 class="big">Shipping Containers<br>for <em>Sale.</em></h1>
-      <p class="lede">Three sizes, all Wind &amp; Water Tight (used) — structurally sound, weather-tight steel. Delivered within 250 miles of Cincinnati — to your driveway, job site, or farm.</p>
+      <p class="lede">Three sizes, all {CONDITION.label} — structurally sound, weather-tight steel. Delivered within 250 miles of Cincinnati — to your driveway, job site, or farm.</p>
     </div>
   </section>
 
