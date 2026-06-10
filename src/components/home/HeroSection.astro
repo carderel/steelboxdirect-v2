@@ -102,7 +102,8 @@ import containerHero from '../../assets/photos/40ft-container-hero-reduced2.png'
   @keyframes tkr{from{transform:translateX(0)}to{transform:translateX(-100%)}}
 
   @media (max-width:960px){
-    .hero-grid{grid-template-areas:"one" "two" "three" "four" "five";grid-template-columns:1fr}
+    /* mobile stacking order: container image, then hz-2, then headline; hz-4/hz-5 stay */
+    .hero-grid{grid-template-areas:"three" "two" "one" "four" "five";grid-template-columns:1fr}
   }
 
   @media (max-width:720px){
