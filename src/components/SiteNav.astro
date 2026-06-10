@@ -65,11 +65,16 @@
   <div class="wrap subnav-wrap">
     <div class="subnav">
       <div class="subnav-links">
-        <span class="subnav-label">Containers Use Type</span>
-        <a href="/for/farmers/">Farmers</a>
-        <a href="/for/contractors/">Contractors</a>
-        <a href="/for/homeowners/">Homeowners</a>
-        <a href="/for/businesses/">Businesses</a>
+        <button type="button" class="subnav-label usetype-toggle" id="usetype-toggle" aria-expanded="false" aria-controls="usetype-items">
+          Containers Use Type
+          <svg class="usetype-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="usetype-items" id="usetype-items">
+          <a href="/for/farmers/">Farmers</a>
+          <a href="/for/contractors/">Contractors</a>
+          <a href="/for/homeowners/">Homeowners</a>
+          <a href="/for/businesses/">Businesses</a>
+        </div>
       </div>
       <a class="call-now" href="tel:+15135462543" aria-label="Call Steel Box Direct at (513) 546-2543">
         <svg class="call-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 3h3l1.5 5-2 1.3a13 13 0 0 0 5.7 5.7l1.3-2 5 1.5v3a2 2 0 0 1-2 2A16 16 0 0 1 4.5 5a2 2 0 0 1 2-2z"/></svg>
@@ -96,6 +101,17 @@
         e.preventDefault();
         nav.classList.toggle('is-open');
         menuBtn.classList.toggle('is-active');
+      });
+    }
+
+    // Secondary "Containers Use Type" strip — tap to expand on mobile.
+    // On desktop CSS shows the links inline regardless, so the toggle is a no-op there.
+    const useTypeBtn = document.getElementById('usetype-toggle');
+    if (useTypeBtn) {
+      const links = useTypeBtn.closest('.subnav-links');
+      useTypeBtn.addEventListener('click', () => {
+        const open = links.classList.toggle('usetype-open');
+        useTypeBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
       });
     }
   });

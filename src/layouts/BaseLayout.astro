@@ -237,12 +237,17 @@ const {
       /* ---- Secondary use-case strip (full-width yellow row under main nav) ---- */
       .subnav-wrap{background:var(--yellow)}
       .subnav{display:flex;justify-content:flex-end;align-items:center;gap:16px;min-height:34px}
-      .subnav-links{display:flex;align-items:center;flex-wrap:wrap;gap:8px 4px}
+      .subnav-links{display:flex;align-items:center;gap:6px}
+      /* Use-type: inline strip on desktop; collapsible tap-dropdown on mobile
+         (see the max-width:960px block — JS toggles .usetype-open) */
+      .usetype-toggle{appearance:none;-webkit-appearance:none;background:none;border:none;cursor:default;display:inline-flex;align-items:center;padding:0}
+      .usetype-chev{display:none}
       .subnav-label{font-family:var(--mono);font-size:12.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);opacity:.65;margin-right:6px}
-      .subnav-links a{position:relative;font-family:var(--mono);font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#8a6d00;padding:8px 14px;transition:color .12s}
+      .usetype-items{display:flex;align-items:center;flex-wrap:wrap;gap:8px 4px}
+      .usetype-items a{position:relative;font-family:var(--mono);font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#8a6d00;padding:8px 14px;transition:color .12s}
       /* tasteful separators between links (not before the first link) */
-      .subnav-links a + a::before{content:"";position:absolute;left:0;top:50%;transform:translateY(-50%);width:1px;height:13px;background:#8a6d00;opacity:.5}
-      .subnav-links a:hover{color:var(--ink);text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1.5px}
+      .usetype-items a + a::before{content:"";position:absolute;left:0;top:50%;transform:translateY(-50%);width:1px;height:13px;background:#8a6d00;opacity:.5}
+      .usetype-items a:hover{color:var(--ink);text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1.5px}
 
       /* ---- Call Now button (template: .cta-hd — ink bg / yellow text) ---- */
       .call-now{display:inline-flex;align-items:center;gap:8px;padding:0 16px;background:transparent;color:var(--ink);font-family:var(--narrow);font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.02em;white-space:nowrap}
@@ -432,13 +437,18 @@ const {
         .nav-tl-drop a:hover .dc{color:var(--yellow)!important}
         .nav-tl-trigger svg{display:none}
 
-        /* ---- Secondary strip: collapse sensibly; Call Now stays prominent/tappable ---- */
+        /* ---- Secondary strip: Use Type becomes a tap dropdown; Call Now stays prominent ---- */
         .subnav{flex-direction:column;align-items:stretch;justify-content:flex-start;gap:0;min-height:0}
-        .subnav-links{padding:10px 4px 12px;gap:8px;justify-content:flex-start}
-        .subnav-label{flex-basis:100%;margin:0 0 4px}
-        /* Chip-style links on mobile: clearer tap targets, no orphan pipe on wrap */
-        .subnav-links a{padding:8px 14px;font-size:14px;border:1.5px solid rgba(11,15,26,.28);border-radius:999px;line-height:1}
-        .subnav-links a + a::before{display:none}
+        /* the strip becomes a bordered disclosure card */
+        .subnav-links{display:block;width:100%;margin:10px 0 12px;padding:0;border:1.5px solid rgba(11,15,26,.28);border-radius:10px;overflow:hidden}
+        .usetype-toggle{display:flex;justify-content:space-between;align-items:center;gap:8px;width:100%;padding:13px 16px;margin:0;cursor:pointer;opacity:.85;text-align:left;-webkit-tap-highlight-color:transparent}
+        .usetype-chev{display:block;width:18px;height:18px;stroke:var(--ink);stroke-width:2.4;fill:none;flex:none;transition:transform .2s}
+        .subnav-links.usetype-open .usetype-chev{transform:rotate(180deg)}
+        .usetype-items{display:none}
+        .subnav-links.usetype-open .usetype-items{display:block;border-top:1.5px solid rgba(11,15,26,.18)}
+        .usetype-items a{display:block;width:100%;padding:13px 16px;font-size:14px;color:#7a6000;border-bottom:1px solid rgba(11,15,26,.1)}
+        .usetype-items a:last-child{border-bottom:none}
+        .usetype-items a + a::before{display:none}
         .call-now{align-self:stretch;justify-content:center;height:auto;padding:13px 16px;border:none;font-size:14px;background:transparent;color:var(--ink)}
         .call-now .call-label{display:none}
         .call-now .call-num{max-width:none;opacity:1;margin-left:0;font-size:14px}
