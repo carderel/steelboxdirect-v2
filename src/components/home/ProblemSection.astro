@@ -78,8 +78,10 @@
 
   @media (max-width:960px){
     .problem .row{grid-template-columns:1fr;gap:32px}
-    /* center the warranty stamp instead of letting the rotation push it off-screen */
-    .problem_warranty{transform-origin:center;align-self:center;margin-top:24px}
+    /* center the warranty stamp instead of letting the rotation push it off-screen;
+       the -15deg rotation overflows ~40px below the layout box, so reserve bottom
+       space so the sub/note lines don't run into .problem_stats below */
+    .problem_warranty{transform-origin:center;align-self:center;margin-top:24px;margin-bottom:56px}
     .problem_warranty .w-small{font-size:46px}
     .problem_warranty .w-outline{font-size:40px}
   }
