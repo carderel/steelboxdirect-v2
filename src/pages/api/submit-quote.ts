@@ -120,13 +120,15 @@ async function sendSellerNotification(
     if (sellerEmail === 'seller@example.com') {
       console.error('🚨 SELLER_EMAIL is not set — seller lead alerts are going to the placeholder seller@example.com and will NOT be received. Set SELLER_EMAIL in the environment.');
     }
+    // SELLER_EMAIL can be a comma-separated list to alert multiple recipients.
+    const sellerRecipients = sellerEmail.split(',').map((e) => e.trim()).filter(Boolean);
     const dbWarning = dbSaved
       ? ''
       : '\n⚠️ DATABASE SAVE FAILED — this lead is NOT in the seller dashboard. Capture these details manually and follow up directly.\n';
 
     const { error } = await resend.emails.send({
       from: 'Steel Box Direct <noreply@steelboxdirect.com>',
-      to: sellerEmail,
+      to: sellerRecipients,
       subject: `${dbSaved ? '' : '[ACTION NEEDED] '}New Quote Request - ${data.name} - ${data.size_preference} - Score: ${score}`,
       text: `NEW QUOTE REQUEST\n${dbWarning}\nLEAD DETAILS\nName: ${data.name}\nEmail: ${data.email}\nPhone: ${data.phone}\n\nDECISIONS\nSize: ${data.size_preference}\nCondition: ${data.condition_preference}\nUse: ${data.primary_use}\nTimeline: ${data.timeline}\n\nDELIVERY\nLocation: ${data.delivery_zip}${distance ? ` (${distance}mi from Cincinnati)` : ''}\nService Area: ${inServiceArea ? 'Yes' : 'OUTSIDE AREA - Review'}\nAccess: ${data.site_access}\n\nNOTES\n${data.buyer_notes || 'None provided'}\n\nATTRIBUTION\nSource: ${data.first_touch_source || 'Unknown'} / ${data.first_touch_medium || 'Unknown'}\nLanding Page: ${data.landing_page || 'Unknown'}\nPages Visited: ${pagesVisited}\nCalculator Result: ${data.calculator_result || 'Not used'}\nTime on Site: ${data.time_on_site_seconds ? Math.round(data.time_on_site_seconds / 60) + ' minutes' : 'Unknown'}\n\nSCORE: ${score} - ${priority}\n\nLead ID: ${leadId || 'NOT SAVED (database error)'}\n`,
     });
