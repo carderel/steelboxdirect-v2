@@ -1,5 +1,14 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import { Image } from 'astro:assets';
+import imgHero from '../../../assets/photos/farmers/farm-yard-shipping-container-storage-overview.jpg';
+import imgWeather from '../../../assets/photos/farmers/weather-sealed-container-doors-winter.jpg';
+import imgDelivery from '../../../assets/photos/farmers/container-delivery-farm-gravel-pad.jpg';
+import imgSeasonal from '../../../assets/photos/farmers/farm-container-interior-equipment-feed.jpg';
+import imgSizes from '../../../assets/photos/farmers/20ft-vs-40ft-farm-containers-comparison.jpg';
+
+const crumbs = [{ name: 'Home', path: '/' }, { name: 'Farmers', path: '/for/farmers/' }];
 
 // --- Visible FAQ set (single source of truth → drives both the rendered FAQ and the JSON-LD) ---
 const faqs = [
@@ -40,6 +49,8 @@ const faqs = [
   pageType="guide"
   datePublished="2026-06-04"
   dateModified="2026-06-04"
+  breadcrumbs={crumbs}
+  floatingSidebar
 >
 
   <Fragment slot="head">
@@ -54,30 +65,33 @@ const faqs = [
     })} />
   </Fragment>
 
-  <!-- 1. HERO -->
+  <!-- 1. HERO — full-bleed "field poster" split (copy panel + edge-to-edge photo) -->
   <section class="uc-hero">
-    <div class="wrap uc-hero-grid">
-      <div class="uc-hero-copy">
-        <span class="uc-eyebrow">For Farmers &amp; Ag Operations</span>
-        <h1 class="uc-h1">Farm Storage That Holds Up to Ohio Winters.</h1>
-        <p class="uc-lede">No permit on most agricultural land. No foundation required. Delivered to your field — not just your driveway. One purchase, no monthly storage fees.</p>
-        <p class="uc-lede-support">A steel shipping container gives you weather-sealed, lockable storage that sits on the ground where you need it — beside the shop, at the back of a field, or next to the grain bins. Every unit is Wind &amp; Water Tight (used) — structurally sound and weather-tight — and we deliver across Ohio, Indiana, and Kentucky within 250 miles of Cincinnati. You buy it once and it's yours: no rental contract, no monthly invoice, no permit on most ag-classified land.</p>
-        <div class="uc-accent" style="background: var(--c4-cost);"></div>
-        <p class="uc-trust-strip m">Wind &amp; Water Tight (used) · Delivered to the field, not just the driveway · No permit on most ag land in OH / IN / KY · Quote back within 4 business hours</p>
-      </div>
-
-      <!-- IMAGE SLOT 1 — hero. Swap data-URI src for the real photo; alt + dimensions stay. -->
-      <!-- filename: farm-storage-container-crop-field-hero.jpg -->
-      <figure class="uc-img uc-img-hero" data-img-slot="hero">
-        <img
-          class="uc-img-real"
-          width="640" height="480"
-          alt="40ft shipping container used for farm storage at the edge of an Ohio crop field"
-          src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='640'%20height='480'%3E%3C/svg%3E"
-        />
-        <span class="uc-img-tag m">Photo · Farm shipping container in a field</span>
-      </figure>
+    <div class="uc-hero-copy">
+      <Breadcrumbs items={crumbs} />
+      <span class="uc-eyebrow">For Farmers &amp; Ag Operations</span>
+      <h1 class="uc-h1">Farm Storage That Holds Up to <span class="uc-h1-mark">Ohio Winters.</span></h1>
+      <p class="uc-lede">No permit on most agricultural land. No foundation required. Delivered to your field — not just your driveway. One purchase, no monthly storage fees.</p>
+      <p class="uc-lede-support">A steel shipping container gives you weather-sealed, lockable storage that sits on the ground where you need it — beside the shop, at the back of a field, or next to the grain bins. Every unit is Wind &amp; Water Tight (used) — structurally sound and weather-tight — and we deliver across Ohio, Indiana, and Kentucky within 250 miles of Cincinnati.</p>
+      <p class="uc-trust-strip m">Wind &amp; Water Tight (used) · Delivered to the field, not just the driveway · No permit on most ag land in OH / IN / KY · Quote back within 4 business hours</p>
     </div>
+
+    <!-- IMAGE SLOT 1 — hero (full-bleed). filename: farm-yard-shipping-container-storage-overview.jpg -->
+    <figure class="uc-hero-media" data-img-slot="hero">
+      <Image
+        class="uc-img-real"
+        src={imgHero}
+        width={1800}
+        format="webp"
+        loading="eager"
+        alt="Shipping container used for farm storage in a working Ohio farm yard with tractor, barn, and grain silo"
+      />
+      <div class="uc-hero-scrim" aria-hidden="true"></div>
+      <figcaption class="uc-hero-stamp m">
+        <span class="uc-hero-stamp-k">OH · IN · KY</span>
+        Container storage on a working farm — delivered to the field
+      </figcaption>
+    </figure>
   </section>
 
   <!-- 2. WHY CONTAINERS WORK -->
@@ -102,9 +116,8 @@ const faqs = [
           <!-- IMAGE SLOT 2 — weather-sealed doors. Swap data-URI src for the real photo; alt + dimensions stay. -->
           <!-- filename: weather-sealed-container-doors-winter.jpg -->
           <figure class="uc-img uc-img-inline" data-img-slot="weather">
-            <img class="uc-img-real" width="640" height="360"
-              alt="Weather-sealed shipping container doors and lockbox holding up in winter weather"
-              src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='640'%20height='360'%3E%3C/svg%3E" />
+            <Image class="uc-img-real" src={imgWeather} width={1000} format="webp"
+              alt="Weather-sealed shipping container doors and lockbox holding up in winter weather" />
             <span class="uc-img-tag m">Photo · Sealed container doors in winter</span>
           </figure>
         </div>
@@ -145,9 +158,8 @@ const faqs = [
         <!-- IMAGE SLOT 3 — delivery onto gravel pad. Swap data-URI src for the real photo; alt + dimensions stay. -->
         <!-- filename: container-delivery-farm-gravel-pad.jpg -->
         <figure class="uc-img uc-img-setup" data-img-slot="delivery">
-          <img class="uc-img-real" width="560" height="700"
-            alt="Delivery truck placing a shipping container on a gravel pad on a farm access lane"
-            src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='560'%20height='700'%3E%3C/svg%3E" />
+          <Image class="uc-img-real" src={imgDelivery} width={1000} format="webp"
+            alt="Delivery truck placing a shipping container on a gravel pad on a farm access lane" />
           <span class="uc-img-tag m">Photo · Container delivery onto farm lane</span>
         </figure>
       </div>
@@ -181,9 +193,8 @@ const faqs = [
       <!-- IMAGE SLOT 4 — seasonal interior. Swap data-URI src for the real photo; alt + dimensions stay. -->
       <!-- filename: farm-container-interior-equipment-feed.jpg -->
       <figure class="uc-img uc-img-wide" data-img-slot="seasonal">
-        <img class="uc-img-real" width="1260" height="540"
-          alt="Inside a 40ft farm container storing a combine header, feed, and tools for winter"
-          src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='1260'%20height='540'%3E%3C/svg%3E" />
+        <Image class="uc-img-real" src={imgSeasonal} width={1600} format="webp"
+          alt="Inside a 40ft farm container storing a combine header, feed, and tools for winter" />
         <span class="uc-img-tag m">Photo · Container interior with farm equipment</span>
       </figure>
     </div>
@@ -201,9 +212,8 @@ const faqs = [
       <!-- IMAGE SLOT 5 — size comparison. Swap data-URI src for the real photo; alt + dimensions stay. -->
       <!-- filename: 20ft-vs-40ft-farm-containers-comparison.jpg -->
       <figure class="uc-img uc-img-wide uc-img-recs" data-img-slot="sizes">
-        <img class="uc-img-real" width="1260" height="540"
-          alt="20ft and 40ft shipping containers side by side for comparison on a farm yard"
-          src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='1260'%20height='540'%3E%3C/svg%3E" />
+        <Image class="uc-img-real" src={imgSizes} width={1600} format="webp"
+          alt="20ft and 40ft shipping containers side by side for comparison on a farm yard" />
         <span class="uc-img-tag m">Photo · 20ft vs 40ft farm containers</span>
       </figure>
 
@@ -293,14 +303,66 @@ const faqs = [
 
 <style>
   /* ---- HERO ---- */
-  .uc-hero { padding: 110px 0 72px; background: var(--yellow); border-bottom: 2.5px solid var(--ink); }
-  .uc-hero-grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 56px; align-items: center; }
-  .uc-eyebrow { display: inline-block; font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; background: var(--ink); color: var(--cream); padding: 7px 14px; }
-  .uc-h1 { font-family: var(--narrow); font-weight: 700; font-size: clamp(44px, 6.5vw, 72px); line-height: .92; letter-spacing: -.02em; text-transform: uppercase; margin: 28px 0 0; }
-  .uc-lede { font-size: 20px; line-height: 1.5; max-width: 640px; margin: 28px 0 0; font-weight: 500; }
-  .uc-lede-support { font-size: 16px; line-height: 1.6; max-width: 640px; margin: 20px 0 0; opacity: .82; }
-  .uc-accent { height: 10px; width: 180px; margin-top: 36px; }
-  .uc-trust-strip { margin: 20px 0 0; opacity: .72; letter-spacing: .06em; line-height: 1.6; }
+  .uc-hero {
+    position: relative; display: grid;
+    grid-template-columns: 1.02fr 1.18fr; align-items: stretch;
+    background: var(--yellow); border-bottom: 2.5px solid var(--ink);
+    min-height: clamp(540px, 72vh, 780px); overflow: hidden;
+  }
+  /* left copy panel — text aligns to the site gutter via the wrap math */
+  .uc-hero-copy {
+    display: flex; flex-direction: column; align-items: flex-start; justify-content: center;
+    padding: 92px 64px 84px max(32px, calc((100vw - var(--max)) / 2 + 32px));
+    z-index: 2;
+  }
+  .uc-eyebrow {
+    display: inline-block; font-family: var(--mono); font-size: 11px; letter-spacing: .14em;
+    text-transform: uppercase; background: var(--ink); color: var(--cream); padding: 8px 15px;
+    box-shadow: 5px 5px 0 var(--c4-cost);
+  }
+  .uc-h1 {
+    font-family: var(--narrow); font-weight: 700; font-size: clamp(46px, 6.6vw, 86px);
+    line-height: .9; letter-spacing: -.025em; text-transform: uppercase; margin: 30px 0 0;
+  }
+  .uc-h1-mark {
+    display: inline-block; background: var(--ink); color: var(--yellow); padding: 0 .12em;
+    transform: rotate(-1.4deg); box-decoration-break: clone; -webkit-box-decoration-break: clone;
+  }
+  .uc-lede { font-size: clamp(18px, 2vw, 21px); line-height: 1.5; max-width: 560px; margin: 28px 0 0; font-weight: 600; }
+  .uc-lede-support { font-size: 15.5px; line-height: 1.6; max-width: 560px; margin: 18px 0 0; opacity: .8; }
+  .uc-trust-strip { margin: 26px 0 0; max-width: 560px; opacity: .82; letter-spacing: .06em; line-height: 1.7; padding-top: 22px; border-top: 2px solid rgba(11,15,26,.18); }
+
+  /* full-bleed media (right) */
+  .uc-hero-media { position: relative; margin: 0; overflow: hidden; background: var(--ink); border-left: 3px solid var(--ink); }
+  .uc-hero-scrim {
+    position: absolute; inset: 0; pointer-events: none;
+    background:
+      linear-gradient(90deg, rgba(11,15,26,.45) 0%, rgba(11,15,26,0) 28%),
+      linear-gradient(0deg, rgba(11,15,26,.52) 0%, rgba(11,15,26,0) 34%);
+  }
+  .uc-hero-stamp {
+    position: absolute; left: 0; bottom: 28px; z-index: 2;
+    display: flex; align-items: center; gap: 12px; max-width: min(82%, 460px);
+    background: var(--ink); color: var(--cream); padding: 12px 18px 12px 14px;
+    border-left: 5px solid var(--c4-cost); font-size: 11px; letter-spacing: .06em; line-height: 1.4;
+    box-shadow: 7px 7px 0 rgba(11,15,26,.22);
+  }
+  .uc-hero-stamp-k { color: var(--c4-cost); font-weight: 500; white-space: nowrap; }
+
+  /* staggered entrance */
+  @keyframes uc-rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+  @keyframes uc-media-in { from { opacity: 0; clip-path: inset(0 0 0 14%); } to { opacity: 1; clip-path: inset(0 0 0 0); } }
+  .uc-hero-copy > * { opacity: 0; animation: uc-rise .7s cubic-bezier(.2,.7,.2,1) forwards; }
+  .uc-hero-copy > :nth-child(1) { animation-delay: .04s; }
+  .uc-hero-copy > :nth-child(2) { animation-delay: .12s; }
+  .uc-hero-copy > :nth-child(3) { animation-delay: .20s; }
+  .uc-hero-copy > :nth-child(4) { animation-delay: .30s; }
+  .uc-hero-copy > :nth-child(5) { animation-delay: .38s; }
+  .uc-hero-copy > :nth-child(6) { animation-delay: .44s; }
+  .uc-hero-media { opacity: 0; animation: uc-media-in .9s .1s cubic-bezier(.2,.7,.2,1) forwards; }
+  @media (prefers-reduced-motion: reduce) {
+    .uc-hero-copy > *, .uc-hero-media { animation: none; opacity: 1; clip-path: none; }
+  }
 
   /* ---- SHARED SECTION HEADER ---- */
   .uc-sh { border-top: 4px solid var(--ink); padding-top: 18px; margin-bottom: 32px; }
@@ -333,7 +395,6 @@ const faqs = [
     background: linear-gradient(transparent, rgba(11,15,26,.55));
     width: 100%; letter-spacing: .06em; line-height: 1.4;
   }
-  .uc-img-hero { aspect-ratio: 4 / 3; box-shadow: 12px 12px 0 var(--ink); width: 100%; }
   .uc-img-wide { aspect-ratio: 21 / 9; box-shadow: 8px 8px 0 var(--ink); margin-top: 40px; }
   .uc-img-inline { aspect-ratio: 16 / 9; margin-top: 24px; }
 
@@ -411,13 +472,14 @@ const faqs = [
 
   /* ---- RESPONSIVE ---- */
   @media (max-width: 960px) {
-    .uc-hero-grid { grid-template-columns: 1fr; gap: 40px; }
-    .uc-img-hero { aspect-ratio: 16 / 9; }
+    .uc-hero { grid-template-columns: 1fr; min-height: 0; }
+    .uc-hero-copy { padding: 40px 28px 44px; }
+    .uc-hero-media { border-left: none; border-top: 3px solid var(--ink); aspect-ratio: 16 / 10; }
+    .uc-h1 { font-size: clamp(40px, 11vw, 64px); }
     .uc-setup-grid { grid-template-columns: 1fr; gap: 40px; }
     .uc-img-setup { aspect-ratio: 16 / 9; }
   }
   @media (max-width: 768px) {
-    .uc-hero { padding: 72px 0 56px; }
     .uc-why-grid { grid-template-columns: 1fr; gap: 20px; }
     .uc-season-grid { grid-template-columns: 1fr; gap: 20px; }
     .uc-rec-grid { grid-template-columns: 1fr; }

@@ -20,6 +20,8 @@ interface Props {
   noindex?: boolean;
   datePublished?: string;
   dateModified?: string;
+  breadcrumbs?: { name: string; path?: string }[];
+  floatingSidebar?: boolean;
 }
 
 const {
@@ -31,7 +33,11 @@ const {
   noindex = false,
   datePublished,
   dateModified,
+  breadcrumbs,
+  floatingSidebar,
 } = Astro.props;
+
+const showFloatingSidebar = floatingSidebar ?? (pageType === 'home');
 ---
 
 <!doctype html>
@@ -70,7 +76,7 @@ const {
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@500;600;700&family=Archivo:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&family=Permanent+Marker&display=swap" /></noscript>
 
     <!-- Schema Markup -->
-    <Schema pageType={pageType} pageTitle={title} pageDescription={description} guideTopic={guideTopic} cityOverride={cityOverride} datePublished={datePublished} dateModified={dateModified} />
+    <Schema pageType={pageType} pageTitle={title} pageDescription={description} guideTopic={guideTopic} cityOverride={cityOverride} datePublished={datePublished} dateModified={dateModified} breadcrumbs={breadcrumbs} />
     <slot name="head" />
 
     <!-- Attribution tracking initialization -->
@@ -92,7 +98,7 @@ const {
 
     <SiteFooter />
 
-    {pageType === 'home' && <FloatingSidebar />}
+    {showFloatingSidebar && <FloatingSidebar />}
 
     <style is:global>
       :root{

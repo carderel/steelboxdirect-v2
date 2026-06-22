@@ -1,8 +1,11 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import { pricing, perSqFt, roundToHalf } from '../../../data/pricing';
 const std40 = pricing['40ftStandard'];                                  // 40ft Standard, NOT HC
 const perSqFtDisplay = `$${roundToHalf(perSqFt(std40.price, std40.sqft)).toFixed(2)}`; // "$8.50"
+
+const crumbs = [{ name: 'Home', path: '/' }, { name: 'Businesses', path: '/for/businesses/' }];
 
 // --- Visible FAQ set (single source of truth → drives both the rendered FAQ and the JSON-LD) ---
 const faqs = [
@@ -43,6 +46,8 @@ const faqs = [
   pageType="guide"
   datePublished="2026-06-04"
   dateModified="2026-06-04"
+  breadcrumbs={crumbs}
+  floatingSidebar
 >
 
   <Fragment slot="head">
@@ -61,6 +66,7 @@ const faqs = [
   <section class="uc-hero">
     <div class="wrap uc-hero-grid">
       <div class="uc-hero-copy">
+        <Breadcrumbs items={crumbs} />
         <span class="uc-eyebrow">For Businesses &amp; Commercial Use</span>
         <h1 class="uc-h1">Overflow Storage That Scales With Your Operation.</h1>
         <p class="uc-lede">Seasonal inventory spikes. Equipment overflow. On-site document archive. Delivered to your loading area and configured to your operation. Own a 40ft container outright and your storage works out to roughly <strong>{perSqFtDisplay} per square foot — one time, not per month.</strong> Below, we break down where that number comes from and how it stacks up against renting space you'll never own.</p>

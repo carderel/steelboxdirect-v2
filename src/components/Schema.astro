@@ -17,9 +17,11 @@ interface Props {
   cityOverride?: CityOverride;
   datePublished?: string;
   dateModified?: string;
+  breadcrumbs?: { name: string; path?: string }[];
 }
 
-const { pageType, pageTitle, pageDescription, guideTopic, cityOverride, datePublished, dateModified } = Astro.props;
+const { pageType, pageTitle, pageDescription, guideTopic, cityOverride, datePublished, dateModified, breadcrumbs } = Astro.props;
+const SITE_URL = 'https://steelboxdirect.com';
 
 // Organization Schema
 const organizationSchema = {
@@ -77,18 +79,19 @@ const localBusinessSchema = {
   }
 };
 
-// BreadcrumbList Schema
+// BreadcrumbList Schema — use the supplied trail when provided, else a Home-only stub
+const breadcrumbItems = (breadcrumbs && breadcrumbs.length)
+  ? breadcrumbs
+  : [{ name: 'Home', path: '/' }];
 const breadcrumbSchema = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
-  'itemListElement': [
-    {
-      '@type': 'ListItem',
-      'position': 1,
-      'name': 'Home',
-      'item': 'https://steelboxdirect.com'
-    }
-  ]
+  'itemListElement': breadcrumbItems.map((b, i) => ({
+    '@type': 'ListItem',
+    'position': i + 1,
+    'name': b.name,
+    ...(b.path ? { 'item': `${SITE_URL}${b.path}` } : {}),
+  })),
 };
 
 // Size Guide Schema

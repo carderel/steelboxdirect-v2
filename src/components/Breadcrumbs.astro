@@ -1,0 +1,34 @@
+---
+// Visible breadcrumb trail. JSON-LD BreadcrumbList is emitted by Schema.astro
+// (pass the same items to BaseLayout's `breadcrumbs` prop to keep them in sync).
+interface Crumb {
+  name: string;
+  path?: string;
+}
+interface Props {
+  items: Crumb[];
+}
+const { items } = Astro.props;
+---
+<nav class="uc-breadcrumb" aria-label="Breadcrumb">
+  {items.map((item, i) => (
+    <>
+      {i > 0 && <span class="uc-bc-sep" aria-hidden="true">›</span>}
+      {item.path && i < items.length - 1
+        ? <a href={item.path}>{item.name}</a>
+        : <span aria-current="page">{item.name}</span>}
+    </>
+  ))}
+</nav>
+
+<style>
+  .uc-breadcrumb {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+    font-family: var(--mono); font-size: 11px; letter-spacing: .08em;
+    text-transform: uppercase; color: var(--ink); margin: 0 0 24px;
+  }
+  .uc-breadcrumb a { color: var(--ink); opacity: .58; text-decoration: none; transition: opacity .12s; }
+  .uc-breadcrumb a:hover { opacity: 1; text-decoration: underline; text-underline-offset: 2px; }
+  .uc-breadcrumb [aria-current="page"] { opacity: .9; font-weight: 500; }
+  .uc-bc-sep { opacity: .4; }
+</style>

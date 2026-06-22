@@ -1,9 +1,12 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import { pricing, monthlyOver5yr } from '../../../data/pricing';
 const own20 = pricing['20ftCargo'];
 const ownMonthlyDisplay = `$${monthlyOver5yr(own20.price)}`;        // "$33"
 const ownPurchaseDisplay = `$${own20.price.toLocaleString('en-US')}`; // "$2,007"
+
+const crumbs = [{ name: 'Home', path: '/' }, { name: 'Homeowners', path: '/for/homeowners/' }];
 
 // --- Visible FAQ set (single source of truth → drives both the rendered FAQ and the JSON-LD) ---
 const faqs = [
@@ -44,6 +47,8 @@ const faqs = [
   pageType="guide"
   datePublished="2026-06-04"
   dateModified="2026-06-04"
+  breadcrumbs={crumbs}
+  floatingSidebar
 >
 
   <Fragment slot="head">
@@ -62,6 +67,7 @@ const faqs = [
   <section class="uc-hero">
     <div class="wrap uc-hero-grid">
       <div class="uc-hero-copy">
+        <Breadcrumbs items={crumbs} />
         <span class="uc-eyebrow">For Homeowners</span>
         <h1 class="uc-h1">Backyard Storage Without the Monthly Bill.</h1>
         <p class="uc-lede">One purchase. No renewal notices. No unit fee increases. Weatherproof storage that lives on your property — not in a facility across town. We deliver 20ft and 40ft containers to homes across Ohio, Indiana, and Kentucky — direct from Cincinnati. Most fit on a standard driveway, with no permit hassle and no monthly bill.</p>

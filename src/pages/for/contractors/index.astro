@@ -1,5 +1,8 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+
+const crumbs = [{ name: 'Home', path: '/' }, { name: 'Contractors', path: '/for/contractors/' }];
 
 // --- Visible FAQ set (single source of truth → drives both the rendered FAQ and the JSON-LD) ---
 const faqs = [
@@ -32,6 +35,8 @@ const faqs = [
   pageType="guide"
   datePublished="2026-06-04"
   dateModified="2026-06-04"
+  breadcrumbs={crumbs}
+  floatingSidebar
 >
 
   <Fragment slot="head">
@@ -50,6 +55,7 @@ const faqs = [
   <section class="uc-hero">
     <div class="wrap uc-hero-grid">
       <div class="uc-hero-copy">
+        <Breadcrumbs items={crumbs} />
         <span class="uc-eyebrow">For Contractors &amp; Construction</span>
         <h1 class="uc-h1">Job Site Storage That Locks and Stays.</h1>
         <p class="uc-lede">A steel box that bolt cutters can't open, doors that meet you at ground level, and a truck that comes back for it when the job wraps. We drop containers on active sites across Ohio, Indiana, and Kentucky — no rental contract, no CDL on your end, no forklift to load it.</p>
