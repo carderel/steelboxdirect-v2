@@ -1,7 +1,15 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import { Image } from 'astro:assets';
 import { pricing, monthlyOver5yr } from '../../../data/pricing';
+import imgHero from '../../../assets/photos/homeowners/homeowner-acreage-container-woodline-storage.jpg';
+import imgDriveway from '../../../assets/photos/homeowners/homeowner-20ft-container-suburban-driveway.jpg';
+import imgSecurity from '../../../assets/photos/homeowners/container-door-puck-lock-residential.jpg';
+import imgCost from '../../../assets/photos/homeowners/storage-unit-vs-container-comparison.jpg';
+import imgDelivery from '../../../assets/photos/homeowners/tilt-bed-delivery-residential-driveway.jpg';
+import imgFoundation from '../../../assets/photos/homeowners/container-corner-block-gravel-pad.jpg';
+import imgCondensation from '../../../assets/photos/homeowners/container-louver-vent-condensation.jpg';
 const own20 = pricing['20ftCargo'];
 const ownMonthlyDisplay = `$${monthlyOver5yr(own20.price)}`;        // "$33"
 const ownPurchaseDisplay = `$${own20.price.toLocaleString('en-US')}`; // "$2,007"
@@ -46,7 +54,7 @@ const faqs = [
   description="Own your storage instead of renting it. Steel Box Direct delivers 20ft and 40ft containers to homes across OH/IN/KY. No monthly fees, no storage unit hassle."
   pageType="guide"
   datePublished="2026-06-04"
-  dateModified="2026-06-04"
+  dateModified="2026-06-23"
   breadcrumbs={crumbs}
   floatingSidebar
 >
@@ -63,30 +71,33 @@ const faqs = [
     })} />
   </Fragment>
 
-  <!-- 1. HERO -->
+  <!-- 1. HERO — full-bleed acreage poster split (copy panel + edge-to-edge photo) -->
   <section class="uc-hero">
-    <div class="wrap uc-hero-grid">
-      <div class="uc-hero-copy">
-        <Breadcrumbs items={crumbs} />
-        <span class="uc-eyebrow">For Homeowners</span>
-        <h1 class="uc-h1">Backyard Storage Without the Monthly Bill.</h1>
-        <p class="uc-lede">One purchase. No renewal notices. No unit fee increases. Weatherproof storage that lives on your property — not in a facility across town. We deliver 20ft and 40ft containers to homes across Ohio, Indiana, and Kentucky — direct from Cincinnati. Most fit on a standard driveway, with no permit hassle and no monthly bill.</p>
-        <div class="uc-accent" style="background: var(--c2-cond);"></div>
-        <p class="uc-trust-strip m">Delivered within 250 mi of Cincinnati · Quote in 4 business hours · No monthly fees, ever</p>
-      </div>
-
-      <!-- IMAGE SLOT 1 — hero. Swap data-URI src for the real photo; alt + dimensions stay. -->
-      <!-- filename: homeowner-20ft-container-suburban-driveway.jpg -->
-      <figure class="uc-img uc-img-hero" data-img-slot="hero">
-        <img
-          class="uc-img-real"
-          width="640" height="480"
-          alt="20ft shipping container delivered to a suburban home driveway in Ohio for backyard storage"
-          src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='640'%20height='480'%3E%3C/svg%3E"
-        />
-        <span class="uc-img-tag m">Photo · 20ft container on a suburban driveway</span>
-      </figure>
+    <div class="uc-hero-copy">
+      <Breadcrumbs items={crumbs} />
+      <span class="uc-eyebrow">For Homeowners</span>
+      <h1 class="uc-h1">Backyard Storage Without the <span class="uc-h1-mark">Monthly Bill.</span></h1>
+      <p class="uc-lede">One purchase. No renewal notices. No unit fee increases. Weatherproof storage that lives on your property — not in a facility across town.</p>
+      <p class="uc-lede-support">We deliver 20ft and 40ft containers to homes across Ohio, Indiana, and Kentucky — direct from Cincinnati. They work for suburban driveways, side lots, gravel pads, and larger properties where a shed simply is not enough.</p>
+      <p class="uc-trust-strip m">Delivered within 250 mi of Cincinnati · Quote in 4 business hours · No monthly fees, ever</p>
     </div>
+
+    <!-- IMAGE SLOT 1 — hero (full-bleed). filename: homeowner-acreage-container-woodline-storage.jpg -->
+    <figure class="uc-hero-media" data-img-slot="hero">
+      <Image
+        class="uc-img-real"
+        src={imgHero}
+        width={1800}
+        format="webp"
+        loading="eager"
+        alt="20ft shipping container placed near a woodline on a residential acreage property for overflow home storage"
+      />
+      <div class="uc-hero-scrim" aria-hidden="true"></div>
+      <figcaption class="uc-hero-stamp m">
+        <span class="uc-hero-stamp-k">OH · IN · KY</span>
+        More than a shed — storage that sits where the property has room
+      </figcaption>
+    </figure>
   </section>
 
   <!-- 2. WHY CONTAINERS WORK -->
@@ -107,18 +118,23 @@ const faqs = [
           <h3>More secure than a shed, more accessible than a storage facility</h3>
           <p>A shipping container is built from <a href="https://en.wikipedia.org/wiki/Weathering_steel" target="_blank" rel="noopener">weathering (Cor-Ten) steel</a> — the same steel used to cross oceans loaded with freight. There's no OSB, no vinyl skin to cut through, no plastic windows, and no flat roof to pool water and rot. The double cargo doors close onto a steel hasp built for a padlock or a puck lock, so the most vulnerable point on a typical shed simply isn't there. And because it sits on your property, access is yours alone: no facility gate code, no business hours, no drive across town at 9pm when you remember the camping gear is in unit 214. You open the doors when you want them open.</p>
 
-          <!-- IMAGE SLOT 2 — security detail. Swap data-URI src for the real photo; alt + dimensions stay. -->
-          <!-- filename: container-door-puck-lock-residential.jpg -->
+          <!-- IMAGE SLOT 2 — security detail. filename: container-door-puck-lock-residential.jpg -->
           <figure class="uc-img uc-img-inline" data-img-slot="security">
-            <img class="uc-img-real" width="640" height="360"
-              alt="Steel container cargo door secured with a puck lock in a residential lockbox hasp"
-              src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='640'%20height='360'%3E%3C/svg%3E" />
+            <Image class="uc-img-real" src={imgSecurity} width={1000} format="webp"
+              alt="Steel container cargo door secured with a puck lock in a residential lockbox hasp" />
             <span class="uc-img-tag m">Photo · Container door with puck lock</span>
           </figure>
         </div>
         <div class="uc-block">
           <h3>A 20ft container fits most suburban properties</h3>
           <p>The most common residential size is the 20ft container: <a href="https://www.shippingcontainerdepot.com/20-foot-shipping-container-dimensions/" target="_blank" rel="noopener">8 feet wide, 8'6" tall</a>, and 20 feet long — about the footprint of two standard parking spaces parked end to end. Most suburban driveways and backyards in Ohio, Indiana, and Kentucky can take a 20ft unit without any special site work. What matters more than the footprint is the <em>approach</em>: the delivery truck needs roughly 50 feet of clear, reasonably level run to back in and tilt the container off. A standard residential street is usually enough. Low branches, tight gate posts, and soft spring ground are the things to flag — and we'd rather hear about them before delivery day than discover them on it.</p>
+
+          <!-- IMAGE SLOT 1B — driveway proof point. filename: homeowner-20ft-container-suburban-driveway.jpg -->
+          <figure class="uc-img uc-img-inline" data-img-slot="driveway">
+            <Image class="uc-img-real" src={imgDriveway} width={1000} format="webp"
+              alt="20ft shipping container placed on a suburban driveway for homeowner storage" />
+            <span class="uc-img-tag m">Photo · 20ft container on a suburban driveway</span>
+          </figure>
         </div>
         <div class="uc-block">
           <h3>Permit requirements vary — we can help you figure yours out</h3>
@@ -188,12 +204,10 @@ const faqs = [
 
       <p class="uc-price-note uc-compare-note">Container pricing reflects current market · updated June 2026. Storage-unit figure is the national average — rental prices vary by region — and is not a Steel Box Direct rate.</p>
 
-      <!-- IMAGE SLOT 3 — cost comparison. Swap data-URI src for the real photo; alt + dimensions stay. -->
-      <!-- filename: storage-unit-vs-container-comparison.jpg -->
+      <!-- IMAGE SLOT 3 — cost comparison. filename: storage-unit-vs-container-comparison.jpg -->
       <figure class="uc-img uc-img-wide" data-img-slot="cost">
-        <img class="uc-img-real" width="1260" height="540"
-          alt="Self-storage units versus an owned backyard shipping container for home storage"
-          src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='1260'%20height='540'%3E%3C/svg%3E" />
+        <Image class="uc-img-real" src={imgCost} width={1600} format="webp"
+          alt="Self-storage units versus an owned backyard shipping container for home storage" />
         <span class="uc-img-tag m">Photo · Storage units vs owned container</span>
       </figure>
     </div>
@@ -208,12 +222,10 @@ const faqs = [
       </div>
       <p class="uc-section-intro">Three sizes cover almost every home use. Here's the quick way to choose.</p>
 
-      <!-- IMAGE SLOT 4 — delivery. Swap data-URI src for the real photo; alt + dimensions stay. -->
-      <!-- filename: tilt-bed-delivery-residential-driveway.jpg -->
+      <!-- IMAGE SLOT 4 — delivery. filename: tilt-bed-delivery-residential-driveway.jpg -->
       <figure class="uc-img uc-img-wide uc-img-recs" data-img-slot="delivery">
-        <img class="uc-img-real" width="1260" height="540"
-          alt="Tilt-bed truck delivering a shipping container to a home driveway in a neighborhood"
-          src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='1260'%20height='540'%3E%3C/svg%3E" />
+        <Image class="uc-img-real" src={imgDelivery} width={1600} format="webp"
+          alt="Tilt-bed truck delivering a shipping container to a home driveway in a neighborhood" />
         <span class="uc-img-tag m">Photo · Tilt-bed container home delivery</span>
       </figure>
 
@@ -270,18 +282,16 @@ const faqs = [
             {i === 5 && (
               /* IMAGE SLOT 5 — foundation / placement. filename: container-corner-block-gravel-pad.jpg */
               <figure class="uc-img uc-img-inline uc-img-faq" data-img-slot="foundation">
-                <img class="uc-img-real" width="520" height="293"
-                  alt="Shipping container corner casting set on a concrete block over a gravel pad, no foundation"
-                  src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='520'%20height='293'%3E%3C/svg%3E" />
+                <Image class="uc-img-real" src={imgFoundation} width={1000} format="webp"
+                  alt="Shipping container corner casting set on a concrete block over a gravel pad, no foundation" />
                 <span class="uc-img-tag m">Photo · Container on pier block, no foundation</span>
               </figure>
             )}
             {i === 6 && (
               /* IMAGE SLOT 6 — condensation / venting. filename: container-louver-vent-condensation.jpg */
               <figure class="uc-img uc-img-inline uc-img-faq" data-img-slot="condensation">
-                <img class="uc-img-real" width="520" height="293"
-                  alt="Passive louver vent on a steel storage container wall to reduce interior condensation"
-                  src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='520'%20height='293'%3E%3C/svg%3E" />
+                <Image class="uc-img-real" src={imgCondensation} width={1000} format="webp"
+                  alt="Passive louver vent on a steel storage container wall to reduce interior condensation" />
                 <span class="uc-img-tag m">Photo · Container vent reduces condensation</span>
               </figure>
             )}
@@ -318,13 +328,61 @@ const faqs = [
 
 <style>
   /* ---- HERO ---- */
-  .uc-hero { padding: 110px 0 72px; background: var(--yellow); border-bottom: 2.5px solid var(--ink); }
-  .uc-hero-grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 56px; align-items: center; }
-  .uc-eyebrow { display: inline-block; font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; background: var(--ink); color: var(--cream); padding: 7px 14px; }
-  .uc-h1 { font-family: var(--narrow); font-weight: 700; font-size: clamp(44px, 6.5vw, 72px); line-height: .92; letter-spacing: -.02em; text-transform: uppercase; margin: 28px 0 0; }
-  .uc-lede { font-size: 20px; line-height: 1.5; max-width: 640px; margin: 28px 0 0; font-weight: 500; }
-  .uc-accent { height: 10px; width: 180px; margin-top: 36px; }
-  .uc-trust-strip { margin: 20px 0 0; opacity: .72; letter-spacing: .06em; line-height: 1.6; }
+  .uc-hero {
+    position: relative; display: grid;
+    grid-template-columns: 1.02fr 1.18fr; align-items: stretch;
+    background: var(--yellow); border-bottom: 2.5px solid var(--ink);
+    min-height: clamp(540px, 72vh, 780px); overflow: hidden;
+  }
+  .uc-hero-copy {
+    display: flex; flex-direction: column; align-items: flex-start; justify-content: center;
+    padding: 92px 64px 84px max(32px, calc((100vw - var(--max)) / 2 + 32px));
+    z-index: 2;
+  }
+  .uc-eyebrow {
+    display: inline-block; font-family: var(--mono); font-size: 11px; letter-spacing: .14em;
+    text-transform: uppercase; background: var(--ink); color: var(--cream); padding: 8px 15px;
+    box-shadow: 5px 5px 0 var(--c2-cond);
+  }
+  .uc-h1 {
+    font-family: var(--narrow); font-weight: 700; font-size: clamp(46px, 6.6vw, 86px);
+    line-height: .9; letter-spacing: -.025em; text-transform: uppercase; margin: 30px 0 0;
+  }
+  .uc-h1-mark {
+    display: inline-block; background: var(--ink); color: var(--yellow); padding: 0 .12em;
+    transform: rotate(-1.2deg); box-decoration-break: clone; -webkit-box-decoration-break: clone;
+  }
+  .uc-lede { font-size: clamp(18px, 2vw, 21px); line-height: 1.5; max-width: 560px; margin: 28px 0 0; font-weight: 600; }
+  .uc-lede-support { font-size: 15.5px; line-height: 1.6; max-width: 560px; margin: 18px 0 0; opacity: .8; }
+  .uc-trust-strip { margin: 26px 0 0; max-width: 560px; opacity: .82; letter-spacing: .06em; line-height: 1.7; padding-top: 22px; border-top: 2px solid rgba(11,15,26,.18); }
+  .uc-hero-media { position: relative; margin: 0; overflow: hidden; background: var(--ink); border-left: 3px solid var(--ink); }
+  .uc-hero-scrim {
+    position: absolute; inset: 0; pointer-events: none;
+    background:
+      linear-gradient(90deg, rgba(11,15,26,.38) 0%, rgba(11,15,26,0) 30%),
+      linear-gradient(0deg, rgba(11,15,26,.58) 0%, rgba(11,15,26,0) 34%);
+  }
+  .uc-hero-stamp {
+    position: absolute; left: 0; bottom: 28px; z-index: 2;
+    display: flex; align-items: center; gap: 12px; max-width: min(82%, 500px);
+    background: var(--ink); color: var(--cream); padding: 12px 18px 12px 14px;
+    border-left: 5px solid var(--c2-cond); font-size: 11px; letter-spacing: .06em; line-height: 1.4;
+    box-shadow: 7px 7px 0 rgba(11,15,26,.22);
+  }
+  .uc-hero-stamp-k { color: var(--c2-cond); font-weight: 500; white-space: nowrap; }
+  @keyframes uc-rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+  @keyframes uc-media-in { from { opacity: 0; clip-path: inset(0 0 0 14%); } to { opacity: 1; clip-path: inset(0 0 0 0); } }
+  .uc-hero-copy > * { opacity: 0; animation: uc-rise .7s cubic-bezier(.2,.7,.2,1) forwards; }
+  .uc-hero-copy > :nth-child(1) { animation-delay: .04s; }
+  .uc-hero-copy > :nth-child(2) { animation-delay: .12s; }
+  .uc-hero-copy > :nth-child(3) { animation-delay: .20s; }
+  .uc-hero-copy > :nth-child(4) { animation-delay: .30s; }
+  .uc-hero-copy > :nth-child(5) { animation-delay: .38s; }
+  .uc-hero-copy > :nth-child(6) { animation-delay: .44s; }
+  .uc-hero-media { opacity: 0; animation: uc-media-in .9s .1s cubic-bezier(.2,.7,.2,1) forwards; }
+  @media (prefers-reduced-motion: reduce) {
+    .uc-hero-copy > *, .uc-hero-media { animation: none; opacity: 1; clip-path: none; }
+  }
 
   /* ---- SHARED SECTION HEADER ---- */
   .uc-sh { border-top: 4px solid var(--ink); padding-top: 18px; margin-bottom: 32px; }
@@ -357,7 +415,6 @@ const faqs = [
     background: linear-gradient(transparent, rgba(11,15,26,.55));
     width: 100%; letter-spacing: .06em; line-height: 1.4;
   }
-  .uc-img-hero { aspect-ratio: 4 / 3; box-shadow: 12px 12px 0 var(--ink); width: 100%; }
   .uc-img-wide { aspect-ratio: 21 / 9; box-shadow: 8px 8px 0 var(--ink); margin-top: 40px; }
   .uc-img-inline { aspect-ratio: 16 / 9; margin-top: 24px; }
   .uc-img-faq { max-width: 520px; }
@@ -365,9 +422,11 @@ const faqs = [
   /* ---- WHY ---- */
   .uc-why { padding: 96px 0; background: var(--cream); border-bottom: 1.5px solid rgba(11,15,26,.1); }
   .uc-why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
-  .uc-block { background: white; border: 2px solid var(--ink); padding: 32px; box-shadow: 8px 8px 0 var(--ink); }
+  .uc-block { background: white; border: 2px solid var(--ink); padding: 32px; box-shadow: 8px 8px 0 var(--ink); display: flex; flex-direction: column; }
   .uc-block h3 { font-family: var(--narrow); font-weight: 700; font-size: 24px; text-transform: uppercase; line-height: 1.05; margin: 0 0 14px; }
-  .uc-block p { font-size: 16px; line-height: 1.55; opacity: .82; margin: 0; }
+  .uc-block p { font-size: 16px; line-height: 1.55; opacity: .82; margin: 0 0 14px; }
+  .uc-block p:last-child { margin-bottom: 0; }
+  .uc-block > .uc-img-inline { margin-top: auto; }
   .uc-price-note { font-family: var(--mono); font-size: 11px; letter-spacing: .04em; text-transform: uppercase; opacity: .55; margin: 12px 0 0; }
 
   /* ---- COMPARE (rent vs own) ---- */
@@ -438,11 +497,12 @@ const faqs = [
 
   /* ---- RESPONSIVE ---- */
   @media (max-width: 960px) {
-    .uc-hero-grid { grid-template-columns: 1fr; gap: 40px; }
-    .uc-img-hero { aspect-ratio: 16 / 9; }
+    .uc-hero { grid-template-columns: 1fr; min-height: 0; }
+    .uc-hero-copy { padding: 40px 28px 44px; }
+    .uc-hero-media { border-left: none; border-top: 3px solid var(--ink); aspect-ratio: 16 / 10; }
+    .uc-h1 { font-size: clamp(40px, 11vw, 64px); }
   }
   @media (max-width: 768px) {
-    .uc-hero { padding: 72px 0 56px; }
     .uc-why-grid { grid-template-columns: 1fr; gap: 20px; }
     .uc-rec-grid { grid-template-columns: 1fr; }
     .uc-city-grid { grid-template-columns: 1fr 1fr; }

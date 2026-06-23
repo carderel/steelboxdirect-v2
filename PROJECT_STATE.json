@@ -2,8 +2,8 @@
   "project_name": "Steel Box Direct - Container Decision Engine",
   "phase": "optimization_expansion",
   "status": "active_development",
-  "last_session": "2026-06-09",
-  "last_commit": "9d55149",
+  "last_session": "2026-06-23",
+  "last_commit": "a0433a5",
   "completed": [
     "Project relocation to workspace root",
     "Git repository initialization and cleanup (steelboxdirect-v2)",
@@ -41,9 +41,20 @@
     "Admin login resolved: Supabase Auth user created via dashboard, owner logged in. (Supabase Site URL still localhost:3000 — owner to fix for reset emails to work.)",
     "LEAD-CAPTURE EMAIL FIXED (2026-06-09): root cause was unverified Resend sending domain steelboxdirect.com -> all sends 403'd silently while DB still saved (form looked successful). Owner verified the domain in Resend; live form test delivered both emails. Leads were never lost (all in Supabase). SELLER alert inbox = carder.creative@gmail.com. Added submit-quote.ts safeguard: loud error on send failure + sellerNotified/buyerConfirmed in response + PII removed from logs (34ac04e).",
     "CONDITION MESSAGING -> WIND & WATER TIGHT ONLY (2026-06-09, owner+sales-lead confirmed): site now sells a single grade, Wind & Water Tight (used), sold as-is, NOT certified for shipping. Removed all Cargo Worthy + New (One-Trip) references, 'on request' upsells, and 'certified for shipping' claims across 17 files + quote dropdown; condition guide reframed; uncited '87%' stat deleted. Supersedes 62779e6/bcb4447 (bf7ee70).",
-    "Footer: Doug Froh LinkedIn + Facebook social links + 'Meet Doug Froh' intro line (9d55149)."
+    "Footer: Doug Froh LinkedIn + Facebook social links + 'Meet Doug Froh' intro line (9d55149).",
+    "Farmers use-case page (2026-06-22, a0433a5): integrated 5 real Gemini images (metadata/C2PA-SynthID stripped, SEO-named, Astro WebP); redesigned hero as full-bleed 'field poster' (frontend-design). Rolled visible breadcrumbs + BreadcrumbList schema (new Breadcrumbs.astro + Schema.astro breadcrumbs prop) AND the floating lead-capture sidebar (FloatingSidebar now observes .hero/.uc-hero; BaseLayout floatingSidebar opt-in prop) to ALL four use-case pages. Fixed mobile hero gap. NOTE: homeowners/businesses still use OLD boxed hero + placeholder images — redesign + real images for those still pending.",
+    "Contractors use-case page (2026-06-23, uncommitted): recovered from empty undocumented-progress.md by inspecting worktree/session state; integrated 6 real contractor images (metadata stripped, SEO-named, Astro WebP), including the ground-level access image; redesigned hero as full-bleed jobsite poster matching the farmers pattern; replaced all contractor placeholder image slots. Build passed; dev route /for/contractors/ returned 200 on localhost:4322."
+    ,
+    "Backlink strategy v1 (2026-06-23): created UDO backlink research agents, reviewed repo-local research skills, researched current policy/local SEO sources, and produced .outputs/seo/2026-06-23-steel-box-direct-backlink-strategy.md. No product code changes."
+    ,
+    "Backlink automation kit (2026-06-23): produced automation plan, profile kit, outreach templates, and prospect tracker under .outputs/seo/. No outreach, submissions, purchases, or product code changes."
+    ,
+    "Homeowners use-case page (2026-06-23, uncommitted): integrated 7 real homeowner images from user uploads (metadata stripped, SEO-named, Astro WebP), redesigned hero as full-bleed acreage/woodline poster, added suburban driveway proof image, replaced all homeowner placeholders. Build passed; dev route /for/homeowners/ returned 200 on localhost:4322."
+    ,
+    "Businesses use-case page (2026-06-23, uncommitted): integrated 5 real business images from user uploads (metadata stripped, SEO-named, Astro WebP), including updated 20ft/40ft/40ft HC three-container comparison. Build passed; dev route /for/businesses/ returned 200 on localhost:4322."
   ],
   "todos": [
+    "Use-case page image/hero rollout: completed for farmers, contractors, homeowners, and businesses.",
     "Create Google Business Profile + add URL to Organization.sameAs",
     "Verify GA4 firing (GTM is now a standard main-thread tag; Partytown removed)",
     "Add og:image when hero asset confirmed",
@@ -55,10 +66,11 @@
     "FUTURE PARTNERSHIPS (user-idea 2026-06-04, research later): container accessories — A/C, lighting, shelving, ventilation, etc. Find 2+ reputable vendors and build relationships → backlink opportunities + potential affiliate/revenue stream. Could seed an /accessories/ resource page that links out (ties into backlink strategy)."
   ],
   "agents": [
+    "frontend-designer.md",
     "stuck.md",
     "verifier.md",
     "seo-analyst.md",
     "astro-developer.md"
   ],
-  "notes": "UDO compliance is a hard rule (HS-PROJ-001). Product pages brainstorm + plan completed 2026-05-25. City page refactor brought into same implementation. Dev server runs on localhost:4322. All commits on main → steelboxdirect-v2."
+  "notes": "UDO compliance is a hard rule (HS-PROJ-001). Product pages brainstorm + plan completed 2026-05-25. City page refactor brought into same implementation. Dev server was stopped on 2026-06-23 session exit. Codex UDO orientation completed 2026-06-23 with no product code changes. Homeowners image-generation prompts drafted 2026-06-23 in .outputs/image-prompts/; homeowner images integrated 2026-06-23 and dev server is running at localhost:4322 for review. Backlink strategy v1 and automation kit drafted 2026-06-23 in .outputs/seo/; no product code changes. Businesses image set integrated 2026-06-23 and /for/businesses/ returns 200 on localhost:4322. All commits on main → steelboxdirect-v2."
 }
