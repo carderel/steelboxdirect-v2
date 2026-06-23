@@ -1,6 +1,13 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import { Image } from 'astro:assets';
+import imgHero from '../../../assets/photos/contractors/jobsite-container-delivery-hero.jpg';
+import imgLock from '../../../assets/photos/contractors/puck-lock-container-lockbox-closeup.jpg';
+import imgGroundLevel from '../../../assets/photos/contractors/ground-level-jobsite-container-access.jpg';
+import imgLockCompare from '../../../assets/photos/contractors/container-lock-comparison-puck-vs-padlock.jpg';
+import imgSizes from '../../../assets/photos/contractors/20ft-40ft-jobsite-container-size-comparison.jpg';
+import imgDelivery from '../../../assets/photos/contractors/tilt-bed-container-delivery-jobsite.jpg';
 
 const crumbs = [{ name: 'Home', path: '/' }, { name: 'Contractors', path: '/for/contractors/' }];
 
@@ -51,30 +58,33 @@ const faqs = [
     })} />
   </Fragment>
 
-  <!-- 1. HERO -->
+  <!-- 1. HERO — full-bleed jobsite poster split (copy panel + edge-to-edge photo) -->
   <section class="uc-hero">
-    <div class="wrap uc-hero-grid">
-      <div class="uc-hero-copy">
-        <Breadcrumbs items={crumbs} />
-        <span class="uc-eyebrow">For Contractors &amp; Construction</span>
-        <h1 class="uc-h1">Job Site Storage That Locks and Stays.</h1>
-        <p class="uc-lede">A steel box that bolt cutters can't open, doors that meet you at ground level, and a truck that comes back for it when the job wraps. We drop containers on active sites across Ohio, Indiana, and Kentucky — no rental contract, no CDL on your end, no forklift to load it.</p>
-        <div class="uc-accent" style="background: var(--c3-deliver);"></div>
-        <p class="uc-trust-strip m">Theft-resistant lockbox hasp · Ground-level door access · Delivered &amp; retrieved on your schedule · Quote back within 4 business hours</p>
-      </div>
-
-      <!-- IMAGE SLOT 1 — hero. Swap data-URI src for the real photo; alt + dimensions stay. -->
-      <!-- filename: contractors-hero-jobsite-container.webp -->
-      <figure class="uc-img uc-img-hero" data-img-slot="hero">
-        <img
-          class="uc-img-real"
-          width="640" height="480"
-          alt="Locked steel shipping container on an active Ohio construction job site with crew vehicles behind"
-          src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='640'%20height='480'%3E%3C/svg%3E"
-        />
-        <span class="uc-img-tag m">Photo · Job site storage container, locked</span>
-      </figure>
+    <div class="uc-hero-copy">
+      <Breadcrumbs items={crumbs} />
+      <span class="uc-eyebrow">For Contractors &amp; Construction</span>
+      <h1 class="uc-h1">Job Site Storage That <span class="uc-h1-mark">Locks and Stays.</span></h1>
+      <p class="uc-lede">A steel box that bolt cutters can't open, doors that meet you at ground level, and a truck that comes back for it when the job wraps.</p>
+      <p class="uc-lede-support">We drop containers on active sites across Ohio, Indiana, and Kentucky — no rental contract, no CDL on your end, no forklift to load it.</p>
+      <p class="uc-trust-strip m">Theft-resistant lockbox hasp · Ground-level door access · Delivered &amp; retrieved on your schedule · Quote back within 4 business hours</p>
     </div>
+
+    <!-- IMAGE SLOT 1 — hero (full-bleed). filename: jobsite-container-delivery-hero.jpg -->
+    <figure class="uc-hero-media" data-img-slot="hero">
+      <Image
+        class="uc-img-real"
+        src={imgHero}
+        width={1800}
+        format="webp"
+        loading="eager"
+        alt="Tilt-bed truck placing a shipping container on an active construction job site beside highway traffic"
+      />
+      <div class="uc-hero-scrim" aria-hidden="true"></div>
+      <figcaption class="uc-hero-stamp m">
+        <span class="uc-hero-stamp-k">OH · IN · KY</span>
+        Locked jobsite storage delivered where the work is happening
+      </figcaption>
+    </figure>
   </section>
 
   <!-- 2. WHY CONTAINERS WORK -->
@@ -91,12 +101,11 @@ const faqs = [
           <p>ISO shipping containers are built from <a href="https://en.wikipedia.org/wiki/Weathering_steel" target="_blank" rel="noopener">weathering (Cor-Ten) steel</a> — the same corrosion-resistant alloy used for ocean freight that crosses the Pacific stacked nine high. The cargo doors close onto a steel hasp built to take a discus or puck lock, and there's no soft spot to exploit: no gap at the roofline, no plastic skylight, no aluminum skin a battery grinder chews through in seconds.</p>
           <p>Compare that to a standard job site trailer — single-skin walls, a residential-grade door lock, windows. For a crew that's lost a generator or a pallet of copper overnight, the difference isn't cosmetic. A container is the closest thing to a vault you can set on dirt.</p>
 
-          <!-- IMAGE SLOT 2 — puck lock closeup. Swap data-URI src for the real photo; alt + dimensions stay. -->
-          <!-- filename: contractors-puck-lock-closeup.webp -->
+          <!-- IMAGE SLOT 2 — puck lock closeup. -->
+          <!-- filename: puck-lock-container-lockbox-closeup.jpg -->
           <figure class="uc-img uc-img-inline" data-img-slot="lock">
-            <img class="uc-img-real" width="640" height="360"
-              alt="Puck lock seated in a shipping container lockbox recess, secure against bolt cutters"
-              src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='640'%20height='360'%3E%3C/svg%3E" />
+            <Image class="uc-img-real" src={imgLock} width={1000} format="webp"
+              alt="Puck lock seated inside a shipping container lockbox recess, protected against bolt cutters" />
             <span class="uc-img-tag m">Photo · Puck lock in container lockbox</span>
           </figure>
         </div>
@@ -104,6 +113,14 @@ const faqs = [
           <h3>Ground-level access — no dock, no ramp</h3>
           <p>Container doors swing open at grade. Tools, materials, scaffold sections, and rolling equipment go straight in and out without a lift gate, dock plate, or pallet hand-off. The floor is marine-grade plywood over steel cross-members — rated to take a forklift if you need to drive pallets in.</p>
           <p>Interior height is a <a href="https://www.mobilemodularcontainers.com/blog/how-much-does-a-shipping-containers-weigh" target="_blank" rel="noopener">standard 7'10"</a> and the door opening is roughly 7'5" wide by 7'5" tall, so a standard pallet jack and most walk-behind equipment clear it without a fight.</p>
+
+          <!-- IMAGE SLOT 2B — ground-level jobsite access. -->
+          <!-- filename: ground-level-jobsite-container-access.jpg -->
+          <figure class="uc-img uc-img-inline" data-img-slot="ground-level">
+            <Image class="uc-img-real" src={imgGroundLevel} width={1000} format="webp"
+              alt="Shipping container set at ground level on an active construction site for easy tool and material access" />
+            <span class="uc-img-tag m">Photo · Ground-level jobsite access</span>
+          </figure>
         </div>
         <div class="uc-block">
           <h3>Delivered and retrieved on your schedule</h3>
@@ -138,12 +155,11 @@ const faqs = [
           <p class="uc-theft-pull">A puck lock and thirty seconds of habit turn a steel box into the hardest target on the site — usually enough to send an opportunist to the next jobsite over.</p>
         </div>
 
-        <!-- IMAGE SLOT 3 — lock comparison. Swap data-URI src for the real photo; alt + dimensions stay. -->
-        <!-- filename: contractors-lock-comparison.webp -->
+        <!-- IMAGE SLOT 3 — lock comparison. -->
+        <!-- filename: container-lock-comparison-puck-vs-padlock.jpg -->
         <figure class="uc-img uc-img-theft" data-img-slot="lock-compare">
-          <img class="uc-img-real" width="560" height="700"
-            alt="Puck and discus locks beside a vulnerable padlock, showing the right way to secure a container"
-            src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='560'%20height='700'%3E%3C/svg%3E" />
+          <Image class="uc-img-real" src={imgLockCompare} width={900} format="webp"
+            alt="Puck and discus locks beside a cut-open padlock, showing secure and vulnerable container lock choices" />
           <span class="uc-img-tag m">Photo · Container lock comparison</span>
         </figure>
       </div>
@@ -159,12 +175,11 @@ const faqs = [
       </div>
       <p class="uc-section-intro">The right size comes down to how many trades share the box and how tight the site is. A single crew on a residential remodel rarely needs more than a 20ft. A commercial build with four trades staging at once almost always wants the 40ft. Here's how contractors typically split it.</p>
 
-      <!-- IMAGE SLOT 4 — size comparison. Swap data-URI src for the real photo; alt + dimensions stay. -->
-      <!-- filename: contractors-20ft-vs-40ft-staging.webp -->
+      <!-- IMAGE SLOT 4 — size comparison. -->
+      <!-- filename: 20ft-40ft-jobsite-container-size-comparison.jpg -->
       <figure class="uc-img uc-img-wide uc-img-recs" data-img-slot="sizes">
-        <img class="uc-img-real" width="1260" height="540"
-          alt="20ft and 40ft shipping containers side by side on a contractor staging lot, doors open"
-          src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='1260'%20height='540'%3E%3C/svg%3E" />
+        <Image class="uc-img-real" src={imgSizes} width={1600} format="webp"
+          alt="20ft and 40ft shipping containers side by side on a contractor staging lot with doors open" />
         <span class="uc-img-tag m">Photo · 20ft vs 40ft containers on site</span>
       </figure>
 
@@ -233,12 +248,11 @@ const faqs = [
       </div>
       <p class="uc-framing">Tell us your entry width, surface, and any overhead obstacles when you request a quote, and we'll confirm the site works before anyone schedules a truck. On constrained downtown sites we'll do a site assessment up front rather than send a driver to a dead end.</p>
 
-      <!-- IMAGE SLOT 5 — tilt-bed delivery. Swap data-URI src for the real photo; alt + dimensions stay. -->
-      <!-- filename: contractors-tilt-bed-delivery.webp -->
+      <!-- IMAGE SLOT 5 — tilt-bed delivery. -->
+      <!-- filename: tilt-bed-container-delivery-jobsite.jpg -->
       <figure class="uc-img uc-img-wide" data-img-slot="delivery">
-        <img class="uc-img-real" width="1260" height="540"
-          alt="Tilt-bed truck delivering a 40ft shipping container onto a construction site, bed raised"
-          src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='1260'%20height='540'%3E%3C/svg%3E" />
+        <Image class="uc-img-real" src={imgDelivery} width={1600} format="webp"
+          alt="Tilt-bed truck delivering a 40ft shipping container onto a construction site with the bed raised" />
         <span class="uc-img-tag m">Photo · Tilt-bed container delivery</span>
       </figure>
     </div>
@@ -288,13 +302,61 @@ const faqs = [
 
 <style>
   /* ---- HERO ---- */
-  .uc-hero { padding: 110px 0 72px; background: var(--yellow); border-bottom: 2.5px solid var(--ink); }
-  .uc-hero-grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 56px; align-items: center; }
-  .uc-eyebrow { display: inline-block; font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; background: var(--ink); color: var(--cream); padding: 7px 14px; }
-  .uc-h1 { font-family: var(--narrow); font-weight: 700; font-size: clamp(44px, 6.5vw, 72px); line-height: .92; letter-spacing: -.02em; text-transform: uppercase; margin: 28px 0 0; }
-  .uc-lede { font-size: 20px; line-height: 1.5; max-width: 640px; margin: 28px 0 0; font-weight: 500; }
-  .uc-accent { height: 10px; width: 180px; margin-top: 36px; }
-  .uc-trust-strip { margin: 20px 0 0; opacity: .72; letter-spacing: .06em; line-height: 1.6; }
+  .uc-hero {
+    position: relative; display: grid;
+    grid-template-columns: 1.02fr 1.18fr; align-items: stretch;
+    background: var(--yellow); border-bottom: 2.5px solid var(--ink);
+    min-height: clamp(540px, 72vh, 780px); overflow: hidden;
+  }
+  .uc-hero-copy {
+    display: flex; flex-direction: column; align-items: flex-start; justify-content: center;
+    padding: 92px 64px 84px max(32px, calc((100vw - var(--max)) / 2 + 32px));
+    z-index: 2;
+  }
+  .uc-eyebrow {
+    display: inline-block; font-family: var(--mono); font-size: 11px; letter-spacing: .14em;
+    text-transform: uppercase; background: var(--ink); color: var(--cream); padding: 8px 15px;
+    box-shadow: 5px 5px 0 var(--c3-deliver);
+  }
+  .uc-h1 {
+    font-family: var(--narrow); font-weight: 700; font-size: clamp(46px, 6.6vw, 86px);
+    line-height: .9; letter-spacing: -.025em; text-transform: uppercase; margin: 30px 0 0;
+  }
+  .uc-h1-mark {
+    display: inline-block; background: var(--ink); color: var(--yellow); padding: 0 .12em;
+    transform: rotate(-1.4deg); box-decoration-break: clone; -webkit-box-decoration-break: clone;
+  }
+  .uc-lede { font-size: clamp(18px, 2vw, 21px); line-height: 1.5; max-width: 560px; margin: 28px 0 0; font-weight: 600; }
+  .uc-lede-support { font-size: 15.5px; line-height: 1.6; max-width: 560px; margin: 18px 0 0; opacity: .8; }
+  .uc-trust-strip { margin: 26px 0 0; max-width: 560px; opacity: .82; letter-spacing: .06em; line-height: 1.7; padding-top: 22px; border-top: 2px solid rgba(11,15,26,.18); }
+  .uc-hero-media { position: relative; margin: 0; overflow: hidden; background: var(--ink); border-left: 3px solid var(--ink); }
+  .uc-hero-scrim {
+    position: absolute; inset: 0; pointer-events: none;
+    background:
+      linear-gradient(90deg, rgba(11,15,26,.42) 0%, rgba(11,15,26,0) 28%),
+      linear-gradient(0deg, rgba(11,15,26,.58) 0%, rgba(11,15,26,0) 34%);
+  }
+  .uc-hero-stamp {
+    position: absolute; left: 0; bottom: 28px; z-index: 2;
+    display: flex; align-items: center; gap: 12px; max-width: min(82%, 470px);
+    background: var(--ink); color: var(--cream); padding: 12px 18px 12px 14px;
+    border-left: 5px solid var(--c3-deliver); font-size: 11px; letter-spacing: .06em; line-height: 1.4;
+    box-shadow: 7px 7px 0 rgba(11,15,26,.22);
+  }
+  .uc-hero-stamp-k { color: var(--c3-deliver); font-weight: 500; white-space: nowrap; }
+  @keyframes uc-rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+  @keyframes uc-media-in { from { opacity: 0; clip-path: inset(0 0 0 14%); } to { opacity: 1; clip-path: inset(0 0 0 0); } }
+  .uc-hero-copy > * { opacity: 0; animation: uc-rise .7s cubic-bezier(.2,.7,.2,1) forwards; }
+  .uc-hero-copy > :nth-child(1) { animation-delay: .04s; }
+  .uc-hero-copy > :nth-child(2) { animation-delay: .12s; }
+  .uc-hero-copy > :nth-child(3) { animation-delay: .20s; }
+  .uc-hero-copy > :nth-child(4) { animation-delay: .30s; }
+  .uc-hero-copy > :nth-child(5) { animation-delay: .38s; }
+  .uc-hero-copy > :nth-child(6) { animation-delay: .44s; }
+  .uc-hero-media { opacity: 0; animation: uc-media-in .9s .1s cubic-bezier(.2,.7,.2,1) forwards; }
+  @media (prefers-reduced-motion: reduce) {
+    .uc-hero-copy > *, .uc-hero-media { animation: none; opacity: 1; clip-path: none; }
+  }
 
   /* ---- SHARED SECTION HEADER ---- */
   .uc-sh { border-top: 4px solid var(--ink); padding-top: 18px; margin-bottom: 32px; }
@@ -327,19 +389,19 @@ const faqs = [
     background: linear-gradient(transparent, rgba(11,15,26,.55));
     width: 100%; letter-spacing: .06em; line-height: 1.4;
   }
-  .uc-img-hero { aspect-ratio: 4 / 3; box-shadow: 12px 12px 0 var(--ink); width: 100%; }
   .uc-img-wide { aspect-ratio: 21 / 9; box-shadow: 8px 8px 0 var(--ink); margin-top: 40px; }
   .uc-img-inline { aspect-ratio: 16 / 9; margin-top: 24px; }
 
   /* ---- WHY ---- */
   .uc-why { padding: 96px 0; background: var(--cream); border-bottom: 1.5px solid rgba(11,15,26,.1); }
   .uc-why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
-  .uc-block { background: white; border: 2px solid var(--ink); padding: 32px; box-shadow: 8px 8px 0 var(--ink); }
+  .uc-block { background: white; border: 2px solid var(--ink); padding: 32px; box-shadow: 8px 8px 0 var(--ink); display: flex; flex-direction: column; }
   .uc-block h3 { font-family: var(--narrow); font-weight: 700; font-size: 24px; text-transform: uppercase; line-height: 1.05; margin: 0 0 14px; }
   .uc-block p { font-size: 16px; line-height: 1.55; opacity: .82; margin: 0 0 14px; }
   .uc-block p:last-child { margin-bottom: 0; }
   .uc-block p strong { opacity: 1; }
   .uc-block p a, .uc-faq-item p a, .uc-theft-list a { color: inherit; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 2px; }
+  .uc-block > .uc-img-inline { margin-top: auto; }
 
   /* ---- JOBSITE THEFT ---- */
   .uc-theft { padding: 96px 0; background: var(--ink); color: var(--cream); border-bottom: 1.5px solid rgba(11,15,26,.1); }
@@ -354,7 +416,7 @@ const faqs = [
   .uc-theft-list strong { color: var(--yellow); font-weight: 700; }
   .uc-theft-list span:last-child { opacity: .9; }
   .uc-theft-pull { font-family: var(--narrow); font-weight: 700; font-size: clamp(18px, 2.2vw, 23px); line-height: 1.25; text-transform: uppercase; letter-spacing: -.01em; margin: 0; padding-left: 24px; border-left: 4px solid var(--c3-deliver); }
-  .uc-img-theft { aspect-ratio: 4 / 5; box-shadow: 12px 12px 0 var(--c3-deliver); width: 100%; }
+  .uc-img-theft { aspect-ratio: 11 / 6; box-shadow: 12px 12px 0 var(--c3-deliver); width: 100%; }
   .uc-theft .uc-img-tag { color: var(--cream); }
 
   /* ---- RECOMMENDATIONS ---- */
@@ -404,13 +466,14 @@ const faqs = [
 
   /* ---- RESPONSIVE ---- */
   @media (max-width: 960px) {
-    .uc-hero-grid { grid-template-columns: 1fr; gap: 40px; }
-    .uc-img-hero { aspect-ratio: 16 / 9; }
+    .uc-hero { grid-template-columns: 1fr; min-height: 0; }
+    .uc-hero-copy { padding: 40px 28px 44px; }
+    .uc-hero-media { border-left: none; border-top: 3px solid var(--ink); aspect-ratio: 16 / 10; }
+    .uc-h1 { font-size: clamp(40px, 11vw, 64px); }
     .uc-theft-grid { grid-template-columns: 1fr; gap: 40px; }
-    .uc-img-theft { aspect-ratio: 16 / 9; }
+    .uc-img-theft { aspect-ratio: 11 / 6; }
   }
   @media (max-width: 768px) {
-    .uc-hero { padding: 72px 0 56px; }
     .uc-why-grid { grid-template-columns: 1fr; gap: 20px; }
     .uc-plan-grid { grid-template-columns: 1fr; gap: 20px; }
     .uc-rec-grid { grid-template-columns: 1fr; }

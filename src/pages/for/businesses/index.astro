@@ -1,7 +1,13 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import { Image } from 'astro:assets';
 import { pricing, perSqFt, roundToHalf } from '../../../data/pricing';
+import imgHero from '../../../assets/photos/businesses/40ft-commercial-overflow-container-loading-area.jpg';
+import imgForklift from '../../../assets/photos/businesses/forklift-pallet-ground-level-container-access.jpg';
+import imgCost from '../../../assets/photos/businesses/container-interior-pallet-inventory-storage.jpg';
+import imgSizes from '../../../assets/photos/businesses/20ft-40ft-40ftHC-commercial-container-size-comparison.jpg';
+import imgSecurity from '../../../assets/photos/businesses/container-puck-lock-lockbox-security.jpg';
 const std40 = pricing['40ftStandard'];                                  // 40ft Standard, NOT HC
 const perSqFtDisplay = `$${roundToHalf(perSqFt(std40.price, std40.sqft)).toFixed(2)}`; // "$8.50"
 
@@ -45,7 +51,7 @@ const faqs = [
   description="Overflow inventory, equipment storage, and secure commercial storage containers. Delivered within 250 miles of Cincinnati across OH/IN/KY. Quote in 4 hours."
   pageType="guide"
   datePublished="2026-06-04"
-  dateModified="2026-06-04"
+  dateModified="2026-06-23"
   breadcrumbs={crumbs}
   floatingSidebar
 >
@@ -62,30 +68,33 @@ const faqs = [
     })} />
   </Fragment>
 
-  <!-- 1. HERO -->
+  <!-- 1. HERO — full-bleed commercial poster split (copy panel + edge-to-edge photo) -->
   <section class="uc-hero">
-    <div class="wrap uc-hero-grid">
-      <div class="uc-hero-copy">
-        <Breadcrumbs items={crumbs} />
-        <span class="uc-eyebrow">For Businesses &amp; Commercial Use</span>
-        <h1 class="uc-h1">Overflow Storage That Scales With Your Operation.</h1>
-        <p class="uc-lede">Seasonal inventory spikes. Equipment overflow. On-site document archive. Delivered to your loading area and configured to your operation. Own a 40ft container outright and your storage works out to roughly <strong>{perSqFtDisplay} per square foot — one time, not per month.</strong> Below, we break down where that number comes from and how it stacks up against renting space you'll never own.</p>
-        <div class="uc-accent" style="background: var(--c5-permits);"></div>
-        <p class="uc-trust-strip m">Delivered within 250 mi of Cincinnati · Quote in 4 business hours · Buy or arrange recurring delivery</p>
-      </div>
-
-      <!-- IMAGE SLOT 1 — hero. Swap data-URI src for the real photo; alt + dimensions stay. -->
-      <!-- filename: 40ft-commercial-overflow-container-loading-area.webp -->
-      <figure class="uc-img uc-img-hero" data-img-slot="hero">
-        <img
-          class="uc-img-real"
-          width="640" height="480"
-          alt="40ft commercial storage container with open doors in a business loading area in Ohio"
-          src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='640'%20height='480'%3E%3C/svg%3E"
-        />
-        <span class="uc-img-tag m">Photo · 40ft container in a commercial loading area</span>
-      </figure>
+    <div class="uc-hero-copy">
+      <Breadcrumbs items={crumbs} />
+      <span class="uc-eyebrow">For Businesses &amp; Commercial Use</span>
+      <h1 class="uc-h1">Overflow Storage That <span class="uc-h1-mark">Keeps Up.</span></h1>
+      <p class="uc-lede">Seasonal inventory spikes. Equipment overflow. On-site document archive. We drop the box at your loading area, and your storage stays on your site instead of on a monthly invoice.</p>
+      <p class="uc-lede-support">Own a 40ft container outright and your storage works out to roughly <strong>{perSqFtDisplay} per square foot</strong> as a one-time cost, not a recurring lease. Below, we break down where that number comes from and how it stacks up against rented space.</p>
+      <p class="uc-trust-strip m">Delivered within 250 mi of Cincinnati · Quote in 4 business hours · Buy outright or arrange recurring delivery</p>
     </div>
+
+    <!-- IMAGE SLOT 1 — hero (full-bleed). filename: 40ft-commercial-overflow-container-loading-area.jpg -->
+    <figure class="uc-hero-media" data-img-slot="hero">
+      <Image
+        class="uc-img-real"
+        src={imgHero}
+        width={1800}
+        format="webp"
+        loading="eager"
+        alt="40ft commercial storage container with open doors in a business loading area in Ohio"
+      />
+      <div class="uc-hero-scrim" aria-hidden="true"></div>
+      <figcaption class="uc-hero-stamp m">
+        <span class="uc-hero-stamp-k">OH · IN · KY</span>
+        Overflow inventory and equipment storage delivered where the work happens
+      </figcaption>
+    </figure>
   </section>
 
   <!-- 2. WHY CONTAINERS WORK -->
@@ -109,12 +118,10 @@ const faqs = [
           <p>Container doors open at ground level to a hardwood or steel plate floor rated for the weight of loaded pallets. Standard ISO containers have <strong>forklift pockets on the underside</strong>, so repositioning a unit on your site doesn't require a crane — a forklift of adequate capacity can lift and shift it. Pallet jacks and forklifts drive straight in through the doors. No dock, no lift gate, no ramp required for ground-level loading.</p>
           <p>Interior height is a <a href="https://www.icontainers.com/help/40-foot-container/" target="_blank" rel="noopener">standard 7'10"</a> for standard containers, which clears a standard 48"×40" pallet stacked to typical warehouse height with room to maneuver. If your loads run taller, a high-cube unit adds a foot of interior clearance — tell us your stack height in the quote request and we'll confirm the right spec.</p>
 
-          <!-- IMAGE SLOT 2 — forklift access. Swap data-URI src for the real photo; alt + dimensions stay. -->
-          <!-- filename: forklift-pallet-ground-level-container-access.webp -->
+          <!-- IMAGE SLOT 2 — forklift access. filename: forklift-pallet-ground-level-container-access.jpg -->
           <figure class="uc-img uc-img-inline" data-img-slot="forklift">
-            <img class="uc-img-real" width="640" height="360"
-              alt="Forklift loading a pallet into a ground-level shipping container through open doors"
-              src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='640'%20height='360'%3E%3C/svg%3E" />
+            <Image class="uc-img-real" src={imgForklift} width={1200} format="webp"
+              alt="Forklift loading a pallet into a ground-level shipping container through open doors" />
             <span class="uc-img-tag m">Photo · Forklift loading a ground-level container</span>
           </figure>
         </div>
@@ -193,12 +200,10 @@ const faqs = [
 
       <p class="uc-price-note uc-compare-note">Per-sq-ft figure reflects current market · updated June 2026. It is a one-time cost for a 40ft Standard unit (gross floor footprint, ~320 sq ft = 8×40), not a Steel Box Direct quote for a specific site.</p>
 
-      <!-- IMAGE SLOT 3 — cost of space. Swap data-URI src for the real photo; alt + dimensions stay. -->
-      <!-- filename: container-interior-pallet-inventory-storage.webp -->
+      <!-- IMAGE SLOT 3 — cost of space. filename: container-interior-pallet-inventory-storage.jpg -->
       <figure class="uc-img uc-img-wide" data-img-slot="cost">
-        <img class="uc-img-real" width="1260" height="540"
-          alt="Interior of a 40ft shipping container holding palletized business inventory storage"
-          src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='1260'%20height='540'%3E%3C/svg%3E" />
+        <Image class="uc-img-real" src={imgCost} width={1600} format="webp"
+          alt="Interior of a 40ft shipping container holding palletized business inventory storage" />
         <span class="uc-img-tag m">Photo · Container interior with palletized inventory</span>
       </figure>
     </div>
@@ -213,13 +218,11 @@ const faqs = [
       </div>
       <p class="uc-section-intro">Three configurations cover almost every commercial use. Here's the quick way to choose.</p>
 
-      <!-- IMAGE SLOT 4 — size comparison. Swap data-URI src for the real photo; alt + dimensions stay. -->
-      <!-- filename: 20ft-40ft-commercial-container-size-comparison.webp -->
+      <!-- IMAGE SLOT 4 — size comparison. filename: 20ft-40ft-40ftHC-commercial-container-size-comparison.jpg -->
       <figure class="uc-img uc-img-wide uc-img-recs" data-img-slot="sizes">
-        <img class="uc-img-real" width="1260" height="540"
-          alt="20ft and 40ft commercial storage containers side by side for size comparison"
-          src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='1260'%20height='540'%3E%3C/svg%3E" />
-        <span class="uc-img-tag m">Photo · 20ft and 40ft containers side by side</span>
+        <Image class="uc-img-real" src={imgSizes} width={1600} format="webp"
+          alt="20ft, 40ft, and 40ft high cube commercial storage containers side by side for size comparison" />
+        <span class="uc-img-tag m">Photo · 20ft, 40ft, and 40ft HC containers side by side</span>
       </figure>
 
       <div class="uc-rec-grid">
@@ -279,11 +282,10 @@ const faqs = [
               <p>{f.a}</p>
             )}
             {i === 6 && (
-              /* IMAGE SLOT 5 — security. filename: container-puck-lock-lockbox-security.webp */
+              /* IMAGE SLOT 5 — security. filename: container-puck-lock-lockbox-security.jpg */
               <figure class="uc-img uc-img-inline uc-img-faq" data-img-slot="security">
-                <img class="uc-img-real" width="520" height="293"
-                  alt="Puck lock in recessed lockbox hasp on a steel commercial storage container door"
-                  src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='520'%20height='293'%3E%3C/svg%3E" />
+                <Image class="uc-img-real" src={imgSecurity} width={1000} format="webp"
+                  alt="Puck lock in recessed lockbox hasp on a steel commercial storage container door" />
                 <span class="uc-img-tag m">Photo · Puck lock in container lockbox</span>
               </figure>
             )}
@@ -319,14 +321,63 @@ const faqs = [
 
 <style>
   /* ---- HERO ---- */
-  .uc-hero { padding: 110px 0 72px; background: var(--yellow); border-bottom: 2.5px solid var(--ink); }
-  .uc-hero-grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 56px; align-items: center; }
-  .uc-eyebrow { display: inline-block; font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; background: var(--ink); color: var(--cream); padding: 7px 14px; }
-  .uc-h1 { font-family: var(--narrow); font-weight: 700; font-size: clamp(44px, 6.5vw, 72px); line-height: .92; letter-spacing: -.02em; text-transform: uppercase; margin: 28px 0 0; }
-  .uc-lede { font-size: 20px; line-height: 1.5; max-width: 640px; margin: 28px 0 0; font-weight: 500; }
+  .uc-hero {
+    position: relative; display: grid;
+    grid-template-columns: 1.02fr 1.18fr; align-items: stretch;
+    background: var(--yellow); border-bottom: 2.5px solid var(--ink);
+    min-height: clamp(540px, 72vh, 780px); overflow: hidden;
+  }
+  .uc-hero-copy {
+    display: flex; flex-direction: column; align-items: flex-start; justify-content: center;
+    padding: 92px 64px 84px max(32px, calc((100vw - var(--max)) / 2 + 32px));
+    z-index: 2;
+  }
+  .uc-eyebrow {
+    display: inline-block; font-family: var(--mono); font-size: 11px; letter-spacing: .14em;
+    text-transform: uppercase; background: var(--ink); color: var(--cream); padding: 8px 15px;
+    box-shadow: 5px 5px 0 var(--c5-permits);
+  }
+  .uc-h1 {
+    font-family: var(--narrow); font-weight: 700; font-size: clamp(46px, 6.6vw, 86px);
+    line-height: .9; letter-spacing: -.025em; text-transform: uppercase; margin: 30px 0 0;
+  }
+  .uc-h1-mark {
+    display: inline-block; background: var(--ink); color: var(--yellow); padding: 0 .12em;
+    transform: rotate(-1.4deg); box-decoration-break: clone; -webkit-box-decoration-break: clone;
+  }
+  .uc-lede { font-size: clamp(18px, 2vw, 21px); line-height: 1.5; max-width: 560px; margin: 28px 0 0; font-weight: 600; }
+  .uc-lede-support { font-size: 15.5px; line-height: 1.6; max-width: 560px; margin: 18px 0 0; opacity: .8; }
   .uc-lede strong { font-weight: 700; }
-  .uc-accent { height: 10px; width: 180px; margin-top: 36px; }
-  .uc-trust-strip { margin: 20px 0 0; opacity: .72; letter-spacing: .06em; line-height: 1.6; }
+  .uc-trust-strip { margin: 26px 0 0; max-width: 560px; opacity: .82; letter-spacing: .06em; line-height: 1.7; padding-top: 22px; border-top: 2px solid rgba(11,15,26,.18); }
+
+  .uc-hero-media { position: relative; margin: 0; overflow: hidden; background: var(--ink); border-left: 3px solid var(--ink); }
+  .uc-hero-scrim {
+    position: absolute; inset: 0; pointer-events: none;
+    background:
+      linear-gradient(90deg, rgba(11,15,26,.45) 0%, rgba(11,15,26,0) 28%),
+      linear-gradient(0deg, rgba(11,15,26,.52) 0%, rgba(11,15,26,0) 34%);
+  }
+  .uc-hero-stamp {
+    position: absolute; left: 0; bottom: 28px; z-index: 2;
+    display: flex; align-items: center; gap: 12px; max-width: min(82%, 460px);
+    background: var(--ink); color: var(--cream); padding: 12px 18px 12px 14px;
+    border-left: 5px solid var(--c5-permits); font-size: 11px; letter-spacing: .06em; line-height: 1.4;
+    box-shadow: 7px 7px 0 rgba(11,15,26,.22);
+  }
+  .uc-hero-stamp-k { color: var(--c5-permits); font-weight: 500; white-space: nowrap; }
+  @keyframes uc-rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+  @keyframes uc-media-in { from { opacity: 0; clip-path: inset(0 0 0 14%); } to { opacity: 1; clip-path: inset(0 0 0 0); } }
+  .uc-hero-copy > * { opacity: 0; animation: uc-rise .7s cubic-bezier(.2,.7,.2,1) forwards; }
+  .uc-hero-copy > :nth-child(1) { animation-delay: .04s; }
+  .uc-hero-copy > :nth-child(2) { animation-delay: .12s; }
+  .uc-hero-copy > :nth-child(3) { animation-delay: .20s; }
+  .uc-hero-copy > :nth-child(4) { animation-delay: .30s; }
+  .uc-hero-copy > :nth-child(5) { animation-delay: .38s; }
+  .uc-hero-copy > :nth-child(6) { animation-delay: .44s; }
+  .uc-hero-media { opacity: 0; animation: uc-media-in .9s .1s cubic-bezier(.2,.7,.2,1) forwards; }
+  @media (prefers-reduced-motion: reduce) {
+    .uc-hero-copy > *, .uc-hero-media { animation: none; opacity: 1; clip-path: none; }
+  }
 
   /* ---- SHARED SECTION HEADER ---- */
   .uc-sh { border-top: 4px solid var(--ink); padding-top: 18px; margin-bottom: 32px; }
@@ -441,11 +492,12 @@ const faqs = [
 
   /* ---- RESPONSIVE ---- */
   @media (max-width: 960px) {
-    .uc-hero-grid { grid-template-columns: 1fr; gap: 40px; }
-    .uc-img-hero { aspect-ratio: 16 / 9; }
+    .uc-hero { grid-template-columns: 1fr; min-height: 0; }
+    .uc-hero-copy { padding: 40px 28px 44px; }
+    .uc-hero-media { border-left: none; border-top: 3px solid var(--ink); aspect-ratio: 16 / 10; }
+    .uc-h1 { font-size: clamp(40px, 11vw, 64px); }
   }
   @media (max-width: 768px) {
-    .uc-hero { padding: 72px 0 56px; }
     .uc-why-grid { grid-template-columns: 1fr; gap: 20px; }
     .uc-rec-grid { grid-template-columns: 1fr; }
     .uc-city-grid { grid-template-columns: 1fr 1fr; }
