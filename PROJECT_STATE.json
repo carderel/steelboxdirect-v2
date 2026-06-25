@@ -3,7 +3,7 @@
   "phase": "optimization_expansion",
   "status": "active_development",
   "last_session": "2026-06-25",
-  "last_commit": "dcde71a",
+  "last_commit": "a32070c",
   "completed": [
     "Project relocation to workspace root",
     "Git repository initialization and cleanup (steelboxdirect-v2)",
@@ -58,6 +58,7 @@
     "DEPLOYED 2026-06-25 (dcde71a, 16 files): HC height 8'6->9'6 (RigSection); delivery wording -> 'almost all deliveries take about two weeks' (FaqSection/quote/locations/businesses, FC-site-supported); payment FAQ paid-up-front + Afterpay installments (NO rent-to-own, NO pay-after-delivery); privacy.astro rebuilt from Freedom Conex policy with HYBRID branding (SBD = authorized agent, Freedom Conex LLC = operating/data-controller entity) trimmed to SBD reality (kept Microsoft Clarity session-recording + SMS + Stripe/Afterpay; cut targeted-ads/gov-ID/geolocation/public-DB; softened email; added multi-state rights courtesy section); PERMIT REFRAME to buyer-responsibility across permits page + FiveSection + FaqSection + Schema + cities.ts + farmers + homeowners (kept statutes as general references, removed all SBD permit determinations/promises); WWT condition tone split-the-difference (condition.ts + condition page); self-pickup added to quote form + submit-quote.ts; terms.astro rebuilt from Freedom Conex T&C as WWT-only + Lifetime Leak Warranty (omitted 90-day guarantee that excludes WWT), Texas governing law, hybrid branding."
   ],
   "todos": [
+    "LOGO GAP (known, 2026-06-25): no finalized Steel Box Direct logo exists (owner confirmed). public/ has only freedom-conex-logo.png; a stray Logo.png is untracked at repo root. `logo.svg` is REFERENCED but MISSING (404) in src/components/Schema.astro (Organization.logo + LocalBusiness.image) and src/pages/shipping-containers-for-sale/[slug].astro. Fix: create real logo (SVG + 1024px square) -> public/logo.svg, or repoint references. Needed for schema validity + directory NAP kit.",
     "ATTORNEY REVIEW recommended for privacy.astro + terms.astro (now LIVE as of dcde71a): privacy still 2023-era on multi-state/CPRA specifics; likely below state-law thresholds for this business size — confirm. Content observations only, not legal advice.",
     "CONFIRM with manager: permit 'reframe' (kept the page, removed assurances) vs literal 'remove the permits page entirely'.",
     "Use-case page image/hero rollout: completed for farmers, contractors, homeowners, and businesses.",
