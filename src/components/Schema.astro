@@ -45,14 +45,17 @@ const organizationSchema = {
     '@type': 'ContactPoint',
     'contactType': 'Sales',
     'url': 'https://steelboxdirect.com/quote/'
-  }
+  },
+  'sameAs': [
+    'https://maps.google.com/?cid=16337072236475848136'
+  ]
 };
 
 // LocalBusiness Schema (250-mile radius from Cincinnati, or city-specific)
 const lbCity = cityOverride?.name ?? 'Cincinnati';
 const lbRegion = cityOverride?.addressRegion ?? 'OH';
-const lbLat = cityOverride?.latitude ?? '39.1582';
-const lbLng = cityOverride?.longitude ?? '-84.4704';
+const lbLat = cityOverride?.latitude ?? '39.1365839';
+const lbLng = cityOverride?.longitude ?? '-84.540972';
 
 const localBusinessSchema = {
   '@context': 'https://schema.org',
@@ -76,7 +79,12 @@ const localBusinessSchema = {
   'serviceArea': {
     '@type': 'Place',
     'name': '250-mile radius from Cincinnati, Ohio'
-  }
+  },
+  'url': 'https://steelboxdirect.com',
+  'hasMap': 'https://maps.google.com/?cid=16337072236475848136',
+  'sameAs': [
+    'https://maps.google.com/?cid=16337072236475848136'
+  ]
 };
 
 // BreadcrumbList Schema — use the supplied trail when provided, else a Home-only stub
