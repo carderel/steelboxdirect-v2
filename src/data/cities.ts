@@ -60,7 +60,7 @@ export const cities: City[] = [
       features: [
         { title: 'No 275-Loop Upcharge',  body: 'Unlike national sellers who charge extra for "metro" delivery, our local presence means we treat every neighborhood with the same fair pricing.' },
         { title: 'Site Visits Available', body: 'Not sure if that 40-footer will fit in your Hyde Park driveway? We can often perform a digital or physical site assessment using local knowledge of the area.' },
-        { title: 'Ag-Exempt Expertise',  body: 'If you\'re in Brown, Warren, or Butler county, we can help you understand why your farm storage is likely zoned-exempt, saving you the headache of unnecessary permits.' },
+        { title: 'Local Delivery Knowledge',  body: 'From Brown to Warren to Butler county, we know the back roads and delivery conditions. Permit and zoning requirements are set by your local authority and are the buyer\'s responsibility to confirm before purchasing.' },
       ],
     },
     stats: [
@@ -99,7 +99,7 @@ export const cities: City[] = [
       features: [
         { title: 'Manufacturing Storage', body: 'Dayton\'s industrial heritage means businesses often need quick, secure overflow storage. Our units are perfect for parts, tools, and inventory protection.' },
         { title: 'Wright-Patt Proximity', body: 'We understand the specific needs of contractors and personnel near the AFB. Secure, weather-tight storage is non-negotiable, and we deliver exactly that.' },
-        { title: 'Miami Valley Expertise', body: 'From Beavercreek to Tipp City, we know the local zoning trends and can help you determine the best placement for your container.' },
+        { title: 'Miami Valley Expertise', body: 'From Beavercreek to Tipp City, we know the local delivery conditions and can help you plan a workable placement and approach for your container.' },
       ],
     },
     stats: [

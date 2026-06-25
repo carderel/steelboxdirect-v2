@@ -67,7 +67,14 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
               <h3>The Logistics</h3>
               <div class="form-grid quote_form_grid">
                 <div class="form-group quote_field">
-                  <label for="delivery_zip">Delivery ZIP</label>
+                  <label for="receive_method">How you'll receive it</label>
+                  <select id="receive_method" name="receive_method" required>
+                    <option value="delivery" selected>Tilt-bed delivery</option>
+                    <option value="pickup">Self pick-up</option>
+                  </select>
+                </div>
+                <div class="form-group quote_field">
+                  <label for="delivery_zip">Delivery / pickup ZIP</label>
                   <input type="text" id="delivery_zip" name="delivery_zip" placeholder="e.g., 45202" pattern="[0-9]{5}" maxlength="5" required />
                 </div>
                 <div class="form-group quote_field">
@@ -137,7 +144,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
           <div class="note-card">
             <div class="note-label">Lead Time</div>
-            <p>Most deliveries land within 1–2 weeks of deposit. Depot inventory is stacked and sequenced — units aren't staged for quick pull — and drivers book out several weeks in advance. We'll give you an honest window before you commit and keep you updated at every step.</p>
+            <p>Almost all deliveries take about two weeks. Depot inventory is stacked and sequenced — units aren't staged for quick pull — and drivers book out several weeks in advance. We'll give you an honest window before you commit and keep you updated at every step.</p>
           </div>
         </aside>
       </div>

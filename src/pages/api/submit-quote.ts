@@ -16,6 +16,7 @@ interface QuoteFormData {
   primary_use: string;
   delivery_zip: string;
   site_access: string;
+  receive_method?: string;
   timeline: string;
   buyer_notes?: string;
   first_touch_source?: string;
@@ -91,7 +92,7 @@ async function sendBuyerConfirmation(data: QuoteFormData): Promise<string | null
       from: 'Steel Box Direct <noreply@steelboxdirect.com>',
       to: data.email,
       subject: 'We received your quote request',
-      text: `Hi ${data.name},\n\nWe received your request for a shipping container quote.\n\nYour request summary:\n- Size: ${data.size_preference === 'not_sure' ? 'Not sure yet' : data.size_preference}\n- Condition: ${data.condition_preference === 'not_sure' ? 'Not sure yet' : data.condition_preference.replace('_', ' ')}\n- Delivery to: ${data.delivery_zip}\n- Timeline: ${data.timeline.replace('_', '-')}\n\nWhat happens next:\nA seller will review your request and contact you within 1 business day with pricing and availability for your area.\n\nNo action needed from you. If you have questions, reply to this email.\n\n---\nSteel Box Direct`,
+      text: `Hi ${data.name},\n\nWe received your request for a shipping container quote.\n\nYour request summary:\n- Size: ${data.size_preference === 'not_sure' ? 'Not sure yet' : data.size_preference}\n- Condition: ${data.condition_preference === 'not_sure' ? 'Not sure yet' : data.condition_preference.replace('_', ' ')}\n- ${data.receive_method === 'pickup' ? 'Self pick-up near' : 'Delivery to'}: ${data.delivery_zip}\n- Timeline: ${data.timeline.replace('_', '-')}\n\nWhat happens next:\nA seller will review your request and contact you within 1 business day with pricing and availability for your area.\n\nNo action needed from you. If you have questions, reply to this email.\n\n---\nSteel Box Direct`,
     });
     if (error) {
       console.error('Email send error:', error);
@@ -130,7 +131,7 @@ async function sendSellerNotification(
       from: 'Steel Box Direct <noreply@steelboxdirect.com>',
       to: sellerRecipients,
       subject: `${dbSaved ? '' : '[ACTION NEEDED] '}New Quote Request - ${data.name} - ${data.size_preference} - Score: ${score}`,
-      text: `NEW QUOTE REQUEST\n${dbWarning}\nLEAD DETAILS\nName: ${data.name}\nEmail: ${data.email}\nPhone: ${data.phone}\n\nDECISIONS\nSize: ${data.size_preference}\nCondition: ${data.condition_preference}\nUse: ${data.primary_use}\nTimeline: ${data.timeline}\n\nDELIVERY\nLocation: ${data.delivery_zip}${distance ? ` (${distance}mi from Cincinnati)` : ''}\nService Area: ${inServiceArea ? 'Yes' : 'OUTSIDE AREA - Review'}\nAccess: ${data.site_access}\n\nNOTES\n${data.buyer_notes || 'None provided'}\n\nATTRIBUTION\nSource: ${data.first_touch_source || 'Unknown'} / ${data.first_touch_medium || 'Unknown'}\nLanding Page: ${data.landing_page || 'Unknown'}\nPages Visited: ${pagesVisited}\nCalculator Result: ${data.calculator_result || 'Not used'}\nTime on Site: ${data.time_on_site_seconds ? Math.round(data.time_on_site_seconds / 60) + ' minutes' : 'Unknown'}\n\nSCORE: ${score} - ${priority}\n\nLead ID: ${leadId || 'NOT SAVED (database error)'}\n`,
+      text: `NEW QUOTE REQUEST\n${dbWarning}\nLEAD DETAILS\nName: ${data.name}\nEmail: ${data.email}\nPhone: ${data.phone}\n\nDECISIONS\nSize: ${data.size_preference}\nCondition: ${data.condition_preference}\nUse: ${data.primary_use}\nTimeline: ${data.timeline}\n\nDELIVERY\nLocation: ${data.delivery_zip}${distance ? ` (${distance}mi from Cincinnati)` : ''}\nService Area: ${inServiceArea ? 'Yes' : 'OUTSIDE AREA - Review'}\nAccess: ${data.site_access}\nMethod: ${data.receive_method === 'pickup' ? 'Self pick-up' : 'Tilt-bed delivery'}\n\nNOTES\n${data.buyer_notes || 'None provided'}\n\nATTRIBUTION\nSource: ${data.first_touch_source || 'Unknown'} / ${data.first_touch_medium || 'Unknown'}\nLanding Page: ${data.landing_page || 'Unknown'}\nPages Visited: ${pagesVisited}\nCalculator Result: ${data.calculator_result || 'Not used'}\nTime on Site: ${data.time_on_site_seconds ? Math.round(data.time_on_site_seconds / 60) + ' minutes' : 'Unknown'}\n\nSCORE: ${score} - ${priority}\n\nLead ID: ${leadId || 'NOT SAVED (database error)'}\n`,
     });
     if (error) {
       console.error('Seller notification error:', error);
