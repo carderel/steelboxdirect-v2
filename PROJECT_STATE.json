@@ -61,7 +61,7 @@
     "ATTORNEY REVIEW recommended for privacy.astro + terms.astro (now LIVE as of dcde71a): privacy still 2023-era on multi-state/CPRA specifics; likely below state-law thresholds for this business size — confirm. Content observations only, not legal advice.",
     "CONFIRM with manager: permit 'reframe' (kept the page, removed assurances) vs literal 'remove the permits page entirely'.",
     "Use-case page image/hero rollout: completed for farmers, contractors, homeowners, and businesses.",
-    "Create Google Business Profile + add URL to Organization.sameAs",
+    "GBP linked in schema DONE (398c382): GBP exists (maps cid=16337072236475848136); added to Organization.sameAs + LocalBusiness hasMap/sameAs; geo aligned to GBP pin. REMAINING owner action for backlinks: create Facebook + LinkedIn company pages and a logo SVG for NAP citations.",
     "Verify GA4 firing (GTM is now a standard main-thread tag; Partytown removed)",
     "Add og:image when hero asset confirmed",
     "/size/calculator/ static content fallback for Googlebot",
