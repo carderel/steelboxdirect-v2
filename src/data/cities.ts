@@ -72,7 +72,7 @@ export const cities: City[] = [
       body: 'Most requests in the Tri-State are answered within 4 business hours.',
     },
     seo: {
-      title: 'Shipping Containers for Sale in Cincinnati, OH | Steel Box Direct',
+      title: 'Shipping & Storage Containers for Sale in Cincinnati, OH | Steel Box Direct',
       description: `Buying a shipping container in Cincinnati? We provide ${CONDITION.label} containers with flat-fee delivery to Hamilton, Clermont, and Warren counties.`,
     },
   },
@@ -111,7 +111,7 @@ export const cities: City[] = [
       body: 'Most requests in the Miami Valley are answered within 4 business hours.',
     },
     seo: {
-      title: 'Shipping Containers for Sale in Dayton, OH | Steel Box Direct',
+      title: 'Shipping & Storage Containers for Sale in Dayton, OH | Steel Box Direct',
       description: `Looking for a shipping container in Dayton? We offer ${CONDITION.label} containers with flat-fee delivery to Montgomery, Greene, and Miami counties.`,
     },
   },
@@ -150,7 +150,7 @@ export const cities: City[] = [
       body: 'Most requests in Central Indiana are answered within 4 business hours.',
     },
     seo: {
-      title: 'Shipping Containers for Sale in Indianapolis, IN | Steel Box Direct',
+      title: 'Shipping & Storage Containers for Sale in Indianapolis, IN | Steel Box Direct',
       description: `Buying a shipping container in Indy? We provide ${CONDITION.label} containers with flat-fee delivery to Marion, Hamilton, and Hendricks counties.`,
     },
   },
@@ -189,7 +189,7 @@ export const cities: City[] = [
       body: 'Most requests in Kentuckiana are answered within 4 business hours.',
     },
     seo: {
-      title: 'Shipping Containers for Sale in Louisville, KY | Steel Box Direct',
+      title: 'Shipping & Storage Containers for Sale in Louisville, KY | Steel Box Direct',
       description: `Looking for a shipping container in Louisville? We offer ${CONDITION.label} containers with flat-fee delivery to Jefferson, Oldham, and Bullitt counties.`,
     },
   },

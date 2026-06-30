@@ -44,7 +44,7 @@ export const containers: Container[] = [
     ],
     compareNote: `Half the length of a 40ft — fits tighter spaces and costs less to deliver. ${CONDITION.blurb}`,
     seo: {
-      title:       '20-Foot Shipping Container for Sale | Steel Box Direct',
+      title:       '20-Foot Shipping & Storage Container for Sale | Steel Box Direct',
       description: `Buy a 20ft shipping container delivered within 250 miles of Cincinnati. ${CONDITION.seoTail} Get a quote within 4 business hours.`,
     },
   },
@@ -69,7 +69,7 @@ export const containers: Container[] = [
     ],
     compareNote: `Twice the storage of a 20ft — needs more clearance for delivery and placement. ${CONDITION.blurb}`,
     seo: {
-      title:       '40-Foot Shipping Container for Sale | Steel Box Direct',
+      title:       '40-Foot Shipping & Storage Container for Sale | Steel Box Direct',
       description: `Buy a 40ft shipping container delivered within 250 miles of Cincinnati. ${CONDITION.seoTail} Flat-fee local delivery. Get a quote in 4 hours.`,
     },
   },
@@ -94,7 +94,7 @@ export const containers: Container[] = [
     ],
     compareNote: `Same footprint as the standard 40ft, but a foot taller — the most headroom and cubic capacity we offer. ${CONDITION.blurb}`,
     seo: {
-      title:       '40-Foot High Cube Shipping Container for Sale | Steel Box Direct',
+      title:       '40-Foot High Cube Shipping & Storage Container for Sale | Steel Box Direct',
       description: `Buy a 40ft High Cube container delivered within 250 miles of Cincinnati. A full foot of extra headroom and ~2,694 cu ft. ${CONDITION.seoTail} Get a quote in 4 hours.`,
     },
   },
