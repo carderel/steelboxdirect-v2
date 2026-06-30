@@ -2,8 +2,8 @@
   "project_name": "Steel Box Direct - Container Decision Engine",
   "phase": "optimization_expansion",
   "status": "active_development",
-  "last_session": "2026-06-25",
-  "last_commit": "a32070c",
+  "last_session": "2026-06-29",
+  "last_commit": "2e8b1de",
   "completed": [
     "Project relocation to workspace root",
     "Git repository initialization and cleanup (steelboxdirect-v2)",
@@ -56,6 +56,10 @@
     "DEPLOYED 2026-06-25: merged codex usage-page hero images to main (cda6527); uc-hero-stamp mobile overlap fix across all 4 use-case pages (5a8e55b); footer Google-review QR placard linking to g.page/r/CcgVCj2k8LjiEBM/review, asset public/assets/review-qr.png (4ae3965)."
     ,
     "DEPLOYED 2026-06-25 (dcde71a, 16 files): HC height 8'6->9'6 (RigSection); delivery wording -> 'almost all deliveries take about two weeks' (FaqSection/quote/locations/businesses, FC-site-supported); payment FAQ paid-up-front + Afterpay installments (NO rent-to-own, NO pay-after-delivery); privacy.astro rebuilt from Freedom Conex policy with HYBRID branding (SBD = authorized agent, Freedom Conex LLC = operating/data-controller entity) trimmed to SBD reality (kept Microsoft Clarity session-recording + SMS + Stripe/Afterpay; cut targeted-ads/gov-ID/geolocation/public-DB; softened email; added multi-state rights courtesy section); PERMIT REFRAME to buyer-responsibility across permits page + FiveSection + FaqSection + Schema + cities.ts + farmers + homeowners (kept statutes as general references, removed all SBD permit determinations/promises); WWT condition tone split-the-difference (condition.ts + condition page); self-pickup added to quote form + submit-quote.ts; terms.astro rebuilt from Freedom Conex T&C as WWT-only + Lifetime Leak Warranty (omitted 90-day guarantee that excludes WWT), Texas governing law, hybrid branding."
+    ,
+    "STORAGE KEYWORD GAP FIX (2026-06-29, UNCOMMITTED): commercial 'for sale' pages targeted only 'shipping container' — 'storage container' absent from all titles/H1s. Blended '& Storage' into homepage (title+meta+billboard H1), product hub (title+H1), [citySlug] H1, 4 city seo.titles, 3 product seo.titles (HC kept 'Shipping'+added 'Storage'). No new pages (anti-cannibalization), URLs unchanged. Build clean; Playwright-verified homepage H1 at 1200px+390px. Source: .outputs/seo/2026-06-29-storage-keyword-gap.md."
+    ,
+    "FIRST BACKLINK (2026-06-29): dofollow link to homepage (rel=noopener, NOT nofollow) from https://www.cftmartialarts.com/ sponsor/'friends of CFTMA' partners page — branded anchor 'Steel Box Direct', surrounding copy 'Shipping Containers for Storage...'. Topically unrelated (martial arts) = low topical weight; LOCAL relevance possible if CFTMA is in service-area metro (unconfirmed). Real referring domain = genuine early-stage authority/crawl-demand signal. Points to already-indexed homepage. If sponsorship was paid, Google guideline = rel=sponsored, but one link is no risk; do NOT nofollow it. Tactic to repeat: local sponsorships (incl. interior-page anchors)."
   ],
   "todos": [
     "LOGO GAP (known, 2026-06-25): no finalized Steel Box Direct logo exists (owner confirmed). public/ has only freedom-conex-logo.png; a stray Logo.png is untracked at repo root. `logo.svg` is REFERENCED but MISSING (404) in src/components/Schema.astro (Organization.logo + LocalBusiness.image) and src/pages/shipping-containers-for-sale/[slug].astro. Fix: create real logo (SVG + 1024px square) -> public/logo.svg, or repoint references. Needed for schema validity + directory NAP kit.",
