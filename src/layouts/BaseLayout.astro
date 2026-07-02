@@ -63,9 +63,14 @@ const showFloatingSidebar = floatingSidebar ?? (pageType === 'home');
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:site_name" content="Steel Box Direct" />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:image" content="https://steelboxdirect.com/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Steel Box Direct" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content="https://steelboxdirect.com/og-image.png" />
     <link rel="canonical" href={`https://steelboxdirect.com${Astro.url.pathname}`} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title}</title>
@@ -148,6 +153,7 @@ const showFloatingSidebar = floatingSidebar ?? (pageType === 'home');
       .brand-group{display:flex;flex-direction:column;justify-content:center;gap:4px;padding:10px 0}
       .brand{display:flex;align-items:center;gap:10px;font-family:var(--narrow);font-weight:700;font-size:22px;letter-spacing:-.02em;text-transform:uppercase}
       .brand .bx{width:30px;height:30px;background:var(--ink);color:var(--yellow);display:grid;place-items:center;font-weight:900;font-size:15px;font-family:var(--display)}
+      .brand-logo{display:block;height:38px;width:auto}
       .brand-mil{font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:#3a2f00;line-height:1.2;margin-top:8px}
 
       .menu-toggle {
@@ -357,8 +363,7 @@ const showFloatingSidebar = floatingSidebar ?? (pageType === 'home');
 
       @media (max-width:960px){
         .wrap { padding: 0 20px; }
-        .brand .bx { display: none; } /* Hide square 'S' on mobile per request */
-        .brand { font-size: 19px; }
+        .brand-logo { height: 32px; }
         .nav { height: auto; align-items: stretch; }
         .cta-hd { align-self: stretch; height: auto; padding: 0 16px; border-left: 2px solid var(--ink); background: var(--ink) !important; color: var(--yellow) !important; font-size: 12px !important; }
         .agent-strip{display:none}
