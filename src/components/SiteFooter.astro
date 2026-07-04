@@ -74,6 +74,34 @@ const pathname = Astro.url.pathname;
         <span class="review-qr-cap">Scan to review</span>
       </a>
     </div>
+    <div class="trust-row">
+      <div class="trust-cards">
+        <span class="trust-label">We accept</span>
+        <div class="card-icons">
+          <svg class="card-icon" viewBox="0 0 56 34" role="img" aria-label="Visa accepted">
+            <rect x="0.5" y="0.5" width="55" height="33" rx="4" />
+            <text x="28" y="21" text-anchor="middle" class="visa-text">VISA</text>
+          </svg>
+          <svg class="card-icon" viewBox="0 0 56 34" role="img" aria-label="Mastercard accepted">
+            <rect x="0.5" y="0.5" width="55" height="33" rx="4" />
+            <circle cx="23" cy="17" r="8.5" class="mc-circle" />
+            <circle cx="33" cy="17" r="8.5" class="mc-circle" />
+          </svg>
+          <svg class="card-icon" viewBox="0 0 56 34" role="img" aria-label="American Express accepted">
+            <rect x="0.5" y="0.5" width="55" height="33" rx="4" />
+            <text x="28" y="20" text-anchor="middle" class="amex-text">AMEX</text>
+          </svg>
+          <svg class="card-icon" viewBox="0 0 56 34" role="img" aria-label="Discover accepted">
+            <rect x="0.5" y="0.5" width="55" height="33" rx="4" />
+            <text x="28" y="19.5" text-anchor="middle" class="discover-text">DISCOVER</text>
+          </svg>
+        </div>
+      </div>
+      <div class="trust-badges">
+        <span class="trust-badge">Lifetime Leak Warranty</span>
+        <span class="trust-badge">Est. 2009</span>
+      </div>
+    </div>
     <div class="bottom">
       <span>© 2026 Steel Box Direct · Cincinnati, OH</span>
       <span>No jargon · Just clarity</span>
@@ -177,6 +205,42 @@ const pathname = Astro.url.pathname;
   .social-links a:hover { background: var(--yellow); border-color: var(--yellow); opacity: 1; }
   .social-links svg { width: 18px; height: 18px; fill: var(--cream); }
   .social-links a:hover svg { fill: var(--ink); }
+
+  /* ---- TRUST INDICATOR ROW (cards accepted + trust badges) ---- */
+  .trust-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px 28px;
+    padding-top: 24px;
+    margin-bottom: 28px;
+    border-top: 1px solid rgba(246, 241, 231, .18);
+  }
+  .trust-cards { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .trust-label {
+    font-family: var(--mono); font-size: 11px; letter-spacing: .1em;
+    text-transform: uppercase; opacity: .55; white-space: nowrap;
+  }
+  .card-icons { display: flex; gap: 8px; flex-wrap: wrap; }
+  .card-icon { width: 46px; height: auto; flex-shrink: 0; }
+  .card-icon rect { fill: rgba(246, 241, 231, .05); stroke: rgba(246, 241, 231, .35); stroke-width: 1; }
+  .card-icon text { fill: var(--cream); font-family: var(--mono); font-weight: 700; }
+  .card-icon .visa-text { font-size: 11px; font-style: italic; letter-spacing: .02em; }
+  .card-icon .amex-text { font-size: 9px; letter-spacing: .04em; }
+  .card-icon .discover-text { font-size: 6.5px; letter-spacing: .03em; }
+  .mc-circle { fill: var(--cream); opacity: .45; mix-blend-mode: screen; }
+  .trust-badges { display: flex; gap: 10px; flex-wrap: wrap; }
+  .trust-badge {
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: .06em;
+    text-transform: uppercase; color: var(--cream); opacity: .75;
+    border: 1px solid rgba(246, 241, 231, .25); border-radius: 3px;
+    padding: 6px 10px; white-space: nowrap;
+  }
+  @media (max-width: 720px) {
+    .trust-row { flex-direction: column; align-items: flex-start; gap: 18px; }
+    .trust-badge { white-space: normal; }
+  }
 
   /* Carder Creative credit link */
   footer.site .bottom .credit a {
