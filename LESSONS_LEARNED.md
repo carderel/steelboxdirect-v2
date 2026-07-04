@@ -38,6 +38,10 @@ This file captures recent/situational lessons. It's **Layer 3** of the rule hier
 **Date:** 2026-05-25  
 Before deciding how to handle any situation — execution approach, compliance gaps, agent usage, mode selection — check what the UDO protocol already specifies. Do not improvise, offer options, or ask the user when ORCHESTRATOR.md has already answered the question. UDO is the operating system; consult it before acting.
 
+### L002 — Orchestrator does ZERO execution work
+**Date:** 2026-07-02  
+The orchestrator (The Architect) orchestrates; it does not do the work. NEVER run project builds, start dev servers, run test/verify commands, or Write/Edit project source yourself. ALL execution — implementation AND its verification, including environment setup like starting the dev server — is delegated to subagents. The orchestrator's ONLY hands-on actions are coordination + the audit trail (session logs, checkpoints, decisions, memory, PROJECT_STATE, this file). If a step touches the product or its build, dispatch a subagent. "Always subagent." (User correction, 2026-07-02.)
+
 ---
 
 ## Archived Lessons
