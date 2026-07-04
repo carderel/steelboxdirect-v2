@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { STATS } from '../../data/stats';
+import { lifecycleFacts } from '../../data/containerReference';
 ---
 
 <BaseLayout
@@ -63,6 +64,22 @@ import { STATS } from '../../data/stats';
             <a href="/quote/" class="btn guide_cta_btn">Get My Quote <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
           </div>
         </aside>
+      </div>
+
+      <div class="cond-lifecycle">
+        <h2>Why used steel holds up</h2>
+        <div class="cond-life-grid">
+          {lifecycleFacts.map((f) => (
+            <div class="cond-life-card">
+              <h3>{f.title}</h3>
+              <p>{f.body}</p>
+            </div>
+          ))}
+        </div>
+        <p class="cond-life-link">
+          Want the technical detail? See how to read a container’s markings and full ISO dimensions in our
+          <a href="/container-reference/">Container Reference</a>.
+        </p>
       </div>
     </div>
   </section>
@@ -145,6 +162,15 @@ import { STATS } from '../../data/stats';
       .guide-header { padding: 48px 0; }
       .big { font-size: clamp(48px, 10vw, 80px); }
     }
+    .cond-lifecycle { margin-top: 48px; padding-top: 40px; border-top: 2.5px solid var(--ink); }
+    .cond-lifecycle h2 { font-family: var(--narrow); font-size: 30px; text-transform: uppercase; margin-bottom: 24px; }
+    .cond-life-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+    .cond-life-card { border-left: 4px solid var(--c2-cond); padding-left: 20px; }
+    .cond-life-card h3 { font-family: var(--narrow); font-size: 18px; text-transform: uppercase; margin-bottom: 8px; }
+    .cond-life-card p { font-size: 14px; line-height: 1.6; opacity: .8; }
+    .cond-life-link { margin-top: 24px; font-size: 15px; }
+    .cond-life-link a { border-bottom: 2px solid var(--c2-cond); font-weight: 600; }
+    @media (max-width: 860px) { .cond-life-grid { grid-template-columns: 1fr; } }
     .guide-next { padding: 48px 0; background: var(--ink); border-top: 2px solid rgba(255,255,255,.08); }
     .guide-next-label { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: .1em; color: var(--yellow); margin-bottom: 16px; }
     .guide-next-links { display: flex; flex-wrap: wrap; gap: 20px; }

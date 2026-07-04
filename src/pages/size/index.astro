@@ -59,6 +59,11 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
             </div>
             <p><strong>The extra 12" height:</strong> Fits tall equipment like combines or stacked inventory.</p>
           </div>
+
+          <p class="ref-crosslink">
+            For exact interior/exterior figures on every ISO size, see the
+            <a href="/container-reference/#dimensions">Container Reference</a>.
+          </p>
         </div>
 
         <aside class="sidebar-col guide_sidebar_col">
@@ -162,6 +167,9 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     }
     .cta-card h4 { font-family: var(--narrow); font-size: 24px; text-transform: uppercase; margin-bottom: 8px; }
     .cta-card p { font-size: 15px; margin-bottom: 20px; }
+
+    .ref-crosslink { margin: 24px 0; font-size: 15px; }
+    .ref-crosslink a { border-bottom: 2px solid var(--yellow-d); font-weight: 600; }
 
     @media (max-width: 960px) {
       .row { grid-template-columns: 1fr; gap: 48px; }
