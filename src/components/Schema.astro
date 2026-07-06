@@ -46,6 +46,22 @@ const organizationSchema = {
     'contactType': 'Sales',
     'url': 'https://steelboxdirect.com/quote/'
   },
+  'parentOrganization': {
+    '@type': 'Organization',
+    'name': 'Freedom Conex LLC',
+    'url': 'https://www.freedomconex.com'
+  },
+  'makesOffer': {
+    '@type': 'Offer',
+    'itemOffered': {
+      '@type': 'Service',
+      'name': 'Wind & Water Tight Shipping Container Sales'
+    },
+    'warranty': {
+      '@type': 'WarrantyPromise',
+      'description': 'Lifetime Leak Warranty on Wind & Water Tight containers'
+    }
+  },
   'sameAs': [
     'https://maps.google.com/?cid=16337072236475848136',
     'https://www.linkedin.com/company/steel-box-direct/'
@@ -83,6 +99,22 @@ const localBusinessSchema = {
   },
   'url': 'https://steelboxdirect.com',
   'hasMap': 'https://maps.google.com/?cid=16337072236475848136',
+  'parentOrganization': {
+    '@type': 'Organization',
+    'name': 'Freedom Conex LLC',
+    'url': 'https://www.freedomconex.com'
+  },
+  'makesOffer': {
+    '@type': 'Offer',
+    'itemOffered': {
+      '@type': 'Service',
+      'name': 'Wind & Water Tight Shipping Container Sales'
+    },
+    'warranty': {
+      '@type': 'WarrantyPromise',
+      'description': 'Lifetime Leak Warranty on Wind & Water Tight containers'
+    }
+  },
   'sameAs': [
     'https://maps.google.com/?cid=16337072236475848136',
     'https://www.linkedin.com/company/steel-box-direct/'

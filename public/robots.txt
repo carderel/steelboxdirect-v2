@@ -11,6 +11,10 @@ User-agent: PerplexityBot
 Allow: /
 User-agent: ClaudeBot
 Allow: /
+User-agent: anthropic-ai
+Allow: /
+User-agent: Google-Extended
+Allow: /
 
 # Discovery Hints
 Sitemap: https://steelboxdirect.com/sitemap-index.xml

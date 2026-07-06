@@ -1,4 +1,5 @@
 ---
+import { homeFaqs } from '../../data/homeFaq';
 ---
 <!-- ============ §07 FAQ ============ -->
 <section class="faq" id="faq">
@@ -11,36 +12,13 @@
     <h2 class="big">The questions <em>everyone</em> asks<br>before they pay.</h2>
 
     <div class="faq-list faq_list">
-      <div class="faq-item faq_item">
-        <span class="n">Q · 01</span>
-        <h3 class="q">Won't it rust out on me?</h3>
-        <p class="a">Corten steel, painted inside and out. On crushed-stone pads with airflow underneath, 25 years is realistic. We'll show you how to prep the site.</p>
-      </div>
-      <div class="faq-item faq_item">
-        <span class="n">Q · 02</span>
-        <h3 class="q">Can you get it back my driveway?</h3>
-        <p class="a">Usually yes. Tilt-bed needs ~100 ft of approach and firm ground. For tight or soft sites, crane-set works — no lane damage. We'll scout before we schedule.</p>
-      </div>
-      <div class="faq-item faq_item">
-        <span class="n">Q · 03</span>
-        <h3 class="q">Do I need a permit?</h3>
-        <p class="a">It depends on your county and how you'll use the container, and rules vary widely. Confirming permit and zoning requirements with your local authority before you buy is the buyer's responsibility — we don't determine or guarantee them.</p>
-      </div>
-      <div class="faq-item faq_item">
-        <span class="n">Q · 04</span>
-        <h3 class="q">Is used actually safe for my equipment?</h3>
-        <p class="a">Every container we sell is Wind &amp; Water Tight (used) — structurally sound and weather-tight, with surface rust that's purely cosmetic. It keeps rain, wind, and snow off your equipment and holds up for decades on a prepped pad.</p>
-      </div>
-      <div class="faq-item faq_item">
-        <span class="n">Q · 05</span>
-        <h3 class="q">How quickly can you get it here?</h3>
-        <p class="a">Almost all deliveries take about two weeks. Depot inventory is stacked and sequenced — units aren't staged for quick pull — and drivers book out several weeks in advance, so exact timing depends on current availability. We'll give you an honest window before you commit, and you'll hear from us at every step until it's on your property.</p>
-      </div>
-      <div class="faq-item faq_item">
-        <span class="n">Q · 06</span>
-        <h3 class="q">How do I pay? Do you offer financing?</h3>
-        <p class="a">Containers are paid in full up front. If you'd rather spread the cost, we offer Afterpay for buyers who qualify — pay in installments while we schedule your unit right away.</p>
-      </div>
+      {homeFaqs.map((f, i) => (
+        <div class="faq-item faq_item">
+          <span class="n">Q · {String(i + 1).padStart(2, '0')}</span>
+          <h3 class="q">{f.q}</h3>
+          <p class="a">{f.a}</p>
+        </div>
+      ))}
     </div>
   </div>
 </section>
