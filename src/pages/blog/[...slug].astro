@@ -1,0 +1,398 @@
+---
+export const prerender = true;
+
+import { getCollection } from 'astro:content';
+import { Image, getImage } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { categoryToSlug, categoryColor, categoryTextColor, formatBlogDate } from '../../lib/blog';
+import { resolveHeroImage } from '../../lib/blogImages';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) =>
+    import.meta.env.PROD ? data.draft !== true : true
+  );
+  // Oldest-first so prev/next reads chronologically (prev = older, next = newer).
+  const sorted = [...posts].sort((a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf());
+
+  return sorted.map((post, i) => ({
+    params: { slug: post.slug },
+    props: {
+      post,
+      prev: i > 0 ? sorted[i - 1] : null,
+      next: i < sorted.length - 1 ? sorted[i + 1] : null,
+    },
+  }));
+}
+
+const { post, prev, next } = Astro.props;
+const { Content, headings } = await post.render();
+
+// Auto TOC: only h2/h3, and only shown when there's enough structure to be useful.
+const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
+const showToc = tocHeadings.length >= 3;
+const takeaways = post.data.takeaways;
+const showTakeaways = Array.isArray(takeaways) && takeaways.length > 0;
+
+// Related posts: same category, excluding this one, newest first, capped at 3.
+const allPosts = await getCollection('blog', ({ data }) =>
+  import.meta.env.PROD ? data.draft !== true : true
+);
+const related = allPosts
+  .filter((p) => p.slug !== post.slug && p.data.category === post.data.category)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+
+const catSlug = categoryToSlug(post.data.category);
+const catColor = categoryColor(post.data.category);
+const catTextColor = categoryTextColor(post.data.category);
+const heroImg = await resolveHeroImage(post.data.heroImage);
+const heroAlt = post.data.heroImageAlt ?? post.data.title;
+
+// Absolute URL of the same optimized webp the post actually renders, for
+// og:image/twitter:image and the Article schema's `image` — so shared links
+// and AI crawlers see the post's real hero photo, not the generic site image.
+const ogImageUrl = heroImg
+  ? `https://steelboxdirect.com${(await getImage({ src: heroImg, format: 'webp', width: 1200 })).src}`
+  : undefined;
+
+const faq = post.data.faq;
+const showFaq = Array.isArray(faq) && faq.length > 0;
+const faqSchema = showFaq ? {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faq!.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+} : null;
+
+const breadcrumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Blog', path: '/blog/' },
+  { name: post.data.category, path: `/blog/category/${catSlug}/` },
+  { name: post.data.title },
+];
+---
+
+<BaseLayout
+  pageType="guide"
+  title={`${post.data.title} | Steel Box Direct Blog`}
+  description={post.data.description}
+  datePublished={post.data.pubDate.toISOString().slice(0, 10)}
+  dateModified={(post.data.updatedDate ?? post.data.pubDate).toISOString().slice(0, 10)}
+  breadcrumbs={breadcrumbs}
+  noindex={post.data.draft}
+  ogImage={ogImageUrl}
+>
+  {faqSchema && (
+    <script type="application/ld+json" slot="head" is:inline set:html={JSON.stringify(faqSchema)} />
+  )}
+
+  <!-- HERO -->
+  <article>
+    <!-- BREADCRUMBS -->
+    <div class="post-breadcrumb-wrap">
+      <div class="wrap">
+        <Breadcrumbs items={breadcrumbs} />
+      </div>
+    </div>
+
+    <!-- HERO IMAGE + TITLE (overlaid on hero when an image exists; compact bar otherwise) -->
+    <header class="post-hero-wrap">
+      <div class="wrap">
+        {post.data.draft && <div class="draft-banner">DRAFT / SAMPLE — not published content</div>}
+        {heroImg ? (
+          <figure class="post-hero-figure">
+            <Image
+              class="post-hero-img"
+              src={heroImg}
+              alt={heroAlt}
+              width={1600}
+              format="webp"
+              loading="eager"
+            />
+            <div class="post-hero-scrim" aria-hidden="true"></div>
+            <div class="post-hero-overlay">
+              <div class="sh">
+                <a href={`/blog/category/${catSlug}/`} class="post-chip" style={`background:${catColor};color:${catTextColor}`}>{post.data.category}</a>
+              </div>
+              <h1 class="big">{post.data.title}</h1>
+              <div class="post-meta">
+                <span class="m">By {post.data.author}</span>
+                <span class="m-sep">·</span>
+                <span class="m">Published {formatBlogDate(post.data.pubDate)}</span>
+                {post.data.updatedDate && (
+                  <>
+                    <span class="m-sep">·</span>
+                    <span class="m">Updated {formatBlogDate(post.data.updatedDate)}</span>
+                  </>
+                )}
+              </div>
+            </div>
+          </figure>
+        ) : (
+          <div class="post-hero-plain">
+            <div class="sh">
+              <a href={`/blog/category/${catSlug}/`} class="post-chip" style={`background:${catColor};color:${catTextColor}`}>{post.data.category}</a>
+            </div>
+            <h1 class="big">{post.data.title}</h1>
+            <div class="post-meta">
+              <span class="m">By {post.data.author}</span>
+              <span class="m-sep">·</span>
+              <span class="m">Published {formatBlogDate(post.data.pubDate)}</span>
+              {post.data.updatedDate && (
+                <>
+                  <span class="m-sep">·</span>
+                  <span class="m">Updated {formatBlogDate(post.data.updatedDate)}</span>
+                </>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+    </header>
+
+    <!-- INTRO: WHAT YOU'LL LEARN + TABLE OF CONTENTS -->
+    {(showTakeaways || showToc) && (
+      <div class="post-intro-wrap">
+        <div class="wrap">
+          <div class:list={['post-intro', { 'has-both': showTakeaways && showToc }]}>
+            {showTakeaways && (
+              <details class="takeaways-box" open>
+                <summary class="intro-label">What You'll Learn</summary>
+                <ul>
+                  {takeaways!.map((t) => <li>{t}</li>)}
+                </ul>
+              </details>
+            )}
+            {showToc && (
+              <details class="toc-box">
+                <summary class="intro-label">In This Article</summary>
+                <nav aria-label="Table of contents">
+                  <ol>
+                    {tocHeadings.map((h) => (
+                      <li class={`toc-d${h.depth}`}>
+                        <a href={`#${h.slug}`}>{h.text}</a>
+                      </li>
+                    ))}
+                  </ol>
+                </nav>
+              </details>
+            )}
+          </div>
+        </div>
+      </div>
+    )}
+
+    <!-- BODY -->
+    <div class="post-body-wrap">
+      <div class="wrap post-body">
+        <Content />
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    {showFaq && (
+      <section class="post-faq-wrap">
+        <div class="wrap post-faq">
+          <h2 class="faq-title">Frequently Asked Questions</h2>
+          <div class="faq-list">
+            {faq!.map((f) => (
+              <div class="faq-item">
+                <h3>{f.q}</h3>
+                <p>{f.a}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+
+    <!-- CTA -->
+    <section class="post-cta-wrap">
+      <div class="wrap">
+        <div class="cta-box">
+          <h2>Have a project like this?</h2>
+          <p>Tell us your size, zip code, and intended use — we'll get back to you within 4 business hours.</p>
+          <a href="/quote/" class="btn">Get My Quote <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- RELATED -->
+    {related.length > 0 && (
+      <section class="related-wrap">
+        <div class="wrap">
+          <h2 class="related-title">More in {post.data.category}</h2>
+          <div class="related-grid">
+            {related.map((r) => (
+              <a class="related-card" href={`/blog/${r.slug}/`}>
+                <span class="related-date m">{formatBlogDate(r.data.pubDate)}</span>
+                <h3>{r.data.title}</h3>
+                <p>{r.data.description}</p>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+
+    <!-- PREV / NEXT -->
+    {(prev || next) && (
+      <nav class="post-nav" aria-label="More posts">
+        <div class="wrap post-nav-inner">
+          {prev ? (
+            <a class="post-nav-link prev" href={`/blog/${prev.slug}/`}>
+              <span class="m">← Previous</span>
+              <span class="post-nav-title">{prev.data.title}</span>
+            </a>
+          ) : <span></span>}
+          {next ? (
+            <a class="post-nav-link next" href={`/blog/${next.slug}/`}>
+              <span class="m">Next →</span>
+              <span class="post-nav-title">{next.data.title}</span>
+            </a>
+          ) : <span></span>}
+        </div>
+      </nav>
+    )}
+  </article>
+</BaseLayout>
+
+<style>
+  .draft-banner { background: var(--c2-cond); color: white; font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 8px 14px; display: inline-block; margin-bottom: 8px; }
+
+  /* Visible breadcrumb trail — sits above the hero, clears the sticky nav. Kept tight. */
+  .post-breadcrumb-wrap { background: var(--cream); padding: 10px 0 0; }
+
+  /* HERO: compact banner (capped height, not a tall/full block). Title + meta are
+     overlaid directly on the image behind an ink scrim, so the title no longer
+     needs its own full-height block below the photo. */
+  .post-hero-wrap { background: var(--cream); padding: 8px 0 14px; }
+  .post-hero-figure { position: relative; margin: 0; height: clamp(190px, 28vw, 340px); overflow: hidden; border: 2.5px solid var(--ink); box-shadow: 8px 8px 0 var(--ink); }
+  .post-hero-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .post-hero-scrim { position: absolute; inset: 0; background: linear-gradient(to top, rgba(11,15,26,.94) 0%, rgba(11,15,26,.68) 40%, rgba(11,15,26,.08) 74%, rgba(11,15,26,0) 100%); }
+  .post-hero-overlay { position: absolute; left: 0; right: 0; bottom: 0; z-index: 1; padding: 20px 28px 22px; color: var(--cream); }
+  .post-hero-overlay .sh { margin-bottom: 10px; }
+  .post-hero-overlay .big { font-family: var(--narrow); font-size: clamp(26px, 3.6vw, 46px); text-transform: uppercase; line-height: 1.05; font-weight: 800; margin: 0 0 10px; color: var(--cream); text-shadow: 0 2px 12px rgba(0,0,0,.5); }
+  .post-hero-overlay .post-meta { color: var(--cream); opacity: .92; }
+  .post-hero-overlay .m-sep { opacity: .65; }
+
+  /* Fallback when a post has no hero image — compact bar, no overlay needed */
+  .post-hero-plain { background: var(--yellow); border: 2.5px solid var(--ink); box-shadow: 8px 8px 0 var(--ink); padding: 16px 24px 20px; }
+  .post-hero-plain .sh { margin-bottom: 10px; }
+  .post-hero-plain .big { font-family: var(--narrow); font-size: clamp(28px, 4.2vw, 52px); text-transform: uppercase; line-height: 1.05; font-weight: 800; margin: 0 0 10px; }
+
+  .sh { margin-bottom: 14px; }
+  .post-chip { display: inline-block; font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 6px 14px; }
+  .post-meta { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; opacity: .75; }
+  .m-sep { opacity: .5; }
+
+  /* INTRO: what-you'll-learn + auto TOC, sit above the body in the same reading column.
+     Kept tight — this is the block the reader has to get through before the TOC/body. */
+  .post-intro-wrap { background: white; padding: 12px 0 0; }
+  .post-intro { max-width: 760px; display: grid; grid-template-columns: 1fr; gap: 14px; align-items: start; }
+  .post-intro.has-both { grid-template-columns: 1fr 1fr; }
+  .takeaways-box, .toc-box { background: var(--cream); border: 2.5px solid var(--ink); padding: 14px 20px; box-shadow: 6px 6px 0 var(--yellow); }
+
+  /* Accordion: native <details>/<summary>. Content stays in the DOM when
+     collapsed (crawlers/LLMs still read it) — only visually hidden via the
+     [open] attribute selector below. Default marker removed; own chevron added. */
+  .intro-label { font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; margin: 0; list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .intro-label::-webkit-details-marker { display: none; }
+  .intro-label::marker { content: ''; }
+  .intro-label::after { content: '▸'; font-size: 13px; transition: transform .15s ease; flex-shrink: 0; }
+  details[open] > .intro-label::after { transform: rotate(90deg); }
+  .takeaways-box[open] > .intro-label, .toc-box[open] > .intro-label { margin-bottom: 8px; }
+  .intro-label:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 3px; }
+  .takeaways-box ul { margin: 0; padding-left: 22px; }
+  .takeaways-box li { margin-bottom: 6px; font-size: 15px; line-height: 1.4; }
+  .takeaways-box li:last-child { margin-bottom: 0; }
+  .toc-box ol { margin: 0; padding-left: 0; list-style: none; counter-reset: toc; }
+  .toc-box li { counter-increment: toc; margin-bottom: 5px; font-size: 14.5px; line-height: 1.35; }
+  .toc-box li::before { content: counter(toc) '.'; font-family: var(--mono); font-weight: 700; margin-right: 6px; opacity: .55; }
+  .toc-box li.toc-d3 { padding-left: 18px; }
+  .toc-box li.toc-d3::before { content: '–'; }
+  .toc-box a { font-weight: 600; border-bottom: 1.5px solid transparent; }
+  .toc-box a:hover { border-bottom-color: var(--yellow-d); }
+
+  .post-body-wrap { background: white; padding: 28px 0 64px; border-bottom: 1.5px solid rgba(11,15,26,.1); }
+  .post-body { max-width: 760px; font-size: 17px; line-height: 1.75; }
+  .post-body :global(h2) { font-family: var(--narrow); font-size: 30px; text-transform: uppercase; margin: 44px 0 18px; scroll-margin-top: 160px; }
+  .post-body :global(h3) { font-family: var(--narrow); font-size: 22px; text-transform: uppercase; margin: 32px 0 14px; scroll-margin-top: 160px; }
+  .post-body :global(p) { margin: 0 0 20px; }
+  .post-body :global(ul), .post-body :global(ol) { margin: 0 0 20px; padding-left: 24px; }
+  .post-body :global(li) { margin-bottom: 8px; }
+  .post-body :global(a) { border-bottom: 2px solid var(--yellow-d); font-weight: 600; }
+  .post-body :global(a:hover) { background: var(--yellow); }
+  .post-body :global(blockquote) { border-left: 4px solid var(--c2-cond); background: rgba(229,57,53,.06); padding: 16px 24px; margin: 0 0 28px; font-size: 15px; opacity: .85; }
+  .post-body :global(strong) { font-weight: 700; }
+  .post-body :global(code) { font-family: var(--mono); background: rgba(11,15,26,.06); padding: 2px 6px; font-size: 15px; }
+
+  /* In-body markdown images: ![alt](path) on its own line, followed (as its own
+     paragraph, separated by a blank line) by an *(FPO — caption)* line. Images
+     render at the body column width (max 760px) — never wider — so they can
+     never overflow the viewport at any breakpoint. */
+  .post-body :global(img) { width: 100%; height: auto; border: 2.5px solid var(--ink); box-shadow: 6px 6px 0 var(--yellow); }
+  .post-body :global(p:has(> img:only-child)) { margin: 28px 0 8px; }
+  .post-body :global(p:has(> em:only-child)) { font-family: var(--mono); font-size: 12.5px; letter-spacing: .02em; opacity: .6; margin: 0 0 28px; }
+  .post-body :global(p > em:only-child) { font-style: normal; }
+
+  .post-faq-wrap { padding: 8px 0 56px; background: white; }
+  .post-faq { max-width: 760px; }
+  .faq-title { font-family: var(--narrow); font-size: 28px; text-transform: uppercase; margin: 0 0 20px; }
+  .faq-list { border: 2.5px solid var(--ink); }
+  .faq-item { padding: 22px 26px; border-bottom: 1.5px solid rgba(11,15,26,.1); }
+  .faq-item:last-child { border-bottom: none; }
+  .faq-item h3 { font-family: var(--narrow); font-size: 18px; text-transform: uppercase; margin: 0 0 8px; }
+  .faq-item p { opacity: .8; line-height: 1.6; margin: 0; }
+
+  .post-cta-wrap { padding: 72px 0; background: var(--cream); }
+  .cta-box { background: var(--ink); color: var(--cream); padding: 56px; text-align: center; box-shadow: 12px 12px 0 var(--yellow); }
+  .cta-box h2 { font-family: var(--narrow); font-size: 40px; text-transform: uppercase; margin-bottom: 14px; }
+  .cta-box p { font-size: 17px; opacity: .8; margin-bottom: 32px; }
+
+  .related-wrap { padding: 0 0 72px; background: var(--cream); }
+  .related-title { font-family: var(--narrow); font-size: 28px; text-transform: uppercase; margin-bottom: 24px; }
+  .related-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .related-card { display: block; background: white; border: 2px solid var(--ink); padding: 22px; }
+  .related-card:hover { background: var(--yellow); }
+  .related-date { opacity: .55; display: block; margin-bottom: 8px; }
+  .related-card h3 { font-family: var(--narrow); font-size: 17px; text-transform: uppercase; margin: 0 0 8px; line-height: 1.2; }
+  .related-card p { font-size: 13.5px; line-height: 1.5; opacity: .75; margin: 0; }
+
+  .post-nav { border-top: 2.5px solid var(--ink); background: var(--ink); }
+  .post-nav-inner { display: grid; grid-template-columns: 1fr 1fr; }
+  .post-nav-link { display: flex; flex-direction: column; gap: 8px; padding: 28px 32px; color: var(--cream); }
+  .post-nav-link.prev { border-right: 1.5px solid rgba(246,241,231,.15); }
+  .post-nav-link.next { text-align: right; align-items: flex-end; }
+  .post-nav-link .m { color: var(--yellow); }
+  .post-nav-link:hover { background: rgba(255,211,0,.08); }
+  .post-nav-title { font-family: var(--narrow); font-size: 17px; text-transform: uppercase; font-weight: 700; }
+
+  @media (max-width: 768px) {
+    .post-breadcrumb-wrap { padding: 8px 0 0; }
+    .post-hero-wrap { padding: 6px 0 10px; }
+    .post-hero-figure { box-shadow: 4px 4px 0 var(--ink); }
+    .post-hero-overlay { padding: 14px 16px 16px; }
+    .post-hero-overlay .sh { margin-bottom: 8px; }
+    .post-hero-overlay .big { margin: 0 0 8px; }
+    .post-hero-plain { padding: 14px 18px 16px; box-shadow: 4px 4px 0 var(--ink); }
+    .post-hero-plain .sh { margin-bottom: 8px; }
+    .post-intro-wrap { padding: 10px 0 0; }
+    .post-intro { gap: 10px; }
+    .post-intro.has-both { grid-template-columns: 1fr; }
+    .takeaways-box, .toc-box { padding: 12px 16px; box-shadow: 4px 4px 0 var(--yellow); }
+    .intro-label { margin: 0 0 6px; }
+    .post-body :global(h2), .post-body :global(h3) { scroll-margin-top: 240px; }
+    .post-body-wrap { padding: 20px 0 40px; }
+    .related-grid { grid-template-columns: 1fr; }
+    .post-nav-inner { grid-template-columns: 1fr; }
+    .post-nav-link.prev { border-right: none; border-bottom: 1.5px solid rgba(246,241,231,.15); }
+    .post-nav-link.next { text-align: left; align-items: flex-start; }
+    .cta-box { padding: 36px 22px; }
+    .cta-box h2 { font-size: 28px; }
+  }
+</style>

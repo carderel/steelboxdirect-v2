@@ -22,6 +22,12 @@ export default defineConfig({
   },
   integrations: [
     react(),
-    sitemap({ filter: (page) => !page.includes('/admin/') }),
+    // Blog category pages are excluded while thin — many render zero posts and
+    // the rest are still just templated one-liners over a post grid (see
+    // .outputs/seo/2026-07-06-blog-seo-geo-audit.md). Category pages with posts
+    // additionally get noindex in blog/category/[category].astro; this keeps
+    // them out of the sitemap across the board so Google isn't fed empty/thin
+    // URLs while the section is young. Revisit once categories fill out.
+    sitemap({ filter: (page) => !page.includes('/admin/') && !page.includes('/blog/category/') }),
   ],
 });

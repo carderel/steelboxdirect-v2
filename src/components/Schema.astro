@@ -10,7 +10,12 @@ interface CityOverride {
 }
 
 interface Props {
-  pageType: 'home' | 'guide' | 'tool' | 'quote' | 'legal' | 'product';
+  // 'blog' = blog index / category listing pages: same generic Organization +
+  // LocalBusiness + BreadcrumbList + WebPage schema as the default branch below,
+  // deliberately WITHOUT the Article schema ('guide' gets that) since a listing
+  // page isn't itself an article. Individual posts use pageType="guide" so they
+  // inherit Article + BreadcrumbList automatically.
+  pageType: 'home' | 'guide' | 'tool' | 'quote' | 'legal' | 'product' | 'blog';
   pageTitle: string;
   pageDescription: string;
   guideTopic?: 'size' | 'condition' | 'delivery' | 'cost' | 'permits';
@@ -18,9 +23,12 @@ interface Props {
   datePublished?: string;
   dateModified?: string;
   breadcrumbs?: { name: string; path?: string }[];
+  // Absolute URL of the article's hero/OG image (e.g. a blog post's resolved
+  // hero photo). Falls back to the site-wide og-image when omitted.
+  articleImage?: string;
 }
 
-const { pageType, pageTitle, pageDescription, guideTopic, cityOverride, datePublished, dateModified, breadcrumbs } = Astro.props;
+const { pageType, pageTitle, pageDescription, guideTopic, cityOverride, datePublished, dateModified, breadcrumbs, articleImage } = Astro.props;
 const SITE_URL = 'https://steelboxdirect.com';
 
 // Organization Schema
@@ -95,7 +103,7 @@ const localBusinessSchema = {
   },
   'serviceArea': {
     '@type': 'Place',
-    'name': '250-mile radius from Cincinnati, Ohio'
+    'name': '250-mile radius from Cincinnati, Ohio — covering Ohio, Indiana, Kentucky, and western West Virginia'
   },
   'url': 'https://steelboxdirect.com',
   'hasMap': 'https://maps.google.com/?cid=16337072236475848136',
@@ -317,11 +325,24 @@ const articleSchema = {
   '@type': 'Article',
   'headline': pageTitle,
   'description': pageDescription,
+  'image': articleImage ?? 'https://steelboxdirect.com/og-image.png',
   'datePublished': datePublished ?? '2026-03-10',
   'dateModified': dateModified ?? datePublished ?? '2026-03-10',
   'author': {
     '@type': 'Organization',
     'name': 'Steel Box Direct'
+  },
+  'publisher': {
+    '@type': 'Organization',
+    'name': 'Steel Box Direct',
+    'logo': {
+      '@type': 'ImageObject',
+      'url': 'https://steelboxdirect.com/logo.png'
+    }
+  },
+  'mainEntityOfPage': {
+    '@type': 'WebPage',
+    '@id': Astro.url.href
   }
 };
 

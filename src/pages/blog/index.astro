@@ -1,0 +1,179 @@
+---
+export const prerender = true;
+
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { BLOG_CATEGORIES } from '../../content/config';
+import { categoryToSlug, categoryColor, categoryTextColor, formatBlogDate } from '../../lib/blog';
+import { resolveHeroImage } from '../../lib/blogImages';
+
+// Drafts render in `astro dev` (for design review) but are excluded from the
+// production build, the listing below, and — because they're never emitted as
+// pages — the sitemap.
+const allPosts = await getCollection('blog', ({ data }) =>
+  import.meta.env.PROD ? data.draft !== true : true
+);
+
+const sortedPosts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const posts = await Promise.all(
+  sortedPosts.map(async (post) => ({ post, heroImg: await resolveHeroImage(post.data.heroImage) }))
+);
+
+const breadcrumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Blog' },
+];
+
+// Blog + ItemList JSON-LD — an explicit, structured map of the current posts
+// for Google and AI systems, instead of requiring them to infer the
+// collection from repeated <a> cards. Published posts only (see allPosts
+// filter above), and only emitted when there's at least one.
+const blogSchema = posts.length > 0 ? {
+  '@context': 'https://schema.org',
+  '@type': 'Blog',
+  name: 'Steel Box Direct Blog',
+  url: 'https://steelboxdirect.com/blog/',
+  description: 'Guides, comparisons, and real-world use cases for shipping containers — sizing, alternatives, use-case spotlights, and container specs from Steel Box Direct.',
+  mainEntity: {
+    '@type': 'ItemList',
+    itemListElement: posts.map(({ post }, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      item: {
+        '@type': 'BlogPosting',
+        name: post.data.title,
+        url: `https://steelboxdirect.com/blog/${post.slug}/`,
+        datePublished: post.data.pubDate.toISOString().slice(0, 10),
+      },
+    })),
+  },
+} : null;
+---
+
+<BaseLayout
+  pageType="blog"
+  title="Steel Box Direct Blog — Container Buying, Comparisons & Project Ideas"
+  description="Guides, comparisons, and real-world use cases for shipping containers — sizing, alternatives, use-case spotlights, and container specs from Steel Box Direct."
+  breadcrumbs={breadcrumbs}
+>
+  {blogSchema && (
+    <script type="application/ld+json" slot="head" is:inline set:html={JSON.stringify(blogSchema)} />
+  )}
+
+  <!-- BREADCRUMBS -->
+  <div class="blog-breadcrumb-wrap">
+    <div class="wrap">
+      <Breadcrumbs items={breadcrumbs} />
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <section class="blog-hero">
+    <div class="wrap">
+      <div class="sh">
+        <span class="idx">§ Blog</span>
+        <span class="nm">Steel Box Direct</span>
+        <span class="tg">Guides · Comparisons · Real Projects</span>
+      </div>
+      <h1 class="big">The Container<br><em>Blog.</em></h1>
+      <p class="lede">Buyer's guides, honest comparisons, use-case spotlights, and reference material for anyone researching a shipping container.</p>
+    </div>
+  </section>
+
+  <!-- CATEGORY FILTER -->
+  <nav class="cat-filter" aria-label="Filter by category">
+    <div class="wrap cat-filter-inner">
+      <a href="/blog/" class="cat-pill is-active">All Posts</a>
+      {BLOG_CATEGORIES.map((cat) => (
+        <a href={`/blog/category/${categoryToSlug(cat)}/`} class="cat-pill" style={`--pill-c:${categoryColor(cat)}`}>{cat}</a>
+      ))}
+    </div>
+  </nav>
+
+  <!-- POST GRID -->
+  <section class="blog-grid-section">
+    <div class="wrap">
+      {posts.length === 0 ? (
+        <p class="empty-note">No posts published yet — check back soon.</p>
+      ) : (
+        <div class="post-grid">
+          {posts.map(({ post, heroImg }) => (
+            <a class="post-card" href={`/blog/${post.slug}/`}>
+              {heroImg && (
+                <div class="post-card-thumb">
+                  <Image src={heroImg} alt="" width={600} format="webp" />
+                </div>
+              )}
+              <div class="post-card-chip" style={`background:${categoryColor(post.data.category)};color:${categoryTextColor(post.data.category)}`}>{post.data.category}</div>
+              <h2 class="post-card-title">{post.data.title}</h2>
+              <p class="post-card-desc">{post.data.description}</p>
+              <div class="post-card-meta">
+                <span class="m">{formatBlogDate(post.data.pubDate)}</span>
+                {post.data.draft && <span class="draft-tag">DRAFT</span>}
+              </div>
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="blog-cta-wrap">
+    <div class="wrap">
+      <div class="cta-box">
+        <h2>Ready to talk specifics?</h2>
+        <p>Tell us your size, zip code, and intended use — we'll get back to you within 4 business hours.</p>
+        <a href="/quote/" class="btn">Get My Quote <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .blog-breadcrumb-wrap { background: var(--cream); padding: 28px 0 0; }
+  .blog-hero { padding: 18px 0 32px; background: var(--yellow); border-bottom: 2.5px solid var(--ink); }
+  .sh { display: flex; gap: 16px; flex-wrap: wrap; font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; opacity: .7; margin-bottom: 14px; }
+  .blog-hero .big { font-family: var(--narrow); font-size: clamp(34px, 5vw, 64px); text-transform: uppercase; line-height: .95; font-weight: 800; }
+  .blog-hero .lede { font-size: 17px; line-height: 1.4; max-width: 680px; font-weight: 500; margin-top: 14px; }
+
+  .cat-filter { background: var(--ink); border-bottom: 2.5px solid var(--ink); }
+  .cat-filter-inner { display: flex; flex-wrap: wrap; gap: 10px; padding: 12px 32px; }
+  .cat-pill { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--cream); border: 1.5px solid rgba(246,241,231,.3); padding: 8px 14px; white-space: nowrap; }
+  .cat-pill:hover { border-color: var(--pill-c, var(--yellow)); color: var(--pill-c, var(--yellow)); }
+  .cat-pill.is-active { background: var(--yellow); color: var(--ink); border-color: var(--yellow); }
+
+  .blog-grid-section { padding: 36px 0 72px; background: var(--cream); }
+  .empty-note { font-family: var(--narrow); font-size: 20px; opacity: .6; text-align: center; padding: 48px 0; }
+  .post-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+  .post-card { display: flex; flex-direction: column; background: white; border: 2.5px solid var(--ink); box-shadow: 8px 8px 0 var(--ink); padding: 26px; transition: transform .15s, box-shadow .15s; }
+  .post-card:hover { transform: translate(-3px, -3px); box-shadow: 11px 11px 0 var(--ink); }
+  .post-card-thumb { margin: -26px -26px 18px; aspect-ratio: 16 / 9; overflow: hidden; border-bottom: 2.5px solid var(--ink); }
+  .post-card-thumb :global(img) { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .post-card-chip { align-self: flex-start; font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--cream); padding: 5px 10px; margin-bottom: 16px; }
+  .post-card-title { font-family: var(--narrow); font-size: 22px; font-weight: 700; text-transform: uppercase; line-height: 1.15; margin: 0 0 12px; }
+  .post-card-desc { font-size: 14.5px; line-height: 1.6; opacity: .8; margin: 0 0 20px; flex-grow: 1; }
+  .post-card-meta { display: flex; align-items: center; gap: 12px; opacity: .6; }
+  /* Outline/ink treatment (not the red used by the Comparisons category chip)
+     so the DRAFT badge never blurs together with a red category chip. */
+  .draft-tag { font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: .06em; background: transparent; color: var(--ink); border: 1.5px solid var(--ink); padding: 1px 7px; opacity: 1; }
+
+  .blog-cta-wrap { padding: 0 0 96px; background: var(--cream); }
+  .cta-box { background: var(--ink); color: var(--cream); padding: 56px; text-align: center; box-shadow: 12px 12px 0 var(--yellow); }
+  .cta-box h2 { font-family: var(--narrow); font-size: 40px; text-transform: uppercase; margin-bottom: 14px; }
+  .cta-box p { font-size: 17px; opacity: .8; margin-bottom: 32px; }
+
+  @media (max-width: 960px) {
+    .post-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 720px) {
+    .post-grid { grid-template-columns: 1fr; }
+    .blog-breadcrumb-wrap { padding: 20px 0 0; }
+    .blog-hero { padding: 12px 0 24px; }
+    .blog-grid-section { padding: 28px 0 56px; }
+    .cta-box { padding: 36px 22px; }
+    .cta-box h2 { font-size: 28px; }
+  }
+</style>

@@ -14,7 +14,7 @@ interface CityOverride {
 interface Props {
   title: string;
   description?: string;
-  pageType?: 'home' | 'guide' | 'tool' | 'quote' | 'legal' | 'product';
+  pageType?: 'home' | 'guide' | 'tool' | 'quote' | 'legal' | 'product' | 'blog';
   guideTopic?: 'size' | 'condition' | 'delivery' | 'cost' | 'permits';
   cityOverride?: CityOverride;
   noindex?: boolean;
@@ -22,6 +22,9 @@ interface Props {
   dateModified?: string;
   breadcrumbs?: { name: string; path?: string }[];
   floatingSidebar?: boolean;
+  // Absolute URL for og:image/twitter:image AND the Article schema's `image`
+  // (e.g. a blog post's resolved hero photo). Falls back to the site og-image.
+  ogImage?: string;
 }
 
 const {
@@ -35,20 +38,25 @@ const {
   dateModified,
   breadcrumbs,
   floatingSidebar,
+  ogImage,
 } = Astro.props;
+const resolvedOgImage = ogImage ?? 'https://steelboxdirect.com/og-image.png';
 
 const showFloatingSidebar = floatingSidebar ?? (pageType === 'home');
+
+// GTM only in production builds — dev browsing must not pollute production GA4
+const isProd = import.meta.env.PROD;
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
     <!-- Google Tag Manager -->
-    <script is:inline>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    {isProd && <script is:inline>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-K4T6CHW8');</script>
+    })(window,document,'script','dataLayer','GTM-K4T6CHW8');</script>}
     <!-- End Google Tag Manager -->
     <!-- ⚠️ GOOGLE SEARCH CONSOLE VERIFICATION — DO NOT REMOVE OR MODIFY.
          Removing this tag will immediately break GSC ownership and disconnect all indexing data. -->
@@ -63,14 +71,14 @@ const showFloatingSidebar = floatingSidebar ?? (pageType === 'home');
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:site_name" content="Steel Box Direct" />
-    <meta property="og:image" content="https://steelboxdirect.com/og-image.png" />
+    <meta property="og:image" content={resolvedOgImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="Steel Box Direct" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content="https://steelboxdirect.com/og-image.png" />
+    <meta name="twitter:image" content={resolvedOgImage} />
     <link rel="canonical" href={`https://steelboxdirect.com${Astro.url.pathname}`} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title}</title>
@@ -81,7 +89,7 @@ const showFloatingSidebar = floatingSidebar ?? (pageType === 'home');
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@500;600;700&family=Archivo:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&family=Permanent+Marker&display=swap" /></noscript>
 
     <!-- Schema Markup -->
-    <Schema pageType={pageType} pageTitle={title} pageDescription={description} guideTopic={guideTopic} cityOverride={cityOverride} datePublished={datePublished} dateModified={dateModified} breadcrumbs={breadcrumbs} />
+    <Schema pageType={pageType} pageTitle={title} pageDescription={description} guideTopic={guideTopic} cityOverride={cityOverride} datePublished={datePublished} dateModified={dateModified} breadcrumbs={breadcrumbs} articleImage={ogImage} />
     <slot name="head" />
 
     <!-- Attribution tracking initialization -->
@@ -92,8 +100,8 @@ const showFloatingSidebar = floatingSidebar ?? (pageType === 'home');
   </head>
   <body>
     <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K4T6CHW8"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    {isProd && <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K4T6CHW8"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>}
     <!-- End Google Tag Manager (noscript) -->
     <SiteNav />
 
