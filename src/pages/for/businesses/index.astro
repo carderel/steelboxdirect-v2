@@ -2,7 +2,7 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import { Image } from 'astro:assets';
-import { pricing, perSqFt, roundToHalf } from '../../../data/pricing';
+import { pricing, perSqFt, roundToHalf, asOfLabel } from '../../../data/pricing';
 import imgHero from '../../../assets/photos/businesses/40ft-commercial-overflow-container-loading-area.jpg';
 import imgForklift from '../../../assets/photos/businesses/forklift-pallet-ground-level-container-access.jpg';
 import imgCost from '../../../assets/photos/businesses/container-interior-pallet-inventory-storage.jpg';
@@ -123,7 +123,7 @@ const faqs = [
           <p>Commercial storage facilities bill you the same way every month — by the pallet, the square foot, or the cubic foot — and they cap your access to facility hours. Own a 40ft container outright and the math inverts: your storage works out to about <strong>{perSqFtDisplay} per square foot, one time.</strong> There is no renewal, no annual rate increase, and no line item that grows every quarter.</p>
           <p>An on-site container also removes costs that never show up on a storage invoice. You stop paying inbound and outbound freight to shuttle inventory to and from a third-party warehouse. You get on-demand access to your own stock instead of scheduling a retrieval. And you take a logistics dependency — someone else's hours, someone else's dock, someone else's lost-pallet policy — off your operation entirely.</p>
           <p>For businesses with predictable seasonal peaks, the gap widens fast. A container that arrives in spring and leaves in fall is dramatically cheaper than six months of rack storage charged per square foot every single month — and unlike that rented space, the container holds resale value when the season ends.</p>
-          <p class="uc-price-note">Container pricing reflects current market · updated June 2026.</p>
+          <p class="uc-price-note">Container pricing reflects current market · updated {asOfLabel}.</p>
         </div>
         <div class="uc-block">
           <h3>Ground-level, forklift-compatible access</h3>
@@ -210,7 +210,7 @@ const faqs = [
 
       <p class="uc-compare-pull">Over any horizon longer than a season or two, the question isn't whether owning is cheaper — it's how much sooner the container pays for itself.</p>
 
-      <p class="uc-price-note uc-compare-note">Per-sq-ft figure reflects current market · updated June 2026. It is a one-time cost for a 40ft Standard unit (gross floor footprint, ~320 sq ft = 8×40), not a Steel Box Direct quote for a specific site.</p>
+      <p class="uc-price-note uc-compare-note">Per-sq-ft figure reflects current market · updated {asOfLabel}. It is a one-time cost for a 40ft Standard unit (gross floor footprint, ~320 sq ft = 8×40), not a Steel Box Direct quote for a specific site.</p>
 
       <!-- IMAGE SLOT 3 — cost of space. filename: container-interior-pallet-inventory-storage.jpg -->
       <figure class="uc-img uc-img-wide" data-img-slot="cost">

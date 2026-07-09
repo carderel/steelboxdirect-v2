@@ -2,7 +2,7 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import { Image } from 'astro:assets';
-import { pricing, monthlyOver5yr } from '../../../data/pricing';
+import { pricing, monthlyOver5yr, asOfLabel } from '../../../data/pricing';
 import imgHero from '../../../assets/photos/homeowners/homeowner-acreage-container-woodline-storage.jpg';
 import imgDriveway from '../../../assets/photos/homeowners/homeowner-20ft-container-suburban-driveway.jpg';
 import imgSecurity from '../../../assets/photos/homeowners/container-door-puck-lock-residential.jpg';
@@ -124,7 +124,7 @@ const faqs = [
         <div class="uc-block">
           <h3>Own it instead of renting it</h3>
           <p>A standard 10×10 self-storage unit runs about $120 per month on the <a href="https://www.sparefoot.com/blog/how-much-does-a-storage-unit-cost" target="_blank" rel="noopener">national average</a>. Over five years, that's roughly $7,200 in fees — for a space you never own, that you have to drive to, and that tends to raise its rate over time. A 20ft container is a one-time purchase of {ownPurchaseDisplay} today — roughly {ownMonthlyDisplay} per month if you spread it across the same five years — and it belongs to you permanently. There is no renewal notice and no annual increase. When you no longer need it, you can resell it: steel holds its value because it doesn't rot, warp, or depreciate the way a wood shed does. For anyone storing longer than two or three years, the math runs strongly in favor of ownership.</p>
-          <p class="uc-price-note">Based on the national average — storage rental prices vary by region. Container pricing reflects current market · updated June 2026.</p>
+          <p class="uc-price-note">Based on the national average — storage rental prices vary by region. Container pricing reflects current market · updated {asOfLabel}.</p>
         </div>
         <div class="uc-block">
           <h3>More secure than a shed, more accessible than a storage facility</h3>
@@ -214,7 +214,7 @@ const faqs = [
         </tbody>
       </table>
 
-      <p class="uc-price-note uc-compare-note">Container pricing reflects current market · updated June 2026. Storage-unit figure is the national average — rental prices vary by region — and is not a Steel Box Direct rate.</p>
+      <p class="uc-price-note uc-compare-note">Container pricing reflects current market · updated {asOfLabel}. Storage-unit figure is the national average — rental prices vary by region — and is not a Steel Box Direct rate.</p>
 
       <!-- IMAGE SLOT 3 — cost comparison. filename: storage-unit-vs-container-comparison.jpg -->
       <figure class="uc-img uc-img-wide" data-img-slot="cost">

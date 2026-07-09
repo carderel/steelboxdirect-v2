@@ -44,6 +44,12 @@ const checklist: ChecklistItem[] = [
     title: 'Use a payment method with buyer protection',
     body: `This one applies to any seller, anywhere: be cautious if you're pressured to wire money, send Zelle, or pay in cryptocurrency up front, especially before you've verified who you're dealing with. Favor payment methods that carry some form of buyer protection or a paper trail, and treat manufactured urgency — "today only," "another buyer is waiting" — as a reason to slow down, not skip your other checks.`,
   },
+  {
+    n: '07',
+    title: 'Ask whether the price includes delivery',
+    body: `A cheap container price often leaves out freight — and shipping a steel box isn't cheap, so a low headline number can hide hundreds of dollars in delivery cost. Always ask for the all-in delivered total, and compare that number across sellers instead of the sticker price. Steel Box Direct quotes all-in from the start: the container, delivery to your ZIP, and placement on flat ground. See `,
+    link: { href: '/cost/', label: 'what really drives container cost' },
+  },
 ];
 
 interface RecapRow { check: string; sbd: string }
@@ -53,6 +59,7 @@ const recap: RecapRow[] = [
   { check: 'One honest condition grade', sbd: 'Wind & Water Tight (used) — the only grade we sell' },
   { check: 'Real, local delivery', sbd: '~250 miles of Cincinnati, across Ohio, Indiana, Kentucky & western WV' },
   { check: 'Verifiable unit identity', sbd: 'CSC plate & markings you can check yourself — see our reference guide' },
+  { check: 'Delivery included in the price', sbd: 'All-in quotes — container, delivery to your ZIP & flat-ground placement, no surprise freight' },
 ];
 
 interface Faq { q: string; a: string }
@@ -76,6 +83,10 @@ const faqs: Faq[] = [
   {
     q: 'What condition are the containers?',
     a: `Every container Steel Box Direct sells is Wind & Water Tight (used) — one honest grade, sealed against rain, wind, snow, and pests, and structurally sound for storage and on-site use. We don't sell multiple grades with upsell pressure; what you're quoted is what gets delivered.`,
+  },
+  {
+    q: 'Does the container price include delivery?',
+    a: `Always ask, because often it doesn't. A cheap container price frequently excludes freight, and shipping a steel box can add hundreds of dollars — so the lowest sticker price isn't always the lowest delivered cost. Compare the all-in delivered total across sellers, not the container price alone. Steel Box Direct quotes all-in: the number we give you covers the container, delivery to your ZIP, and placement on flat ground.`,
   },
 ];
 
@@ -122,7 +133,7 @@ const faqSchema = {
   <section id="checklist" class="bg-section bg-checklist">
     <div class="wrap">
       <h2 class="section-title">The Vetting Checklist</h2>
-      <p class="section-intro">Six things to check before you send anyone a deposit on a shipping container. Each one is a real scam vector — and a real question you can ask.</p>
+      <p class="section-intro">Seven things to check before you send anyone a deposit on a shipping container. Each one is a real scam vector — and a real question you can ask.</p>
       <div class="check-list">
         {checklist.map((c) => (
           <div class="check-item">

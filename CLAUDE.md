@@ -41,7 +41,7 @@ These apply regardless of what the user asks. No exceptions.
 - Build: `npm run build`
 - Deploy: `git push` → triggers Cloudflare Pages auto-deploy
 - All dynamic routes need `export const prerender = true`
-- No dollar amounts on any page (prices fluctuate)
+- Pricing policy (updated 2026-07-09): average prices ALLOWED on homepage, product/size pages, and use-case pages — must be sourced from `src/data/pricing.ts` and shown with the "average starting price, your quote may be more or less" disclaimer. Still NEVER on city pages (see hard stop below). Rationale + scope: `.project-catalog/decisions/2026-07-09-pricing-display-policy.md`
 - Agents: `.agents/astro-developer.md`, `.agents/seo-analyst.md`, `.agents/verifier.md`, `.agents/stuck.md`
 - Session logs: `.project-catalog/sessions/`
 - Checkpoints: `.checkpoints/`

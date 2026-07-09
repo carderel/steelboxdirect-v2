@@ -1,4 +1,9 @@
 ---
+import { pricing, formatPrice, asOfLabel } from '../../data/pricing';
+
+const p20 = pricing['20ftCargo'];
+const p40 = pricing['40ftStandard'];
+const p40hc = pricing['40ftStandardHC'];
 ---
 <!-- ============ §06 PRICING TEASER ============ -->
 <section class="price" id="price">
@@ -8,21 +13,28 @@
       <span class="nm">What it really costs</span>
       <span class="tg">All-in · no hidden fees</span>
     </div>
-    <h2 class="big">Three price points.<br><em>One honest number</em> each.</h2>
-    <p class="intro">These are recent averages — container, delivery, and placement on flat ground included. Container prices fluctuate with market availability. <a href="/quote/" style="color:inherit;border-bottom:1.5px solid currentColor">Submit a quote</a> for current pricing.</p>
+    <h2 class="big">Three price points.<br><em>One honest average</em> each.</h2>
+    <p class="intro">Recent averages — container, delivery, and placement on flat ground included.</p>
+    <p class="compare-line">Sticker prices elsewhere rarely include delivery. Ours do — every quote is all-in.</p>
+
+    <div class="price-disclaimer" role="note">
+      <p><strong>These are average starting prices, not quotes.</strong> What you pay can land above or below — it depends mostly on how far we deliver and current market supply. We'll give you a real, all-in number when you <a href="/quote/">request a quote</a>. <em>(Average as of {asOfLabel}.)</em></p>
+    </div>
 
     <div class="pgrid pricing_grid">
       <div class="pcard pricing_card">
         <div class="tag pricing_name"><span class="name">20-ft cargo</span><span class="chip">Most available</span></div>
+        <div class="num">{formatPrice(p20.price)}<small>Avg. starting price</small></div>
         <ul class="pricing_features">
           <li>~160 sq ft · fits a tractor or a lot of tools</li>
           <li>Wind &amp; Water Tight, minor surface rust</li>
-          <li>Next-week delivery usually available</li>
+          <li>Most deliveries in about two weeks</li>
         </ul>
         <a href="/shipping-containers-for-sale/20-foot-shipping-container/" class="pcard-cta pricing_cta">See full specs <span>→</span></a>
       </div>
       <div class="pcard pricing_card">
         <div class="tag pricing_name"><span class="name">40-ft cargo</span><span class="chip">Best value</span></div>
+        <div class="num">{formatPrice(p40.price)}<small>Avg. starting price</small></div>
         <ul class="pricing_features">
           <li>~320 sq ft · equipment + implements + shelving</li>
           <li>The Sweet Spot — best value per square foot</li>
@@ -32,6 +44,8 @@
       </div>
       <div class="pcard rec pricing_card">
         <div class="tag pricing_name"><span class="name">40ft HC</span><span class="chip">Most popular</span></div>
+        <div class="num">{formatPrice(p40hc.price)}<small>Avg. starting price</small></div>
+        <p class="hc-note">Supply runs deep right now, so the High Cube average can land below the standard 40ft.</p>
         <ul class="pricing_features">
           <li>Same 40ft footprint — a full foot taller at 9'6"</li>
           <li>~2,700 cu ft — the most cubic capacity in the lineup</li>
@@ -41,7 +55,7 @@
       </div>
     </div>
     <p style="font-family:var(--mono);font-size:13px;letter-spacing:.04em;font-weight:500;opacity:.7;text-transform:uppercase;margin-top:2rem;line-height:1.75">
-      Container pricing tracks global shipping rates and steel supply — it shifts week to week. We don't post numbers that will be wrong by the time you read them. Request a quote for the current price that applies to your order.
+      Container pricing tracks global shipping rates and steel supply — it shifts week to week. These averages are a starting point, not a locked quote. Request a quote for the current price that applies to your order.
     </p>
   </div>
 </section>
@@ -60,7 +74,14 @@
   .price .sh{border-color:var(--cream);color:var(--cream)}
   .price .big{color:var(--cream)}
   .price .big em{color:var(--c1-size)}
-  .price .intro{font-size:var(--t-lede);line-height:1.5;margin:2em 0 56px;max-width:640px;opacity:.85}
+  .price .intro{font-size:var(--t-lede);line-height:1.5;margin:2em 0 12px;max-width:640px;opacity:.85}
+  .price .compare-line{font-family:var(--narrow);font-weight:700;font-size:clamp(17px,2vw,21px);line-height:1.35;margin:0 0 24px;max-width:640px;color:var(--c1-size)}
+  .price-disclaimer{border:2px solid var(--c1-size);border-left-width:8px;background:rgba(246,241,231,.06);padding:20px 24px;margin:0 0 56px;max-width:760px}
+  .price-disclaimer p{font-size:16px;line-height:1.6;margin:0}
+  .price-disclaimer strong{color:var(--c1-size)}
+  .price-disclaimer em{font-style:italic;opacity:.7;font-size:14px}
+  .price-disclaimer a{color:inherit;border-bottom:1.5px solid currentColor;font-weight:600}
+  .hc-note{font-family:var(--mono);font-size:11px;line-height:1.5;letter-spacing:.02em;opacity:.6;margin:-4px 0 0;text-transform:none}
   .pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:2.5px solid var(--cream)}
   .pcard{padding:32px 28px;border-right:2.5px solid var(--cream);display:flex;flex-direction:column;gap:16px;background:var(--ink);transition:background .15s}
   .pcard:last-child{border-right:none}

@@ -189,7 +189,7 @@ const isProd = import.meta.env.PROD;
       }
 
       nav.p{display:flex;align-items:center;gap:0}
-      nav.p a{font-family:var(--mono);font-size:1.1em;letter-spacing:.06em;text-transform:uppercase;padding:10px 18px;border-right:1.5px solid var(--ink)}
+      nav.p a{font-family:var(--mono);font-size:15px;letter-spacing:.06em;text-transform:uppercase;padding:10px 18px;border-right:1.5px solid var(--ink)}
       nav.p > a:first-child{border-left:1.5px solid var(--ink)}
       nav.p a:hover{background:var(--ink);color:var(--yellow)}
 
@@ -201,7 +201,7 @@ const isProd = import.meta.env.PROD;
       .nav-loc:hover .nav-loc-trigger svg{transform:rotate(180deg)}
       .nav-loc-drop{position:absolute;top:100%;left:0;min-width:210px;background:var(--ink);border:2.5px solid var(--ink);display:none;z-index:200}
       .nav-loc:hover .nav-loc-drop{display:block}
-      .nav-loc-drop a{display:flex;align-items:center;gap:14px;padding:13px 18px;border-bottom:1px solid rgba(246,241,231,.1);color:var(--cream);font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;border-right:none!important}
+      .nav-loc-drop a{display:flex;align-items:center;gap:14px;padding:13px 18px;border-bottom:1px solid rgba(246,241,231,.1);color:var(--cream);font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;border-right:none!important}
       .nav-loc-drop a:last-child{border-bottom:none}
       .nav-loc-drop a:hover{background:var(--yellow);color:var(--ink)}
       .dc{font-family:var(--narrow);font-weight:700;font-size:22px;line-height:1;letter-spacing:-.01em;flex-shrink:0}
@@ -216,7 +216,7 @@ const isProd = import.meta.env.PROD;
       .nav-con:hover .nav-con-trigger svg{transform:rotate(180deg)}
       .nav-con-drop{position:absolute;top:100%;left:0;min-width:210px;background:var(--ink);border:2.5px solid var(--ink);display:none;z-index:200}
       .nav-con:hover .nav-con-drop{display:block}
-      .nav-con-drop a{display:flex;align-items:center;gap:14px;padding:13px 18px;border-bottom:1px solid rgba(246,241,231,.1);color:var(--cream);font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;border-right:none!important}
+      .nav-con-drop a{display:flex;align-items:center;gap:14px;padding:13px 18px;border-bottom:1px solid rgba(246,241,231,.1);color:var(--cream);font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;border-right:none!important}
       .nav-con-drop a:last-child{border-bottom:none}
       .nav-con-drop a:hover{background:var(--yellow);color:var(--ink)}
       .nav-con-drop a .dc{color:var(--yellow)}
@@ -230,7 +230,7 @@ const isProd = import.meta.env.PROD;
       .nav-gd:hover .nav-gd-trigger svg{transform:rotate(180deg)}
       .nav-gd-drop{position:absolute;top:100%;left:0;min-width:210px;background:var(--ink);border:2.5px solid var(--ink);display:none;z-index:200}
       .nav-gd:hover .nav-gd-drop{display:block}
-      .nav-gd-drop a{display:flex;align-items:center;gap:14px;padding:13px 18px;border-bottom:1px solid rgba(246,241,231,.1);color:var(--cream);font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;border-right:none!important}
+      .nav-gd-drop a{display:flex;align-items:center;gap:14px;padding:13px 18px;border-bottom:1px solid rgba(246,241,231,.1);color:var(--cream);font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;border-right:none!important}
       .nav-gd-drop a:last-child{border-bottom:none}
       .nav-gd-drop a:hover{background:var(--yellow);color:var(--ink)}
       .nav-gd-drop a .dc{color:var(--yellow)}
@@ -244,11 +244,13 @@ const isProd = import.meta.env.PROD;
       .nav-tl:hover .nav-tl-trigger svg{transform:rotate(180deg)}
       .nav-tl-drop{position:absolute;top:100%;left:0;min-width:210px;background:var(--ink);border:2.5px solid var(--ink);display:none;z-index:200}
       .nav-tl:hover .nav-tl-drop{display:block}
-      .nav-tl-drop a{display:flex;align-items:center;gap:14px;padding:13px 18px;border-bottom:1px solid rgba(246,241,231,.1);color:var(--cream);font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;border-right:none!important}
+      .nav-tl-drop a{display:flex;align-items:center;gap:14px;padding:13px 18px;border-bottom:1px solid rgba(246,241,231,.1);color:var(--cream);font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;border-right:none!important}
       .nav-tl-drop a:last-child{border-bottom:none}
       .nav-tl-drop a:hover{background:var(--yellow);color:var(--ink)}
       .nav-tl-drop a .dc{color:var(--yellow)}
       .nav-tl-drop a:hover .dc{color:var(--cream)}
+      /* Desktop dropdown sub-items step down from 15px triggers for visual hierarchy. Specificity 0,2,2 beats nav.p a (0,1,2). */
+      nav.p .nav-con-drop a, nav.p .nav-gd-drop a, nav.p .nav-tl-drop a, nav.p .nav-loc-drop a{font-size:12px}
 
       .cta-hd{display:inline-flex;align-items:center;gap:8px;padding:0 22px;background:var(--ink);color:var(--yellow);font-family:var(--narrow);font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:.02em;border-left:2.5px solid var(--ink)}
       .cta-hd:hover{background:var(--cream);color:var(--ink)}
@@ -426,7 +428,7 @@ const isProd = import.meta.env.PROD;
         .nav-loc-trigger{width:100%;padding:20px 24px!important;border-right:none!important;border-bottom:1.5px solid var(--ink);justify-content:space-between;font-size:18px!important}
         .nav-loc:hover .nav-loc-trigger{background:inherit;color:inherit}
         .nav-loc-drop{position:static;display:block;background:rgba(11,15,26,.06);border:none;min-width:0}
-        .nav-loc-drop a{padding:15px 24px 15px 44px!important;color:var(--ink)!important;border-bottom:1px solid rgba(11,15,26,.1);font-size:14px!important}
+        .nav-loc-drop a{padding:15px 24px 15px 44px!important;color:var(--ink)!important;border-bottom:1px solid rgba(11,15,26,.1);font-size:14px!important;white-space:normal!important}
         .nav-loc-drop a:hover{background:var(--ink);color:var(--yellow)!important}
         .dc{color:var(--ink)!important;font-size:18px!important}
         .nav-loc-drop a:hover .dc{color:var(--yellow)!important}
@@ -435,7 +437,7 @@ const isProd = import.meta.env.PROD;
         .nav-con-trigger{width:100%;padding:20px 24px!important;border-right:none!important;border-bottom:1.5px solid var(--ink);justify-content:space-between;font-size:18px!important}
         .nav-con:hover .nav-con-trigger{background:inherit;color:inherit}
         .nav-con-drop{position:static;display:block;background:rgba(11,15,26,.06);border:none;min-width:0}
-        .nav-con-drop a{padding:15px 24px 15px 44px!important;color:var(--ink)!important;border-bottom:1px solid rgba(11,15,26,.1);font-size:14px!important}
+        .nav-con-drop a{padding:15px 24px 15px 44px!important;color:var(--ink)!important;border-bottom:1px solid rgba(11,15,26,.1);font-size:14px!important;white-space:normal!important}
         .nav-con-drop a:hover{background:var(--ink);color:var(--yellow)!important}
         .nav-con-drop a:hover .dc{color:var(--yellow)!important}
         .nav-con-trigger svg{display:none}
@@ -443,7 +445,7 @@ const isProd = import.meta.env.PROD;
         .nav-gd-trigger{width:100%;padding:20px 24px!important;border-right:none!important;border-bottom:1.5px solid var(--ink);justify-content:space-between;font-size:18px!important}
         .nav-gd:hover .nav-gd-trigger{background:inherit;color:inherit}
         .nav-gd-drop{position:static;display:block;background:rgba(11,15,26,.06);border:none;min-width:0}
-        .nav-gd-drop a{padding:15px 24px 15px 44px!important;color:var(--ink)!important;border-bottom:1px solid rgba(11,15,26,.1);font-size:14px!important}
+        .nav-gd-drop a{padding:15px 24px 15px 44px!important;color:var(--ink)!important;border-bottom:1px solid rgba(11,15,26,.1);font-size:14px!important;white-space:normal!important}
         .nav-gd-drop a:hover{background:var(--ink);color:var(--yellow)!important}
         .nav-gd-drop a:hover .dc{color:var(--yellow)!important}
         .nav-gd-trigger svg{display:none}
@@ -451,7 +453,7 @@ const isProd = import.meta.env.PROD;
         .nav-tl-trigger{width:100%;padding:20px 24px!important;border-right:none!important;border-bottom:1.5px solid var(--ink);justify-content:space-between;font-size:18px!important}
         .nav-tl:hover .nav-tl-trigger{background:inherit;color:inherit}
         .nav-tl-drop{position:static;display:block;background:rgba(11,15,26,.06);border:none;min-width:0}
-        .nav-tl-drop a{padding:15px 24px 15px 44px!important;color:var(--ink)!important;border-bottom:1px solid rgba(11,15,26,.1);font-size:14px!important}
+        .nav-tl-drop a{padding:15px 24px 15px 44px!important;color:var(--ink)!important;border-bottom:1px solid rgba(11,15,26,.1);font-size:14px!important;white-space:normal!important}
         .nav-tl-drop a:hover{background:var(--ink);color:var(--yellow)!important}
         .nav-tl-drop a:hover .dc{color:var(--yellow)!important}
         .nav-tl-trigger svg{display:none}
