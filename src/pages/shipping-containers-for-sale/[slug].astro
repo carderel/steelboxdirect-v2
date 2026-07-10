@@ -36,6 +36,7 @@ const productSchema = {
   "offers": {
     "@type": "Offer",
     "priceCurrency": "USD",
+    ...(price ? { "price": price.price } : {}),
     "availability": "https://schema.org/InStock",
     "seller": { "@type": "Organization", "name": "Steel Box Direct" },
     "url": `https://steelboxdirect.com/shipping-containers-for-sale/${c.slug}/`

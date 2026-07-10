@@ -457,6 +457,8 @@ const isProd = import.meta.env.PROD;
         .nav-tl-drop a:hover{background:var(--ink);color:var(--yellow)!important}
         .nav-tl-drop a:hover .dc{color:var(--yellow)!important}
         .nav-tl-trigger svg{display:none}
+        /* Mobile dropdown sub-items step down from 18px triggers. Specificity 0,2,2 beats nav.p a (0,1,2), which also carries !important. */
+        nav.p .nav-loc-drop a, nav.p .nav-con-drop a, nav.p .nav-gd-drop a, nav.p .nav-tl-drop a{font-size:14px!important}
 
         /* ---- Secondary strip: Use Type becomes a tap dropdown; Call Now stays prominent ---- */
         .subnav{flex-direction:column;align-items:stretch;justify-content:flex-start;gap:0;min-height:0}
