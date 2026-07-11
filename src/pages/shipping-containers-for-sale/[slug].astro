@@ -4,7 +4,7 @@ export const prerender = true;
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { containers } from '../../data/containers';
 import type { Container } from '../../data/containers';
-import { priceBySlug, formatPrice, asOfLabel } from '../../data/pricing';
+import { priceBySlug, formatPrice, asOfLabel, priceValidUntil } from '../../data/pricing';
 
 export function getStaticPaths() {
   return containers.map((c) => ({ params: { slug: c.slug }, props: { container: c } }));
@@ -37,6 +37,8 @@ const productSchema = {
     "@type": "Offer",
     "priceCurrency": "USD",
     ...(price ? { "price": price.price } : {}),
+    "priceValidUntil": priceValidUntil,
+    "itemCondition": "https://schema.org/UsedCondition",
     "availability": "https://schema.org/InStock",
     "seller": { "@type": "Organization", "name": "Steel Box Direct" },
     "url": `https://steelboxdirect.com/shipping-containers-for-sale/${c.slug}/`

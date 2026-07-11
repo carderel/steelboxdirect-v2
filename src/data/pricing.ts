@@ -49,6 +49,19 @@ export const asOfLabel = new Date(pricing.asOf + 'T00:00:00').toLocaleDateString
   year: 'numeric',
 });
 
+/**
+ * Future ISO date (YYYY-MM-DD) for Product `offers.priceValidUntil`, derived
+ * from `pricing.asOf` + 1 year. Self-maintaining: bumping asOf on a price
+ * refresh automatically pushes this forward, so it never goes stale-in-the-past
+ * on a normal cadence and never needs manual editing. Honest signal to Google
+ * that the average is current as of the last confirmation.
+ */
+export const priceValidUntil = (() => {
+  const d = new Date(pricing.asOf + 'T00:00:00');
+  d.setFullYear(d.getFullYear() + 1);
+  return d.toISOString().slice(0, 10);
+})();
+
 /** Monthly cost when a purchase is amortized over 5 years (60 months), rounded to whole dollars. */
 export function monthlyOver5yr(price: number): number {
   return Math.round(price / 60);
