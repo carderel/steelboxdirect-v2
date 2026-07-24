@@ -12,15 +12,6 @@ const breadcrumbs = [
   { name: 'Container Reference' },
 ];
 
-const faqSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: referenceFaqs.map((f) => ({
-    '@type': 'Question',
-    name: f.q,
-    acceptedAnswer: { '@type': 'Answer', text: f.a },
-  })),
-};
 ---
 
 <BaseLayout
@@ -30,9 +21,8 @@ const faqSchema = {
   datePublished="2026-07-02"
   dateModified="2026-07-02"
   breadcrumbs={breadcrumbs}
+  schema={{ kind: 'guide', title: 'Container Reference: Dimensions, Markings & Lifecycle', specs: [], faqs: referenceFaqs.map((f) => ({ q: f.q, a: f.a })) }}
 >
-  <script type="application/ld+json" slot="head" is:inline set:html={JSON.stringify(faqSchema)} />
-
   <!-- HERO -->
   <section class="ref-hero">
     <div class="wrap">

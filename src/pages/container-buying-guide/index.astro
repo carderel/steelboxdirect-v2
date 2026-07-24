@@ -90,15 +90,6 @@ const faqs: Faq[] = [
   },
 ];
 
-const faqSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: faqs.map((f) => ({
-    '@type': 'Question',
-    name: f.q,
-    acceptedAnswer: { '@type': 'Answer', text: f.a },
-  })),
-};
 ---
 
 <BaseLayout
@@ -108,9 +99,8 @@ const faqSchema = {
   datePublished="2026-07-04"
   dateModified="2026-07-04"
   breadcrumbs={breadcrumbs}
+  schema={{ kind: 'guide', title: 'How to Buy a Shipping Container Safely', specs: [], faqs: faqs.map((f) => ({ q: f.q, a: f.a })) }}
 >
-  <script type="application/ld+json" slot="head" is:inline set:html={JSON.stringify(faqSchema)} />
-
   <!-- HERO -->
   <section class="bg-hero">
     <div class="wrap">
