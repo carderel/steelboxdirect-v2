@@ -245,7 +245,7 @@ export const cities: City[] = [
       features: [
         { title: 'River City Durability',   body: 'With our proximity to the Ohio River, we know the importance of moisture-resistant storage. Our containers are wind and water tight, ensuring your inventory stays dry year-round.' },
         { title: 'Horse Farm Solutions',    body: 'From Oldham to Shelby County, we provide secure tack rooms, hay storage, and equipment protection that fits seamlessly into the rural landscape.' },
-        { title: 'Bourbon Country Storage', body: 'We work with local distilleries and businesses to provide scalable, secure storage solutions for inventory, barrels, and specialized equipment.' },
+        { title: 'Bourbon Country Storage', body: 'Scalable, secure storage suited to inventory, barrels, and specialized equipment — common needs across Louisville\'s distillery and business corridor.' },
       ],
     },
     stats: [
