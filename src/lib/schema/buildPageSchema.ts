@@ -144,7 +144,7 @@ export function buildPageSchema(args: BuildSchemaArgs): BuiltSchema {
       graph.push({
         '@type': 'Article',
         '@id': artId,
-        headline: args.title,
+        headline: p.title,
         description: args.description,
         image: args.image ?? `${SITE_URL}/og-image.png`,
         datePublished: args.datePublished ?? '2026-03-10',

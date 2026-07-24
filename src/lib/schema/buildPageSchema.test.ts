@@ -96,6 +96,8 @@ describe('buildPageSchema core', () => {
     const { graph } = buildPageSchema({ url: 'https://steelboxdirect.com/size/', title: 'Size', description: 's', page: { kind: 'guide', topic: 'size', title: 'Size', specs: [], faqs: [] } });
     expect(graph.some((n) => n['@type'] === 'Article')).toBe(true);
     expect(graph.some((n) => n['@type'] === 'HowTo')).toBe(true);
+    const art = graph.find((n) => n['@type'] === 'Article') as any;
+    expect(art.headline).toBe('Size');
   });
 
   it('collection branch emits ItemList of children', () => {
