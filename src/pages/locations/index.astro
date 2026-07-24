@@ -1,11 +1,35 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { cities } from '../../data/cities';
+
+const faqs = [
+  {
+    q: 'What areas do you deliver to?',
+    a: "We currently serve markets in Ohio, Indiana, Kentucky, and western West Virginia — including Cincinnati, Dayton, Indianapolis, Louisville, and the Huntington/Charleston/Parkersburg corridor. We're expanding. If your city isn't listed, use the form below to check your ZIP.",
+  },
+  {
+    q: 'How long does delivery take?',
+    a: "Almost all deliveries take about two weeks. Depot inventory is stacked and sequenced — units aren't staged for quick pull — and drivers book out several weeks in advance. We'll give you an honest window before you commit.",
+  },
+  {
+    q: "What's included in the price?",
+    a: 'All-in. Container, delivery to your site, and flat-ground placement are included in the quote. No surprise freight charges after the fact. Prices reflect current market rates and are confirmed at time of order.',
+  },
+  {
+    q: 'Do I need to be home for delivery?',
+    a: 'Not necessarily — but someone familiar with the site should be reachable by phone. The driver needs a clear run and a flat drop spot. We review site access with you before scheduling so there are no surprises on delivery day.',
+  },
+];
+
+const items = cities.map((c) => ({ name: `${c.city}, ${c.state}`, url: `https://steelboxdirect.com/${c.slug}/` }));
 ---
 
 <BaseLayout
   title="Shipping Containers Near You — Steel Box Direct Delivery Locations"
   description="Steel Box Direct delivers new and used shipping containers across Ohio, Indiana, Kentucky, and western West Virginia. No broker markup, regional depots, real follow-through. Check your city."
   pageType="guide"
+  breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'Locations' }]}
+  schema={{ kind: 'collection', title: 'Delivery Locations', items, faqs }}
 >
   <!-- ============ HERO ============ -->
   <section class="loc-hero">
