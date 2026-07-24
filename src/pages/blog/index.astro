@@ -25,31 +25,6 @@ const breadcrumbs = [
   { name: 'Home', path: '/' },
   { name: 'Blog' },
 ];
-
-// Blog + ItemList JSON-LD — an explicit, structured map of the current posts
-// for Google and AI systems, instead of requiring them to infer the
-// collection from repeated <a> cards. Published posts only (see allPosts
-// filter above), and only emitted when there's at least one.
-const blogSchema = posts.length > 0 ? {
-  '@context': 'https://schema.org',
-  '@type': 'Blog',
-  name: 'Steel Box Direct Blog',
-  url: 'https://steelboxdirect.com/blog/',
-  description: 'Guides, comparisons, and real-world use cases for shipping containers — sizing, alternatives, use-case spotlights, and container specs from Steel Box Direct.',
-  mainEntity: {
-    '@type': 'ItemList',
-    itemListElement: posts.map(({ post }, i) => ({
-      '@type': 'ListItem',
-      position: i + 1,
-      item: {
-        '@type': 'BlogPosting',
-        name: post.data.title,
-        url: `https://steelboxdirect.com/blog/${post.slug}/`,
-        datePublished: post.data.pubDate.toISOString().slice(0, 10),
-      },
-    })),
-  },
-} : null;
 ---
 
 <BaseLayout
@@ -57,11 +32,8 @@ const blogSchema = posts.length > 0 ? {
   title="Steel Box Direct Blog — Container Buying, Comparisons & Project Ideas"
   description="Guides, comparisons, and real-world use cases for shipping containers — sizing, alternatives, use-case spotlights, and container specs from Steel Box Direct."
   breadcrumbs={breadcrumbs}
+  schema={{ kind: 'collection', title: 'Steel Box Direct Blog', items: posts.map(({ post }) => ({ name: post.data.title, url: `https://steelboxdirect.com/blog/${post.slug}/` })), faqs: [] }}
 >
-  {blogSchema && (
-    <script type="application/ld+json" slot="head" is:inline set:html={JSON.stringify(blogSchema)} />
-  )}
-
   <!-- BREADCRUMBS -->
   <div class="blog-breadcrumb-wrap">
     <div class="wrap">

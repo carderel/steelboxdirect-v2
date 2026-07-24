@@ -41,6 +41,7 @@ const breadcrumbs = [
   description={`Browse Steel Box Direct blog posts in ${category}.`}
   breadcrumbs={breadcrumbs}
   noindex={posts.length === 0}
+  schema={{ kind: 'collection', title: `${category} — Steel Box Direct Blog`, items: posts.map(({ post }) => ({ name: post.data.title, url: `https://steelboxdirect.com/blog/${post.slug}/` })), faqs: [] }}
 >
   <!-- BREADCRUMBS -->
   <div class="cat-breadcrumb-wrap">

@@ -58,15 +58,6 @@ const ogImageUrl = heroImg
 
 const faq = post.data.faq;
 const showFaq = Array.isArray(faq) && faq.length > 0;
-const faqSchema = showFaq ? {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: faq!.map((f) => ({
-    '@type': 'Question',
-    name: f.q,
-    acceptedAnswer: { '@type': 'Answer', text: f.a },
-  })),
-} : null;
 
 const breadcrumbs = [
   { name: 'Home', path: '/' },
@@ -85,11 +76,11 @@ const breadcrumbs = [
   breadcrumbs={breadcrumbs}
   noindex={post.data.draft}
   ogImage={ogImageUrl}
+  schema={{ kind: 'blogPost', title: post.data.title, description: post.data.description, author: post.data.author,
+    datePublished: post.data.pubDate.toISOString().slice(0,10),
+    dateModified: (post.data.updatedDate ?? post.data.pubDate).toISOString().slice(0,10),
+    image: ogImageUrl, takeaways: post.data.takeaways ?? [], faqs: post.data.faq ?? [] }}
 >
-  {faqSchema && (
-    <script type="application/ld+json" slot="head" is:inline set:html={JSON.stringify(faqSchema)} />
-  )}
-
   <!-- HERO -->
   <article>
     <!-- BREADCRUMBS -->
