@@ -56,19 +56,15 @@ const faqs = [
   dateModified="2026-06-04"
   breadcrumbs={crumbs}
   floatingSidebar
+  schema={{ kind: 'useCase', audience: 'contractors', title: 'Job Site Storage That Locks and Stays',
+    specs: [
+      { k: 'Security', v: 'Puck-lock hasp, Cor-Ten steel — no soft spot to defeat' },
+      { k: 'Access', v: 'Ground-level doors, no dock or ramp needed' },
+      { k: 'Condition', v: 'Wind & Water Tight (used)' },
+      { k: 'Service area', v: 'OH · IN · KY · W. WV' },
+    ],
+    faqs: faqs.map((f) => ({ q: f.q, a: f.a })) }}
 >
-
-  <Fragment slot="head">
-    <script type="application/ld+json" set:html={JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": faqs.map((f) => ({
-        "@type": "Question",
-        "name": f.q,
-        "acceptedAnswer": { "@type": "Answer", "text": f.a },
-      })),
-    })} />
-  </Fragment>
 
   <!-- 1. HERO — full-bleed jobsite poster split (copy panel + edge-to-edge photo) -->
   <section class="uc-hero">

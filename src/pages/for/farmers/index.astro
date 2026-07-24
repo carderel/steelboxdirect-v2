@@ -63,19 +63,15 @@ const faqs = [
   dateModified="2026-06-04"
   breadcrumbs={crumbs}
   floatingSidebar
+  schema={{ kind: 'useCase', audience: 'farmers', title: 'Farm Storage That Holds Up to Ohio Winters',
+    specs: [
+      { k: 'Foundation', v: 'None needed — sits on a gravel pad' },
+      { k: 'Condition', v: 'Wind & Water Tight (used)' },
+      { k: 'Warranty', v: 'Lifetime Leak' },
+      { k: 'Service area', v: 'OH · IN · KY · W. WV' },
+    ],
+    faqs: faqs.map((f) => ({ q: f.q, a: f.a })) }}
 >
-
-  <Fragment slot="head">
-    <script type="application/ld+json" set:html={JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": faqs.map((f) => ({
-        "@type": "Question",
-        "name": f.q,
-        "acceptedAnswer": { "@type": "Answer", "text": f.a },
-      })),
-    })} />
-  </Fragment>
 
   <!-- 1. HERO — full-bleed "field poster" split (copy panel + edge-to-edge photo) -->
   <section class="uc-hero">

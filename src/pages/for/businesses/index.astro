@@ -66,19 +66,15 @@ const faqs = [
   dateModified="2026-06-23"
   breadcrumbs={crumbs}
   floatingSidebar
+  schema={{ kind: 'useCase', audience: 'businesses', title: 'Overflow Storage That Keeps Up',
+    specs: [
+      { k: 'Access', v: 'Ground-level, forklift-compatible entry' },
+      { k: 'Condition', v: 'Wind & Water Tight (used)' },
+      { k: 'Delivery', v: 'About two weeks, subject to inventory' },
+      { k: 'Service area', v: 'OH · IN · KY · W. WV' },
+    ],
+    faqs: faqs.map((f) => ({ q: f.q, a: f.a })) }}
 >
-
-  <Fragment slot="head">
-    <script type="application/ld+json" set:html={JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": faqs.map((f) => ({
-        "@type": "Question",
-        "name": f.q,
-        "acceptedAnswer": { "@type": "Answer", "text": f.a },
-      })),
-    })} />
-  </Fragment>
 
   <!-- 1. HERO — full-bleed commercial poster split (copy panel + edge-to-edge photo) -->
   <section class="uc-hero">

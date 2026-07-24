@@ -69,19 +69,15 @@ const faqs = [
   dateModified="2026-06-23"
   breadcrumbs={crumbs}
   floatingSidebar
+  schema={{ kind: 'useCase', audience: 'homeowners', title: 'Backyard Storage Without the Monthly Bill',
+    specs: [
+      { k: 'Common size', v: '20ft — 8ft wide, fits most driveways' },
+      { k: 'Foundation', v: 'None needed — corner blocks or gravel pad' },
+      { k: 'Condition', v: 'Wind & Water Tight (used)' },
+      { k: 'Service area', v: 'OH · IN · KY · W. WV' },
+    ],
+    faqs: faqs.map((f) => ({ q: f.q, a: f.a })) }}
 >
-
-  <Fragment slot="head">
-    <script type="application/ld+json" set:html={JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": faqs.map((f) => ({
-        "@type": "Question",
-        "name": f.q,
-        "acceptedAnswer": { "@type": "Answer", "text": f.a },
-      })),
-    })} />
-  </Fragment>
 
   <!-- 1. HERO — full-bleed acreage poster split (copy panel + edge-to-edge photo) -->
   <section class="uc-hero">
