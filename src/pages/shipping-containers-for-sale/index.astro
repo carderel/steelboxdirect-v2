@@ -29,24 +29,14 @@ const faqs: { q: string; a: string; html?: string }[] = [
     a: `Yes. Containers can be cut, insulated, electrified, and fitted with doors and windows. Our ${CONDITION.label} units convert well. Local permit requirements vary — contact us and we can point you toward the right resources for your county.`,
   },
 ];
-
-const faqSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: faqs.map((f) => ({
-    '@type': 'Question',
-    name: f.q,
-    acceptedAnswer: { '@type': 'Answer', text: f.a },
-  })),
-};
 ---
 
 <BaseLayout
   title="Shipping & Storage Containers for Sale | Steel Box Direct"
   description={`Buy a 20ft, 40ft, or 40ft High Cube shipping container delivered within 250 miles of Cincinnati. ${CONDITION.label} steel. No broker markup. Get a quote within 4 business hours.`}
   pageType="product"
+  schema={{ kind: 'productHub', faqs: faqs.map((f) => ({ q: f.q, a: f.a })) }}
 >
-  <script type="application/ld+json" slot="head" is:inline set:html={JSON.stringify(faqSchema)} />
 
   <!-- HERO -->
   <section class="hub-hero">

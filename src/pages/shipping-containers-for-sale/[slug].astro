@@ -4,7 +4,7 @@ export const prerender = true;
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { containers } from '../../data/containers';
 import type { Container } from '../../data/containers';
-import { priceBySlug, formatPrice, asOfLabel, priceValidUntil } from '../../data/pricing';
+import { priceBySlug, formatPrice, asOfLabel } from '../../data/pricing';
 
 export function getStaticPaths() {
   return containers.map((c) => ({ params: { slug: c.slug }, props: { container: c } }));
@@ -14,41 +14,20 @@ interface Props { container: Container }
 const { container: c } = Astro.props;
 const others = containers.filter((x) => x.slug !== c.slug);
 const price = priceBySlug[c.slug];
-
-const breadcrumb = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://steelboxdirect.com/" },
-    { "@type": "ListItem", "position": 2, "name": "Shipping Containers for Sale", "item": "https://steelboxdirect.com/shipping-containers-for-sale/" },
-    { "@type": "ListItem", "position": 3, "name": c.name, "item": `https://steelboxdirect.com/shipping-containers-for-sale/${c.slug}/` },
-  ]
-};
-
-const productSchema = {
-  "@context": "https://schema.org",
-  "@type": "Product",
-  "name": c.name,
-  "description": c.seo.description,
-  "image": "https://steelboxdirect.com/logo.png",
-  "brand": { "@type": "Brand", "name": "Steel Box Direct" },
-  "category": "Shipping Containers",
-  "offers": {
-    "@type": "Offer",
-    "priceCurrency": "USD",
-    ...(price ? { "price": price.price } : {}),
-    "priceValidUntil": priceValidUntil,
-    "itemCondition": "https://schema.org/UsedCondition",
-    "availability": "https://schema.org/InStock",
-    "seller": { "@type": "Organization", "name": "Steel Box Direct" },
-    "url": `https://steelboxdirect.com/shipping-containers-for-sale/${c.slug}/`
-  }
-};
 ---
 
-<BaseLayout title={c.seo.title} description={c.seo.description} pageType="product">
-  <script type="application/ld+json" slot="head" is:inline set:html={JSON.stringify(breadcrumb)} />
-  <script type="application/ld+json" slot="head" is:inline set:html={JSON.stringify(productSchema)} />
+<BaseLayout title={c.seo.title} description={c.seo.description} pageType="product"
+  breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'Shipping Containers for Sale', path: '/shipping-containers-for-sale/' }, { name: c.name }]}
+  schema={{ kind: 'product', container: c, price,
+    specs: [
+      { k: 'Exterior', v: c.specs.externalDims },
+      { k: 'Interior', v: c.specs.internalDims },
+      { k: 'Door opening', v: c.specs.doorOpening },
+      { k: 'Cubic capacity', v: c.specs.cubicCap },
+      { k: 'Condition', v: 'Wind & Water Tight (used)' },
+      { k: 'Warranty', v: 'Lifetime Leak' },
+      ...(price ? [{ k: 'Avg. starting price', v: formatPrice(price.price) }] : []),
+    ] }}>
 
   <!-- HERO -->
   <section class="prod-hero">
