@@ -91,4 +91,25 @@ describe('buildPageSchema core', () => {
     expect(svc.audience.audienceType).toBe('farmers');
     expect(quickFacts!.specs[0].k).toBe('Foundation');
   });
+
+  it('guide branch with topic adds an Article and a HowTo node', () => {
+    const { graph } = buildPageSchema({ url: 'https://steelboxdirect.com/size/', title: 'Size', description: 's', page: { kind: 'guide', topic: 'size', title: 'Size', specs: [], faqs: [] } });
+    expect(graph.some((n) => n['@type'] === 'Article')).toBe(true);
+    expect(graph.some((n) => n['@type'] === 'HowTo')).toBe(true);
+  });
+
+  it('collection branch emits ItemList of children', () => {
+    const { graph } = buildPageSchema({ url: 'https://steelboxdirect.com/locations/', title: 'Locations', description: 'l', page: { kind: 'collection', title: 'Locations', items: [{ name: 'Cincinnati', url: 'https://steelboxdirect.com/cincinnati-shipping-containers/' }], faqs: [] } });
+    const coll = graph.find((n) => n['@type'] === 'CollectionPage') as any;
+    expect(coll.mainEntity['@type']).toBe('ItemList');
+    expect(coll.mainEntity.itemListElement[0].item).toContain('cincinnati');
+  });
+
+  it('blogPost branch emits Article with author + dates', () => {
+    const { graph, quickFacts } = buildPageSchema({ url: 'https://steelboxdirect.com/blog/x/', title: 'X', description: 'd', page: { kind: 'blogPost', title: 'X', description: 'd', author: 'Steel Box Direct', datePublished: '2026-07-01', dateModified: '2026-07-02', takeaways: ['t1'], faqs: [] } });
+    const art = graph.find((n) => n['@type'] === 'Article') as any;
+    expect(art.author).toEqual({ '@id': expect.stringContaining('#organization') });
+    expect(art.datePublished).toBe('2026-07-01');
+    expect(quickFacts!.specs.length).toBeLessThanOrEqual(8);
+  });
 });

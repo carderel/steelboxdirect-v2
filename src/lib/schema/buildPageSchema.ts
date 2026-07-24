@@ -1,6 +1,7 @@
 import type { BuildSchemaArgs, BuiltSchema, QuickFacts, QuickFaq } from './types';
 import { globalNodes, ORG_ID, LOCALBUSINESS_ID, WEBSITE_ID, SITE_URL } from './entities';
 import { priceValidUntil } from '../../data/pricing';
+import { howtoByTopic } from './howto';
 
 const nodeId = (url: string, frag: string) => `${url}#${frag}`;
 
@@ -132,7 +133,75 @@ export function buildPageSchema(args: BuildSchemaArgs): BuiltSchema {
       quickFacts = { entityTitle: p.title, specs: p.specs, faqs: p.faqs.slice(0, 3), showPriceDisclaimer: false };
       break;
     }
-    // BRANCHES INSERTED IN TASK 5 ABOVE THIS DEFAULT
+    case 'home': {
+      graph.push(faqNode(args.url, p.faqs));
+      graph.push(webPageNode(args, ORG_ID, nodeId(args.url, 'faq')));
+      quickFacts = { entityTitle: 'Steel Box Direct', entitySubtitle: 'Wind & Water Tight containers · Est. 2009', specs: [], faqs: p.faqs.slice(0, 3), showPriceDisclaimer: false };
+      break;
+    }
+    case 'guide': {
+      const artId = nodeId(args.url, 'article');
+      graph.push({
+        '@type': 'Article',
+        '@id': artId,
+        headline: args.title,
+        description: args.description,
+        image: args.image ?? `${SITE_URL}/og-image.png`,
+        datePublished: args.datePublished ?? '2026-03-10',
+        dateModified: args.dateModified ?? args.datePublished ?? '2026-03-10',
+        author: { '@id': ORG_ID },
+        publisher: { '@id': ORG_ID },
+        mainEntityOfPage: { '@id': nodeId(args.url, 'webpage') },
+      });
+      if (p.topic) graph.push({ ...howtoByTopic[p.topic], '@id': nodeId(args.url, 'howto') });
+      if (p.faqs.length) graph.push(faqNode(args.url, p.faqs));
+      graph.push(webPageNode(args, artId, p.faqs.length ? nodeId(args.url, 'faq') : artId));
+      quickFacts = { entityTitle: p.title, specs: p.specs, faqs: p.faqs.slice(0, 3), showPriceDisclaimer: false };
+      break;
+    }
+    case 'collection': {
+      const collId = nodeId(args.url, 'collection');
+      graph.push({
+        '@type': 'CollectionPage',
+        '@id': collId,
+        url: args.url,
+        name: args.title,
+        description: args.description,
+        isPartOf: { '@id': WEBSITE_ID },
+        mainEntity: {
+          '@type': 'ItemList',
+          itemListElement: p.items.map((it, i) => ({ '@type': 'ListItem', position: i + 1, name: it.name, item: it.url })),
+        },
+      });
+      if (p.faqs.length) graph.push(faqNode(args.url, p.faqs));
+      graph.push(webPageNode(args, collId, p.faqs.length ? nodeId(args.url, 'faq') : collId));
+      quickFacts = { entityTitle: args.title, specs: [], faqs: p.faqs.slice(0, 3), showPriceDisclaimer: false };
+      break;
+    }
+    case 'blogPost': {
+      const artId = nodeId(args.url, 'article');
+      graph.push({
+        '@type': 'Article',
+        '@id': artId,
+        headline: p.title,
+        description: p.description,
+        image: p.image ?? `${SITE_URL}/og-image.png`,
+        datePublished: p.datePublished,
+        dateModified: p.dateModified,
+        author: { '@id': ORG_ID },
+        publisher: { '@id': ORG_ID },
+        mainEntityOfPage: { '@id': nodeId(args.url, 'webpage') },
+      });
+      if (p.faqs.length) graph.push(faqNode(args.url, p.faqs));
+      graph.push(webPageNode(args, artId, p.faqs.length ? nodeId(args.url, 'faq') : artId));
+      quickFacts = {
+        entityTitle: p.title,
+        specs: p.takeaways.slice(0, 6).map((t) => ({ k: 'Takeaway', v: t })),
+        faqs: p.faqs.slice(0, 3),
+        showPriceDisclaimer: false,
+      };
+      break;
+    }
     default: {
       graph.push(webPageNode(args, ORG_ID));
       break;
