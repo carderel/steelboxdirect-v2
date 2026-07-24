@@ -563,7 +563,12 @@ it('city branch: Service with areaServed, NO price anywhere, block $-free', () =
   const svc = graph.find((n) => n['@type'] === 'Service') as any;
   expect(svc.provider).toEqual({ '@id': expect.stringContaining('#localbusiness') });
   expect(svc.areaServed.name).toContain('Cincinnati');
-  expect(JSON.stringify(graph)).not.toMatch(/price|Offer|\$/);
+  // Hard stop: no dollar amounts and no price FIELD on a city page's graph.
+  // NOTE: the site-wide `makesOffer` Service node (priceless) is allowed — do
+  // not match the word "Offer"; match only real price signals.
+  expect(JSON.stringify(graph)).not.toContain('$');
+  expect(JSON.stringify(graph)).not.toMatch(/"price"\s*:/);
+  expect(svc.offers).toBeUndefined();
   expect(quickFacts!.showPriceDisclaimer).toBe(false);
   expect(JSON.stringify(quickFacts)).not.toContain('$');
 });
@@ -704,7 +709,7 @@ it('blogPost branch emits Article with author + dates', () => {
       graph.push({
         '@type': 'Article',
         '@id': artId,
-        headline: args.title,
+        headline: p.title,
         description: args.description,
         image: args.image ?? `${SITE_URL}/og-image.png`,
         datePublished: args.datePublished ?? '2026-03-10',
