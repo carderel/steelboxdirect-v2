@@ -91,7 +91,48 @@ export function buildPageSchema(args: BuildSchemaArgs): BuiltSchema {
       quickFacts = { entityTitle: 'Containers for Sale', specs: [], faqs: p.faqs.slice(0, 3), showPriceDisclaimer: true };
       break;
     }
-    // BRANCHES INSERTED IN TASKS 4-5 ABOVE THIS DEFAULT
+    case 'city': {
+      const svcId = nodeId(args.url, 'service');
+      graph.push({
+        '@type': 'Service',
+        '@id': svcId,
+        name: `Shipping Container Delivery — ${p.city.city}, ${p.city.state}`,
+        serviceType: 'Shipping container sales and delivery',
+        provider: { '@id': LOCALBUSINESS_ID },
+        areaServed: { '@type': 'City', name: `${p.city.city}, ${p.city.state}` },
+      });
+      graph.push(faqNode(args.url, p.faqs));
+      graph.push(webPageNode(args, svcId, nodeId(args.url, 'faq')));
+      quickFacts = {
+        entityTitle: `Containers in ${p.city.city}, ${p.city.state}`,
+        entitySubtitle: 'Wind & Water Tight (used) · delivered on-site',
+        specs: [
+          { k: 'Service area', v: `${p.city.city} + surrounding counties` },
+          { k: 'Condition', v: 'Wind & Water Tight (used)' },
+          { k: 'Warranty', v: 'Lifetime Leak' },
+          { k: 'Delivery', v: 'All-in quote, about two weeks' },
+        ],
+        faqs: p.faqs.slice(0, 3),
+        showPriceDisclaimer: false,
+      };
+      break;
+    }
+    case 'useCase': {
+      const svcId = nodeId(args.url, 'service');
+      graph.push({
+        '@type': 'Service',
+        '@id': svcId,
+        name: p.title,
+        serviceType: 'Shipping container sales and delivery',
+        provider: { '@id': LOCALBUSINESS_ID },
+        audience: { '@type': 'Audience', audienceType: p.audience },
+      });
+      graph.push(faqNode(args.url, p.faqs));
+      graph.push(webPageNode(args, svcId, nodeId(args.url, 'faq')));
+      quickFacts = { entityTitle: p.title, specs: p.specs, faqs: p.faqs.slice(0, 3), showPriceDisclaimer: false };
+      break;
+    }
+    // BRANCHES INSERTED IN TASK 5 ABOVE THIS DEFAULT
     default: {
       graph.push(webPageNode(args, ORG_ID));
       break;

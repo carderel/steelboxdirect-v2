@@ -65,4 +65,30 @@ describe('buildPageSchema core', () => {
     const prod = graph.find((n) => n['@type'] === 'Product') as any;
     expect('price' in prod.offers).toBe(false);
   });
+
+  it('city branch: Service with areaServed, NO price anywhere, block $-free', () => {
+    const city: any = { slug: 'cincinnati-shipping-containers', city: 'Cincinnati', state: 'OH' };
+    const { graph, quickFacts } = buildPageSchema({
+      url: 'https://steelboxdirect.com/cincinnati-shipping-containers/', title: 'Cincinnati', description: 'c',
+      page: { kind: 'city', city, faqs: [{ q: 'Deliver?', a: 'Yes.' }] },
+    });
+    const svc = graph.find((n) => n['@type'] === 'Service') as any;
+    expect(svc.provider).toEqual({ '@id': expect.stringContaining('#localbusiness') });
+    expect(svc.areaServed.name).toContain('Cincinnati');
+    expect(JSON.stringify(graph)).not.toContain('$');
+    expect(JSON.stringify(graph)).not.toMatch(/"price"\s*:/);
+    expect(svc.offers).toBeUndefined();
+    expect(quickFacts!.showPriceDisclaimer).toBe(false);
+    expect(JSON.stringify(quickFacts)).not.toContain('$');
+  });
+
+  it('useCase branch: Service with audience + quickFacts specs', () => {
+    const { graph, quickFacts } = buildPageSchema({
+      url: 'https://steelboxdirect.com/for/farmers/', title: 'Farmers', description: 'f',
+      page: { kind: 'useCase', audience: 'farmers', title: 'Container Storage for Farms', specs: [{ k: 'Foundation', v: 'None needed' }], faqs: [{ q: 'Q', a: 'A' }] },
+    });
+    const svc = graph.find((n) => n['@type'] === 'Service') as any;
+    expect(svc.audience.audienceType).toBe('farmers');
+    expect(quickFacts!.specs[0].k).toBe('Foundation');
+  });
 });
