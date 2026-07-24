@@ -1,8 +1,10 @@
 ---
-import Schema from '../components/Schema.astro';
 import SiteNav from '../components/SiteNav.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import FloatingSidebar from '../components/FloatingSidebar.astro';
+import QuickFacts from '../components/QuickFacts.astro';
+import { buildPageSchema } from '../lib/schema';
+import type { PageSchemaInput } from '../lib/schema/types';
 
 interface CityOverride {
   name: string;
@@ -25,6 +27,7 @@ interface Props {
   // Absolute URL for og:image/twitter:image AND the Article schema's `image`
   // (e.g. a blog post's resolved hero photo). Falls back to the site og-image.
   ogImage?: string;
+  schema?: PageSchemaInput;
 }
 
 const {
@@ -39,10 +42,23 @@ const {
   breadcrumbs,
   floatingSidebar,
   ogImage,
+  schema = { kind: 'excluded' } as PageSchemaInput,
 } = Astro.props;
 const resolvedOgImage = ogImage ?? 'https://steelboxdirect.com/og-image.png';
 
 const showFloatingSidebar = floatingSidebar ?? (pageType === 'home');
+
+const built = buildPageSchema({
+  page: schema,
+  url: Astro.url.href,
+  title,
+  description,
+  breadcrumbs,
+  datePublished,
+  dateModified,
+  image: resolvedOgImage === 'https://steelboxdirect.com/og-image.png' ? undefined : resolvedOgImage,
+});
+const jsonLd = { '@context': 'https://schema.org', '@graph': built.graph };
 
 // GTM only in production builds — dev browsing must not pollute production GA4
 const isProd = import.meta.env.PROD;
@@ -89,7 +105,7 @@ const isProd = import.meta.env.PROD;
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@500;600;700&family=Archivo:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&family=Permanent+Marker&display=swap" /></noscript>
 
     <!-- Schema Markup -->
-    <Schema pageType={pageType} pageTitle={title} pageDescription={description} guideTopic={guideTopic} cityOverride={cityOverride} datePublished={datePublished} dateModified={dateModified} breadcrumbs={breadcrumbs} articleImage={ogImage} />
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
     <slot name="head" />
 
     <!-- Attribution tracking initialization -->
@@ -108,6 +124,8 @@ const isProd = import.meta.env.PROD;
     <main class={pageType === 'home' ? 'home-main' : ''}>
       <slot />
     </main>
+
+    <QuickFacts facts={built.quickFacts} />
 
     <SiteFooter />
 
