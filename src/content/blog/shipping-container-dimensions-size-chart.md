@@ -13,8 +13,8 @@ keywords:
   - "45ft container dimensions"
   - "20ft container dimensions"
   - "container capacity cubic feet"
-heroImage: "businesses/20ft-40ft-40ftHC-commercial-container-size-comparison.jpg"
-heroImageAlt: "Used shipping containers of different sizes side by side in a commercial yard"
+heroImage: "blog/20ft-40ft-high-cube-container-size-comparison-hero.jpg"
+heroImageAlt: "Three used shipping containers — 20ft, 40ft, and 40ft High Cube — lined up with their cargo doors facing out at a commercial container yard, forklift working in the background"
 author: "Steel Box Direct"
 draft: false
 takeaways:
@@ -81,9 +81,9 @@ A High Cube container has the same footprint as its standard twin. A footprint i
 
 That extra foot matters most for pallets stacked two-high, hung shelving, or tall equipment. It's also why the 40ft High Cube is easier to find used than the plain 40ft standard.
 
-![Interior of a used shipping container with pallets stacked along the walls](../../assets/photos/businesses/container-interior-pallet-inventory-storage.jpg)
+![Looking into a used high cube shipping container through its open doors, with shrink-wrapped pallets stacked two-high on the wood floor and clearance still left above them](../../assets/photos/blog/high-cube-container-interior-stacking-headroom.jpg)
 
-*A High Cube's extra foot of height shows up in how far up you can stack before you run out of room.*
+*Pallets stacked two-high with room to spare above — the High Cube's extra foot of interior height is what makes the second layer fit.*
 
 ## What fits in each size
 
@@ -95,9 +95,9 @@ Numbers on a chart are one thing. Here's a plainer way to picture each size.
 - **40ft High Cube** — the same footprint as a 40ft standard, with a foot more headroom. Good for stacked pallets, tall shelving, or equipment with height, like a combine.
 - **20ft High Cube and 45ft High Cube** — reference sizes, not commonly found used. The 45ft is the largest standard size. Moving one usually calls for an oversize permit and a special trailer. Checking on permits is the buyer's job, with the local permitting office.
 
-![Two used shipping containers of different lengths parked side by side on a farm property](../../assets/photos/farmers/20ft-vs-40ft-farm-containers-comparison.jpg)
+![A shorter 20ft used shipping container and a longer 40ft container sitting side by side on grass in front of a red barn](../../assets/photos/blog/20ft-vs-40ft-container-farm-side-by-side.jpg)
 
-*Seeing two sizes side by side is often the fastest way to judge which one actually fits your plan.*
+*A 20ft and a 40ft side by side on the same farm — seeing the two lengths together is often the fastest way to judge which one fits your plan.*
 
 Want a size picked around your own list of items? Our [size guide](/size/) walks through the decision step by step.
 
