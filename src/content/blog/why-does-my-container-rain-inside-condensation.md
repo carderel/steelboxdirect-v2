@@ -11,8 +11,8 @@ keywords:
   - "how to stop condensation in a storage container"
   - "container sweating inside"
   - "container ceiling dripping water"
-heroImage: "homeowners/container-louver-vent-condensation.jpg"
-heroImageAlt: "A louvered vent installed in the wall of a used shipping container to help stop condensation inside"
+heroImage: "blog/container-rain-condensation-ceiling-hero.jpg"
+heroImageAlt: "Condensation beads covering the corrugated steel ceiling inside a used shipping container on a cold morning, with a water drop hanging ready to fall"
 author: "Steel Box Direct"
 draft: false
 takeaways:
@@ -48,9 +48,9 @@ That cold point has a name: the "dew point." It's just the spot where air has to
 
 You've seen this before. A cold glass of water sweats on a hot day. Your bathroom mirror fogs up after a hot shower. A shipping container does the same thing. It's just much bigger. Steel heats up fast and cools down fast too. So on a cold night, the ceiling and top walls can get very cold. They can drop below the dew point, even while the floor stays warmer.
 
-![Interior of a used shipping container set up for pallet storage](../../assets/photos/businesses/container-interior-pallet-inventory-storage.jpg)
+![Interior of a used shipping container with a damp sheen on the steel walls and cardboard boxes and plastic totes sitting dry on the plywood floor](../../assets/photos/blog/condensation-bare-steel-container-interior.jpg)
 
-*Condensation shows up first on bare steel overhead — the ceiling and upper wall panels — before it reaches anything stored below.*
+*Condensation shows up first on the steel overhead — the ceiling and upper wall panels — before it reaches anything stored below.*
 
 ## Why it's worse in fall and early spring
 
@@ -80,7 +80,7 @@ None of these steps stop condensation for good, in every climate. No container c
 
 The easiest fix lets trapped, wet air trade places with drier outside air. Vents go high and low in the walls. They create airflow. That airflow carries the wet air out before it can turn to drops overnight. This is usually the first thing worth adding. It needs no power. It needs almost no upkeep.
 
-![A louvered ventilation panel installed in a used container wall to promote airflow and reduce trapped humidity](../../assets/photos/homeowners/container-louver-vent-condensation.jpg)
+![Two louvered vents installed high and low on the corrugated side wall of a weathered gray used container, with moisture beads on the surrounding steel](../../assets/photos/blog/container-louver-vent-airflow-fix.jpg)
 
 *Passive vents, placed high and low, let wet air trade places with outside air, with no power needed.*
 

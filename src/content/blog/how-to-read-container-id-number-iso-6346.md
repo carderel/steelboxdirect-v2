@@ -12,8 +12,8 @@ keywords:
   - "what does the check digit on a container mean"
   - "container owner code lookup"
   - "container size and type code"
-heroImage: "container-blue-weathered.jpg"
-heroImageAlt: "A weathered blue used shipping container with surface rust and cosmetic wear"
+heroImage: "blog/iso-6346-container-id-markings-doors-hero.jpg"
+heroImageAlt: "Rear cargo doors of a weathered rust-red used shipping container stenciled with the ISO 6346 ID KEIU 900079, boxed check digit 8, and size/type code 45G1"
 author: "Steel Box Direct"
 draft: false
 takeaways:
@@ -52,9 +52,9 @@ The owner code plus the category letter is sometimes called the "owner prefix." 
 
 Take a real-format container ID like **KEIU 900079-8**, with a size/type code of **45G1**. We'll walk it through part by part.
 
-![A weathered blue used shipping container with surface rust and cosmetic wear](../../assets/photos/container-blue-weathered.jpg)
+![Close-up of white ISO 6346 door markings on a faded blue used container: the ID KEIU 900079 with the check digit 8 in a stenciled box, and the size/type code 45G1 below](../../assets/photos/blog/container-id-number-check-digit-closeup.jpg)
 
-*Every standardized container carries its ID number and size/type code stenciled on the doors and roof.*
+*The door stencil up close: owner code, serial number, boxed check digit, and the size/type code on the line below — the same ISO 6346 layout on every standardized container.*
 
 Breaking it down:
 
@@ -107,7 +107,7 @@ So **45G1** reads as: a 40ft, 9'6"-tall, general-purpose dry container with vent
 
 Anyone can type "40ft high cube" into a listing. The code on the door is the container reporting its own size, under a standard no seller gets to redefine. Comparing a used container against a size chart? Cross-check the code against [the full container dimensions table](/container-reference/#dimensions). Our [complete shipping container size chart](/blog/shipping-container-dimensions-size-chart/) also lays out the exact inside and outside measurements for every size, so you can match a size/type code to real numbers. Don't take a description at face value. Steel Box Direct sells three sizes, all Wind & Water Tight (used): 20ft Standard, 40ft Standard, and 40ft High Cube. The size/type code is the fastest way to confirm which one you're looking at.
 
-![A 40ft used shipping container photographed in a yard](../../assets/photos/40ft-container-hero.jpeg)
+![Two used 40ft shipping containers, one faded tan and one weathered gray, sitting side by side in a gravel container yard photographed from a distance](../../assets/photos/blog/40ft-standard-vs-high-cube-distance.jpg)
 
 *Two containers can look nearly identical from a distance — the size/type code is what actually distinguishes a 40ft Standard from a 40ft High Cube.*
 

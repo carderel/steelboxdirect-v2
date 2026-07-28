@@ -7,8 +7,8 @@ pillar: "jobsite-tool-security"
 persona: "Contractor"
 format: "White Parable"
 keywords: ["jobsite tool theft", "job site storage container", "contractor tool security", "on-site storage for contractors", "locked storage container for tools"]
-heroImage: "contractors/jobsite-container-delivery-hero.jpg"
-heroImageAlt: "Shipping container delivered to a contractor jobsite for secure tool storage (FPO — placeholder image)"
+heroImage: "blog/jobsite-locked-storage-container-end-of-day-hero.jpg"
+heroImageAlt: "A used green shipping container standing closed and locked at the edge of a quiet construction site at day's end, with stacked lumber and a wheelbarrow nearby"
 author: "Steel Box Direct"
 draft: true
 takeaways:
@@ -38,9 +38,9 @@ That worked fine, until it didn't. One morning, he found his truck's lock box po
 
 Neither break-in was loud or messy. No broken glass. No alarm going off. Someone just walked up in the dark. They worked the lock for a minute. Then they left with an armful of gear.
 
-![Tilt-bed truck delivering a shipping container to a jobsite (FPO — placeholder image)](../../assets/photos/contractors/tilt-bed-container-delivery-jobsite.jpg)
+![A tilt-bed delivery truck with its bed raised, lowering a weathered used shipping container onto packed gravel at a construction site](../../assets/photos/blog/tilt-bed-container-delivery-construction-jobsite.jpg)
 
-*(FPO — placeholder image. A tilt-bed truck sets a container in place the same day. No framing crew. No long wait.)*
+*A tilt-bed truck sets the container right where the work is. No framing crew. No build time.*
 
 ## What It Was Really Costing Him
 
@@ -64,9 +64,9 @@ He chose the container. It got delivered straight to the job. It sat in a spot t
 
 From there, every tool, cord, and box of screws had one home. Not three. At the end of the day, everything went into the box. The doors closed. The puck lock went on. No tailgate lock box. No half-empty truck bed. No gear split between the cab and a garage corner.
 
-![Close-up of a puck lock securing a shipping container's cargo doors (FPO — placeholder image)](../../assets/photos/contractors/puck-lock-container-lockbox-closeup.jpg)
+![Close-up of a hardened puck lock seated in a welded lockbox plate on the steel cargo doors of a weathered used shipping container](../../assets/photos/blog/puck-lock-lockbox-container-cargo-doors-closeup.jpg)
 
-*(FPO — placeholder image. A puck lock on solid steel doors is a harder target than the lock box on a typical truck.)*
+*A puck lock on solid steel doors is a harder target than the lock box on a typical truck.*
 
 Before the container went in, he checked with the property owner and the local building office about any rules on placing it. That's the same step we tell every buyer to take. Permit and zoning rules depend on your city or county. It's always the buyer's call to check, not ours.
 

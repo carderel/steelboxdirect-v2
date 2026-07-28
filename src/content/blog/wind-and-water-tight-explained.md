@@ -11,8 +11,8 @@ keywords:
   - "WWT vs cargo worthy"
   - "container grading explained"
   - "is a used shipping container safe to store in"
-heroImage: "container-blue-weathered.jpg"
-heroImageAlt: "A weathered blue shipping container with surface rust and cosmetic wear, an example of a Wind & Water Tight used container"
+heroImage: "blog/wind-water-tight-weathered-blue-container-hero.jpg"
+heroImageAlt: "A used shipping container in weathered blue paint with surface rust on its corners and roof edge — aged but square and solid, typical of a Wind & Water Tight unit"
 author: "Steel Box Direct"
 draft: false
 takeaways:
@@ -50,9 +50,9 @@ That's the whole promise. It's not a claim about paint, dents, or how the contai
 
 For the full picture on the grade we sell, see our [condition guide](/condition/). This article goes a bit wider — where WWT sits next to other container terms, and how to check the claim yourself.
 
-![A used shipping container's closed rear doors sealed against the weather](../../assets/photos/farmers/weather-sealed-container-doors-winter.jpg)
+![Close-up of a used container's closed cargo doors in winter, snow dusting the locking bars and the black rubber gasket seated tight in the door edge](../../assets/photos/blog/wwt-container-door-seals-winter.jpg)
 
-*"Sealed" is the core of WWT — doors, roof, and walls holding out rain, wind, and snow.*
+*"Sealed" is the core of WWT — door gaskets seated tight, shedding snow and meltwater instead of letting it in.*
 
 ## What WWT Does NOT Mean
 
@@ -85,9 +85,9 @@ So on a real WWT container, it's normal to see:
 
 None of that is a defect. It's proof the box has done its job for years and is still standing strong. Watch instead for rust holes you can see daylight through, a floor that's soft or springy, or doors that won't seal shut. Those are real problems. Normal wear is not.
 
-![Interior of a used shipping container for pallet and inventory storage, showing typical bare steel walls](../../assets/photos/businesses/container-interior-pallet-inventory-storage.jpg)
+![Interior of an empty used shipping container with scuffed steel walls, a cargo-stained but solid plywood floor, and no daylight showing through anywhere](../../assets/photos/blog/wwt-container-interior-bare-steel-floor.jpg)
 
-*Bare, honest steel — this is what "structurally sound" looks like inside a working WWT container.*
+*Bare, honest steel — scuffed walls, a stained but solid floor, and no daylight showing anywhere. This is what "sealed and sound" looks like inside a working WWT container.*
 
 ## Where WWT Fits Among Container Grades
 

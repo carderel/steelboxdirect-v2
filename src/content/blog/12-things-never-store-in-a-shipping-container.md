@@ -11,8 +11,8 @@ keywords:
   - "can you store propane in a shipping container"
   - "shipping container storage mistakes"
   - "what ruins stuff in a storage container"
-heroImage: "homeowners/container-louver-vent-condensation.jpg"
-heroImageAlt: "A louvered vent installed in the wall of a used storage container to help manage moisture"
+heroImage: "blog/items-never-store-shipping-container-hero.jpg"
+heroImageAlt: "Common storage mistakes staged on gravel outside the open doors of a used green shipping container: a propane tank, paint cans, a car battery, a damp cardboard box, and a bundle of yellowed papers"
 author: "Steel Box Direct"
 draft: false
 takeaways:
@@ -40,9 +40,9 @@ A closed, sealed steel box gets hot like a car in a parking lot. In summer, it c
 
 None of this means the container is broken. It's just physics acting on a big piece of bare metal. Anything that can't handle heat, cold, or being shut away from fresh air will struggle. A few things are outright unsafe. The 12 items below are the worst offenders in each group.
 
-![A used 40ft shipping container used for on-site storage](../../assets/photos/40ft-container-hero.jpeg)
+![Three closed used shipping containers on a gravel lot under hard midday summer sun, heat shimmer rising off the steel roofs](../../assets/photos/blog/sealed-storage-containers-summer-heat.jpg)
 
-*Watertight and secure outside doesn't mean climate-controlled inside.*
+*Sealed steel baking in full summer sun — watertight and secure outside doesn't mean climate-controlled inside.*
 
 ## Moisture-Sensitive Items
 
@@ -96,9 +96,9 @@ Rules for storing ammunition and firearms change by state and city. A shipping c
 ### 12. Rubber and tires, long-term
 Rubber breaks down over time from sunlight and heat cycles. Tires stored for years in a hot container tend to dry out and crack. They wear out faster than tires kept in a cool, airy space. Short-term storage is fine. If you're storing tires for years, expect some wear no matter where they sit.
 
-![Interior of a used shipping container set up for organized pallet storage](../../assets/photos/businesses/container-interior-pallet-inventory-storage.jpg)
+![Sealed plastic totes stacked on steel shelving and wooden pallets inside a used shipping container, with a clear center aisle down the plywood floor](../../assets/photos/blog/plastic-totes-shelving-container-storage.jpg)
 
-*Sealed totes up on shelves beat boxes on the floor for almost everything on this list.*
+*Sealed totes up on shelves and pallets beat boxes on the floor for almost everything on this list.*
 
 ## What to Do Instead
 
