@@ -1,0 +1,408 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+
+const crumbs = [{ name: 'Home', path: '/' }, { name: 'Rent to Own', path: '/rent-to-own/' }];
+
+// Single source of truth — this array feeds BOTH the visible FAQ list below
+// and the FAQPage JSON-LD (via the schema prop → buildPageSchema).
+const faqs = [
+  {
+    q: "What's the difference between renting and rent-to-own?",
+    a: "Renting a container or a storage unit is an open-ended monthly bill — you can pay for years and own nothing at the end. Rent-to-own is a fixed path to ownership: you pick a 12, 24, 36, or 48-month term, make your payments, and at the end of the term the container is yours. Same Wind & Water Tight container, same Lifetime Leak Warranty — you just spread the cost instead of paying it all up front.",
+  },
+  {
+    q: 'Is approval guaranteed?',
+    a: "No. Approval decisions are made by My Container Rental, the independent third party that administers the program — the decision is theirs, independent of Steel Box Direct. There is no traditional credit check, but every application is reviewed, and we can't promise an outcome. What we can promise: we'll get your quote and your application in front of them fast, and keep you posted.",
+  },
+  {
+    q: 'Who is My Container Rental?',
+    a: "My Container Rental is the independent third party that administers the rent-to-own program for Freedom Conex, the national container company we represent as an authorised independent agent. They review applications, make the approval decisions, and service the rent-to-own agreement. Steel Box Direct handles your quote and your delivery; My Container Rental handles the program itself.",
+  },
+  {
+    q: 'Do my payments build toward ownership?',
+    a: "Yes — that's the point of rent-to-own. Complete your chosen term (12, 24, 36, or 48 months) and the container belongs to you. Unlike self-storage rent, the payments aren't money out the window; they're steps toward owning a steel asset that sits on your property.",
+  },
+  {
+    q: 'What condition are rent-to-own containers?',
+    a: "The same single grade as every container we sell: Wind & Water Tight (used) — structurally sound and weather-tight, with surface rust that's purely cosmetic. The Lifetime Leak Warranty applies to rent-to-own units just like purchased ones.",
+  },
+  {
+    q: 'How fast is delivery on a rent-to-own container?',
+    a: "For rent-to-own, delivery is scheduled after your application is approved by My Container Rental, the independent third party that administers the program. From there it works like any other order: almost all deliveries take about two weeks, and we'll give you an honest window before you commit — then you'll hear from us at every step until it's on your property.",
+  },
+];
+---
+
+<BaseLayout
+  pageType="guide"
+  title="Rent to Own Shipping Containers — Ohio, Indiana & Kentucky | Steel Box Direct"
+  description="Rent to own a shipping container over 12, 24, 36, or 48 months with no traditional credit check. Applications administered by My Container Rental — delivery about two weeks after approval. Serving OH, IN & KY."
+  datePublished="2026-07-30"
+  dateModified="2026-07-30"
+  breadcrumbs={crumbs}
+  schema={{ kind: 'useCase', audience: 'rent-to-own container buyers',
+    title: 'Rent-to-Own Shipping Containers',
+    serviceType: 'Rent-to-own shipping container program',
+    areaServed: ['Ohio', 'Indiana', 'Kentucky'],
+    specs: [
+      { k: 'Terms', v: '12 / 24 / 36 / 48 months' },
+      { k: 'Credit', v: 'No traditional credit check' },
+      { k: 'Warranty', v: 'Lifetime Leak — applies to RTO' },
+      { k: 'Delivery', v: 'About two weeks after approval' },
+    ],
+    faqs: faqs.map((f) => ({ q: f.q, a: f.a })) }}
+>
+  <!-- 1. HERO -->
+  <div class="rto-hero">
+    <div class="wrap">
+      <Breadcrumbs items={crumbs} />
+      <div class="sh rto-eyebrow">
+        <span class="idx">§ RTO</span>
+        <span class="nm">Decision: Ownership Path</span>
+        <span class="tg">Program Guide</span>
+      </div>
+      <h1 class="big rto-headline">Rent to Own.<br><em>No Traditional Credit&nbsp;Check.</em></h1>
+      <p class="rto-lede">
+        Own a Wind &amp; Water Tight container over 12, 24, 36, or 48 months through the Freedom Conex
+        rent-to-own program — delivered across Ohio, Indiana, and Kentucky, subject to third-party approval
+        by My Container Rental.
+      </p>
+    </div>
+  </div>
+
+  <!-- 2. HOW IT WORKS -->
+  <section class="rto-how">
+    <div class="wrap">
+      <div class="rto-sh">
+        <span class="m">How It Works</span>
+        <h2 class="rto-h2">Four steps to a container on your property</h2>
+      </div>
+      <div class="rto-step-grid">
+        <div class="step-card" style="border-left-color: var(--yellow-d);">
+          <span class="step-num m">Step 01</span>
+          <h3>Get your quote from Steel Box Direct</h3>
+          <p>Tell us your size and delivery zip. You get one all-in delivered number — and you tell us you want the rent-to-own option. No obligation at this point.</p>
+        </div>
+        <div class="step-card" style="border-left-color: var(--c3-deliver);">
+          <span class="step-num m">Step 02</span>
+          <h3>Apply through My Container Rental</h3>
+          <p>My Container Rental is the independent program administrator — a third party, not Steel Box Direct. There's no traditional credit check, but they review every application and <strong>the approval decision is theirs</strong>.</p>
+          <div class="step-tag m">Subject to third-party approval</div>
+        </div>
+        <div class="step-card" style="border-left-color: var(--c4-cost);">
+          <span class="step-num m">Step 03</span>
+          <h3>Choose your term</h3>
+          <p>Pick the runway that fits: 12, 24, 36, or 48 months. Every term ends the same way — the container is yours.</p>
+        </div>
+        <div class="step-card" style="border-left-color: var(--c2-cond);">
+          <span class="step-num m">Step 04</span>
+          <h3>After third-party approval, delivery</h3>
+          <p>Once My Container Rental approves your application, delivery works like any other order: almost all deliveries take about two weeks, and we'll give you an honest window before you commit.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. TERMS -->
+  <section class="rto-terms">
+    <div class="wrap">
+      <div class="rto-sh rto-sh-dark">
+        <span class="m">Pick Your Runway</span>
+        <h2 class="rto-h2">Four terms. One destination: you own it.</h2>
+      </div>
+      <div class="rto-term-grid">
+        <div class="term-chip">
+          <span class="term-num">12</span>
+          <span class="term-unit m">Months</span>
+          <p>The short runway — own the container in a year.</p>
+        </div>
+        <div class="term-chip">
+          <span class="term-num">24</span>
+          <span class="term-unit m">Months</span>
+          <p>Two years — the middle path most buyers picture first.</p>
+        </div>
+        <div class="term-chip">
+          <span class="term-num">36</span>
+          <span class="term-unit m">Months</span>
+          <p>Three years of smaller steps toward the same steel box.</p>
+        </div>
+        <div class="term-chip">
+          <span class="term-num">48</span>
+          <span class="term-unit m">Months</span>
+          <p>The longest runway the program offers — the most room to spread it out.</p>
+        </div>
+      </div>
+      <p class="rto-term-note m">Every term · no traditional credit check · subject to third-party approval by My Container Rental</p>
+    </div>
+  </section>
+
+  <!-- 4. IS IT RIGHT FOR YOU — COMPARISON -->
+  <section class="rto-compare">
+    <div class="wrap">
+      <div class="rto-sh">
+        <span class="m">Is Rent-to-Own Right for You?</span>
+        <h2 class="rto-h2">Rent-to-own vs. buying outright vs. self-storage</h2>
+      </div>
+      <table class="rto-table">
+        <caption class="rto-table-caption">Three ways to get storage — compared on what actually matters at the end.</caption>
+        <thead>
+          <tr>
+            <th scope="col" class="rt-rowhead"><span class="m">Compare</span></th>
+            <th scope="col" class="rt-rto"><span class="rt-kicker m">Program</span><span class="rt-title">Rent-to-own</span></th>
+            <th scope="col"><span class="rt-kicker m">Purchase</span><span class="rt-title">Buy outright</span></th>
+            <th scope="col"><span class="rt-kicker m">Rental</span><span class="rt-title">Monthly self-storage</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Ownership at the end</th>
+            <td class="is-rto" data-label="Rent-to-own">Yes — finish your term and the container is yours</td>
+            <td data-label="Buy outright">Yes — yours on day one</td>
+            <td data-label="Self-storage">No — you never own the unit</td>
+          </tr>
+          <tr>
+            <th scope="row">Upfront cost</th>
+            <td class="is-rto" data-label="Rent-to-own">Lowest to start — spread across your term</td>
+            <td data-label="Buy outright">One payment up front</td>
+            <td data-label="Self-storage">Low to start, but it never ends</td>
+          </tr>
+          <tr>
+            <th scope="row">Credit requirement</th>
+            <td class="is-rto" data-label="Rent-to-own">No traditional credit check — application reviewed by My Container Rental</td>
+            <td data-label="Buy outright">None — pay in full</td>
+            <td data-label="Self-storage">Varies by facility</td>
+          </tr>
+          <tr>
+            <th scope="row">If you stop paying</th>
+            <td class="is-rto" data-label="Rent-to-own">You don't keep the container — your My Container Rental agreement sets the terms</td>
+            <td data-label="Buy outright">Nothing to stop — you already own it</td>
+            <td data-label="Self-storage">You move out and keep nothing</td>
+          </tr>
+          <tr>
+            <th scope="row">End state</th>
+            <td class="is-rto" data-label="Rent-to-own">A Wind &amp; Water Tight container on your property, with the Lifetime Leak Warranty</td>
+            <td data-label="Buy outright">Same container, same warranty — just paid all at once</td>
+            <td data-label="Self-storage">An ongoing bill and an empty unit to hand back</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 5. TRUST STRIP -->
+  <section class="rto-trust">
+    <div class="wrap">
+      <div class="rto-trust-grid">
+        <div class="trust-cell">
+          <span class="trust-k m">Condition</span>
+          <span class="trust-v">One grade: Wind &amp; Water Tight</span>
+        </div>
+        <div class="trust-cell">
+          <span class="trust-k m">Warranty</span>
+          <span class="trust-v">Lifetime Leak Warranty — applies to rent-to-own units</span>
+        </div>
+        <div class="trust-cell">
+          <span class="trust-k m">Track record</span>
+          <span class="trust-v">Est. 2009</span>
+        </div>
+        <div class="trust-cell">
+          <span class="trust-k m">The program</span>
+          <span class="trust-v">Authorised independent agent of Freedom Conex · program administered by My Container Rental</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. FAQ -->
+  <section class="rto-faq">
+    <div class="wrap">
+      <div class="rto-sh">
+        <span class="m">Common Questions</span>
+        <h2 class="rto-h2">Rent-to-own, answered straight</h2>
+      </div>
+      <div class="rto-faq-list">
+        {faqs.map((f) => (
+          <div class="rto-faq-item">
+            <h3>{f.q}</h3>
+            <p>{f.a}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. CTA -->
+  <section class="rto-cta">
+    <div class="wrap rto-cta-inner">
+      <p class="m rto-cta-kicker">Start the process</p>
+      <h2>Get your quote — pick rent-to-own when you do.</h2>
+      <p class="rto-cta-body">Tell us your size and delivery zip and choose the rent-to-own option on the form. We'll get you an all-in delivered number, then point you to the application — subject to third-party approval by My Container Rental.</p>
+      <div class="rto-cta-btns">
+        <a href="/quote/?pay=rto" class="btn rto-btn-yellow">Start My Rent-to-Own Quote →</a>
+        <a href="/shipping-containers-for-sale/" class="btn-ghost rto-ghost">Browse containers first</a>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    /* ---- HERO ---- */
+    .rto-hero {
+      background: var(--yellow);
+      color: var(--ink);
+      padding: 64px 0 72px;
+      border-bottom: 2.5px solid var(--ink);
+    }
+    .rto-eyebrow {
+      display: inline-flex; align-items: center; gap: 14px;
+      border: 2px solid var(--ink); padding: 8px 14px; margin-top: 24px;
+      font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+    }
+    .rto-eyebrow .idx { font-weight: 700; }
+    .rto-eyebrow .tg { opacity: .6; }
+    .rto-headline {
+      font-family: var(--narrow); font-weight: 700; text-transform: uppercase;
+      font-size: clamp(44px, 7.5vw, 104px); line-height: 1.02; letter-spacing: -.02em;
+      margin: 32px 0 0;
+    }
+    .rto-headline em {
+      font-style: normal; background: var(--ink); color: var(--yellow);
+      padding: 0 .1em; box-decoration-break: clone; -webkit-box-decoration-break: clone;
+    }
+    .rto-lede {
+      font-size: clamp(18px, 2vw, 22px); line-height: 1.5; font-weight: 500;
+      max-width: 760px; margin: 36px 0 0;
+    }
+
+    /* ---- SHARED SECTION HEADER ---- */
+    .rto-sh { border-top: 4px solid var(--ink); padding-top: 18px; margin-bottom: 40px; }
+    .rto-sh .m { display: block; opacity: .55; margin-bottom: 10px; }
+    .rto-sh-dark { border-top-color: var(--yellow); }
+    .rto-sh-dark .m { color: var(--yellow); opacity: 1; }
+    .rto-h2 {
+      font-family: var(--narrow); font-weight: 700; text-transform: uppercase;
+      font-size: clamp(30px, 4.5vw, 48px); line-height: 1; letter-spacing: -.01em; margin: 0;
+    }
+
+    /* ---- HOW IT WORKS ---- */
+    .rto-how { padding: 96px 0; background: var(--cream); border-bottom: 1.5px solid rgba(11,15,26,.1); }
+    .rto-step-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+    .step-card {
+      background: white; border: 2px solid var(--ink); border-left: 8px solid var(--ink);
+      padding: 32px; box-shadow: 8px 8px 0 var(--ink);
+    }
+    .step-num { display: block; opacity: .5; margin-bottom: 12px; font-weight: 700; }
+    .step-card h3 {
+      font-family: var(--narrow); font-weight: 700; font-size: 26px;
+      text-transform: uppercase; line-height: 1.05; margin: 0 0 12px;
+    }
+    .step-card p { font-size: 16px; line-height: 1.55; opacity: .85; margin: 0; }
+    .step-tag {
+      display: inline-block; margin-top: 16px; padding: 4px 8px;
+      background: var(--ink); color: var(--cream); font-weight: 500;
+    }
+
+    /* ---- TERMS ---- */
+    .rto-terms { padding: 96px 0; background: var(--ink); color: var(--cream); }
+    .rto-terms .rto-h2 { color: var(--cream); }
+    .rto-term-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+    .term-chip {
+      background: var(--cream); color: var(--ink); border: 2.5px solid var(--ink);
+      padding: 28px 24px; box-shadow: 8px 8px 0 var(--yellow);
+      display: flex; flex-direction: column;
+    }
+    .term-num { font-family: var(--narrow); font-weight: 700; font-size: 64px; line-height: .9; }
+    .term-unit { display: block; margin-top: 6px; opacity: .55; font-weight: 700; }
+    .term-chip p { font-size: 14.5px; line-height: 1.5; opacity: .82; margin: 16px 0 0; }
+    .rto-term-note { margin: 40px 0 0; color: var(--cream); opacity: .6; letter-spacing: .08em; line-height: 1.7; }
+
+    /* ---- COMPARISON TABLE ---- */
+    .rto-compare { padding: 96px 0; background: white; border-bottom: 1.5px solid rgba(11,15,26,.1); }
+    .rto-table {
+      width: 100%; border-collapse: collapse; background: var(--cream);
+      border: 2.5px solid var(--ink); box-shadow: 12px 12px 0 var(--yellow); table-layout: fixed;
+    }
+    .rto-table-caption {
+      caption-side: top; text-align: left; font-family: var(--mono); font-size: 11px;
+      letter-spacing: .04em; text-transform: uppercase; opacity: .55; margin-bottom: 14px; line-height: 1.4;
+    }
+    .rto-table thead th { vertical-align: bottom; padding: 20px 20px 16px; border-bottom: 2.5px solid var(--ink); text-align: left; }
+    .rt-rowhead { width: 18%; background: var(--ink); color: var(--cream); }
+    .rt-rto { background: var(--yellow); }
+    .rt-kicker { display: block; opacity: .6; margin-bottom: 8px; }
+    .rt-title { font-family: var(--narrow); font-weight: 700; font-size: 21px; line-height: 1.05; text-transform: uppercase; }
+    .rto-table tbody th {
+      text-align: left; font-family: var(--mono); font-size: 11px; letter-spacing: .06em;
+      text-transform: uppercase; font-weight: 500; padding: 16px 20px;
+      background: var(--ink); color: var(--cream); border-bottom: 1px solid rgba(246,241,231,.12); vertical-align: top;
+    }
+    .rto-table tbody td {
+      padding: 16px 20px; font-size: 15px; line-height: 1.45;
+      border-bottom: 1px solid rgba(11,15,26,.12); border-left: 1px solid rgba(11,15,26,.12); vertical-align: top;
+    }
+    .rto-table tbody td.is-rto { background: rgba(255,211,0,.16); font-weight: 600; }
+    .rto-table tbody tr:last-child th, .rto-table tbody tr:last-child td { border-bottom: none; }
+    .rto-table td::before { content: none; }
+
+    /* ---- TRUST STRIP ---- */
+    .rto-trust { padding: 0; background: var(--cream); border-bottom: 2.5px solid var(--ink); }
+    .rto-trust-grid { display: grid; grid-template-columns: 1.1fr 1.4fr .7fr 1.8fr; }
+    .trust-cell { padding: 28px 24px; border-left: 1.5px solid rgba(11,15,26,.15); }
+    .trust-cell:first-child { border-left: none; padding-left: 0; }
+    .trust-k { display: block; opacity: .5; margin-bottom: 8px; }
+    .trust-v { font-family: var(--narrow); font-weight: 700; font-size: 18px; line-height: 1.15; text-transform: uppercase; display: block; }
+
+    /* ---- FAQ ---- */
+    .rto-faq { padding: 96px 0; background: var(--cream); }
+    .rto-faq-list { display: flex; flex-direction: column; gap: 28px; }
+    .rto-faq-item { border-left: 4px solid var(--yellow-d); padding-left: 28px; max-width: 860px; }
+    .rto-faq-item h3 {
+      font-family: var(--narrow); font-weight: 700; font-size: 22px;
+      line-height: 1.15; text-transform: uppercase; margin: 0 0 12px;
+    }
+    .rto-faq-item p { font-size: 16px; line-height: 1.6; opacity: .85; margin: 0; }
+
+    /* ---- CTA ---- */
+    .rto-cta { padding: 72px 0; background: var(--ink); color: var(--cream); }
+    .rto-cta-inner { display: flex; flex-direction: column; align-items: flex-start; gap: 22px; max-width: 720px; }
+    .rto-cta-kicker { color: var(--yellow); margin: 0; }
+    .rto-cta h2 {
+      font-family: var(--narrow); font-weight: 700; text-transform: uppercase;
+      font-size: clamp(28px, 4vw, 46px); line-height: 1.05; margin: 0;
+    }
+    .rto-cta-body { font-size: 17px; line-height: 1.55; opacity: .75; margin: 0; }
+    .rto-cta-btns { display: flex; gap: 16px; flex-wrap: wrap; }
+    .rto-btn-yellow { background: var(--yellow); color: var(--ink); border-color: var(--yellow); }
+    .rto-ghost { color: var(--cream); }
+
+    /* ---- RESPONSIVE ---- */
+    @media (max-width: 960px) {
+      .rto-hero { padding: 44px 0 52px; }
+      .rto-headline { font-size: clamp(38px, 10.5vw, 72px); }
+      .rto-step-grid { grid-template-columns: 1fr; gap: 22px; }
+      .rto-term-grid { grid-template-columns: 1fr 1fr; }
+      .rto-trust-grid { grid-template-columns: 1fr 1fr; }
+      .trust-cell { border-left: none; border-top: 1.5px solid rgba(11,15,26,.15); padding-left: 0; }
+      .trust-cell:nth-child(-n+2) { border-top: none; }
+    }
+    @media (max-width: 700px) {
+      .step-card { padding: 24px; }
+      .rto-term-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
+      .term-chip { padding: 20px 16px; box-shadow: 5px 5px 0 var(--yellow); }
+      .term-num { font-size: 48px; }
+      /* Comparison table → stacked cards so nothing scrolls sideways */
+      .rto-table, .rto-table tbody, .rto-table tr, .rto-table th, .rto-table td { display: block; width: 100% !important; }
+      .rto-table thead { display: none; }
+      .rto-table tbody tr { border-bottom: 2.5px solid var(--ink); }
+      .rto-table tbody tr:last-child { border-bottom: none; }
+      .rto-table tbody td { border-left: none; }
+      .rto-table tbody td::before {
+        content: attr(data-label);
+        display: block; font-family: var(--mono); font-size: 10px;
+        letter-spacing: .08em; text-transform: uppercase; opacity: .55; margin-bottom: 4px;
+      }
+      .rto-trust-grid { grid-template-columns: 1fr; }
+      .trust-cell:nth-child(2) { border-top: 1.5px solid rgba(11,15,26,.15); }
+    }
+  </style>
+</BaseLayout>

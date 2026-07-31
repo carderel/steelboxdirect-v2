@@ -92,6 +92,33 @@ describe('buildPageSchema core', () => {
     expect(quickFacts!.specs[0].k).toBe('Foundation');
   });
 
+  it('useCase branch: optional serviceType + areaServed override the defaults, still NO price', () => {
+    const { graph } = buildPageSchema({
+      url: 'https://steelboxdirect.com/rent-to-own/', title: 'Rent to Own', description: 'r',
+      page: { kind: 'useCase', audience: 'rent-to-own container buyers', title: 'Rent-to-Own Shipping Containers',
+              serviceType: 'Rent-to-own shipping container program',
+              areaServed: ['Ohio', 'Indiana', 'Kentucky'],
+              specs: [], faqs: [{ q: 'Q', a: 'A' }] },
+    });
+    const svc = graph.find((n) => n['@type'] === 'Service') as any;
+    expect(svc.serviceType).toBe('Rent-to-own shipping container program');
+    expect(svc.areaServed).toEqual([
+      { '@type': 'State', name: 'Ohio' },
+      { '@type': 'State', name: 'Indiana' },
+      { '@type': 'State', name: 'Kentucky' },
+    ]);
+    expect(svc.offers).toBeUndefined();
+    expect(JSON.stringify(svc)).not.toMatch(/"price"\s*:/);
+    // default preserved when the new options are omitted
+    const { graph: g2 } = buildPageSchema({
+      url: 'https://steelboxdirect.com/for/farmers/', title: 'Farmers', description: 'f',
+      page: { kind: 'useCase', audience: 'farmers', title: 'Farm Storage', specs: [], faqs: [] },
+    });
+    const svc2 = g2.find((n) => n['@type'] === 'Service') as any;
+    expect(svc2.serviceType).toBe('Shipping container sales and delivery');
+    expect('areaServed' in svc2).toBe(false);
+  });
+
   it('guide branch with topic adds an Article and a HowTo node', () => {
     const { graph } = buildPageSchema({ url: 'https://steelboxdirect.com/size/', title: 'Size', description: 's', page: { kind: 'guide', topic: 'size', title: 'Size', specs: [], faqs: [] } });
     expect(graph.some((n) => n['@type'] === 'Article')).toBe(true);

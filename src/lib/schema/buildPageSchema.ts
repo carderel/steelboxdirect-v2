@@ -124,9 +124,12 @@ export function buildPageSchema(args: BuildSchemaArgs): BuiltSchema {
         '@type': 'Service',
         '@id': svcId,
         name: p.title,
-        serviceType: 'Shipping container sales and delivery',
+        serviceType: p.serviceType ?? 'Shipping container sales and delivery',
         provider: { '@id': LOCALBUSINESS_ID },
         audience: { '@type': 'Audience', audienceType: p.audience },
+        ...(p.areaServed?.length
+          ? { areaServed: p.areaServed.map((name) => ({ '@type': 'State', name })) }
+          : {}),
       });
       graph.push(faqNode(args.url, p.faqs));
       graph.push(webPageNode(args, svcId, nodeId(args.url, 'faq')));

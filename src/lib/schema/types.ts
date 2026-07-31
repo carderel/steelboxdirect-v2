@@ -20,7 +20,9 @@ export type PageSchemaInput =
       price?: import('../../data/pricing').ContainerPrice;
       specs: QuickFact[] }
   | { kind: 'city'; city: import('../../data/cities').City; faqs: QuickFaq[] }
-  | { kind: 'useCase'; audience: string; title: string; specs: QuickFact[]; faqs: QuickFaq[] }
+  | { kind: 'useCase'; audience: string; title: string; specs: QuickFact[]; faqs: QuickFaq[];
+      serviceType?: string;            // override the default sales-and-delivery serviceType
+      areaServed?: string[] }          // optional State names (e.g. ['Ohio', 'Indiana'])
   | { kind: 'guide'; topic?: GuideTopic; title: string; specs: QuickFact[]; faqs: QuickFaq[] }
   | { kind: 'collection'; title: string; items: { name: string; url: string }[]; faqs: QuickFaq[] }
   | { kind: 'blogPost'; title: string; description: string; author: string;
