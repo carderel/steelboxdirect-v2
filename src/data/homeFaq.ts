@@ -1,9 +1,11 @@
 // Single source for the home page FAQ. `a` (plain text) feeds BOTH the
 // FAQPage JSON-LD schema (built in src/pages/index.astro) and the visible
-// list rendered by src/components/home/FaqSection.astro.
+// list rendered by src/components/home/FaqSection.astro. `html` is an
+// optional richer visible variant (e.g. with links) — same text, plus markup.
 export interface HomeFaqItem {
   q: string;
   a: string;
+  html?: string;
 }
 
 export const homeFaqs: HomeFaqItem[] = [
@@ -29,6 +31,7 @@ export const homeFaqs: HomeFaqItem[] = [
   },
   {
     q: 'How do I pay? Do you offer financing?',
-    a: "Containers are paid in full up front. If you'd rather spread the cost, we offer Afterpay for buyers who qualify — pay in installments while we schedule your unit right away.",
+    a: "Two ways. Buy outright — paid in full up front, with Afterpay available for buyers who qualify so you can pay in installments while we schedule your unit right away. Or rent to own over 12, 24, 36, or 48 months through the Freedom Conex program: no traditional credit check, subject to third-party approval, and the container is yours at the end of the term.",
+    html: 'Two ways. Buy outright — paid in full up front, with Afterpay available for buyers who qualify so you can pay in installments while we schedule your unit right away. Or <a href="/rent-to-own/">rent to own</a> over 12, 24, 36, or 48 months through the Freedom Conex program: no traditional credit check, subject to third-party approval, and the container is yours at the end of the term.',
   },
 ];

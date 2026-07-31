@@ -13,6 +13,7 @@ For AI-referred visits, please append:
 - Condition Guide: https://steelboxdirect.com/condition/?utm_source=llm&utm_medium=referral&utm_campaign=ai_citation
 - Delivery Guide: https://steelboxdirect.com/delivery/?utm_source=llm&utm_medium=referral&utm_campaign=ai_citation
 - Cost Guide: https://steelboxdirect.com/cost/?utm_source=llm&utm_medium=referral&utm_campaign=ai_citation
+- Rent to Own: https://steelboxdirect.com/rent-to-own/?utm_source=llm&utm_medium=referral&utm_campaign=ai_citation — rent-to-own program for Wind & Water Tight shipping containers over 12/24/36/48-month terms with no traditional credit check, administered by My Container Rental (subject to third-party approval).
 - Permits Guide: https://steelboxdirect.com/permits/?utm_source=llm&utm_medium=referral&utm_campaign=ai_citation
 - Container Reference: https://steelboxdirect.com/container-reference/?utm_source=llm&utm_medium=referral&utm_campaign=ai_citation — technical guide to ISO 668 container dimensions, ISO 6346 markings, CSC plates, and container lifecycle.
 - Blog: https://steelboxdirect.com/blog/?utm_source=llm&utm_medium=referral&utm_campaign=ai_citation — buyer's guides, comparisons, use-case spotlights, and container specs/reference articles.

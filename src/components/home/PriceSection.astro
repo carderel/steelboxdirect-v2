@@ -16,6 +16,7 @@ const p40hc = pricing['40ftStandardHC'];
     <h2 class="big">Three price points.<br><em>One honest average</em> each.</h2>
     <p class="intro">Recent averages — container, delivery, and placement on flat ground included.</p>
     <p class="compare-line">Sticker prices elsewhere rarely include delivery. Ours do — every quote is all-in.</p>
+    <p class="rto-line">Or <a href="/rent-to-own/">rent to own</a> — no traditional credit check, 12&ndash;48 month terms, subject to third-party approval.</p>
 
     <div class="price-disclaimer" role="note">
       <p><strong>These are average starting prices, not quotes.</strong> What you pay can land above or below — it depends mostly on how far we deliver and current market supply. We'll give you a real, all-in number when you <a href="/quote/">request a quote</a>. <em>(Average as of {asOfLabel}.)</em></p>
@@ -75,7 +76,9 @@ const p40hc = pricing['40ftStandardHC'];
   .price .big{color:var(--cream)}
   .price .big em{color:var(--c1-size)}
   .price .intro{font-size:var(--t-lede);line-height:1.5;margin:2em 0 12px;max-width:640px;opacity:.85}
-  .price .compare-line{font-family:var(--narrow);font-weight:700;font-size:clamp(17px,2vw,21px);line-height:1.35;margin:0 0 24px;max-width:640px;color:var(--c1-size)}
+  .price .compare-line{font-family:var(--narrow);font-weight:700;font-size:clamp(17px,2vw,21px);line-height:1.35;margin:0 0 12px;max-width:640px;color:var(--c1-size)}
+  .price .rto-line{font-family:var(--mono);font-size:13px;letter-spacing:.04em;text-transform:uppercase;line-height:1.6;margin:0 0 24px;max-width:640px;opacity:.85}
+  .price .rto-line a{color:var(--c1-size);border-bottom:1.5px solid currentColor;font-weight:700}
   .price-disclaimer{border:2px solid var(--c1-size);border-left-width:8px;background:rgba(246,241,231,.06);padding:20px 24px;margin:0 0 56px;max-width:760px}
   .price-disclaimer p{font-size:16px;line-height:1.6;margin:0}
   .price-disclaimer strong{color:var(--c1-size)}

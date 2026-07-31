@@ -16,7 +16,7 @@ import { homeFaqs } from '../../data/homeFaq';
         <div class="faq-item faq_item">
           <span class="n">Q · {String(i + 1).padStart(2, '0')}</span>
           <h3 class="q">{f.q}</h3>
-          <p class="a">{f.a}</p>
+          {f.html ? <p class="a" set:html={f.html} /> : <p class="a">{f.a}</p>}
         </div>
       ))}
     </div>
@@ -42,6 +42,7 @@ import { homeFaqs } from '../../data/homeFaq';
   .faq-item .n{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;opacity:.85;padding-top:8px}
   .faq-item .q{font-family:var(--narrow);font-weight:700;font-size:clamp(26px,3.2vw,44px);line-height:1;letter-spacing:-.015em;text-transform:uppercase;margin:0;grid-column:2}
   .faq-item .a{font-size:18px;line-height:1.5;opacity:.9;grid-column:2;margin:0;max-width:760px;font-weight:500}
+  .faq-item .a a{color:inherit;text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:2px;font-weight:700}
 
   @media (max-width:960px){
     .faq-item{grid-template-columns:1fr;gap:12px}
