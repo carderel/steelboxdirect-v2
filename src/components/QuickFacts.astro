@@ -25,7 +25,7 @@ const { facts } = Astro.props;
 
         <div class="qf-biz">
           <div class="bcell"><span class="k">Seller</span><span class="v">Steel Box Direct · Est. 2009</span></div>
-          <div class="bcell"><span class="k">Serves</span><span class="v">250 mi from Cincinnati, OH</span></div>
+          <div class="bcell"><span class="k">Serves</span><span class="v">{facts.serves ?? '250 mi from Cincinnati, OH'}</span></div>
           <div class="bcell"><span class="k">Call</span><span class="v"><a href="tel:+15135462543">(513) 546-2543</a></span></div>
         </div>
 

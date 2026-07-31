@@ -67,9 +67,9 @@ describe('buildPageSchema core', () => {
   });
 
   it('city branch: Service with areaServed, NO price anywhere, block $-free', () => {
-    const city: any = { slug: 'cincinnati-shipping-containers', city: 'Cincinnati', state: 'OH' };
+    const city: any = { slug: 'cincinnati-shipping-containers', city: 'Cincinnati', state: 'OH', region: 'home' };
     const { graph, quickFacts } = buildPageSchema({
-      url: 'https://steelboxdirect.com/cincinnati-shipping-containers/', title: 'Cincinnati', description: 'c',
+      url: 'https://steelboxdirect.com/locations/ohio/cincinnati-shipping-containers/', title: 'Cincinnati', description: 'c',
       page: { kind: 'city', city, faqs: [{ q: 'Deliver?', a: 'Yes.' }] },
     });
     const svc = graph.find((n) => n['@type'] === 'Service') as any;
@@ -80,6 +80,29 @@ describe('buildPageSchema core', () => {
     expect(svc.offers).toBeUndefined();
     expect(quickFacts!.showPriceDisclaimer).toBe(false);
     expect(JSON.stringify(quickFacts)).not.toContain('$');
+  });
+
+  it('city branch quickFacts are region-aware: home keeps the 250-mi default, depot gets the depot line', () => {
+    const home: any = { slug: 'cincinnati-shipping-containers', city: 'Cincinnati', state: 'Ohio', region: 'home' };
+    const { quickFacts: homeQf } = buildPageSchema({
+      url: 'https://steelboxdirect.com/locations/ohio/cincinnati-shipping-containers/', title: 'Cincinnati', description: 'c',
+      page: { kind: 'city', city: home, faqs: [] },
+    });
+    // home city: unchanged — no serves override, service area is the counties line
+    expect(homeQf!.serves).toBeUndefined();
+    expect(homeQf!.specs[0]).toEqual({ k: 'Service area', v: 'Cincinnati + surrounding counties' });
+
+    const depot: any = { slug: 'houston-shipping-containers', city: 'Houston', state: 'Texas', region: 'depot' };
+    const { quickFacts: depotQf } = buildPageSchema({
+      url: 'https://steelboxdirect.com/locations/texas/houston-shipping-containers/', title: 'Houston', description: 'h',
+      page: { kind: 'city', city: depot, faqs: [] },
+    });
+    // depot city: qualitative depot framing — no distance claim, no supplier name
+    expect(depotQf!.serves).toBe('Depot in the Houston area · our supplier network');
+    expect(depotQf!.specs[0].v).toBe('Delivered from a depot in the Houston area through our supplier network');
+    const depotJson = JSON.stringify(depotQf);
+    expect(depotJson).not.toMatch(/250\s*mi|miles/i);
+    expect(depotJson).not.toMatch(/freedom\s*conex/i);
   });
 
   it('useCase branch: Service with audience + quickFacts specs', () => {

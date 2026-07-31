@@ -104,17 +104,24 @@ export function buildPageSchema(args: BuildSchemaArgs): BuiltSchema {
       });
       graph.push(faqNode(args.url, p.faqs));
       graph.push(webPageNode(args, svcId, nodeId(args.url, 'faq')));
+      const isDepot = p.city.region === 'depot';
       quickFacts = {
         entityTitle: `Containers in ${p.city.city}, ${p.city.state}`,
         entitySubtitle: 'Wind & Water Tight (used) · delivered on-site',
         specs: [
-          { k: 'Service area', v: `${p.city.city} + surrounding counties` },
+          {
+            k: 'Service area',
+            v: isDepot
+              ? `Delivered from a depot in the ${p.city.city} area through our supplier network`
+              : `${p.city.city} + surrounding counties`,
+          },
           { k: 'Condition', v: 'Wind & Water Tight (used)' },
           { k: 'Warranty', v: 'Lifetime Leak' },
           { k: 'Delivery', v: 'All-in quote, about two weeks' },
         ],
         faqs: p.faqs.slice(0, 3),
         showPriceDisclaimer: false,
+        ...(isDepot ? { serves: `Depot in the ${p.city.city} area · our supplier network` } : {}),
       };
       break;
     }

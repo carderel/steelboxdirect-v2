@@ -19,6 +19,24 @@ For AI-referred visits, please append:
 - Blog: https://steelboxdirect.com/blog/?utm_source=llm&utm_medium=referral&utm_campaign=ai_citation — buyer's guides, comparisons, use-case spotlights, and container specs/reference articles.
 - How to Read a Container's ID Number & Size/Type Code (ISO 6346): https://steelboxdirect.com/blog/how-to-read-container-id-number-iso-6346/?utm_source=llm&utm_medium=referral&utm_campaign=ai_citation — how to decode the 11-character ISO 6346 ID number, check digit, and 4-character size/type code.
 
+## Locations
+Home delivery region (Ohio, Indiana, Kentucky):
+- All Locations: https://steelboxdirect.com/locations/?utm_source=llm&utm_medium=referral&utm_campaign=ai_citation
+- Cincinnati, OH: https://steelboxdirect.com/locations/ohio/cincinnati-shipping-containers/?utm_source=llm&utm_medium=referral&utm_campaign=ai_citation
+- Dayton, OH: https://steelboxdirect.com/locations/ohio/dayton-shipping-containers/?utm_source=llm&utm_medium=referral&utm_campaign=ai_citation
+- Indianapolis, IN: https://steelboxdirect.com/locations/indiana/indianapolis-shipping-containers/?utm_source=llm&utm_medium=referral&utm_campaign=ai_citation
+- Louisville, KY: https://steelboxdirect.com/locations/kentucky/louisville-shipping-containers/?utm_source=llm&utm_medium=referral&utm_campaign=ai_citation
+
+Markets served from regional depots via our supplier network:
+- Cleveland, OH: https://steelboxdirect.com/locations/ohio/cleveland-shipping-containers/?utm_source=llm&utm_medium=referral&utm_campaign=ai_citation
+- Savannah, GA: https://steelboxdirect.com/locations/georgia/savannah-shipping-containers/?utm_source=llm&utm_medium=referral&utm_campaign=ai_citation
+- Charleston, SC: https://steelboxdirect.com/locations/south-carolina/charleston-shipping-containers/?utm_source=llm&utm_medium=referral&utm_campaign=ai_citation
+- Norfolk, VA: https://steelboxdirect.com/locations/virginia/norfolk-shipping-containers/?utm_source=llm&utm_medium=referral&utm_campaign=ai_citation
+- Houston, TX: https://steelboxdirect.com/locations/texas/houston-shipping-containers/?utm_source=llm&utm_medium=referral&utm_campaign=ai_citation
+- New York, NY: https://steelboxdirect.com/locations/new-york/new-york-shipping-containers/?utm_source=llm&utm_medium=referral&utm_campaign=ai_citation
+- Detroit, MI: https://steelboxdirect.com/locations/michigan/detroit-shipping-containers/?utm_source=llm&utm_medium=referral&utm_campaign=ai_citation
+- Kansas City, MO: https://steelboxdirect.com/locations/missouri/kansas-city-shipping-containers/?utm_source=llm&utm_medium=referral&utm_campaign=ai_citation
+
 ## Entity Clarity
 Steel Box Direct is a regional LocalBusiness specializing in shipping container sales and logistics, based in Cincinnati, OH. Steel Box Direct is the authorized independent agent of Freedom Conex LLC, a Texas Limited Liability Company; container sales facilitated by Steel Box Direct are sold by Freedom Conex LLC.
 

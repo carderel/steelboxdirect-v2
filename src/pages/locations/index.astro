@@ -5,7 +5,7 @@ import { cities } from '../../data/cities';
 const faqs = [
   {
     q: 'What areas do you deliver to?',
-    a: "We currently serve markets in Ohio, Indiana, Kentucky, and western West Virginia — including Cincinnati, Dayton, Indianapolis, Louisville, and the Huntington/Charleston/Parkersburg corridor. We're expanding. If your city isn't listed, use the form below to check your ZIP.",
+    a: "Our home delivery region is Ohio, Indiana, and Kentucky — Cincinnati, Dayton, Indianapolis, Louisville, and the western West Virginia corridor (Huntington, Charleston, Parkersburg). We also serve Cleveland OH, Detroit MI, Kansas City MO, Houston TX, New York NY, Norfolk VA, Charleston SC, and Savannah GA through our supplier network, from depots in each market. If your city isn't listed, use the form below to check your ZIP.",
   },
   {
     q: 'How long does delivery take?',
@@ -21,7 +21,32 @@ const faqs = [
   },
 ];
 
-const items = cities.map((c) => ({ name: `${c.city}, ${c.state}`, url: `https://steelboxdirect.com/${c.slug}/` }));
+const items = cities.map((c) => ({ name: `${c.city}, ${c.state}`, url: `https://steelboxdirect.com/locations/${c.stateSlug}/${c.slug}/` }));
+
+const STATE_ABBREV: Record<string, string> = {
+  ohio: 'OH', indiana: 'IN', kentucky: 'KY', georgia: 'GA', 'south-carolina': 'SC',
+  virginia: 'VA', texas: 'TX', 'new-york': 'NY', michigan: 'MI', missouri: 'MO',
+};
+
+// Card shorthand code + region line, keyed by slug (home labels preserved from the original cards).
+const CARD_META: Record<string, { code: string; region: string }> = {
+  'cincinnati-shipping-containers':   { code: 'CIN', region: 'Tri-State Area' },
+  'dayton-shipping-containers':       { code: 'DAY', region: 'Miami Valley' },
+  'indianapolis-shipping-containers': { code: 'IND', region: 'Indy Metro' },
+  'louisville-shipping-containers':   { code: 'LOU', region: 'Bluegrass' },
+  'cleveland-shipping-containers':    { code: 'CLE', region: 'Northeast Ohio' },
+  'savannah-shipping-containers':     { code: 'SAV', region: 'Coastal Empire' },
+  'charleston-shipping-containers':   { code: 'CHS', region: 'Lowcountry' },
+  'norfolk-shipping-containers':      { code: 'ORF', region: 'Hampton Roads' },
+  'houston-shipping-containers':      { code: 'HOU', region: 'Gulf Coast' },
+  'new-york-shipping-containers':     { code: 'NYC', region: 'Five Boroughs' },
+  'detroit-shipping-containers':      { code: 'DET', region: 'Motor City' },
+  'kansas-city-shipping-containers':  { code: 'MCI', region: 'KC Metro' },
+};
+
+const homeCities = cities.filter((c) => c.region === 'home');
+const depotCities = cities.filter((c) => c.region === 'depot');
+const cityUrl = (c: (typeof cities)[number]) => `/locations/${c.stateSlug}/${c.slug}/`;
 ---
 
 <BaseLayout
@@ -47,66 +72,53 @@ const items = cities.map((c) => ({ name: `${c.city}, ${c.state}`, url: `https://
   <!-- ============ INTRO STRIP ============ -->
   <div class="loc-intro">
     <div class="wrap">
-      <p>Steel Box Direct is a regional container dealer — not a marketplace or national broker. The person quoting your container is the same person coordinating your delivery. We source from depots close to you, keep freight costs honest, and stay in contact from order to drop-off. We currently serve markets across Ohio, Indiana, Kentucky, and western West Virginia (Huntington, Charleston, Parkersburg), with more areas coming soon.</p>
+      <p>Steel Box Direct is a regional container dealer — not a marketplace or national broker. The person quoting your container is the same person coordinating your delivery. We source from depots close to you, keep freight costs honest, and stay in contact from order to drop-off. Our home region covers Ohio, Indiana, Kentucky, and western West Virginia (Huntington, Charleston, Parkersburg) — and we now serve eight more major markets through our supplier network, from depots right in each metro.</p>
     </div>
   </div>
 
-  <!-- ============ CITY GRID ============ -->
+  <!-- ============ CITY GRID — HOME REGION ============ -->
   <section class="city-section">
+    <div class="city-hd">
+      <h2>Our home region</h2>
+      <p>Cincinnati, Dayton, Indianapolis, and Louisville — our home delivery region across Ohio, Indiana, and Kentucky.</p>
+    </div>
     <div class="city-grid">
-
-      <a class="city-card" href="/cincinnati-shipping-containers/">
-        <div class="city-body">
-          <div class="city-state-bg">OH</div>
-          <div class="city-code">CIN</div>
-          <div class="city-name-row">
-            <span class="city-name">Cincinnati</span>
-            <span class="city-state">OH</span>
+      {homeCities.map((c) => (
+        <a class="city-card" href={cityUrl(c)}>
+          <div class="city-body">
+            <div class="city-state-bg">{STATE_ABBREV[c.stateSlug]}</div>
+            <div class="city-code">{CARD_META[c.slug].code}</div>
+            <div class="city-name-row">
+              <span class="city-name">{c.city}</span>
+              <span class="city-state">{STATE_ABBREV[c.stateSlug]}</span>
+            </div>
+            <div class="city-region">{CARD_META[c.slug].region}</div>
           </div>
-          <div class="city-region">Tri-State Area</div>
-        </div>
-        <div class="city-cta">Shipping containers in Cincinnati →</div>
-      </a>
+          <div class="city-cta">Shipping containers in {c.city} →</div>
+        </a>
+      ))}
+    </div>
 
-      <a class="city-card" href="/dayton-shipping-containers/">
-        <div class="city-body">
-          <div class="city-state-bg">OH</div>
-          <div class="city-code">DAY</div>
-          <div class="city-name-row">
-            <span class="city-name">Dayton</span>
-            <span class="city-state">OH</span>
+    <!-- ============ CITY GRID — REGIONAL DEPOTS ============ -->
+    <div class="city-hd depot-hd">
+      <h2>Served from regional depots</h2>
+      <p>Markets we fulfill through our supplier network, from a depot right in each metro — sourcing from a local yard keeps freight short, and short freight keeps costs down.</p>
+    </div>
+    <div class="city-grid">
+      {depotCities.map((c) => (
+        <a class="city-card" href={cityUrl(c)}>
+          <div class="city-body">
+            <div class="city-state-bg">{STATE_ABBREV[c.stateSlug]}</div>
+            <div class="city-code">{CARD_META[c.slug].code}</div>
+            <div class="city-name-row">
+              <span class="city-name">{c.city}</span>
+              <span class="city-state">{STATE_ABBREV[c.stateSlug]}</span>
+            </div>
+            <div class="city-region">{CARD_META[c.slug].region}</div>
           </div>
-          <div class="city-region">Miami Valley</div>
-        </div>
-        <div class="city-cta">Shipping containers in Dayton →</div>
-      </a>
-
-      <a class="city-card" href="/indianapolis-shipping-containers/">
-        <div class="city-body">
-          <div class="city-state-bg">IN</div>
-          <div class="city-code">IND</div>
-          <div class="city-name-row">
-            <span class="city-name">Indianapolis</span>
-            <span class="city-state">IN</span>
-          </div>
-          <div class="city-region">Indy Metro</div>
-        </div>
-        <div class="city-cta">Shipping containers in Indianapolis →</div>
-      </a>
-
-      <a class="city-card" href="/louisville-shipping-containers/">
-        <div class="city-body">
-          <div class="city-state-bg">KY</div>
-          <div class="city-code">LOU</div>
-          <div class="city-name-row">
-            <span class="city-name">Louisville</span>
-            <span class="city-state">KY</span>
-          </div>
-          <div class="city-region">Bluegrass</div>
-        </div>
-        <div class="city-cta">Shipping containers in Louisville →</div>
-      </a>
-
+          <div class="city-cta">Shipping containers in {c.city} →</div>
+        </a>
+      ))}
     </div>
   </section>
 
@@ -163,7 +175,7 @@ const items = cities.map((c) => ({ name: `${c.city}, ${c.state}`, url: `https://
         <div class="faq-item">
           <span class="n">Q · 01</span>
           <h3 class="q">What areas do you deliver to?</h3>
-          <p class="a">We currently serve markets in Ohio, Indiana, Kentucky, and western West Virginia — including Cincinnati, Dayton, Indianapolis, Louisville, and the Huntington/Charleston/Parkersburg corridor. We're expanding. If your city isn't listed, use the form below to check your ZIP.</p>
+          <p class="a">Our home delivery region is Ohio, Indiana, and Kentucky — Cincinnati, Dayton, Indianapolis, Louisville, and the western West Virginia corridor (Huntington, Charleston, Parkersburg). We also serve Cleveland OH, Detroit MI, Kansas City MO, Houston TX, New York NY, Norfolk VA, Charleston SC, and Savannah GA through our supplier network, from depots in each market. If your city isn't listed, use the form below to check your ZIP.</p>
         </div>
 
         <div class="faq-item">
@@ -223,6 +235,10 @@ const items = cities.map((c) => ({ name: `${c.city}, ${c.state}`, url: `https://
 
     /* City grid */
     .city-section{background:var(--cream);padding:3em 0 3em;border-bottom:2.5px solid var(--ink)}
+    .city-hd{width:85%;margin:0 auto 18px}
+    .city-hd h2{font-family:var(--narrow);font-weight:700;font-size:clamp(24px,3vw,34px);line-height:.95;letter-spacing:-.01em;text-transform:uppercase;margin:0 0 8px}
+    .city-hd p{font-size:15px;line-height:1.55;opacity:.7;margin:0;max-width:680px}
+    .depot-hd{margin-top:48px}
     .city-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75em;width:85%;margin:0 auto}
     .city-card{display:flex;flex-direction:column;overflow:hidden;text-decoration:none;transition:transform .2s;outline:2px solid rgba(11,15,26,.07)}
     .city-card:hover{transform:translateY(-3px)}

@@ -10,6 +10,7 @@ export interface QuickFacts {
   specs: QuickFact[];           // primary grid (≤ 8)
   faqs: QuickFaq[];             // ≤ 3
   showPriceDisclaimer: boolean; // render the avg-price disclaimer line
+  serves?: string;              // override for the "Serves" business-band cell (default: 250-mi home-region line)
 }
 
 // Discriminated union describing a page's main entity.
