@@ -7,6 +7,7 @@ export const FREEDOMCONEX_ID = `${SITE_URL}/#freedomconex`;
 const SAME_AS = [
   'https://maps.google.com/?cid=16337072236475848136',
   'https://www.linkedin.com/company/steel-box-direct/',
+  'https://www.facebook.com/SteelBoxDirect/',
 ];
 
 const WARRANTY = {
