@@ -1,26 +1,36 @@
 ---
 export const prerender = true;
 
-import BaseLayout from '../layouts/BaseLayout.astro';
-import { cities } from '../data/cities';
-import type { City } from '../data/cities';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { cities } from '../../../data/cities';
+import type { City } from '../../../data/cities';
 
 export function getStaticPaths() {
-  return cities.map((c) => ({ params: { citySlug: c.slug }, props: { city: c } }));
+  return cities.map((c) => ({ params: { state: c.stateSlug, citySlug: c.slug }, props: { city: c } }));
 }
 
 interface Props { city: City }
 const { city: c } = Astro.props;
+
+const deliveryFaqAnswer =
+  c.region === 'home'
+    ? `We serve ${c.delivery.counties.join(', ')} with flat-fee delivery from Cincinnati, Ohio.`
+    : `We serve ${c.delivery.counties.join(', ')} with delivery from a depot in the ${c.city} area through our supplier network.`;
 ---
 
 <BaseLayout
   title={c.seo.title}
   description={c.seo.description}
   pageType="guide"
-  breadcrumbs={[{ name: 'Home', path: '/' }, { name: c.city }]}
+  breadcrumbs={[
+    { name: 'Home', path: '/' },
+    { name: 'Locations', path: '/locations/' },
+    { name: c.state },
+    { name: c.city },
+  ]}
   schema={{ kind: 'city', city: c, faqs: [
     { q: `Do you deliver shipping containers to ${c.city}, ${c.state}?`, a: `Yes. We deliver to ${c.delivery.counties.join(', ')} and surrounding areas. ${c.delivery.body}` },
-    { q: `What counties near ${c.city} do you serve?`, a: `We serve ${c.delivery.counties.join(', ')} with flat-fee delivery from Cincinnati, Ohio.` },
+    { q: `What areas near ${c.city} do you serve?`, a: deliveryFaqAnswer },
     { q: `How quickly can I get a container quote in ${c.city}?`, a: c.cta.body },
   ] }}
 >
@@ -36,6 +46,19 @@ const { city: c } = Astro.props;
       <p class="lede local_hero_lede">{c.lede}</p>
     </div>
   </section>
+
+  {c.region === 'depot' && (
+    <section class="local-bridge">
+      <div class="wrap">
+        <div class="bridge-band">
+          <div class="m local_bridge_label">How we serve {c.city}</div>
+          <p class="local_bridge_body">
+            Steel Box Direct is a family-run dealer headquartered near Cincinnati — Ohio, Indiana, and Kentucky are our home delivery region. {c.city} is one of the markets we fulfill through our supplier network, from a depot right in the area: same containers, same Lifetime Leak Warranty, same person handling your quote. Sourcing from a local yard instead of hauling steel across the country keeps freight short — and short freight is what keeps our pricing structure low.
+          </p>
+        </div>
+      </div>
+    </section>
+  )}
 
   <section class="local-details">
     <div class="wrap">
@@ -108,8 +131,8 @@ const { city: c } = Astro.props;
 
   <section class="local-zoning">
     <div class="wrap">
-      <div class="m local_zoning_label">Permits &amp; zoning by county</div>
-      <p class="local_zoning_note">Zoning and permit rules are set by your local authority and are the buyer's responsibility to confirm before you buy. Start with your county:</p>
+      <div class="m local_zoning_label">Permits &amp; zoning</div>
+      <p class="local_zoning_note">Zoning and permit rules are set by your local authority and are the buyer's responsibility to confirm before you buy. Start with the offices below:</p>
       <ul class="zoning-list">
         {c.zoning.map((z) => (
           <li>
@@ -146,6 +169,11 @@ const { city: c } = Astro.props;
 
   .local-hero { padding: 120px 0 80px; background: var(--yellow); border-bottom: 2.5px solid var(--ink); }
   .lede { font-size: 24px; line-height: 1.4; max-width: 800px; margin-top: 32px; font-weight: 500; }
+
+  .local-bridge { padding: 56px 0; background: white; border-bottom: 1.5px solid rgba(11,15,26,.1); }
+  .bridge-band { border-left: 4px solid var(--yellow); padding-left: 24px; max-width: 860px; }
+  .local_bridge_label { margin-bottom: 12px; }
+  .local_bridge_body { font-size: 17px; line-height: 1.6; margin: 0; opacity: .85; }
 
   .local-details { padding: 96px 0; background: var(--cream); border-bottom: 1.5px solid rgba(11,15,26,.1); }
   .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
@@ -186,6 +214,8 @@ const { city: c } = Astro.props;
     .card h3 { font-size: 24px; }
     .cta-box { padding: 40px 24px; }
     .cta-box h2 { font-size: 32px; }
+    .local-bridge { padding: 40px 0; }
+    .local_bridge_body { font-size: 15px; }
   }
 
   .local-uses { padding: 80px 0; background: var(--cream); border-top: 1.5px solid rgba(11,15,26,.1); }

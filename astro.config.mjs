@@ -19,6 +19,13 @@ export default defineConfig({
   redirects: {
     '/admin': '/admin/login',
     '/shipping-containers-for-sale/40-foot-one-trip-container': '/shipping-containers-for-sale/40-foot-high-cube-container',
+    // City pages moved under /locations/{state}/ (2026-07-31). The Cloudflare
+    // adapter emits these into dist/_redirects as real HTTP 301s (same
+    // mechanism as the proven 40ft slug redirect above).
+    '/cincinnati-shipping-containers': '/locations/ohio/cincinnati-shipping-containers',
+    '/dayton-shipping-containers': '/locations/ohio/dayton-shipping-containers',
+    '/indianapolis-shipping-containers': '/locations/indiana/indianapolis-shipping-containers',
+    '/louisville-shipping-containers': '/locations/kentucky/louisville-shipping-containers',
   },
   integrations: [
     react(),
