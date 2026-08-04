@@ -24,6 +24,7 @@ Home delivery region (Ohio, Indiana, Kentucky):
 - All Locations: https://steelboxdirect.com/locations/?utm_source=llm&utm_medium=referral&utm_campaign=ai_citation
 - Cincinnati, OH: https://steelboxdirect.com/locations/ohio/cincinnati-shipping-containers/?utm_source=llm&utm_medium=referral&utm_campaign=ai_citation
 - Dayton, OH: https://steelboxdirect.com/locations/ohio/dayton-shipping-containers/?utm_source=llm&utm_medium=referral&utm_campaign=ai_citation
+- Columbus, OH: https://steelboxdirect.com/locations/ohio/columbus-shipping-containers/?utm_source=llm&utm_medium=referral&utm_campaign=ai_citation
 - Indianapolis, IN: https://steelboxdirect.com/locations/indiana/indianapolis-shipping-containers/?utm_source=llm&utm_medium=referral&utm_campaign=ai_citation
 - Louisville, KY: https://steelboxdirect.com/locations/kentucky/louisville-shipping-containers/?utm_source=llm&utm_medium=referral&utm_campaign=ai_citation
 

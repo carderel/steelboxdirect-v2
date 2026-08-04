@@ -5,7 +5,7 @@ import { cities } from '../../data/cities';
 const faqs = [
   {
     q: 'What areas do you deliver to?',
-    a: "Our home delivery region is Ohio, Indiana, and Kentucky — Cincinnati, Dayton, Indianapolis, Louisville, and the western West Virginia corridor (Huntington, Charleston, Parkersburg). We also serve Cleveland OH, Detroit MI, Kansas City MO, Houston TX, New York NY, Norfolk VA, Charleston SC, and Savannah GA through our supplier network, from depots in each market. If your city isn't listed, use the form below to check your ZIP.",
+    a: "Our home delivery region is Ohio, Indiana, and Kentucky — Cincinnati, Dayton, Columbus, Indianapolis, Louisville, and the western West Virginia corridor (Huntington, Charleston, Parkersburg). We also serve Cleveland OH, Detroit MI, Kansas City MO, Houston TX, New York NY, Norfolk VA, Charleston SC, and Savannah GA through our supplier network, from depots in each market. If your city isn't listed, use the form below to check your ZIP.",
   },
   {
     q: 'How long does delivery take?',
@@ -32,6 +32,7 @@ const STATE_ABBREV: Record<string, string> = {
 const CARD_META: Record<string, { code: string; region: string }> = {
   'cincinnati-shipping-containers':   { code: 'CIN', region: 'Tri-State Area' },
   'dayton-shipping-containers':       { code: 'DAY', region: 'Miami Valley' },
+  'columbus-shipping-containers':     { code: 'CMH', region: 'Central Ohio' },
   'indianapolis-shipping-containers': { code: 'IND', region: 'Indy Metro' },
   'louisville-shipping-containers':   { code: 'LOU', region: 'Bluegrass' },
   'cleveland-shipping-containers':    { code: 'CLE', region: 'Northeast Ohio' },
@@ -80,7 +81,7 @@ const cityUrl = (c: (typeof cities)[number]) => `/locations/${c.stateSlug}/${c.s
   <section class="city-section">
     <div class="city-hd">
       <h2>Our home region</h2>
-      <p>Cincinnati, Dayton, Indianapolis, and Louisville — our home delivery region across Ohio, Indiana, and Kentucky.</p>
+      <p>Cincinnati, Dayton, Columbus, Indianapolis, and Louisville — our home delivery region across Ohio, Indiana, and Kentucky.</p>
     </div>
     <div class="city-grid">
       {homeCities.map((c) => (
@@ -175,7 +176,7 @@ const cityUrl = (c: (typeof cities)[number]) => `/locations/${c.stateSlug}/${c.s
         <div class="faq-item">
           <span class="n">Q · 01</span>
           <h3 class="q">What areas do you deliver to?</h3>
-          <p class="a">Our home delivery region is Ohio, Indiana, and Kentucky — Cincinnati, Dayton, Indianapolis, Louisville, and the western West Virginia corridor (Huntington, Charleston, Parkersburg). We also serve Cleveland OH, Detroit MI, Kansas City MO, Houston TX, New York NY, Norfolk VA, Charleston SC, and Savannah GA through our supplier network, from depots in each market. If your city isn't listed, use the form below to check your ZIP.</p>
+          <p class="a">Our home delivery region is Ohio, Indiana, and Kentucky — Cincinnati, Dayton, Columbus, Indianapolis, Louisville, and the western West Virginia corridor (Huntington, Charleston, Parkersburg). We also serve Cleveland OH, Detroit MI, Kansas City MO, Houston TX, New York NY, Norfolk VA, Charleston SC, and Savannah GA through our supplier network, from depots in each market. If your city isn't listed, use the form below to check your ZIP.</p>
         </div>
 
         <div class="faq-item">
