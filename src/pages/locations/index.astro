@@ -5,7 +5,7 @@ import { cities } from '../../data/cities';
 const faqs = [
   {
     q: 'What areas do you deliver to?',
-    a: "Our home delivery region is Ohio, Indiana, and Kentucky — Cincinnati, Dayton, Columbus, Indianapolis, Louisville, and the western West Virginia corridor (Huntington, Charleston, Parkersburg). We also serve Cleveland OH, Detroit MI, Kansas City MO, Houston TX, New York NY, Norfolk VA, Charleston SC, and Savannah GA through our supplier network, from depots in each market. If your city isn't listed, use the form below to check your ZIP.",
+    a: "Our home delivery region is Ohio, Indiana, Kentucky, and western West Virginia: Cincinnati, Dayton, Columbus, Indianapolis, Louisville, Lexington, and the western West Virginia corridor (Huntington, Charleston, Parkersburg). We also serve Cleveland OH, Detroit MI, Kansas City MO, Houston TX, New York NY, Norfolk VA, Charleston SC, and Savannah GA through our supplier network, from depots in each market. If your city isn't listed, use the form below to check your ZIP.",
   },
   {
     q: 'How long does delivery take?',
@@ -24,8 +24,9 @@ const faqs = [
 const items = cities.map((c) => ({ name: `${c.city}, ${c.state}`, url: `https://steelboxdirect.com/locations/${c.stateSlug}/${c.slug}/` }));
 
 const STATE_ABBREV: Record<string, string> = {
-  ohio: 'OH', indiana: 'IN', kentucky: 'KY', georgia: 'GA', 'south-carolina': 'SC',
-  virginia: 'VA', texas: 'TX', 'new-york': 'NY', michigan: 'MI', missouri: 'MO',
+  ohio: 'OH', indiana: 'IN', kentucky: 'KY', 'west-virginia': 'WV', georgia: 'GA',
+  'south-carolina': 'SC', virginia: 'VA', texas: 'TX', 'new-york': 'NY',
+  michigan: 'MI', missouri: 'MO',
 };
 
 // Card shorthand code + region line, keyed by slug (home labels preserved from the original cards).
@@ -35,6 +36,8 @@ const CARD_META: Record<string, { code: string; region: string }> = {
   'columbus-shipping-containers':     { code: 'CMH', region: 'Central Ohio' },
   'indianapolis-shipping-containers': { code: 'IND', region: 'Indy Metro' },
   'louisville-shipping-containers':   { code: 'LOU', region: 'Bluegrass' },
+  'lexington-shipping-containers':    { code: 'LEX', region: 'Inner Bluegrass' },
+  'huntington-shipping-containers':   { code: 'HTS', region: 'Western WV' },
   'cleveland-shipping-containers':    { code: 'CLE', region: 'Northeast Ohio' },
   'savannah-shipping-containers':     { code: 'SAV', region: 'Coastal Empire' },
   'charleston-shipping-containers':   { code: 'CHS', region: 'Lowcountry' },
@@ -52,7 +55,7 @@ const cityUrl = (c: (typeof cities)[number]) => `/locations/${c.stateSlug}/${c.s
 
 <BaseLayout
   title="Shipping Containers Near You — Steel Box Direct Delivery Locations"
-  description="Shipping containers delivered across our Ohio, Indiana, and Kentucky home region — plus Cleveland, Savannah, Charleston, Norfolk, Houston, New York, Detroit, and Kansas City from regional depots. Find your market."
+  description="Shipping containers delivered across our Ohio, Indiana, Kentucky, and West Virginia home region, plus Cleveland, Savannah, Charleston, Norfolk, Houston, New York, Detroit, and Kansas City from regional depots. Find your market."
   pageType="guide"
   breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'Locations' }]}
   schema={{ kind: 'collection', title: 'Delivery Locations', items, faqs }}
@@ -73,7 +76,7 @@ const cityUrl = (c: (typeof cities)[number]) => `/locations/${c.stateSlug}/${c.s
   <!-- ============ INTRO STRIP ============ -->
   <div class="loc-intro">
     <div class="wrap">
-      <p>Steel Box Direct is a regional container dealer — not a marketplace or national broker. The person quoting your container is the same person coordinating your delivery. We source from depots close to you, keep freight costs honest, and stay in contact from order to drop-off. Our home region covers Ohio, Indiana, Kentucky, and western West Virginia (Huntington, Charleston, Parkersburg) — and we now serve eight more major markets through our supplier network, from depots right in each metro.</p>
+      <p>Steel Box Direct is a regional container dealer, not a marketplace or national broker. The person quoting your container is the same person coordinating your delivery. We source from depots close to you, keep freight costs honest, and stay in contact from order to drop-off. Our home region covers Ohio, Indiana, Kentucky, and western West Virginia (<a href="/locations/west-virginia/huntington-shipping-containers/">Huntington</a>, Charleston, Parkersburg), and we now serve eight more major markets through our supplier network, from depots right in each metro.</p>
     </div>
   </div>
 
@@ -81,7 +84,7 @@ const cityUrl = (c: (typeof cities)[number]) => `/locations/${c.stateSlug}/${c.s
   <section class="city-section">
     <div class="city-hd">
       <h2>Our home region</h2>
-      <p>Cincinnati, Dayton, Columbus, Indianapolis, and Louisville — our home delivery region across Ohio, Indiana, and Kentucky.</p>
+      <p>Cincinnati, Dayton, Columbus, Indianapolis, Louisville, Lexington, and Huntington: our home delivery region across Ohio, Indiana, Kentucky, and western West Virginia.</p>
     </div>
     <div class="city-grid">
       {homeCities.map((c) => (
@@ -176,7 +179,7 @@ const cityUrl = (c: (typeof cities)[number]) => `/locations/${c.stateSlug}/${c.s
         <div class="faq-item">
           <span class="n">Q · 01</span>
           <h3 class="q">What areas do you deliver to?</h3>
-          <p class="a">Our home delivery region is Ohio, Indiana, and Kentucky — Cincinnati, Dayton, Columbus, Indianapolis, Louisville, and the western West Virginia corridor (Huntington, Charleston, Parkersburg). We also serve Cleveland OH, Detroit MI, Kansas City MO, Houston TX, New York NY, Norfolk VA, Charleston SC, and Savannah GA through our supplier network, from depots in each market. If your city isn't listed, use the form below to check your ZIP.</p>
+          <p class="a">Our home delivery region is Ohio, Indiana, Kentucky, and western West Virginia: Cincinnati, Dayton, Columbus, Indianapolis, Louisville, <a href="/locations/kentucky/lexington-shipping-containers/">Lexington</a>, and the western West Virginia corridor (<a href="/locations/west-virginia/huntington-shipping-containers/">Huntington</a>, Charleston, Parkersburg). We also serve Cleveland OH, Detroit MI, Kansas City MO, Houston TX, New York NY, Norfolk VA, Charleston SC, and Savannah GA through our supplier network, from depots in each market. If your city isn't listed, use the form below to check your ZIP.</p>
         </div>
 
         <div class="faq-item">

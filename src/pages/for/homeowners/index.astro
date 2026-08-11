@@ -28,7 +28,7 @@ const faqs = [
   },
   {
     q: 'How does delivery work in a residential neighborhood?',
-    a: "A tilt-bed truck backs in, tilts, and slides the container into position. We minimize impact on neighboring traffic, but neighbors may need to move vehicles temporarily if the approach is tight. We don't require street closures or permits for delivery in most cases. If your street has weight limits or parking restrictions, mention that when you request a quote.",
+    a: "A tilt-bed truck backs in, tilts, and slides the container into position. We minimize impact on neighboring traffic, but neighbors may need to move vehicles temporarily if the approach is tight. For a typical residential delivery we don't need a street closure, and the truck works from your driveway and the apron. Whether your city requires a permit to stage or work in the public right-of-way is a municipal rule, and confirming it is the buyer's responsibility. If your street has weight limits or parking restrictions, mention that when you request a quote.",
   },
   {
     q: 'How does buying a container compare to renting a storage unit long-term?',
@@ -36,11 +36,11 @@ const faqs = [
   },
   {
     q: 'Can I add shelving, electricity, or other modifications to a container?',
-    a: "Yes — containers are commonly modified for exactly this purpose. Shelving mounts directly to the corrugated side walls using standard fasteners. Electrical can be run from your home's panel to the container if it's placed within practical distance; an electrician can wire a standard outlet and light in a few hours. We don't sell modified containers, but we can point you toward local fabricators who handle electrical, shelving, ventilation, and insulation.",
+    a: "Yes, containers are commonly modified for exactly this purpose. Shelving, racking, vents, and interior lighting are all routine fabrication work, and a free-standing shelf unit set on the floor sidesteps the question of what the walls will take. We take no position on attaching anything to the walls or the roof: how much a given wall will hold, and what fastener belongs in it, are questions for the container manufacturer or a licensed engineer. Electrical can be run from your home's panel to the container if it's placed within practical distance, and a licensed electrician can wire a standard outlet and light. We don't sell modified containers, but we can point you toward local fabricators who handle electrical, shelving, ventilation, and insulation.",
   },
   {
     q: 'What does a container sit on, and do I need a foundation?',
-    a: "No foundation is required. A container rests on its four corner castings, so most homeowners place a concrete block, a railroad tie, or a paver under each corner to keep it level and lift the steel floor off wet ground. Level, firm ground — a driveway, a gravel pad, or compacted grass — is all you need. A foundation or slab is optional and only matters if you're building something permanent. Because it isn't anchored to a foundation, the container stays personal property, which is part of why it's often treated differently from permanent structures under local rules.",
+    a: "No foundation is required. A container rests on its four corner castings, so most homeowners set a concrete block, a railroad tie, or a paver under each corner to keep it level and lift the steel floor off wet ground. Level, firm ground is all you need: a driveway, a gravel pad, or compacted grass. Pouring a slab is optional, and it generally only matters if you're planning a conversion or a build on the spot. Sitting on blocks instead of a slab is a placement decision, not a legal one. Whether a container needs a permit on a residential lot, and how your city or county classifies it, is decided by your local zoning or building office, and an HOA can add rules of its own on top. What usually drives the answer is the size of the unit, how close it sits to a property line, how long it stays, and whether you're converting it into finished space. Getting that answer for your own address before you buy is the buyer's responsibility. We do not determine, advise on, or guarantee permit, zoning, or HOA requirements.",
   },
   {
     q: 'Will my stuff get damp or moldy inside a steel container?',
@@ -274,6 +274,8 @@ const faqs = [
         <a href="/locations/ohio/columbus-shipping-containers/" class="uc-city"><span class="uc-city-code">CMH</span><span class="uc-city-name">Columbus, OH</span><span class="uc-city-arrow">→</span></a>
         <a href="/locations/indiana/indianapolis-shipping-containers/" class="uc-city"><span class="uc-city-code">IND</span><span class="uc-city-name">Indianapolis, IN</span><span class="uc-city-arrow">→</span></a>
         <a href="/locations/kentucky/louisville-shipping-containers/" class="uc-city"><span class="uc-city-code">LOU</span><span class="uc-city-name">Louisville, KY</span><span class="uc-city-arrow">→</span></a>
+        <a href="/locations/kentucky/lexington-shipping-containers/" class="uc-city"><span class="uc-city-code">LEX</span><span class="uc-city-name">Lexington, KY</span><span class="uc-city-arrow">→</span></a>
+        <a href="/locations/west-virginia/huntington-shipping-containers/" class="uc-city"><span class="uc-city-code">HTS</span><span class="uc-city-name">Huntington, WV</span><span class="uc-city-arrow">→</span></a>
       </div>
     </div>
   </section>
@@ -488,7 +490,7 @@ const faqs = [
   /* ---- WHERE WE DELIVER ---- */
   .uc-deliver { padding: 96px 0; background: var(--cream); border-bottom: 1.5px solid rgba(11,15,26,.1); }
   .uc-deliver-lede { font-size: 18px; line-height: 1.5; max-width: 820px; margin: 0 0 40px; opacity: .85; }
-  .uc-city-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
+  .uc-city-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; }
   .uc-city { display: flex; flex-direction: column; gap: 6px; background: white; border: 2px solid var(--ink); padding: 22px 24px; transition: background .15s, color .15s; }
   .uc-city:hover { background: var(--ink); color: var(--cream); }
   .uc-city-code { font-family: var(--narrow); font-weight: 700; font-size: 26px; line-height: 1; color: var(--ink); }

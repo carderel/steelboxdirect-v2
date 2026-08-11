@@ -31,7 +31,7 @@ const faqs = [
   },
   {
     q: 'What happens if we need to move the container mid-project?',
-    a: "We can relocate the container within our service area for a repositioning fee. Alternatively, if you have a forklift or excavator on site with sufficient capacity (empty 20ft containers weigh about 5,000 lbs; 40ft units run 8,000+ lbs), your crew can reposition using the corner castings or forklift pockets on the underside.",
+    a: "We can relocate a container within our service area for a repositioning fee, and once a unit is loaded that is usually the simplest route. If your crew would rather move it with equipment already on site, plan around two things. First, forklift pockets are not a given: many 20ft units have them in the base and 40ft units generally do not, so confirm what your actual unit has instead of planning a mid-project move around pockets a 40ft may not have. Second, the corner castings are the designed handling points, and whether a particular forklift, excavator, or telehandler can take that load is a question for that machine's rated capacity and its operator rather than ours. We do not issue lifting or load ratings, and any lift you are not sure of belongs with the machine's manufacturer or a licensed engineer. Empty weights help you start that conversation: a 20ft runs about 5,000 lbs and a 40ft about 8,000 lbs or more, before anything you put inside it.",
   },
   {
     q: 'Is a shipping container better than a job-site trailer for tool and material storage?',
@@ -119,7 +119,7 @@ const faqs = [
         </div>
         <div class="uc-block">
           <h3>Ground-level access — no dock, no ramp</h3>
-          <p>Container doors swing open at grade. Tools, materials, scaffold sections, and rolling equipment go straight in and out without a lift gate, dock plate, or pallet hand-off. The floor is marine-grade plywood over steel cross-members — rated to take a forklift if you need to drive pallets in.</p>
+          <p>Container doors swing open at grade. Tools, materials, scaffold sections, and rolling equipment go straight in and out without a lift gate, dock plate, or pallet hand-off. The floor is a plank deck, typically marine-grade plywood, laid over steel cross-members: the same deck the unit hauled freight on. Whether it takes your loaded pallet jack or your forklift is a capacity question, and the only number that answers it is the one in the manufacturer's specification for that unit. Any load near a limit is a question for the manufacturer or a licensed engineer before your crew drives in. We do not issue load ratings.</p>
           <p>Interior height is a <a href="https://www.mobilemodularcontainers.com/blog/how-much-does-a-shipping-containers-weigh" target="_blank" rel="noopener">standard 7'10"</a> and the door opening is roughly 7'5" wide by 7'5" tall, so a standard pallet jack and most walk-behind equipment clear it without a fight.</p>
 
           <!-- IMAGE SLOT 2B — ground-level jobsite access. -->
@@ -253,6 +253,8 @@ const faqs = [
         <a href="/locations/ohio/columbus-shipping-containers/" class="uc-city"><span class="uc-city-code">CMH</span><span class="uc-city-name">Columbus, OH</span><span class="uc-city-arrow">→</span></a>
         <a href="/locations/indiana/indianapolis-shipping-containers/" class="uc-city"><span class="uc-city-code">IND</span><span class="uc-city-name">Indianapolis, IN</span><span class="uc-city-arrow">→</span></a>
         <a href="/locations/kentucky/louisville-shipping-containers/" class="uc-city"><span class="uc-city-code">LOU</span><span class="uc-city-name">Louisville, KY</span><span class="uc-city-arrow">→</span></a>
+        <a href="/locations/kentucky/lexington-shipping-containers/" class="uc-city"><span class="uc-city-code">LEX</span><span class="uc-city-name">Lexington, KY</span><span class="uc-city-arrow">→</span></a>
+        <a href="/locations/west-virginia/huntington-shipping-containers/" class="uc-city"><span class="uc-city-code">HTS</span><span class="uc-city-name">Huntington, WV</span><span class="uc-city-arrow">→</span></a>
       </div>
     </div>
   </section>
@@ -482,7 +484,7 @@ const faqs = [
   /* ---- WHERE WE DELIVER ---- */
   .uc-deliver { padding: 96px 0; background: var(--cream); border-bottom: 1.5px solid rgba(11,15,26,.1); }
   .uc-deliver-lede { font-size: 18px; line-height: 1.5; max-width: 820px; margin: 0 0 40px; opacity: .85; }
-  .uc-city-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
+  .uc-city-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; }
   .uc-city { display: flex; flex-direction: column; gap: 6px; background: white; border: 2px solid var(--ink); padding: 22px 24px; transition: background .15s, color .15s; }
   .uc-city:hover { background: var(--ink); color: var(--cream); }
   .uc-city-code { font-family: var(--narrow); font-weight: 700; font-size: 26px; line-height: 1; color: var(--ink); }

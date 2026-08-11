@@ -21,6 +21,38 @@ const OFFERED_SERVICE = {
   warranty: WARRANTY,
 };
 
+/**
+ * areaServed is a two-node list, deliberately.
+ *
+ * The GeoCircle is the core home region we run ourselves: 250 miles from Cincinnati, matching
+ * the `region: 'home'` cities in src/data/cities.ts and the 250-mile language used in page copy.
+ * It stays so the local-dominance signal survives.
+ *
+ * The Country node is the honest ceiling: delivery is available anywhere in the US out of the
+ * depot hubs, and has happened outside Ohio, Indiana, and Kentucky. A single continental
+ * GeoCircle would have said "circle" when the truth is "hub network", and a list of only the
+ * depot states would have implied the other states are excluded, which is the same
+ * understatement in a smaller form.
+ *
+ * Geography only. No permit, zoning, classification, tax, or insurance claim belongs here
+ * (PROJECT_HS_003: schema strips surrounding attribution).
+ */
+const CORE_MARKET_AREA = {
+  '@type': 'GeoCircle',
+  geoMidpoint: { '@type': 'GeoCoordinates', latitude: '39.1365839', longitude: '-84.540972' },
+  geoRadius: '402336', // 250 miles in metres
+  description:
+    'Core home region, within 250 miles of Cincinnati, Ohio: Ohio, Indiana, Kentucky, and western West Virginia',
+};
+
+const NATIONAL_AREA = {
+  '@type': 'Country',
+  name: 'United States',
+  description: 'Nationwide delivery from depot hubs through our supplier network',
+};
+
+const AREA_SERVED = [CORE_MARKET_AREA, NATIONAL_AREA];
+
 export function globalNodes(): Record<string, unknown>[] {
   const freedomConex = {
     '@type': 'Organization',
@@ -36,8 +68,9 @@ export function globalNodes(): Record<string, unknown>[] {
     url: `${SITE_URL}/`,
     logo: `${SITE_URL}/logo.png`,
     description:
-      'Shipping container buying guide and quote service serving 250 miles from Cincinnati, Ohio.',
+      'Shipping container buying guide and quote service. Core home region within 250 miles of Cincinnati, Ohio, with nationwide delivery from depot hubs.',
     foundingDate: '2009',
+    areaServed: AREA_SERVED,
     parentOrganization: { '@id': FREEDOMCONEX_ID },
     contactPoint: {
       '@type': 'ContactPoint',
@@ -64,13 +97,7 @@ export function globalNodes(): Record<string, unknown>[] {
       addressCountry: 'US',
     },
     geo: { '@type': 'GeoCoordinates', latitude: '39.1365839', longitude: '-84.540972' },
-    areaServed: {
-      '@type': 'GeoCircle',
-      geoMidpoint: { '@type': 'GeoCoordinates', latitude: '39.1365839', longitude: '-84.540972' },
-      geoRadius: '402336', // 250 miles in metres
-      description:
-        '250-mile radius from Cincinnati, Ohio — Ohio, Indiana, Kentucky, and western West Virginia',
-    },
+    areaServed: AREA_SERVED,
     hasMap: 'https://maps.google.com/?cid=16337072236475848136',
     parentOrganization: { '@id': FREEDOMCONEX_ID },
     makesOffer: OFFERED_SERVICE,

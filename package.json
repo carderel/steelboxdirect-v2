@@ -12,7 +12,8 @@
     "indexnow": "node scripts/indexnow.mjs",
     "test:indexnow": "node --test scripts/indexnow.test.mjs",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "test:hs003": "vitest run src/lib/compliance/hs003-content-guard.test.ts"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^11.2.0",

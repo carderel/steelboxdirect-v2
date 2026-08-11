@@ -3,6 +3,25 @@
 **Status:** Approved (terminology realigned 2026-06-04)
 **Project:** Steel Box Direct (steelboxdirect.com)
 
+> **AMENDED 2026-08-10 for PROJECT_HS_003 compliance. This document was corrected, not born clean.**
+> As originally written, this spec was the single largest source of prohibited copy in the repository. It
+> contained paste-ready wording that asserted permit outcomes, agricultural zoning exemptions, building
+> classification, property-tax treatment, third-party insurance coverage, and a floor load rating, all of
+> them determinations Steel Box Direct is not entitled to make on a reader's behalf. Several of those
+> strings were implemented verbatim and shipped live for six to nine weeks. Every violating passage has
+> been replaced in place with compliant wording, and each carries an inline `AMENDED 2026-08-10` marker
+> naming what the original claimed. Markers appear as a bold paragraph in prose, a `//` comment inside
+> TypeScript blocks, and an HTML comment inside markup blocks, so the surrounding code stays valid.
+> Text written for this amendment contains no em dash and no en dash. Five amended lines in this file still
+> carry an em dash and three carry an en dash; in every one of those cases the dash sits in retained
+> 2026-06-04 original text, either a `Block N` label whose scaffold was preserved while only its quoted title
+> changed, or a sentence where only the violating clause was replaced. Each is noted at its own marker.
+> Authority: `UDO Project/.project-catalog/decisions/2026-08-10-sitewide-permit-rework-authorized.md`.
+> Rule: `UDO Project/HARD_STOPS.md`, PROJECT_HS_003. Evidence of the live damage:
+> `UDO Project/.outputs/container-shelter/2026-08-10-permit-gate-violation-inventory.md`. Do not restore
+> the original wording, and do not implement any version of this spec that determines a permit, zoning,
+> tax, insurance, or structural outcome for the reader in either direction.
+
 ---
 
 ## Terminology (locked)
@@ -108,10 +127,18 @@ Every ICP page uses this section order. Content is unique per page.
 
 ### `/for/farmers/`
 
+**AMENDED 2026-08-10 (PROJECT_HS_003).** NOT on the original violation inventory; found during this pass,
+and it is the worst placement of the claim in the whole document. The original `description` read: "Farm
+storage containers delivered to your field. Most agricultural land in OH, IN, and KY qualifies for zoning
+exemptions [emdash] no permit, no foundation, no monthly fees." That is a permit and zoning determination
+naming three states, inside a **meta description**, the exact surface PROJECT_HS_003 singles out because it
+strips all surrounding attribution and is what an answer engine quotes. Replacement wording is new for this
+amendment and keeps the delivery and cost hooks without predicting an outcome.
+
 **BaseLayout props:**
 ```
 title="Shipping Containers for Farms in Ohio, Indiana & Kentucky | Steel Box Direct"
-description="Farm storage containers delivered to your field. Most agricultural land in OH, IN, and KY qualifies for zoning exemptions — no permit, no foundation, no monthly fees."
+description="Farm storage containers delivered to your field across OH, IN, and KY. Nothing to pour, no monthly storage fees, and we point you to the office that decides local zoning."
 pageType="guide"
 datePublished="2026-06-04"
 dateModified="2026-06-04"
@@ -120,16 +147,44 @@ dateModified="2026-06-04"
 **Hero:**
 - Eyebrow: `For Farmers & Ag Operations`
 - H1: `Farm Storage That Holds Up to Ohio Winters.`
-- Lede: No permit on most agricultural land. No foundation required. Delivered to your field — not just your driveway. One purchase, no monthly storage fees.
+- Lede: No foundation required. Delivered to your field, not just your driveway. One purchase, no monthly storage fees. Local zoning is your county's call, and we tell you who to ask.
 - Accent bar color: `var(--c4-cost)` (green)
 
-**Why containers work for farmers — 4 blocks:**
+**AMENDED 2026-08-10 (PROJECT_HS_003).** NOT on the original violation inventory; found during this pass.
+The Lede originally opened "No permit on most agricultural land." That is a bare permit determination in the
+most prominent sentence on the page. Replacement wording is new for this amendment: the three selling facts
+are kept, the permit prediction is replaced with the decider.
 
-Block 1 — "Most farm properties qualify for zoning exemptions"
-> Zoning rules in Ohio, Indiana, and Kentucky typically exempt agricultural land from the permit requirements that apply to residential or commercial properties. If you're farming — crops, livestock, or equipment — you're likely exempt. We can help you confirm based on your county and property type. No permit paperwork, no waiting period, no variance hearings.
+**Why containers work for farmers: 4 blocks**
 
-Block 2 — "Weather-sealed storage without a permanent structure"
-> A cargo-worthy ISO container holds a positive pressure seal against rain, wind, and snow. Unlike a barn addition or pole building, a container doesn't require a foundation, a concrete slab, or a building permit in most counties. It's technically personal property — meaning it can be placed, relocated, or removed without triggering a permanent structure review.
+**AMENDED 2026-08-10 (PROJECT_HS_003).** Block 1 was NOT on the original violation inventory and is a hard
+violation. Its original title was "Most farm properties qualify for zoning exemptions" and its body asserted
+that zoning rules in three named states "typically exempt agricultural land from the permit requirements,"
+that a farming reader is "likely exempt," and that there is "no permit paperwork, no waiting period, no
+variance hearings." That is a zoning determination, a permit determination, and jurisdiction plus outcome, in
+one paragraph, under a heading that states the conclusion by itself. Replacement wording is new for this
+amendment and follows the compliant model at `src/pages/permits/index.astro`: name the question, name the
+decider, name what moves the answer, hand the determination to the reader.
+
+Block 1: "Zoning and permits: who decides, and what to ask"
+> Whether a container needs a zoning or building permit on farm land is decided locally, and it varies. What usually drives the answer is how the parcel is currently used, how the unit is set, how long it stays, and whether anything gets built onto it. Your county zoning office is the one that can tell you what applies to your parcel, and getting that answer before you buy is the buyer's responsibility. We do not determine, advise on, or guarantee permit or zoning requirements. Tell us your county and we will tell you which office to call and what is worth asking.
+
+**AMENDED 2026-08-10 (PROJECT_HS_003).** Block 2 is the passage originally flagged at line 132 of this file,
+and its wording shipped live at `src/pages/for/farmers/index.astro` lines 120 and 122. The original title was
+"Weather-sealed storage without a permanent structure" and the original body read: "...a container doesn't
+require a foundation, a concrete slab, or a building permit in most counties. It's technically personal
+property [emdash] meaning it can be placed, relocated, or removed without triggering a permanent structure
+review." That is a permit determination, a building-classification determination, and a promise about a review
+outcome. The quantifier "in most counties" aggravates it by making an unresearched conclusion sound
+researched. The replacement title is the approved wording from
+`UDO Project/.outputs/container-shelter/2026-08-10-rework-farmers-homeowners.md` (target T-C, variant C1) and
+the replacement body reuses the approved "1B FULLER" phrasing from
+`UDO Project/.outputs/container-shelter/2026-08-10-permit-language-rework-draft.md`. The physical facts the
+original was reaching for (no pour, no build, movable, resellable) all survive; only the legal conclusions
+drawn from them are gone.
+
+Block 2: "Weather-sealed storage with no slab to pour"
+> A cargo-worthy ISO container holds a positive pressure seal against rain, wind, and snow. Unlike a barn addition or a pole building, nothing gets poured and nothing gets set in concrete, so you can place it, relocate it across the farm, or sell it off later without undoing any construction. What that means for permits and for how your property gets assessed is a separate question, decided by your county zoning office and your county auditor rather than by us, and getting that answer for your own parcel before you buy is the buyer's responsibility.
 
 Block 3 — "One purchase, no monthly bill"
 > The average storage unit runs $150–300 per month. A container costs more upfront but typically pays for itself within 3–5 years compared to off-farm storage — and you own it outright. When you no longer need it, it resells at close to purchase price. Steel holds its value in a way that rented square footage never will.
@@ -145,8 +200,17 @@ Block 4 — "Sized for equipment, feed, and tools"
 
 **FAQ (5 questions — unique to this page):**
 
+**AMENDED 2026-08-10 (PROJECT_HS_003).** NOT on the original violation inventory and a hard violation. The
+**question** is fine and is kept verbatim: asking it is exactly what a buyer wants. The original **answer**
+opened "In most cases, no," asserted agricultural use exemptions in three named states, said a reader's
+property "generally falls outside" the rules requiring permits, and closed "the vast majority move forward
+without a permit of any kind." The existing hedge ("rules vary by county") did not travel with any of that.
+This answer is also schema-bound in the companion implementation plan, so it would be emitted verbatim as
+Steel Box Direct's permit position in FAQPage JSON-LD. Replacement wording is new for this amendment and is
+deliberately self-contained, because an FAQ answer is extracted alone and cannot carry a link.
+
 Q1: Do I need a permit for a shipping container on my farm in Ohio, Indiana, or Kentucky?
-> In most cases, no. Ohio, Indiana, and Kentucky all have agricultural use exemptions that typically apply to storage structures on working farm land. If your property is classified as agricultural — meaning it's actively used for crop production, livestock, or ag-related purposes — it generally falls outside the residential and commercial zoning rules that require permits for storage structures. That said, rules vary by county and sometimes by municipality, so we recommend a quick call to your county zoning office to confirm. We've helped hundreds of farm buyers navigate this question, and the vast majority move forward without a permit of any kind.
+> That is the right question to ask, and it is not ours to answer. Requirements for a container on farm land are set locally, and they vary by county and sometimes by municipality, so the only answer that counts is the one for your own parcel. Call your county zoning office, describe the container and how you plan to use it, and ask what is required for placement. What tends to drive the answer is how the land is currently used, how the unit is set, how long it stays, and whether you build anything onto it. Getting that answer before you buy is the buyer's responsibility. We do not determine, advise on, or guarantee permit or zoning requirements.
 
 Q2: Can a container be delivered to a field or gravel area, or does the truck need a paved road?
 > Delivery trucks can handle gravel lanes, packed dirt drives, and field access roads in most conditions. What we need is a delivery path that's at least 12 feet wide with no overhead obstructions below 14 feet — low branches, power lines, gate arches. Soft ground, mud, or steep grades can create challenges, but our drivers have placed containers on farm properties across Ohio, Indiana, and Kentucky for years and know how to work around difficult terrain. When you request a quote, describe your access path and we'll flag anything that might affect delivery before we schedule.
@@ -186,8 +250,16 @@ dateModified="2026-06-04"
 Block 1 — "Harder to break into than a job site trailer"
 > ISO shipping containers are built from Cor-Ten steel — the same material used in ocean freight. The standard door lock mechanism accepts a padlock or puck lock through a lockbox hasp. Unlike a job site trailer, there's no gap at the roofline, no plastic panels, and no soft aluminum skin to cut through. It's substantially more secure than a wood toolbox, a cargo trailer, or an open van.
 
+**AMENDED 2026-08-10 (PROJECT_HS_003).** NOT on the original violation inventory. The original body read:
+"The floor is 5/4" hardwood or steel plate [emdash] rated for forklift entry if needed." "Rated for" is a load
+claim asserted by Steel Box Direct with no source and no deflection, which PROJECT_HS_003 bans outright;
+structural questions go to the container manufacturer or a licensed engineer. The same claim shipped live at
+`src/pages/for/businesses/index.astro:126`. Replacement wording follows the approved handling in
+`UDO Project/.outputs/container-shelter/2026-08-10-rework-businesses.md` (target 2), which keeps the useful
+fact that a forklift drives straight in while refusing to issue the rating.
+
 Block 2 — "Ground-level access — no dock, no ramp"
-> Container doors open to ground level. Tools, materials, and equipment go straight in and out without a lift gate or dock plate. The floor is 5/4" hardwood or steel plate — rated for forklift entry if needed. Standard interior height is 7'10".
+> Container doors open to ground level. Tools, materials, and equipment go straight in and out without a lift gate or dock plate. The floor is 5/4" hardwood or steel plate, the same deck the unit carried freight on, which is why a pallet jack or a forklift drives straight in through the doors. What that floor is rated to carry is a number from the unit's manufacturer, not from us, and any load close to a limit is a question for the manufacturer's specification or a licensed engineer. We do not issue load ratings. Standard interior height is 7'10".
 
 Block 3 — "Delivered and retrieved on your schedule"
 > We deliver within 250 miles of Cincinnati. You call when you're ready; we drop it. When the project ends, we pick it up. No rental center, no trailer registration, no CDL required on your end. The container sits on site until you need it gone.
@@ -250,8 +322,15 @@ Block 2 — "More secure than a shed, more accessible than a storage facility"
 Block 3 — "A 20ft container fits most suburban properties"
 > The most common residential size is the 20ft container: 8 feet wide, 8'6" tall, and 20 feet long — roughly the footprint of two standard parking spaces end-to-end. Most suburban driveways and backyards in Ohio, Indiana, and Kentucky can accommodate a 20ft unit. The delivery truck needs about 50 feet of clear approach — a standard residential street is typically sufficient.
 
+**AMENDED 2026-08-10 (PROJECT_HS_003).** NOT on the original violation inventory. The block **title** was
+already compliant and is kept verbatim. The original **body** predicted three outcomes: "Agricultural
+properties almost always have exemptions. Residential properties inside city limits are most likely to need a
+permit," plus "many don't." Frequency predictions are determinations; "almost always" is the aggravator.
+Replacement wording is new for this amendment and swaps the predictions for the variables that actually move
+the answer, which is the genuinely useful content the original was standing in for.
+
 Block 4 — "Permit requirements vary — we can help you figure yours out"
-> Some municipalities require a zoning permit for a storage container; many don't. Agricultural properties almost always have exemptions. Residential properties inside city limits are most likely to need a permit. When you request a quote, include your county and whether you're inside city limits — we'll tell you what we know and help you find out what we don't.
+> Requirements for a storage container differ between a city, a village, and an unincorporated township, and the office that decides is local rather than statewide. Your local zoning or building department is the one that can tell you what applies at your address, and an HOA or a deed restriction can add rules of its own on top. What usually drives the answer is the size of the unit, how close it sits to a property line, how long it stays, and whether you convert it into finished space. When you request a quote, include your county and whether you're inside city limits, and we'll tell you which office to call and what to ask. Confirming the requirement before you buy is the buyer's responsibility, and we do not determine, advise on, or guarantee permit, zoning, or HOA requirements.
 
 **Container recommendations:**
 - 20ft: "Best for: most residential properties. Fits the footprint of a large shed, stores the equivalent of a two-car garage." → `/shipping-containers-for-sale/20-foot-shipping-container/`
@@ -264,11 +343,31 @@ Block 4 — "Permit requirements vary — we can help you figure yours out"
 Q1: Will a 20ft container fit in a standard suburban driveway?
 > Usually, yes. A 20ft container is 8 feet wide and 20 feet long — roughly the footprint of a large SUV and a half-car length. Most standard suburban driveways are wide enough, though placement depends on attached garages, fence lines, or utility setbacks. More important than the footprint is delivery clearance: the truck needs about 50 feet of unobstructed approach. A standard residential street with traffic is typically workable. Include your address when requesting a quote and we can assess the approach.
 
+**AMENDED 2026-08-10 (PROJECT_HS_003).** NOT on the original violation inventory and a hard violation. The
+**question** is kept verbatim. The original **answer** asserted that agriculturally zoned properties "are
+almost universally exempt" and that "most unincorporated township properties in Ohio, Indiana, and Kentucky
+don't require a permit," which is a permit determination attached to three named states. This answer is
+schema-bound in the companion implementation plan, so it would ship in FAQPage JSON-LD. Replacement wording is
+new for this amendment, is self-contained because an extracted FAQ answer carries no link, and describes the
+axis of the question instead of predicting where a reader lands on it.
+
 Q2: Do I need a permit to have a shipping container on my residential property in Ohio?
-> It depends on your location. Properties zoned agricultural are almost universally exempt. Residential properties inside city limits in Ohio have varying rules — some municipalities require a permit, some have a size threshold below which no permit is required, and some have no restriction at all. Most unincorporated township properties in Ohio, Indiana, and Kentucky don't require a permit. The fastest way to find out is to call your county auditor or zoning office. When you request a quote, tell us your county and we'll share what we know from working in your area.
+> It depends on your address, and the office that decides is local rather than statewide. Rules differ between cities, villages, and unincorporated townships, so two properties a short drive apart can land differently. Call your municipal or county zoning office, or your building department, and ask what applies to a container at your address; an HOA or a deed restriction can add requirements on top of whatever the municipality says. What usually drives the answer is the size of the unit, how close it sits to a property line, how long it stays, and whether you convert it into finished space. When you request a quote, tell us your county and we'll tell you which office to call and what to ask. Confirming the requirement before you buy is the buyer's responsibility. We do not determine, advise on, or guarantee permit, zoning, or HOA requirements.
+
+**AMENDED 2026-08-10 (PROJECT_HS_003).** The original answer contained "We don't require street closures or
+permits for delivery in most cases." The inventory of record classifies the live version of this sentence as
+BORDERLINE rather than a hard violation, because the street-closure half is a true statement about Steel Box
+Direct's own operational needs and Steel Box Direct is the only party entitled to make it. It is amended here
+anyway, for two reasons: the "or permits ... in most cases" half is a right-of-way permit hedge offered on the
+reader's behalf with a quantifier that makes it sound surveyed, and an approved replacement already exists at
+`UDO Project/.outputs/container-shelter/2026-08-10-rework-farmers-homeowners.md` (target T-F), so leaving the
+spec unamended would leave it disagreeing with the implementation. The replacement is a split, not a deletion:
+it keeps the operational fact and hands the municipal rule back, and it names the actual permit category so a
+reader who does have to check knows the word to use. The 30 to 45 minute timing sentence is 2026-06-04 original
+text and is retained verbatim, including its pre-existing en dash.
 
 Q3: How does delivery work in a residential neighborhood?
-> A tilt-bed truck backs in, tilts, and slides the container into position. The process takes 30–45 minutes from truck arrival to completion. We minimize impact on neighboring traffic, but neighbors may need to move vehicles temporarily if the approach is tight. We don't require street closures or permits for delivery in most cases. If your street has weight limits or parking restrictions, mention that when you request a quote.
+> A tilt-bed truck backs in, tilts, and slides the container into position. The process takes 30 to 45 minutes from truck arrival to completion. We minimize impact on neighboring traffic, but neighbors may need to move vehicles temporarily if the approach is tight. For a typical residential delivery we don't need a street closure, and the truck works from your driveway and the apron. Whether your city requires a permit to stage or work in the public right-of-way is a municipal rule, and confirming it is the buyer's responsibility. If your street has weight limits or parking restrictions, mention that when you request a quote.
 
 Q4: How does buying a container compare to renting a storage unit long-term?
 > The math usually favors ownership for anything beyond 2–3 years. A climate-controlled 10×10 storage unit in the Cincinnati metro averages $150–200 per month and increases annually. Over 5 years, that's $9,000–$12,000 in fees for space you never own. A container — even at the high end — costs less over that horizon, and you can sell it when you're done. The container also holds more than a 10×10 unit and sits on your property. The tradeoff: you need the outdoor space, and a storage facility protects climate-sensitive items better since containers have no HVAC.
@@ -308,8 +407,19 @@ Block 2 — "Ground-level, forklift-compatible access"
 Block 3 — "Scales up or down with your inventory cycle"
 > Need three containers for Q4 and one for the rest of the year? We can drop and retrieve on your schedule. Multiple units can be positioned adjacent with doors accessible. For businesses that want to own rather than manage a recurring delivery contract, purchase with resale when no longer needed is also straightforward.
 
-Block 4 — "Secure enough for most commercial insurance policies"
-> A Cor-Ten steel container with a puck-lock hasp meets the standard for covered business property storage under most commercial property insurance policies. We provide delivery documentation for your records. If your carrier has specific requirements, let us know and we can accommodate.
+**AMENDED 2026-08-10 (PROJECT_HS_003).** NOT on the original violation inventory. Both the title and the body
+were violations. The original title, "Secure enough for most commercial insurance policies," is a coverage
+determination in a **heading**, which PROJECT_HS_003 names as a surface that strips attribution. The original
+body asserted that the container "meets the standard for covered business property storage under most
+commercial property insurance policies," which is a determination about a third party's contract. Steel Box
+Direct does not speak for anyone's carrier. This wording shipped live at
+`src/pages/for/businesses/index.astro` lines 142 and 143, where the same claim was made three times on one
+page. Replacement title and body are the approved wording from
+`UDO Project/.outputs/container-shelter/2026-08-10-rework-businesses.md` (replacements 3A and 3B), which keeps
+the construction facts and turns the coverage claim into the questions to put to the carrier.
+
+Block 4: "Steel, a lockbox, and the records your insurer asks for"
+> A Cor-Ten steel body has no soft aluminum skin, no roofline gap, and no plastic panel to cut through, and the recessed lockbox sits over the lock shackle so a bolt cutter has very little to grab. That is the construction. What your policy does with it is a different question, and it belongs to your carrier and your agent rather than to us. Raise it with them before you move inventory in, and ask what lock type they want to see, whether the container or its contents need to be listed on your schedule, and whether property kept outside a building is handled differently from property inside one. We can supply delivery paperwork, the placement, and container serial numbers for that conversation. We do not determine, advise on, or guarantee insurance coverage, and we do not speak for your carrier.
 
 **Container recommendations:**
 - 20ft: "Best for: single-product overflow, document archive, small equipment. Compact footprint for sites with limited staging area." → `/shipping-containers-for-sale/20-foot-shipping-container/`
@@ -328,8 +438,21 @@ Q2: What are your lead times for commercial delivery?
 Q3: Can we get multiple containers for a single location?
 > Yes. Multiple containers can be delivered to a single site in one trip or staggered across multiple trips. If you need units placed adjacent in a specific configuration — side-by-side with aligned doors — include a description of the layout in your quote request. We'll plan the delivery sequence to ensure the footprint works and all doors remain accessible.
 
+**AMENDED 2026-08-10 (PROJECT_HS_003).** NOT on the original violation inventory, and the live version of this
+answer was ranked the **worst violation on the site**. The original asserted that a purchased container "is
+generally treated as tangible personal property," gave it a 5 or 7 year MACRS recovery period, and stated that
+"the container is not real property and does not typically trigger real estate assessments or property tax
+reclassification." That is a classification determination plus a tax and assessment determination. The one
+hedge present attached only to the depreciation clause, leaving "is not real property" naked. Tax is the class
+where reader reliance produces a filing error with a paper trail. This wording shipped live at
+`src/pages/for/businesses/index.astro` lines 32 and 291, where line 291 added a link to IRS Publication 946 and
+so converted a general statement into apparent authority, and line 32 fed it into FAQPage JSON-LD. Replacement
+wording is the approved schema-safe version from
+`UDO Project/.outputs/container-shelter/2026-08-10-rework-businesses.md` (replacement 1-SCHEMA); the publication
+is named in words rather than linked, because this string is emitted verbatim into structured data.
+
 Q4: How do businesses typically handle container storage for accounting or tax purposes?
-> A purchased container is generally treated as tangible personal property and depreciates under MACRS as a 5 or 7-year asset under standard IRS classifications, though your accountant should confirm based on your specific use. The container is not real property and does not typically trigger real estate assessments or property tax reclassification. A leased container would be expensed as an operating cost. We provide a standard bill of sale for all purchases.
+> We can hand you clean paperwork. We cannot hand you a tax position, and you should not take one from a container dealer. Start with your accountant or CPA. What you tell them matters, because whether you buy or lease, how the unit is set, and what you use it for all feed into the treatment. Depreciation of business property runs through MACRS, the modified accelerated cost recovery system, and IRS Publication 946, How To Depreciate Property, is the document that explains how it works, including how asset class and recovery period get determined. That determination is your accountant's to make, not ours. Whether the container changes anything about how your parcel itself is assessed is a separate question with a different decider: your county auditor or local assessor. Getting both answers is the buyer's responsibility, and before you buy beats at filing time. We provide a standard bill of sale for every purchase for your records. We do not determine, advise on, or guarantee tax treatment or property assessment.
 
 Q5: Do you work with businesses that need deliveries across different locations?
 > Yes. We serve the full 250-mile radius from Cincinnati, which includes major commercial corridors in Ohio, Indiana, and Kentucky. If your business has multiple facilities within our service area, each location gets its own delivery. For recurring commercial relationships, contact us directly to discuss volume arrangements.
@@ -367,7 +490,12 @@ Add these three entries to `src/data/cities.ts` (append after Louisville):
     features: [
       { title: 'I-70 Corridor Expertise', body: "We run I-70 between Cincinnati and Columbus regularly. Our drivers know the access roads, the industrial parks, and the residential neighborhoods. Expect a smooth delivery and a driver who has been there before." },
       { title: 'Delaware County Growth', body: "The Dublin-Powell-Westerville corridor is booming. We deliver to new construction sites, established businesses, and suburban homeowners across Delaware County without the premium pricing that larger national operators charge." },
-      { title: 'Agricultural Heritage', body: "Pickaway and Fairfield counties south of Columbus have deep agricultural roots. Farm storage containers on ag-exempt land are one of our most common orders in this region." },
+      // AMENDED 2026-08-10 (PROJECT_HS_003): NOT on the original violation inventory. The original body
+      // ended "Farm storage containers on ag-exempt land are one of our most common orders in this region."
+      // Naming two counties in the same breath as a zoning-exemption outcome is the jurisdiction-plus-outcome
+      // category, the one PROJECT_HS_003 treats as highest risk. Replacement wording is new for this
+      // amendment: the local credibility stays, the exemption claim is replaced with the decider.
+      { title: 'Agricultural Heritage', body: "Pickaway and Fairfield counties south of Columbus have deep agricultural roots, and farm storage containers are one of our most common orders in this region. What your parcel's zoning requires is your county zoning office's call, not ours." },
     ],
   },
   stats: [
@@ -406,9 +534,15 @@ Add these three entries to `src/data/cities.ts` (append after Louisville):
   },
   content: {
     h2: 'Why Lexington buyers choose Steel Box Direct',
-    intro: "The Bluegrass region has some of the most demanding storage needs in our service area — horse farms need equipment and tack storage, distilleries need overflow space, and the growing suburbs around Lexington need residential solutions that work without permits on ag-classified land.",
+    // AMENDED 2026-08-10 (PROJECT_HS_003): NOT on the original violation inventory. Two hard violations here.
+    // The `intro` originally ended "...need residential solutions that work without permits on ag-classified
+    // land," a bare permit determination. The 'Horse Farm Solutions' body originally ended "Most ag-classified
+    // parcels in Kentucky qualify for zoning exemptions," a zoning determination naming a state. Replacement
+    // wording is new for this amendment. Only the violating clauses were replaced; the rest of each string,
+    // including its pre-existing punctuation, is the 2026-06-04 original.
+    intro: "The Bluegrass region has some of the most demanding storage needs in our service area. Horse farms need equipment and tack storage, distilleries need overflow space, and the growing suburbs around Lexington need residential storage that does not start with a construction project.",
     features: [
-      { title: 'Horse Farm Solutions', body: "Woodford, Bourbon, and Scott counties are horse country. We have delivered tack storage, equipment containers, and hay storage to farms throughout the Bluegrass. Most ag-classified parcels in Kentucky qualify for zoning exemptions." },
+      { title: 'Horse Farm Solutions', body: "Woodford, Bourbon, and Scott counties are horse country. We have delivered tack storage, equipment containers, and hay storage to farms throughout the Bluegrass. What a given parcel's zoning requires is a question for the county, and confirming it is the buyer's responsibility." },
       { title: 'Distillery and Hospitality', body: "Lexington's bourbon and spirits industry has created demand for secure, scalable overflow storage. We work with production facilities and hospitality operations across the I-64 corridor." },
       { title: 'University and Medical District', body: "The University of Kentucky campus and the surrounding medical corridor generate regular demand for temporary and semi-permanent storage. We deliver to commercial sites, construction staging areas, and institutional property." },
     ],
@@ -449,10 +583,17 @@ Add these three entries to `src/data/cities.ts` (append after Louisville):
   },
   content: {
     h2: 'Why Fort Wayne buyers choose Steel Box Direct',
-    intro: "Fort Wayne has one of Indiana's strongest manufacturing and logistics bases. Our containers serve the full range — from production facilities that need overflow storage to rural properties in Allen and DeKalb counties where ag-exempt land makes placement simple.",
+    // AMENDED 2026-08-10 (PROJECT_HS_003): NOT on the original violation inventory. The `intro` originally
+    // ended "...rural properties in Allen and DeKalb counties where ag-exempt land makes placement simple,"
+    // and the 'Agricultural Northeast Indiana' body below originally read "Farm storage containers on
+    // ag-classified land typically do not require permits, and our drivers know the rural roads in this
+    // region." Both name counties in the same breath as a zoning or permit outcome. Replacement wording is new
+    // for this amendment; only the violating clauses were replaced, and pre-existing punctuation elsewhere in
+    // each string is the 2026-06-04 original.
+    intro: "Fort Wayne has one of Indiana's strongest manufacturing and logistics bases. Our containers serve the full range, from production facilities that need overflow storage to rural properties in Allen and DeKalb counties with room to place a unit wherever it is needed.",
     features: [
       { title: 'Manufacturing and Industrial', body: "Allen County's industrial parks run along I-69 and US-30. We deliver to active production facilities, warehousing operations, and contractor staging areas throughout the Fort Wayne metro." },
-      { title: 'Agricultural Northeast Indiana', body: "DeKalb, Noble, and Whitley counties have substantial agricultural activity. Farm storage containers on ag-classified land typically do not require permits, and our drivers know the rural roads in this region." },
+      { title: 'Agricultural Northeast Indiana', body: "DeKalb, Noble, and Whitley counties have substantial agricultural activity. Farm storage containers are a steady order here and our drivers know the rural roads, but whether a permit applies to your parcel is your county zoning office's call." },
       { title: 'Residential and Suburban', body: "Fort Wayne's residential market is one of the most affordable in Indiana. Homeowners building additions, staging a renovation, or simply needing long-term storage find that a 20ft container fits most properties in the Fort Wayne suburbs." },
     ],
   },
@@ -553,9 +694,13 @@ Add a new section after the existing city grid, before the FAQ section:
   <div class="wrap">
     <h2 class="loc-icp-heading">Storage solutions by customer type</h2>
     <div class="loc-icp-grid">
+      <!-- AMENDED 2026-08-10 (PROJECT_HS_003): NOT on the original violation inventory. The original desc read
+           "Zoning exemptions on most ag land in OH/IN/KY. Delivered to your field." A zoning determination
+           naming three states, inside a 70-character card blurb with no room for attribution. Replacement
+           wording is new for this amendment. -->
       <a href="/for/farmers/" class="loc-icp-card">
         <span class="loc-icp-title">Farmers</span>
-        <span class="loc-icp-desc">Zoning exemptions on most ag land in OH/IN/KY. Delivered to your field.</span>
+        <span class="loc-icp-desc">Built for farm storage in OH, IN, and KY. Delivered to your field.</span>
         <span class="loc-icp-cta">Learn more →</span>
       </a>
       <a href="/for/contractors/" class="loc-icp-card">

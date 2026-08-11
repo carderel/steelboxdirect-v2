@@ -38,7 +38,7 @@ export const containers: Container[] = [
       cubicCap:     '1,172 cu ft',
     },
     useCases: [
-      { title: 'Farm & Ranch Storage',   body: "Secure, weatherproof storage for equipment, feed, and tools without a permanent structure permit in most counties." },
+      { title: 'Farm & Ranch Storage',   body: "Secure, weatherproof storage for equipment, feed, and tools. Sealed steel and lockable doors keep weather and pests out." },
       { title: 'Construction Job Site',  body: "Lock up tools and materials on-site. The 20ft fits most job sites where a 40ft would block access." },
       { title: 'Backyard Workshop',      body: "Convert into a workshop, hobby room, or overflow storage. Fits most suburban lots and standard driveways." },
     ],
@@ -65,7 +65,7 @@ export const containers: Container[] = [
     useCases: [
       { title: 'Large Farm Operations', body: "Store tractors, implements, and seasonal equipment. Two 20ft worth of space in a single footprint with one door to manage." },
       { title: 'Commercial Storage',   body: "Inventory overflow, seasonal stock, or on-site warehousing. The 40ft is the industry standard for a reason." },
-      { title: 'Permanent Structures', body: "The most popular base for container conversions — offices, workshops, and guest spaces. Enough room to split into zones." },
+      { title: 'Container Conversions', body: "The most popular base for container conversions: offices, workshops, and guest spaces. Enough room to split into zones." },
     ],
     compareNote: `Twice the storage of a 20ft — needs more clearance for delivery and placement. ${CONDITION.blurb}`,
     seo: {

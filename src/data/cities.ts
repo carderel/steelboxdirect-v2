@@ -354,6 +354,132 @@ export const cities: City[] = [
       description: `Looking for a shipping container in Louisville? We offer ${CONDITION.label} containers with flat-fee delivery to Jefferson, Oldham, and Bullitt counties.`,
     },
   },
+  {
+    slug: 'lexington-shipping-containers',
+    city: 'Lexington',
+    state: 'Kentucky',
+    stateSlug: 'kentucky',
+    region: 'home',
+    eyebrow: 'Lexington · Inner Bluegrass',
+    lede: 'From the limestone horse country of Woodford and Bourbon counties to the plants along I-75 in Scott County, we deliver steel-clad protection across the Inner Bluegrass. No middleman, no call centers, just local expertise.',
+    delivery: {
+      headline: 'Fayette, Jessamine, & Scott',
+      body: 'Delivered via I-64, I-75 and New Circle Road across central Kentucky. Whether it\'s a tight driveway inside New Circle or a paddock gate on a farm lane outside Paris, we plan placement and can scout tight or soft sites before scheduling.',
+      counties: ['Fayette County', 'Jessamine County', 'Scott County', 'Woodford County', 'Clark County', 'Bourbon County'],
+    },
+    map: {
+      bbox: '-84.704,37.841,-84.304,38.241',
+      marker: '38.0406,-84.5037',
+      title: 'Lexington, KY delivery area map',
+    },
+    content: {
+      h2: 'Why Lexington buyers choose Steel Box Direct',
+      intro: 'The Inner Bluegrass is farm country with a manufacturing spine running through it, and both halves need storage that doesn\'t come with a monthly bill. We\'re a family-owned operation selling one honest grade: Wind & Water Tight steel, delivered where you need it.',
+      features: [
+        { title: 'Farm & Paddock Access', body: 'The Kentucky Geological Survey lists Lexington, Versailles, Paris, Winchester, Georgetown and Nicholasville as cities sitting on karst, and that limestone ground is why the horse farms are here. We plan for soft spots, long farm lanes and gate widths before scheduling, not on delivery day.' },
+        { title: 'Manufacturing & Distribution Overflow', body: 'Scott County runs on the Georgetown assembly plant Toyota calls its largest vehicle factory in the world, and the supplier network around it fills a lot of leased square footage. A container on your own lot adds secure overflow capacity without signing another lease.' },
+        { title: 'Local Delivery Knowledge', body: 'From a Chevy Chase driveway to a farm lane outside Midway, we plan delivery routes for tight or rural access before scheduling. Permit and zoning requirements are set by your local authority, which in Lexington is the Division of Planning and in the surrounding counties is the joint city-county planning office, and they are the buyer\'s responsibility to confirm before purchasing.' },
+      ],
+    },
+    stats: [
+      { value: '6', label: 'Counties served' },
+      { value: 'WWT', label: 'One honest grade' },
+      { value: 'Est. 2009', label: 'Family-owned dealer' },
+    ],
+    primaryZips: ['40507', '40356', '40324', '40383', '40391', '40361'],
+    zoning: [
+      { county: 'Fayette County', office: 'Lexington-Fayette Urban County Government Division of Planning', url: 'https://www.lexingtonky.gov/government/departments-programs/planning-preservation/planning' },
+      { county: 'Jessamine County', office: 'Jessamine County / City of Wilmore Joint Planning & Zoning', url: 'https://jessamineky.gov/jc-department/planning-zoning/' },
+      { county: 'Scott County', office: 'Georgetown-Scott County Planning Commission', url: 'https://www.gscplanning.com/' },
+      { county: 'Woodford County', office: 'Versailles-Midway-Woodford County Planning Commission', url: 'https://www.woodfordcountyky.gov/166/Planning-Commission' },
+      { county: 'Clark County', office: 'Winchester/Clark County Planning & Community Development', url: 'https://www.winchesterky.com/478/Planning-Community-Development' },
+      { county: 'Bourbon County', office: 'Bourbon County Joint Planning Commission', url: 'https://www.bourboncountyplanning.com/' },
+    ],
+    geography: {
+      interstates: ['I-64', 'I-75'],
+      features: ['Kentucky River', 'Elkhorn Creek'],
+    },
+    areaProfile: 'Lexington sits at the center of the Inner Bluegrass, and the Kentucky Geological Survey lists Lexington, Georgetown, Winchester, Paris, Versailles and Nicholasville as cities built on karst, the limestone ground it credits for the region\'s horse-farm scenery. Fayette County protects that farmland through what the city calls Kentucky\'s first local-government agricultural conservation easement program, with 314 farms and close to 33,529 acres under easement, so the working-farm belt around the city isn\'t going anywhere. Just north in Scott County, Georgetown holds the assembly plant Toyota calls its largest vehicle factory in the world, and I-64 and I-75 run together past the top of the city.',
+    commonUses: [
+      { label: 'Manufacturing & supplier overflow storage along the I-75 corridor in Scott County', persona: 'businesses' },
+      { label: 'Jobsite tool & material storage on the build-outs inside the Fayette urban service area and across Jessamine County', persona: 'contractors' },
+      { label: 'Hay, feed, tack & equipment storage on the horse and cattle farms of Woodford, Bourbon & Clark counties', persona: 'farmers' },
+      { label: 'Renovation & moving storage on suburban driveways and small acreage in Jessamine, Scott & Clark counties', persona: 'homeowners' },
+    ],
+    usesIntro: 'From the assembly-plant corridor in Scott County to the horse farms of Woodford and Bourbon, here\'s how the Bluegrass puts a container to work.',
+    cta: {
+      headline: 'Ready for a Lexington quote?',
+      body: 'Most requests in the Bluegrass are answered within 4 business hours.',
+    },
+    seo: {
+      title: 'Shipping & Storage Containers for Sale in Lexington, KY | Steel Box Direct',
+      description: `Buying a shipping container in Lexington? We provide ${CONDITION.label} containers with flat-fee delivery to Fayette, Jessamine, and Scott counties.`,
+    },
+  },
+  {
+    slug: 'huntington-shipping-containers',
+    city: 'Huntington',
+    state: 'West Virginia',
+    stateSlug: 'west-virginia',
+    region: 'home',
+    eyebrow: 'Huntington · Western WV',
+    lede: 'From the barge terminals along the Ohio River to the hill farms of Wayne and Lincoln counties, we deliver steel-clad protection across western West Virginia and the tri-state. No middleman, no call centers, just local expertise.',
+    delivery: {
+      headline: 'Cabell, Wayne, & Putnam',
+      body: 'Delivered via I-64 and the US 52 and US 60 river corridors across the tri-state. Whether it\'s a narrow bottomland lot in Barboursville or a hillside farm outside Hamlin, we plan placement and can scout tight or soft sites before scheduling.',
+      counties: ['Cabell County', 'Wayne County', 'Putnam County', 'Lincoln County', 'Lawrence County (OH)', 'Boyd County (KY)', 'Greenup County (KY)'],
+    },
+    map: {
+      bbox: '-82.645,38.219,-82.245,38.619',
+      marker: '38.4192,-82.4452',
+      title: 'Huntington, WV delivery area map',
+    },
+    content: {
+      h2: 'Why Huntington buyers choose Steel Box Direct',
+      intro: 'The Ohio River works for a living here. Army Corps waterborne-commerce figures ranked the Huntington tri-state port area the nation\'s busiest inland port in 2019, and the steel boxes riding those same corridors are what we sell. We\'re a family-owned operation selling one honest grade: Wind & Water Tight steel, delivered where you need it.',
+      features: [
+        { title: 'River & Rail Corridor Storage', body: 'Coal, gasoline, fuel oil and limestone move through eighteen freight docks along this stretch of the Ohio, and both CSX and Norfolk Southern serve the corridor. A container on your own lot adds secure overflow capacity without signing another lease.' },
+        { title: 'Hill-Country Site Planning', body: 'Wayne and Lincoln counties are dissected plateau country, and a lot of the buildable ground is a shelf between a creek and a hillside. We plan for soft ground, tight turns and long lane approaches before scheduling, not on delivery day.' },
+        { title: 'Local Delivery Knowledge', body: 'From a Huntington side street to acreage outside Wayne, we plan delivery routes for tight or rural access before scheduling. Permit and zoning requirements are set by your local authority, which inside city limits is the Huntington Planning & Zoning office and outside it is the county permit office, and they are the buyer\'s responsibility to confirm before purchasing.' },
+      ],
+    },
+    stats: [
+      { value: '7', label: 'Counties served' },
+      { value: 'WWT', label: 'One honest grade' },
+      { value: 'Est. 2009', label: 'Family-owned dealer' },
+    ],
+    primaryZips: ['25701', '25570', '25213', '25523', '45638', '41101', '41144'],
+    zoning: [
+      { county: 'Cabell County (City of Huntington)', office: 'City of Huntington Planning & Zoning', url: 'https://www.cityofhuntington.com/city-government/city-departments/planning-zoning/' },
+      { county: 'Cabell County (outside city limits)', office: 'Cabell County Commission, Planning & Permits Administrator', url: 'https://www.cabellcounty.org/government/county_commission/permits.php' },
+      { county: 'Wayne County', office: 'Wayne County Building Permit Officer & Floodplain Coordinator', url: 'https://waynecountywv.org/buildingpermits.php' },
+      { county: 'Putnam County', office: 'Putnam County Office of Planning & Infrastructure', url: 'https://putnamcountywv.gov/planning-and-infrastructure/' },
+      { county: 'Lincoln County', office: 'Lincoln County Commission, county building permit contact', url: 'https://lincolncountywv.org/commission' },
+      { county: 'Lawrence County (OH)', office: 'Lawrence County Planning Commission (township zoning inspectors administer zoning in unincorporated areas)', url: 'https://www.lawrenceswcd.com/planning-commission.html' },
+      { county: 'Boyd County (KY)', office: 'Boyd County Code Enforcement, FEMA Projects & Permitting', url: 'https://boydcountyky.gov/201/Code-Enforcement-FEMA-Projects-Permittin' },
+      { county: 'Greenup County (KY)', office: 'Greenup County Joint Planning Commission', url: 'https://www.greenupcountyky.gov/joint-planning-commission' },
+    ],
+    geography: {
+      interstates: ['I-64'],
+      features: ['Ohio River', 'Big Sandy River', 'Kanawha River'],
+    },
+    areaProfile: 'Huntington sits where the Ohio River bends between West Virginia, Ohio and Kentucky, and the river is the local economy. Ohio DOT\'s port profile puts 29.8 million short tons through the Huntington tri-state port area in 2022, mostly coal, gasoline, fuel oil and limestone, moving across eighteen freight docks spread over a hundred miles of the Ohio plus the lower Big Sandy and ninety miles of the Kanawha. Army Corps waterborne-commerce figures ranked it the nation\'s busiest inland port in 2019. Marshall University anchors the city itself, and I-64 is the only interstate in the market, so the rest of the run happens on US 52, US 60 and the county roads through Wayne and Lincoln hill country.',
+    commonUses: [
+      { label: 'River terminal & barge-corridor cargo and equipment overflow storage', persona: 'businesses' },
+      { label: 'Jobsite tool & material storage on tight river-bottom and hillside lots across Cabell & Wayne counties', persona: 'contractors' },
+      { label: 'Hay, feed & equipment storage on the hill farms of Wayne, Lincoln & outer Putnam counties', persona: 'farmers' },
+      { label: 'Renovation & moving storage on driveways and hillside lots around Huntington, Barboursville & Teays Valley', persona: 'homeowners' },
+    ],
+    usesIntro: 'From the barge docks along the Ohio to the hill farms of Wayne and Lincoln counties, here\'s how the tri-state puts a container to work.',
+    cta: {
+      headline: 'Ready for a Huntington quote?',
+      body: 'Most requests in western West Virginia are answered within 4 business hours.',
+    },
+    seo: {
+      title: 'Shipping & Storage Containers for Sale in Huntington, WV | Steel Box Direct',
+      description: `Buying a shipping container in Huntington? We provide ${CONDITION.label} containers with flat-fee delivery to Cabell, Wayne, and Putnam counties.`,
+    },
+  },
 
   // ── Depot cities (fulfilled via supplier-network depots; bridge copy renders at template level) ──
   // Ground truth: .outputs/research/locations/2026-07-31-{city}.md (verified 2026-07-31).

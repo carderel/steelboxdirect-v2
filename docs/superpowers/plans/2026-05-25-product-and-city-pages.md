@@ -8,6 +8,18 @@
 
 **Tech Stack:** Astro 4, TypeScript, Cloudflare Pages (`output: 'hybrid'`), `npm run dev` on localhost:4322, `npm run build` to verify static generation.
 
+> **AMENDED 2026-08-10 for PROJECT_HS_003 compliance. This document was corrected, not born clean.**
+> As originally written, this plan contained paste-ready copy that asserted permit, zoning, and
+> building-classification outcomes that Steel Box Direct is not entitled to assert on a reader's behalf.
+> Those passages have been replaced in place with compliant wording, and every amended passage carries an
+> inline `AMENDED 2026-08-10` marker naming what the original claimed. Markers appear as a bold paragraph
+> in prose, a `//` comment inside TypeScript blocks, and an HTML comment inside markup blocks, so the
+> surrounding code stays valid.
+> Authority: `UDO Project/.project-catalog/decisions/2026-08-10-sitewide-permit-rework-authorized.md`.
+> Rule: `UDO Project/HARD_STOPS.md`, PROJECT_HS_003. Do not restore the original wording, and do not
+> implement any version of this plan that determines a permit, zoning, tax, insurance, or structural
+> outcome for the reader in either direction.
+
 ---
 
 ## File Map
@@ -74,7 +86,12 @@ export const containers: Container[] = [
       cubicCap:     '1,172 cu ft',
     },
     useCases: [
-      { title: 'Farm & Ranch Storage',   body: "Secure, weatherproof storage for equipment, feed, and tools without a permanent structure permit in most counties." },
+      // AMENDED 2026-08-10 (PROJECT_HS_003): the original body ended "...and tools without a permanent
+      // structure permit in most counties." That asserted a permit outcome and implied a building
+      // classification, both banned in either direction, and the quantifier made an unresearched
+      // conclusion sound researched. Replacement below is the approved wording from
+      // UDO Project/.outputs/container-shelter/2026-08-10-rework-containers-data.md.
+      { title: 'Farm & Ranch Storage',   body: "Secure, weatherproof storage for equipment, feed, and tools. Sealed steel and lockable doors keep weather and pests out." },
       { title: 'Construction Job Site',  body: "Lock up tools and materials on-site. The 20ft fits most job sites where a 40ft would block access." },
       { title: 'Backyard Workshop',      body: "Convert into a workshop, hobby room, or overflow storage. Fits most suburban lots and standard driveways." },
     ],
@@ -101,7 +118,13 @@ export const containers: Container[] = [
     useCases: [
       { title: 'Large Farm Operations', body: "Store tractors, implements, and seasonal equipment. Two 20ft worth of space in a single footprint with one door to manage." },
       { title: 'Commercial Storage',   body: "Inventory overflow, seasonal stock, or on-site warehousing. The 40ft is the industry standard for a reason." },
-      { title: 'Permanent Structures', body: "The most popular base for container conversions — offices, workshops, and guest spaces. Enough room to split into zones." },
+      // AMENDED 2026-08-10 (PROJECT_HS_003): the original title was "Permanent Structures". That is a
+      // building-classification claim, and the rule bans it in both directions, so asserting a container
+      // IS the base for permanent structures fails the same way as asserting it is not one. The title
+      // renders as a bare two-word <h4>, which strips any surrounding context. Replacement title and body
+      // below are the approved wording from
+      // UDO Project/.outputs/container-shelter/2026-08-10-rework-containers-data.md.
+      { title: 'Container Conversions', body: "The most popular base for container conversions. Offices, workshops, and guest spaces, with enough room to split into zones." },
     ],
     compareNote: "Twice the storage of a 20ft — needs more clearance for delivery and placement.",
     seo: {
@@ -877,7 +900,14 @@ export const cities: City[] = [
       features: [
         { title: 'No 275-Loop Upcharge',  body: 'Unlike national sellers who charge extra for "metro" delivery, our local presence means we treat every neighborhood with the same fair pricing.' },
         { title: 'Site Visits Available', body: 'Not sure if that 40-footer will fit in your Hyde Park driveway? We can often perform a digital or physical site assessment using local knowledge of the area.' },
-        { title: 'Ag-Exempt Expertise',  body: 'If you\'re in Brown, Warren, or Butler county, we can help you understand why your farm storage is likely zoned-exempt, saving you the headache of unnecessary permits.' },
+        // AMENDED 2026-08-10 (PROJECT_HS_003): NOT on the original violation inventory; found during this
+        // pass. The original read: "Ag-Exempt Expertise" / "If you're in Brown, Warren, or Butler county,
+        // we can help you understand why your farm storage is likely zoned-exempt, saving you the headache
+        // of unnecessary permits." That named three counties in the same breath as a zoning outcome, which
+        // is the jurisdiction-plus-outcome category, and predicted an exemption. Replacement wording is
+        // new for this amendment: it keeps the local-knowledge selling point, names the office that
+        // decides, and returns the determination to the buyer.
+        { title: 'Ag Zoning Questions',  body: 'Farm and ranch buyers ask about zoning constantly, and we can tell you which office to call and what to ask. Your county zoning office decides what applies to your parcel, and confirming it is the buyer\'s responsibility.' },
       ],
     },
     stats: [

@@ -3,6 +3,18 @@
 **Status:** Approved  
 **Author:** The Architect (UDO session)
 
+> **AMENDED 2026-08-10 for PROJECT_HS_003 compliance. This document was corrected, not born clean.**
+> As originally written, this spec contained copy that asserted permit and building-classification
+> outcomes that Steel Box Direct is not entitled to assert on a reader's behalf. Those passages have been
+> replaced in place with compliant wording, and every amended passage carries an inline
+> `AMENDED 2026-08-10` marker naming what the original claimed. Markers appear as a bold paragraph in
+> prose, a `//` comment inside TypeScript blocks, and an HTML comment inside markup blocks, so the
+> surrounding code stays valid.
+> Authority: `UDO Project/.project-catalog/decisions/2026-08-10-sitewide-permit-rework-authorized.md`.
+> Rule: `UDO Project/HARD_STOPS.md`, PROJECT_HS_003. Do not restore the original wording, and do not
+> implement any version of this spec that determines a permit, zoning, tax, insurance, or structural
+> outcome for the reader in either direction.
+
 ---
 
 ## Goal
@@ -90,7 +102,13 @@ export const containers: Container[] = [
       cubicCap:     "1,172 cu ft",
     },
     useCases: [
-      { title: "Farm & Ranch Storage", body: "Secure, weatherproof storage for equipment, feed, and tools without a permanent structure permit in most counties." },
+      // AMENDED 2026-08-10 (PROJECT_HS_003): the original body ended "...and tools without a permanent
+      // structure permit in most counties." That asserted a permit outcome and implied a building
+      // classification, both banned in either direction. Replacement below is the approved wording from
+      // UDO Project/.outputs/container-shelter/2026-08-10-rework-containers-data.md. Do not reintroduce
+      // permit, zoning, or classification vocabulary into a product use-case blurb; it has no room for
+      // the attribution such a claim would require.
+      { title: "Farm & Ranch Storage", body: "Secure, weatherproof storage for equipment, feed, and tools. Sealed steel and lockable doors keep weather and pests out." },
       { title: "Construction Job Site", body: "Lock up tools and materials on-site. The 20ft fits most job sites where a 40ft would block access." },
       { title: "Backyard Workshop", body: "Convert into a workshop, hobby room, or overflow storage. Fits most suburban lots and standard driveways." },
     ],
@@ -117,7 +135,13 @@ export const containers: Container[] = [
     useCases: [
       { title: "Large Farm Operations", body: "Store tractors, implements, and seasonal equipment. Two 20ft worth of space in a single footprint with one door to manage." },
       { title: "Commercial Storage", body: "Inventory overflow, seasonal stock, or on-site warehousing. The 40ft is the industry standard for a reason." },
-      { title: "Permanent Structures", body: "The most popular base for container conversions — offices, workshops, and guest spaces. Enough room to split into zones." },
+      // AMENDED 2026-08-10 (PROJECT_HS_003): the original title was "Permanent Structures". That is a
+      // building-classification claim, and the rule bans the claim in both directions, so asserting a
+      // container IS the base for permanent structures fails the same way as asserting it is not one.
+      // The title also renders as a bare two-word <h4>, which strips any surrounding context. Replacement
+      // title and body below are the approved wording from
+      // UDO Project/.outputs/container-shelter/2026-08-10-rework-containers-data.md.
+      { title: "Container Conversions", body: "The most popular base for container conversions. Offices, workshops, and guest spaces, with enough room to split into zones." },
     ],
     compareNote: "Twice the storage of a 20ft — needs more clearance for delivery and placement.",
     seo: {

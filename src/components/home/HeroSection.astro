@@ -43,7 +43,7 @@ import containerHero from '../../assets/photos/40ft-container-hero-reduced2.png'
     <span>Delivery included within <em>250 miles</em></span><span>●</span>
     <span>Great for <em>farm &amp; ranch storage</em></span><span>●</span>
     <span>Perfect for <em>job site security</em></span><span>●</span>
-    <span>Most farm storage is <em>zoned exempt</em></span><span>●</span>
+    <span>Sits on gravel, <em>no slab to pour</em></span><span>●</span>
     <span>Ideal for <em>backyard workshops</em></span><span>●</span>
     <span>400+ containers placed across OH · IN · KY</span><span>●</span>
     <span>Built for <em>commercial inventory</em></span><span>●</span>
@@ -52,7 +52,7 @@ import containerHero from '../../assets/photos/40ft-container-hero-reduced2.png'
     <span>Delivery included within <em>250 miles</em></span><span>●</span>
     <span>Great for <em>farm &amp; ranch storage</em></span><span>●</span>
     <span>Perfect for <em>job site security</em></span><span>●</span>
-    <span>Most farm storage is <em>zoned exempt</em></span><span>●</span>
+    <span>Sits on gravel, <em>no slab to pour</em></span><span>●</span>
     <span>Ideal for <em>backyard workshops</em></span><span>●</span>
     <span>400+ containers placed across OH · IN · KY</span><span>●</span>
     <span>Built for <em>commercial inventory</em></span><span>●</span>
@@ -60,6 +60,7 @@ import containerHero from '../../assets/photos/40ft-container-hero-reduced2.png'
     <span>Convert into an <em>office or studio</em></span><span>●</span>
   </div>
 </div>
+<p class="ticker-note">Nationwide delivery from our hub network.</p>
 
 <style>
   /* Hero scaffold */
@@ -100,6 +101,11 @@ import containerHero from '../../assets/photos/40ft-container-hero-reduced2.png'
   .ticker span{margin:0 24px}
   .ticker em{font-style:normal;color:var(--c5-permits)}
   @keyframes tkr{from{transform:translateX(0)}to{transform:translateX(-100%)}}
+
+  /* Secondary capability line, sits under the ticker band. Static (not in the
+     scrolling track) and outside the ticker's aria-hidden, so it persists and
+     is readable. Subordinate to the ticker claims by size and opacity. */
+  .ticker-note{background:var(--ink);color:var(--cream);border-bottom:2.5px solid var(--ink);margin:0;padding:0 20px 13px;font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;text-align:center;line-height:1.4;opacity:.55}
 
   @media (max-width:960px){
     /* mobile stacking order: container image, then hz-2, then headline; hz-4/hz-5 stay */

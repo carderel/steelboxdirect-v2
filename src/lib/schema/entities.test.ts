@@ -17,6 +17,27 @@ describe('globalNodes', () => {
     expect(byId(LOCALBUSINESS_ID).parentOrganization).toEqual({ '@id': FREEDOMCONEX_ID });
   });
 
+  it('areaServed pairs the core GeoCircle with a US Country node, so reach is not capped at 250 miles', () => {
+    for (const id of [LOCALBUSINESS_ID, ORG_ID]) {
+      const area = byId(id).areaServed as any[];
+      expect(Array.isArray(area)).toBe(true);
+      const circle = area.find((a) => a['@type'] === 'GeoCircle');
+      const country = area.find((a) => a['@type'] === 'Country');
+      // local signal kept: still the 250-mile home region around Cincinnati
+      expect(circle.geoRadius).toBe('402336');
+      expect(circle.geoMidpoint.latitude).toBe('39.1365839');
+      // national truth added: delivery is not bounded by that circle
+      expect(country.name).toBe('United States');
+    }
+  });
+
+  it('no areaServed text makes a permit, zoning, tax, insurance, or structural claim (PROJECT_HS_003)', () => {
+    const text = JSON.stringify(nodes.map((n) => n.areaServed)).toLowerCase();
+    for (const banned of ['permit', 'zoning', 'tax', 'insur', 'classif', 'structure', 'rated for']) {
+      expect(text).not.toContain(banned);
+    }
+  });
+
   it('carries only real NAP + sameAs and never a rating', () => {
     const lb = byId(LOCALBUSINESS_ID);
     expect(lb.telephone).toBe('+15135462543');
