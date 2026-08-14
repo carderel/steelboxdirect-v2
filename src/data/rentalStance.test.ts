@@ -1,4 +1,6 @@
 import { describe, it, expect } from 'vitest';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import {
   RENTAL_STANCE_FACT,
   RENTAL_STANCE_FACT_HTML,
@@ -49,5 +51,54 @@ describe('rental stance module: one canonical fact, per-page wrappers', () => {
     });
     expect(out.a).toBe(`${RENTAL_STANCE_FACT} Plain context.`);
     expect(out.html).toBe(`${RENTAL_STANCE_FACT_HTML} Rich <a href="/somewhere/">context</a>.`);
+  });
+});
+
+describe('rental stance: three schema-bound pages, three different questions', () => {
+  const REPO_ROOT = import.meta.dirname
+    ? join(import.meta.dirname, '..', '..')
+    : process.cwd();
+
+  const PAGES = {
+    productHub: 'src/pages/shipping-containers-for-sale/index.astro',
+    rentToOwn: 'src/pages/rent-to-own/index.astro',
+    rentalGuide: 'src/pages/container-rental-guide/index.astro',
+  };
+
+  // Each page composes the SAME canonical fact with its OWN question, matched to its own intent.
+  // If two of these ever converge, two URLs emit an identical FAQPage Question/Answer pair.
+  const QUESTIONS = {
+    productHub: 'Can I rent a shipping container, or do you only sell them?',
+    rentToOwn: "What's the difference between renting and rent-to-own?",
+    rentalGuide: 'Does Steel Box Direct rent shipping containers?',
+  };
+
+  const read = (key: keyof typeof PAGES): string =>
+    readFileSync(join(REPO_ROOT, PAGES[key]), 'utf8');
+
+  it('the three questions are distinct strings', () => {
+    const qs = Object.values(QUESTIONS);
+    expect(new Set(qs).size).toBe(3);
+  });
+
+  it('each page asks its own question and neither of the other two', () => {
+    for (const key of Object.keys(PAGES) as (keyof typeof PAGES)[]) {
+      const src = read(key);
+      expect(src, `${PAGES[key]} must ask its own question`).toContain(QUESTIONS[key]);
+      for (const other of Object.keys(QUESTIONS) as (keyof typeof QUESTIONS)[]) {
+        if (other === key) continue;
+        expect(src, `${PAGES[key]} must not also ask ${other}'s question`)
+          .not.toContain(QUESTIONS[other]);
+      }
+    }
+  });
+
+  it('all three compose the fact through the module rather than holding their own copy', () => {
+    for (const key of Object.keys(PAGES) as (keyof typeof PAGES)[]) {
+      const src = read(key);
+      expect(src, `${PAGES[key]} must call composeRentalStance`).toContain('composeRentalStance');
+      // The literal fact sentence must exist in exactly one place: the module.
+      expect(src).not.toContain('Steel Box Direct does not rent shipping containers.');
+    }
   });
 });

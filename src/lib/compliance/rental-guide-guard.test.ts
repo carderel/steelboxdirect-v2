@@ -130,3 +130,69 @@ describe('/container-rental-guide/ page guards', () => {
     expect(src).not.toContain('export const prerender');
   });
 });
+
+describe('cannibalization controls: link direction between the rental pages', () => {
+  const read = (p: string): string => readFileSync(join(REPO_ROOT, p), 'utf8');
+  const rentToOwn = read('src/pages/rent-to-own/index.astro');
+  const productHub = read('src/pages/shipping-containers-for-sale/index.astro');
+  const rentalGuide = read('src/pages/container-rental-guide/index.astro');
+  const nav = read('src/components/SiteNav.astro');
+  const footer = read('src/components/SiteFooter.astro');
+  const llms = read('public/llms.txt');
+
+  it('/rent-to-own/ sends EXACTLY ONE deep link to the guide, inside an html twin', () => {
+    const hits = (rentToOwn.match(/\/container-rental-guide\//g) ?? []).length;
+    expect(hits).toBe(1);
+    const contextHtml = rentToOwn.match(/contextHtml:\s*\n?([\s\S]*?)\n\s*\}\),/)?.[1] ?? '';
+    expect(contextHtml).toContain('/container-rental-guide/');
+  });
+
+  it('the inbound anchor from /rent-to-own/ is rental-worded, not brand-worded', () => {
+    const anchor = rentToOwn.match(/<a href="\/container-rental-guide\/">([^<]+)<\/a>/)?.[1] ?? '';
+    expect(anchor.length).toBeGreaterThan(8);
+    expect(anchor).toMatch(/rent/i);
+    expect(anchor).not.toMatch(/steel box direct/i);
+  });
+
+  it('the product hub sends exactly one link to the guide, from its rental FAQ', () => {
+    expect((productHub.match(/\/container-rental-guide\//g) ?? []).length).toBe(1);
+    expect(productHub).toMatch(/<a href="\/container-rental-guide\/">/);
+  });
+
+  it('the guide links back to the hub exactly once', () => {
+    expect((rentalGuide.match(/\/shipping-container-guides\//g) ?? []).length).toBe(1);
+  });
+
+  it('NO TOP-LEVEL RENTAL TAB: the guide lives in the Guides dropdown only', () => {
+    expect(nav).not.toMatch(/>\s*Rental\s*</);
+    expect(nav).toContain('/container-rental-guide/');
+    expect((nav.match(/\/container-rental-guide\//g) ?? []).length).toBe(1);
+  });
+
+  it('the nav Guides trigger points at the hub, not at /size/', () => {
+    const trigger = nav.match(/<a href="([^"]+)" class="nav-gd-trigger">/)?.[1] ?? '';
+    expect(trigger).toBe('/shipping-container-guides/');
+  });
+
+  it('the footer carries both pages and leaves The Five intact', () => {
+    expect(footer).toContain('/shipping-container-guides/');
+    expect(footer).toContain('/container-rental-guide/');
+    expect(footer).toContain('<h5>The Five</h5>');
+    const five = footer.match(/<h5>The Five<\/h5>([\s\S]*?)<\/div>/)?.[1] ?? '';
+    expect((five.match(/<a /g) ?? []).length).toBe(5);
+  });
+
+  it('llms.txt lists both pages, and says plainly that we do not rent', () => {
+    expect(llms).toContain('https://steelboxdirect.com/container-rental-guide/');
+    expect(llms).toContain('https://steelboxdirect.com/shipping-container-guides/');
+    const rentalLine = llms.split('\n').find((l) => l.includes('/container-rental-guide/')) ?? '';
+    expect(rentalLine).toMatch(/does not rent/i);
+  });
+
+  it('NO CROSS-CANONICAL: neither page overrides its canonical', () => {
+    for (const src of [rentalGuide, read('src/pages/shipping-container-guides/index.astro')]) {
+      expect(src).not.toMatch(/rel="canonical"/);
+      expect(src).not.toMatch(/canonical=/);
+    }
+  });
+});
