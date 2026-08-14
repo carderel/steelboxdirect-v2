@@ -1,5 +1,5 @@
 import type { BuildSchemaArgs, BuiltSchema, QuickFacts, QuickFaq } from './types';
-import { globalNodes, ORG_ID, LOCALBUSINESS_ID, WEBSITE_ID, SITE_URL } from './entities';
+import { globalNodes, ORG_ID, LOCALBUSINESS_ID, WEBSITE_ID, SITE_URL, SERVICE_AREA_LINE } from './entities';
 import { priceValidUntil } from '../../data/pricing';
 import { howtoByTopic } from './howto';
 
@@ -121,7 +121,12 @@ export function buildPageSchema(args: BuildSchemaArgs): BuiltSchema {
         ],
         faqs: p.faqs.slice(0, 3),
         showPriceDisclaimer: false,
-        ...(isDepot ? { serves: `Depot in the ${p.city.city} area · our supplier network` } : {}),
+        // Both city tiers set `serves` explicitly so no city page falls through to the
+        // site-wide default. A city page is a local surface: it should state its own area,
+        // not the network's ceiling.
+        serves: isDepot
+          ? `Depot in the ${p.city.city} area · our supplier network`
+          : `${p.city.city} + surrounding counties · 250 mi home region`,
       };
       break;
     }
@@ -219,6 +224,9 @@ export function buildPageSchema(args: BuildSchemaArgs): BuiltSchema {
   }
 
   graph.push(bc);
+  // Any branch that did not set its own area gets the network line, so the visible "Serves"
+  // cell always matches the two-node areaServed in the graph rather than only its first node.
+  if (quickFacts && !quickFacts.serves) quickFacts.serves = SERVICE_AREA_LINE;
   return { graph, quickFacts };
 }
 

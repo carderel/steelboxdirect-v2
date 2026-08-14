@@ -53,6 +53,22 @@ const NATIONAL_AREA = {
 
 const AREA_SERVED = [CORE_MARKET_AREA, NATIONAL_AREA];
 
+/**
+ * Human-readable rendering of AREA_SERVED for the visible "Serves" cell in QuickFacts.
+ *
+ * It has to say the same thing the graph says, in the same register, or the visible band
+ * contradicts the structured data. The two clauses map one-to-one onto the two areaServed
+ * nodes: the GeoCircle first (local dominance leads, per the 2026-08-11 ruling), then the
+ * Country node, qualified as "from depot hubs" so it reads as a capability and not as a
+ * claim of local presence in every market.
+ *
+ * This is the default for pages with no geography of their own (guides, products, hubs,
+ * collections, home). Pages that DO have a specific area set `serves` explicitly in
+ * buildPageSchema and never see this string. Do not enumerate states here: a state list
+ * implies the unlisted states are excluded, which is the reason the graph does not do it.
+ */
+export const SERVICE_AREA_LINE = '250 mi from Cincinnati, OH · nationwide from depot hubs';
+
 export function globalNodes(): Record<string, unknown>[] {
   const freedomConex = {
     '@type': 'Organization',
