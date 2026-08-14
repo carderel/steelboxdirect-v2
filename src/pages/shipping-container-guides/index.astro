@@ -1,0 +1,631 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { Image } from 'astro:assets';
+import {
+  guidesByGroup,
+  guideCountWord,
+  guideTitleCountWord,
+  guideListItems,
+} from '../../data/guides';
+import lineupPhoto from '../../assets/photos/blog/20ft-40ft-high-cube-container-size-comparison-hero.jpg';
+import haulPhoto from '../../assets/photos/blog/container-chained-on-delivery-truck-bed-rig.jpg';
+import wwtPhoto from '../../assets/photos/blog/wind-water-tight-weathered-blue-container-hero.jpg';
+import headroomPhoto from '../../assets/photos/blog/high-cube-container-interior-stacking-headroom.jpg';
+import idPhoto from '../../assets/photos/blog/container-id-number-check-digit-closeup.jpg';
+
+// Static page. There is deliberately no prerender directive here: hybrid prerenders plain pages
+// by default, exactly like src/pages/cost/index.astro and src/pages/permits/.
+
+const crumbs = [{ name: 'Home', path: '/' }, { name: 'Guides' }];
+
+const boxGuides = guidesByGroup('box');
+const gettingGuides = guidesByGroup('getting');
+const commitGuides = guidesByGroup('commit');
+
+// The meta description is composed here rather than typed as a literal, so the guide count in it
+// derives from src/data/guides.ts along with every other count on this page.
+const metaDescription =
+  `${guideTitleCountWord} shipping container guides sorted by the question you are actually `
+  + 'asking: size, condition, delivery, cost, permits, buying safely, and full specs.';
+
+// These three strings ARE the FAQPage answers and they also render visibly below, so each one is
+// written to stand alone when quoted with no surrounding page copy.
+//
+// WHAT IS DELIBERATELY NOT HERE: the mockup's second FAQ claimed the four common names for a
+// fixed-term-to-ownership arrangement all mean the same thing. That is a fair observation about
+// how this market talks, which is why the glossary keeps it, and a poor schema-bound assertion,
+// because those names can carry distinct meanings under state consumer lease statutes and the
+// hedge does not travel into JSON-LD. A genuine which-guide-first question replaces it, so the
+// FAQPage still carries three.
+const faqs = [
+  {
+    q: 'Is a conex box the same thing as a shipping container?',
+    a: 'Yes. Conex box, sea can, ISO container, and shipping container all describe the same '
+      + 'standardised steel freight box. Conex comes from an old US military term, sea can is '
+      + 'regional slang, and ISO refers to the dimensional standard the box is built to. The name '
+      + 'a seller uses tells you about their background, not about the product.',
+  },
+  {
+    q: 'Which guide should I read first if I have never bought a container?',
+    a: 'Start with size, then delivery, then cost. Size comes first because it decides the price, '
+      + 'the truck, and how much room the driver needs. Delivery comes second because access is '
+      + 'the one factor that can rule a plan out entirely, and finding a low branch or a soft turn '
+      + 'now is far cheaper than finding it with a loaded truck at the end of your drive. Cost '
+      + 'comes third, once you know what you are buying and how it gets in. That is about fifteen '
+      + 'minutes of reading, and the short path at the bottom of the guides hub walks the same '
+      + 'three in order.',
+  },
+  {
+    q: 'Do I need a permit for a shipping container?',
+    a: 'It depends on where the container is going and how you intend to use it. Permit and zoning '
+      + 'requirements vary by county, municipality, and intended use, and your local zoning or '
+      + 'building department is the authority that decides. Confirming the requirements for your '
+      // Wrap deliberately: the hs003 guard scans each quoted literal as its own text unit and
+      // treats one under 120 characters as atomic, so "guarantee permit outcomes." has to sit in
+      // the same literal as "we do not determine". Splitting them changes no rendered character
+      // and turns a compliant sentence into a finding.
+      + "property before you buy is the buyer's responsibility; we do not determine, advise on, or guarantee permit outcomes. "
+      + 'Our permits and zoning guide describes what the question turns on and who to ask.',
+  },
+];
+---
+
+<BaseLayout
+  pageType="guide"
+  title="Shipping Container Guides, Plain English | Steel Box Direct"
+  description={metaDescription}
+  datePublished="2026-08-14"
+  dateModified="2026-08-14"
+  breadcrumbs={crumbs}
+  schema={{ kind: 'collection', title: 'Shipping Container Guides', items: guideListItems, faqs }}
+>
+
+  <!-- 1. HERO -->
+  <section class="gh-hero" aria-labelledby="page-title">
+    <div class="wrap">
+      <Breadcrumbs items={crumbs} />
+      <div class="sh">
+        <span class="idx">§ Guides</span>
+        <span class="nm">Steel Box Direct</span>
+        <span class="tg">{guideTitleCountWord} guides · Plain English</span>
+      </div>
+      <h1 class="big" id="page-title">Shipping Container Guides.<br /><em>Start with your question.</em></h1>
+      <p class="gh-lede">
+        {guideTitleCountWord} guides on buying a shipping container, written for people doing this
+        for the first time. Each one settles a single question: how much space you need, what "used"
+        actually means, whether a truck can reach the spot you have in mind, what moves the price,
+        and who decides the permit question.
+      </p>
+      <p class="gh-lede-2">
+        You do not have to read them in order, and most people should not. Find the question that is
+        actually in your way, read that guide, and come back when the next one shows up. If you have
+        never bought a conex box before and have no idea where to begin, there is a
+        <a class="gh-lede-link" href="#start-here">short path at the bottom of this page</a>.
+      </p>
+      <div class="gh-hero-foot">
+        <span class="gh-stat">Written by a regional dealer, not a marketplace</span>
+        <span class="gh-stat">No sign-up to read anything</span>
+        <span class="gh-stat">Est. 2009</span>
+      </div>
+    </div>
+    <div class="spectrum" aria-hidden="true">
+      <span style="background:var(--c1-size)"></span>
+      <span style="background:var(--c2-cond)"></span>
+      <span style="background:var(--c3-deliver)"></span>
+      <span style="background:var(--c4-cost)"></span>
+      <span style="background:var(--c5-permits)"></span>
+    </div>
+  </section>
+
+  <!-- 2. THE ROUTER -->
+  <section class="router" aria-labelledby="router-title">
+    <div class="wrap">
+      <div class="router-intro">
+        <h2 id="router-title">What are you trying to figure out?</h2>
+        <p>
+          Every guide below is listed by the question it answers rather than by its title, because
+          nobody wakes up wanting to read a "condition guide." They want to know whether the
+          rusty-looking one will leak. Pick the question that matches yours.
+        </p>
+      </div>
+
+      <div class="rt-group">
+        <div class="rt-group-hd has-fig">
+          <div class="rt-group-txt">
+            <span class="rt-group-eyebrow">§ The box itself</span>
+            <h3>Figuring out which container you need</h3>
+            <p>
+              Three guides about the steel: how much room you actually need, what condition you are
+              buying, and what the numbers stamped on the side mean.
+            </p>
+          </div>
+          <figure class="rt-fig">
+            <Image
+              src={lineupPhoto}
+              width={1160}
+              format="webp"
+              loading="lazy"
+              decoding="async"
+              alt="A 20ft, a 40ft and a 40ft high cube shipping container parked side by side in a depot yard with their cargo doors facing the camera, so the three sizes can be compared in one frame. All three show faded paint and surface rust from working service."
+            />
+            <figcaption>Three sizes in one frame. A dimensions table is hard to picture; a lineup is not.</figcaption>
+          </figure>
+        </div>
+        <div class="rt-grid">
+          {boxGuides.map((g) => (
+            <a class={`rt-card ${g.accent}`} href={g.url}>
+              <span class="rt-code"><span class="code">{g.code}</span><span class="kind">{g.kind}</span></span>
+              <h4>{g.question}</h4>
+              <p class="rt-body">{g.body}</p>
+              <p class="rt-covers">{g.covers}</p>
+              <span class="rt-go">{g.cta} →</span>
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <div class="rt-group">
+        <div class="rt-group-hd has-fig">
+          <div class="rt-group-txt">
+            <span class="rt-group-eyebrow">§ Getting one</span>
+            <h3>Getting it to your property, and paying for it</h3>
+            <p>
+              Two things decide whether an order is realistic: whether a truck can reach the spot you
+              have in mind, and what the delivered number looks like once freight is included. How
+              you pay for it belongs here too, including the question of whether you buy at all.
+            </p>
+          </div>
+          <figure class="rt-fig">
+            <Image
+              src={haulPhoto}
+              width={1160}
+              format="webp"
+              loading="lazy"
+              decoding="async"
+              alt="A used shipping container chained down on the flatbed trailer of a semi truck on a two lane rural road, seen from the side, the container filling most of the trailer behind the cab."
+            />
+            <figcaption>How one actually arrives. The truck and trailer have to fit the whole route in, not just the final spot.</figcaption>
+          </figure>
+        </div>
+        <div class="rt-grid">
+          {gettingGuides.map((g) => (
+            <a class={`rt-card ${g.accent}`} href={g.url}>
+              <span class="rt-code"><span class="code">{g.code}</span><span class="kind">{g.kind}</span></span>
+              <h4>{g.question}</h4>
+              <p class="rt-body">{g.body}</p>
+              <p class="rt-covers">{g.covers}</p>
+              <span class="rt-go">{g.cta} →</span>
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <div class="rt-group">
+        <div class="rt-group-hd">
+          <span class="rt-group-eyebrow">§ Before you commit</span>
+          <h3>The homework that sits outside the transaction</h3>
+          <p>
+            Two guides worth reading early rather than late, because both of them can take longer to
+            resolve than the delivery does.
+          </p>
+        </div>
+        <div class="rt-grid two">
+          {commitGuides.map((g) => (
+            <a class={`rt-card ${g.accent}`} href={g.url}>
+              <span class="rt-code"><span class="code">{g.code}</span><span class="kind">{g.kind}</span></span>
+              <h4>{g.question}</h4>
+              <p class="rt-body">{g.body}</p>
+              <p class="rt-covers">{g.covers}</p>
+              <span class="rt-go">{g.cta} →</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. TERMINOLOGY -->
+  <section class="terms" aria-labelledby="terms-title">
+    <div class="wrap">
+      <div class="sh">
+        <span class="idx">§ Vocabulary</span>
+        <span class="nm">Plain English</span>
+        <span class="tg">Nine terms worth knowing</span>
+      </div>
+      <div class="terms-hd">
+        <h2 id="terms-title">Everyone in this trade uses <em>different words</em> for the same steel box.</h2>
+        <p>
+          You will hear the same object called four things in one phone call, and you will see grades
+          and acronyms nobody bothers to define. Here is what the words mean, so you can tell when
+          two sellers are quoting the same thing under different names and when they genuinely are not.
+        </p>
+      </div>
+
+      <dl class="glossary">
+        <div class="g-item">
+          <dt>Shipping container</dt>
+          <dd>
+            The standardised steel box built to carry freight by ship, rail, and truck. When one
+            retires from cargo service it usually gets a second life sitting on the ground as
+            storage, and that second life is what most buyers are shopping for.
+          </dd>
+        </div>
+
+        <div class="g-item">
+          <dt>Conex box<span class="alsocalled">Also: conex, conex container</span></dt>
+          <dd>
+            The same object under an older name. CONEX was a US military term, short for Container
+            Express, for the steel boxes used to move supplies, and the word stuck. Contractors,
+            farmers, and veterans often say conex where a dealer's website says container. Nothing
+            about the product changes with the word.
+          </dd>
+        </div>
+
+        <div class="g-item">
+          <dt>Sea can</dt>
+          <dd>
+            Regional slang for a used shipping container, most common in Canada and the northern
+            states. It carries the same meaning as conex. If a seller advertises sea cans, they are
+            advertising used containers.
+          </dd>
+        </div>
+
+        <div class="g-item">
+          <dt>ISO container</dt>
+          <dd>
+            A container built to the International Organization for Standardization's dimensional
+            standard, ISO 668. That standard is the reason a 20ft box from any yard on earth is the
+            same length and rides the same truck chassis. "ISO container" describes standard sizing,
+            not quality: it says nothing about condition.
+          </dd>
+        </div>
+
+        <div class="g-item">
+          <dt>One-trip</dt>
+          <dd>
+            A container that made a single loaded voyage from the factory, usually out of Asia, and
+            was then sold rather than put back into rotation. It is the closest thing to new that is
+            commonly available, and it is priced accordingly.
+            <span class="sbd-note">We sell used, not one-trip</span>
+          </dd>
+        </div>
+
+        <div class="g-item">
+          <dt>Wind and Water Tight<span class="alsocalled">Also: WWT</span></dt>
+          <dd>
+            The used grade that is structurally sound and seals out rain, wind, snow, and pests, with
+            the cosmetic wear a working life produces: surface rust, dents, scratches, patched spots,
+            and floors that show their age. Sound and sealed, not showroom. It is the only grade
+            Steel Box Direct sells.
+            <figure class="g-fig">
+              <Image
+                src={wwtPhoto}
+                width={720}
+                format="webp"
+                loading="lazy"
+                decoding="async"
+                alt="A used blue shipping container standing on gravel, showing the wear a working life leaves: faded and patched paint, streaks of surface rust running down the corrugated sides, rusted corner castings and door hardware, dents in the panels, and stencilled ID markings above the closed cargo doors."
+              />
+              <figcaption>A typical WWT unit as it sits in the yard. Cosmetically used, and that is normal.</figcaption>
+            </figure>
+          </dd>
+        </div>
+
+        <div class="g-item">
+          <dt>High cube</dt>
+          <dd>
+            A container one foot taller than standard, 9ft 6in of exterior height instead of 8ft 6in,
+            on the same footprint. The extra headroom matters for tall equipment, for racking, and
+            for any conversion where a finished floor and ceiling will eat into the interior height.
+            <figure class="g-fig">
+              <Image
+                src={headroomPhoto}
+                width={720}
+                format="webp"
+                loading="lazy"
+                decoding="async"
+                alt="The view in through a container's open doors: pallets loaded two levels deep inside, with clear space above them, under a bare steel ceiling and along a timber floor."
+              />
+              <figcaption>Where the extra foot shows up: headroom over a loaded pallet, not extra floor.</figcaption>
+            </figure>
+          </dd>
+        </div>
+
+        <div class="g-item">
+          <dt>Rent-to-own<span class="alsocalled">Also: lease-to-own, rent-to-buy, lease-to-buy</span></dt>
+          <dd>
+            A fixed-term payment arrangement that ends in ownership: you make monthly payments across
+            an agreed term and the container is yours at the end of it. That is the difference from
+            renting, which is open-ended and leaves you owning nothing however long you pay.
+          </dd>
+          <dd>
+            You will hear all four names used interchangeably in this market for that same basic
+            idea, so read the agreement rather than the label: the term length, the payment, and who
+            administers it are what actually differ between offers.
+          </dd>
+        </div>
+
+        <div class="g-item">
+          <dt>CSC plate<span class="alsocalled">Also: Safety Approval Plate</span></dt>
+          <dd>
+            The metal plate fixed near a container's doors, required under the IMO's international
+            convention for safe containers. It records the unit's identity and its approval and
+            inspection history, and it stays with the box for its working life. Asking for a photo of
+            the plate is the simplest way to confirm a seller is showing you a specific, real
+            container and not a picture from somebody else's yard.
+            <figure class="g-fig">
+              <Image
+                src={idPhoto}
+                width={720}
+                format="webp"
+                loading="lazy"
+                decoding="async"
+                alt="Close-up of the identification stencilled on a container's door end: a four letter owner code, a six digit serial number, a boxed check digit beside it, and the four character size and type code painted underneath."
+              />
+              <figcaption>The unit ID, repeated on the CSC plate by the doors. This is the number a photo has to show.</figcaption>
+            </figure>
+          </dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- 4. FAQ (the same three strings that feed the FAQPage block) -->
+  <section class="faq" aria-labelledby="faq-title">
+    <div class="wrap">
+      <div class="sh">
+        <span class="idx">§ Common Questions</span>
+        <span class="nm">Straight answers</span>
+        <span class="tg">Asked before anything else</span>
+      </div>
+      <h2 id="faq-title">Three questions people ask <em>before</em> they pick a guide.</h2>
+
+      <div class="faq-list">
+        {faqs.map((f, i) => (
+          <div class="faq-item">
+            <span class="n">Q · 0{i + 1}</span>
+            <h3>{f.q}</h3>
+            <p class="a">{f.a}</p>
+          </div>
+        ))}
+      </div>
+      <p class="faq-foot">
+        The permits answer above names the office that decides rather than predicting an outcome,
+        because that is the only honest version. Our <a href="/permits/">permits and zoning guide</a>
+        goes through what the question turns on and who to call.
+      </p>
+    </div>
+  </section>
+
+  <!-- 5. START HERE -->
+  <section class="start" id="start-here" aria-labelledby="start-title">
+    <div class="wrap">
+      <div class="start-hd">
+        <h2 id="start-title">No idea where to begin? Start here.</h2>
+        <p>
+          The router above is deliberately unordered, because most people arrive with a specific
+          question. If you do not have one yet, this is the order that saves the most wasted effort.
+          Three of the {guideCountWord} guides, roughly fifteen minutes.
+        </p>
+      </div>
+
+      <div class="steps">
+        <div class="step step-1">
+          <span class="num">01</span>
+          <h3>Size it</h3>
+          <p>
+            Start with what has to fit, because the answer changes everything downstream: the price,
+            the truck, and the amount of room the driver needs. Measure the largest thing going
+            inside and work outward from there.
+          </p>
+          <a class="step-go" href="/size/">Size guide →</a>
+        </div>
+        <div class="step step-2">
+          <span class="num">02</span>
+          <h3>Check the access</h3>
+          <p>
+            Do this second, not last. Access is the one factor that can rule out a plan entirely, and
+            it is far cheaper to discover a low branch or a soft turn now than with a loaded truck
+            idling at the end of your drive.
+          </p>
+          <a class="step-go" href="/delivery/">Delivery guide →</a>
+        </div>
+        <div class="step step-3">
+          <span class="num">03</span>
+          <h3>Understand the number</h3>
+          <p>
+            Once you know the size and how it gets in, the cost guide tells you what is actually
+            moving the quotes you receive, and what to ask so you are comparing delivered totals
+            rather than sticker prices.
+          </p>
+          <a class="step-go" href="/cost/">Cost guide →</a>
+        </div>
+      </div>
+
+      <div class="start-aside">
+        <h3>One thing worth doing early</h3>
+        <p>
+          If the container is going inside city limits, into a deed-restricted or HOA neighborhood,
+          or you are planning to use it as anything other than plain storage, look at the
+          <a href="/permits/">permits and zoning guide</a> near the start rather than the end. Those
+          requirements are set by your county or municipal authority, not by us, and getting an
+          answer from them can take longer than getting a container delivered.
+        </p>
+        <p>
+          Confirming what applies to your property is the buyer's responsibility. We are glad to help
+          with size, condition, delivery, and cost.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. SOFT CTA -->
+  <section class="cta" aria-labelledby="cta-title">
+    <div class="cta-inner">
+      <h2 id="cta-title" class="big">Still have a question<br /><em>the guides did not answer?</em></h2>
+      <p>
+        Ask a person. A quote is information, not a commitment: tell us the size you are considering
+        and your ZIP, and we will come back with a real delivered number and an honest timeline.
+      </p>
+      <a class="btn" href="/quote/">Request a quote
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </a>
+      <div class="reassure">
+        <span>No obligation</span>
+        <span>Real human replies</span>
+        <span>All-in delivered pricing</span>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style>
+  /* ---- SHARED ---- */
+  .sh{display:grid;grid-template-columns:auto 1fr auto;gap:20px;align-items:center;padding:16px 0;border-top:2px solid currentColor;border-bottom:2px solid currentColor;margin-bottom:56px}
+  .sh .idx{font-family:var(--mono);font-size:var(--t-meta);letter-spacing:.08em;text-transform:uppercase}
+  .sh .nm{font-family:var(--narrow);font-weight:700;font-size:22px;text-transform:uppercase;letter-spacing:-.01em}
+  .sh .tg{font-family:var(--mono);font-size:var(--t-meta);letter-spacing:.08em;text-transform:uppercase;opacity:.68;text-align:right}
+  .big{font-family:var(--narrow);font-weight:700;font-size:var(--t-big);line-height:.92;letter-spacing:-.02em;text-transform:uppercase;margin:0}
+  .big em{font-style:italic;font-weight:700}
+
+  /* ---- HERO ---- */
+  .gh-hero{background:var(--yellow);color:var(--ink);padding:48px 0 0;border-bottom:2.5px solid var(--ink)}
+  .gh-hero .sh{border-color:var(--ink)}
+  .gh-hero .big em{color:var(--c3-deliver)}
+  .gh-lede{font-size:22px;line-height:1.45;margin:34px 0 0;max-width:760px;font-weight:500}
+  .gh-lede-2{font-size:17px;line-height:1.65;margin:20px 0 0;max-width:760px;opacity:.78}
+  .gh-lede-link{text-decoration:underline;text-underline-offset:3px;font-weight:600}
+  .gh-hero-foot{display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center;margin:38px 0 0;padding:0 0 46px}
+  .gh-stat{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;opacity:.75}
+  .gh-stat::before{content:"\25CF";margin-right:8px;color:var(--ink);opacity:.5}
+  .spectrum{display:flex;height:12px;border-top:2.5px solid var(--ink)}
+  .spectrum span{flex:1}
+
+  /* ---- ROUTER ---- */
+  .router{background:var(--cream);padding:80px 0 24px}
+  .router-intro{max-width:820px;margin-bottom:8px}
+  .router-intro h2{font-family:var(--narrow);font-weight:700;font-size:clamp(28px,3.6vw,44px);line-height:.98;text-transform:uppercase;letter-spacing:-.015em;margin:0}
+  .router-intro p{font-size:17px;line-height:1.65;opacity:.78;margin-top:16px}
+
+  .rt-group{padding-top:60px}
+  .rt-group-hd{max-width:760px;margin-bottom:28px}
+  .rt-group-eyebrow{font-family:var(--mono);font-size:var(--t-meta);letter-spacing:.1em;text-transform:uppercase;opacity:.6;display:block;margin-bottom:10px}
+  .rt-group-hd h3{font-family:var(--narrow);font-weight:700;font-size:clamp(24px,2.8vw,34px);line-height:1;text-transform:uppercase;letter-spacing:-.01em;margin:0}
+  .rt-group-hd p{font-size:15.5px;line-height:1.6;opacity:.75;margin-top:12px}
+  /* group-level figure: sits beside the group heading, never behind text */
+  .rt-group-hd.has-fig{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,520px);gap:26px 48px;align-items:end;max-width:none;margin-bottom:34px}
+  .rt-group-txt{max-width:660px}
+  .rt-fig{margin:0;background:#fff;border:2.5px solid var(--ink);box-shadow:8px 8px 0 var(--ink)}
+  .rt-fig img{width:100%;height:auto}
+  .rt-fig figcaption{border-top:2px solid var(--ink);padding:12px 15px;font-family:var(--mono);font-size:11px;line-height:1.6;letter-spacing:.05em;text-transform:uppercase;opacity:.78}
+
+  .rt-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+  .rt-grid.two{grid-template-columns:repeat(2,1fr);max-width:900px}
+  .rt-card{display:flex;flex-direction:column;gap:14px;background:#fff;border:2px solid var(--ink);border-left:8px solid var(--ink);box-shadow:8px 8px 0 var(--ink);padding:26px 26px 22px;transition:transform .15s ease,box-shadow .15s ease}
+  a.rt-card:hover{transform:translate(-2px,-2px);box-shadow:11px 11px 0 var(--ink)}
+  .rt-code{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .rt-code .code{font-family:var(--narrow);font-weight:700;font-size:26px;line-height:1;letter-spacing:-.01em}
+  .rt-code .kind{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;opacity:.6}
+  .rt-card h4{font-family:var(--narrow);font-weight:700;font-size:var(--t-card);line-height:1.02;text-transform:uppercase;letter-spacing:-.015em;margin:0}
+  .rt-card .rt-body{font-size:15px;line-height:1.6;opacity:.85;flex:1;margin:0}
+  .rt-covers{font-family:var(--mono);font-size:10.5px;line-height:1.7;letter-spacing:.05em;text-transform:uppercase;opacity:.65;border-top:1.5px solid rgba(11,15,26,.14);padding-top:12px;margin:0}
+  .rt-go{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;display:inline-flex;align-items:center;gap:8px}
+  a.rt-card:hover .rt-go{text-decoration:underline;text-underline-offset:3px}
+  .rt-card.c-size{border-left-color:var(--c1-size)}
+  .rt-card.c-cond{border-left-color:var(--c2-cond)}
+  .rt-card.c-ref{border-left-color:var(--ink-2)}
+  .rt-card.c-dlv{border-left-color:var(--c3-deliver)}
+  .rt-card.c-cst{border-left-color:var(--c4-cost)}
+  .rt-card.c-rtl{border-left-color:var(--c3-deliver)}
+  .rt-card.c-prm{border-left-color:var(--c5-permits)}
+  .rt-card.c-buy{border-left-color:var(--ink-2)}
+
+  /* ---- TERMINOLOGY ---- */
+  .terms{background:var(--ink);color:var(--cream);padding:96px 0;border-top:2.5px solid var(--ink)}
+  .terms .sh{border-color:var(--cream)}
+  .terms-hd{max-width:820px;margin-bottom:44px}
+  .terms-hd h2{font-family:var(--narrow);font-weight:700;font-size:clamp(30px,4vw,56px);line-height:.95;text-transform:uppercase;letter-spacing:-.02em;margin:0}
+  .terms-hd h2 em{font-style:italic;color:var(--yellow)}
+  .terms-hd p{font-size:17px;line-height:1.65;opacity:.8;margin-top:20px}
+  .glossary{display:grid;grid-template-columns:1fr 1fr;gap:0 56px;margin:0}
+  .g-item{padding:24px 0;border-top:1.5px solid rgba(246,241,231,.22)}
+  .glossary dt{font-family:var(--narrow);font-weight:700;font-size:24px;line-height:1.05;text-transform:uppercase;letter-spacing:-.005em;color:var(--yellow);margin:0 0 10px}
+  .glossary .alsocalled{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--cream);opacity:.62;margin:7px 0 0;font-weight:400}
+  .glossary dd{margin:0;font-size:15.5px;line-height:1.62;opacity:.9}
+  .glossary dd + dd{margin-top:8px}
+  /* glossary figure: deliberately narrower than the definition column so the list still reads as
+     a glossary rather than a photo grid */
+  .g-fig{margin:18px 0 2px;max-width:358px;background:rgba(246,241,231,.05);border:2px solid rgba(246,241,231,.3)}
+  .g-fig img{width:100%;height:auto}
+  .g-fig figcaption{border-top:1.5px solid rgba(246,241,231,.22);padding:9px 12px;font-family:var(--mono);font-size:10px;line-height:1.65;letter-spacing:.07em;text-transform:uppercase;opacity:.72}
+  .glossary .sbd-note{display:block;width:fit-content;margin-top:14px;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;border:1px solid rgba(246,241,231,.35);padding:4px 8px;opacity:.8}
+
+  /* ---- FAQ ---- */
+  .faq{background:var(--c5-permits);color:var(--ink);padding:96px 0;border-top:2.5px solid var(--ink);border-bottom:2.5px solid var(--ink)}
+  .faq .sh{border-color:var(--ink)}
+  .faq h2{font-family:var(--narrow);font-weight:700;font-size:clamp(30px,4.4vw,64px);line-height:.92;text-transform:uppercase;letter-spacing:-.02em;margin:0 0 40px}
+  .faq h2 em{font-style:italic}
+  .faq-list{border-top:2px solid var(--ink)}
+  .faq-item{border-bottom:2px solid var(--ink);padding:30px 0;display:grid;grid-template-columns:64px 1fr;column-gap:32px;row-gap:14px;align-items:start}
+  .faq-item .n{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;opacity:.8;padding-top:7px}
+  .faq-item h3{font-family:var(--narrow);font-weight:700;font-size:clamp(23px,2.8vw,38px);line-height:1.02;text-transform:uppercase;letter-spacing:-.015em;grid-column:2;margin:0}
+  .faq-item .a{font-size:17px;line-height:1.55;grid-column:2;max-width:820px;font-weight:500;opacity:.9;margin:0}
+  .faq-foot{margin:28px 0 0;font-size:15.5px;line-height:1.6;max-width:820px;opacity:.85}
+  .faq-foot a{text-decoration:underline;text-underline-offset:3px;font-weight:600}
+
+  /* ---- START HERE ---- */
+  .start{background:var(--cream);padding:96px 0}
+  .start-hd{max-width:780px;margin-bottom:44px}
+  .start-hd h2{font-family:var(--narrow);font-weight:700;font-size:clamp(30px,4vw,54px);line-height:.95;text-transform:uppercase;letter-spacing:-.02em;margin:0}
+  .start-hd p{font-size:17px;line-height:1.65;opacity:.78;margin-top:18px}
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:2.5px solid var(--ink);box-shadow:10px 10px 0 var(--ink);background:#fff}
+  .step{padding:30px 28px 26px;border-right:2.5px solid var(--ink);display:flex;flex-direction:column;gap:12px}
+  .step:last-child{border-right:none}
+  .step .num{font-family:var(--narrow);font-weight:700;font-size:56px;line-height:.8;letter-spacing:-.03em}
+  .step h3{font-family:var(--narrow);font-weight:700;font-size:24px;line-height:1.05;text-transform:uppercase;margin:0}
+  .step p{font-size:15px;line-height:1.6;opacity:.84;flex:1;margin:0}
+  .step a.step-go{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;border-bottom:1.5px solid currentColor;padding-bottom:2px;align-self:flex-start}
+  .step-1 .num{color:var(--c1-size);-webkit-text-stroke:1.5px var(--ink)}
+  .step-2 .num{color:var(--c3-deliver)}
+  .step-3 .num{color:var(--c4-cost)}
+  .start-aside{margin-top:36px;max-width:900px;border:2px solid var(--ink);border-left:8px solid var(--c5-permits);background:#fff;padding:26px 28px}
+  .start-aside h3{font-family:var(--narrow);font-weight:700;font-size:22px;text-transform:uppercase;margin:0 0 10px}
+  .start-aside p{font-size:15.5px;line-height:1.62;opacity:.86;margin:0}
+  .start-aside p + p{margin-top:10px}
+  .start-aside a{text-decoration:underline;text-underline-offset:3px;font-weight:600}
+
+  /* ---- CTA ---- */
+  .cta{background:var(--yellow);color:var(--ink);padding:110px 0;border-top:2.5px solid var(--ink);text-align:center}
+  .cta-inner{max-width:1000px;margin:0 auto;padding:0 32px}
+  .cta h2{font-size:clamp(30px,5vw,76px);line-height:.9;margin-bottom:26px}
+  .cta h2 em{font-style:italic;color:var(--c3-deliver)}
+  .cta p{font-size:20px;line-height:1.45;max-width:620px;margin:0 auto 34px;font-weight:500}
+  .cta .btn{padding:20px 30px;font-size:17px}
+  .cta .reassure{margin-top:34px;display:flex;gap:30px;justify-content:center;flex-wrap:wrap;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;opacity:.72}
+  .cta .reassure span::before{content:"\25CF";margin-right:8px;color:var(--c4-cost)}
+
+  /* ---- RESPONSIVE ---- */
+  @media (max-width:1100px){
+    .rt-grid{grid-template-columns:repeat(2,1fr)}
+    .rt-group-hd.has-fig{grid-template-columns:minmax(0,1fr);gap:26px}
+    .rt-fig{max-width:640px}
+    .glossary{grid-template-columns:1fr;gap:0}
+  }
+  @media (max-width:960px){
+    .steps{grid-template-columns:1fr}
+    .step{border-right:none;border-bottom:2.5px solid var(--ink)}
+    .step:last-child{border-bottom:none}
+    .faq-item{grid-template-columns:1fr;row-gap:10px}
+    .faq-item h3,.faq-item .a{grid-column:1}
+    .gh-lede{font-size:19px}
+  }
+  @media (max-width:760px){
+    .rt-grid,.rt-grid.two{grid-template-columns:1fr}
+    .sh{grid-template-columns:auto 1fr;row-gap:6px}
+    .sh .tg{grid-column:1 / -1;text-align:left;opacity:.6}
+    .terms,.faq,.start,.router{padding-top:64px;padding-bottom:64px}
+    .cta{padding:72px 0}
+  }
+</style>
