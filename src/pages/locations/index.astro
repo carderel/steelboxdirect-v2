@@ -281,13 +281,18 @@ const cityUrl = (c: (typeof cities)[number]) => `/locations/${c.stateSlug}/${c.s
     .why-3 .why-lbl{color:var(--cream)}
     .why-3 .why-tag{background:var(--cream);color:var(--c4-cost)}
 
-    /* FAQ — faq-section style */
-    .loc-faq{background:var(--c5-permits);color:var(--cream);padding:120px 0;border-bottom:2.5px solid var(--ink)}
-    .loc-faq .sh{border-color:var(--cream);color:var(--cream)}
-    .loc-faq .big{color:var(--cream);margin-bottom:48px}
-    .loc-faq .big em{color:var(--ink);font-style:italic}
-    .faq-list{border-top:2px solid var(--cream)}
-    .faq-item{border-bottom:2px solid var(--cream);padding:32px 0;display:grid;grid-template-columns:60px 1fr;row-gap:16px;column-gap:32px;align-items:start}
+    /* FAQ, faq-section style.
+       Ink on signal orange, not cream: cream/#FF5A1F is 2.77:1 and fails WCAG AA at both the
+       normal (4.5:1) and large (3:1) thresholds. Ink on the same orange is 6.14:1, 5.58:1
+       through the answers' .9 opacity and 5.22:1 through the numerals' .85. Matches the
+       /shipping-container-guides/ .faq block. Section colour, spacing and copy unchanged;
+       the heading em now reads as italic alone, since ink no longer contrasts the run. */
+    .loc-faq{background:var(--c5-permits);color:var(--ink);padding:120px 0;border-bottom:2.5px solid var(--ink)}
+    .loc-faq .sh{border-color:var(--ink);color:var(--ink)}
+    .loc-faq .big{color:var(--ink);margin-bottom:48px}
+    .loc-faq .big em{font-style:italic}
+    .faq-list{border-top:2px solid var(--ink)}
+    .faq-item{border-bottom:2px solid var(--ink);padding:32px 0;display:grid;grid-template-columns:60px 1fr;row-gap:16px;column-gap:32px;align-items:start}
     .faq-item .n{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;opacity:.85;padding-top:8px}
     .faq-item .q{font-family:var(--narrow);font-weight:700;font-size:clamp(26px,3.2vw,44px);line-height:1;letter-spacing:-.015em;text-transform:uppercase;margin:0;grid-column:2}
     .faq-item .a{font-size:18px;line-height:1.5;opacity:.9;grid-column:2;margin:0;max-width:760px;font-weight:500}

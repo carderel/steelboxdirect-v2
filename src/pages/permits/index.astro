@@ -11,14 +11,17 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   dateModified="2026-06-24"
   schema={{ kind: 'guide', topic: 'permits', title: 'Do You Need a Permit for a Shipping Container?', specs: [], faqs: [] }}
 >
-  <div class="guide-header guide_header" style="background: var(--c5-permits); color: var(--cream);">
+  <!-- ink on signal orange, not cream: cream/#FF5A1F is 2.77:1 and fails WCAG AA at both
+       the normal (4.5:1) and large (3:1) thresholds. Ink on the same orange is 6.14:1, and
+       5.58:1 through the lede's .9 opacity. Section colour and copy are unchanged. -->
+  <div class="guide-header guide_header" style="background: var(--c5-permits); color: var(--ink);">
     <div class="wrap">
-      <div class="sh guide_eyebrow" style="border-color: var(--cream);">
+      <div class="sh guide_eyebrow" style="border-color: var(--ink);">
         <span class="idx">§ 05</span>
-        <span class="nm" style="color: var(--cream);">Decision: Permits</span>
-        <span class="tg" style="color: var(--cream);">Zoning & Land Use</span>
+        <span class="nm" style="color: var(--ink);">Decision: Permits</span>
+        <span class="tg" style="color: var(--ink);">Zoning & Land Use</span>
       </div>
-      <h1 class="big guide_headline" style="color: var(--cream);">Do I need<br><em>A permit?</em></h1>
+      <h1 class="big guide_headline" style="color: var(--ink);">Do I need<br><em>A permit?</em></h1>
       <p class="guide-lede guide_lede" style="opacity: .9;">
         It depends on where you are and how you'll use the container. Permit and zoning rules vary by county,
         municipality, and intended use — and it's the buyer's responsibility to confirm them with the local
