@@ -1,15 +1,23 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { composeRentalStance } from '../../data/rentalStance';
 
 const crumbs = [{ name: 'Home', path: '/' }, { name: 'Rent to Own', path: '/rent-to-own/' }];
 
 // Single source of truth — this array feeds BOTH the visible FAQ list below
 // and the FAQPage JSON-LD (via the schema prop → buildPageSchema).
-const faqs = [
+const faqs: { q: string; a: string; html?: string }[] = [
   {
     q: "What's the difference between renting and rent-to-own?",
-    a: "Renting a container or a storage unit is an open-ended monthly bill — you can pay for years and own nothing at the end. Rent-to-own is a fixed path to ownership: you pick a 12, 24, 36, or 48-month term, make your payments, and at the end of the term the container is yours. Same Wind & Water Tight container, same Lifetime Leak Warranty — you just spread the cost instead of paying it all up front.",
+    ...composeRentalStance({
+      linkRentToOwn: false,
+      context:
+        'Renting is open ended: you pay every month for as long as you keep the container, and '
+        + 'when you stop paying, it goes back on a truck and you keep nothing. Rent-to-own has a '
+        + 'finish line built into it. Pick 12, 24, 36, or 48 months, complete the term, and the '
+        + 'same Wind & Water Tight container with the same Lifetime Leak Warranty is yours.',
+    }),
   },
   {
     q: 'Is approval guaranteed?',
@@ -225,7 +233,7 @@ const faqs = [
         {faqs.map((f) => (
           <div class="rto-faq-item">
             <h3>{f.q}</h3>
-            <p>{f.a}</p>
+            {f.html ? <p set:html={f.html} /> : <p>{f.a}</p>}
           </div>
         ))}
       </div>

@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { containers } from '../../data/containers';
 import { CONDITION } from '../../data/condition';
 import { priceBySlug, formatPrice, asOfLabel } from '../../data/pricing';
+import { composeRentalStance } from '../../data/rentalStance';
 
 // Single source for the page FAQ. `a` (plain text) feeds BOTH the JSON-LD schema
 // and the visible list; `html` is an optional richer visible variant (e.g. with links).
@@ -30,8 +31,13 @@ const faqs: { q: string; a: string; html?: string }[] = [
   },
   {
     q: 'Can I rent a shipping container, or do you only sell them?',
-    a: "We don't offer plain month-to-month rentals — every path ends in you owning the unit. You can buy outright (no monthly fees, with Afterpay installments available for qualifying buyers while we schedule your delivery), or rent to own over 12, 24, 36, or 48 months through the Freedom Conex program — no traditional credit check, subject to third-party approval. Finish the term and the container is yours.",
-    html: 'We don\'t offer plain month-to-month rentals — every path ends in you owning the unit. You can buy outright (no monthly fees, with Afterpay installments available for qualifying buyers while we schedule your delivery), or <a href="/rent-to-own/">rent to own</a> over 12, 24, 36, or 48 months through the Freedom Conex program — no traditional credit check, subject to third-party approval. Finish the term and the container is yours.',
+    ...composeRentalStance({
+      context:
+        'You can buy outright, with no monthly fees and Afterpay installments available for '
+        + 'qualifying buyers while we schedule your delivery, or spread the cost across 12, 24, '
+        + '36, or 48 months through the Freedom Conex program, with no traditional credit check '
+        + 'and subject to third-party approval. Either way you finish holding the container.',
+    }),
   },
   {
     q: 'Can shipping containers be stacked?',
