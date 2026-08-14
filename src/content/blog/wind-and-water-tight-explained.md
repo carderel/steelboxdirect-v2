@@ -43,7 +43,7 @@ Think of WWT as a container's report card for two things only: **does it keep we
 A Wind & Water Tight container:
 
 - **Keeps rain, wind, snow, and pests out.** The doors close and seal. The roof and walls don't leak.
-- **Stands strong on its own.** The frame, corner posts, and floor can still carry a load and hold their shape.
+- **Stands strong on its own.** The frame, corner posts, and floor still hold their shape under normal storage use, and what that floor is rated to carry is a number from the unit's manufacturer rather than ours, so any load near a limit is a question for the manufacturer's specification or a licensed engineer. We do not issue load ratings.
 - **Has already done its ocean job.** Most WWT units spent years hauling cargo across the sea before they were pulled from that service.
 
 That's the whole promise. It's not a claim about paint, dents, or how the container looks. It's a claim about whether it's **sealed and sound**. Those are the two things that matter most for storing your stuff.

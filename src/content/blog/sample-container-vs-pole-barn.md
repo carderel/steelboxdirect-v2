@@ -46,7 +46,7 @@ Every container we sell is Wind & Water Tight (used) — sealed against rain, wi
 
 ## Permanence and permitting
 
-A pole barn is typically a permanent structure tied to your property. A container is more easily relocated if your needs change. Either way, **permit and zoning requirements are always the buyer's or builder's responsibility to confirm with their local jurisdiction** before placement — requirements vary widely by county and property type.
+A pole barn is built in place: posts set in concrete, framing raised on site, and a roof put up over it. A container arrives finished and sits on the ground it is set on, so it can be picked up and moved again if your needs change. How each one gets treated under local rules is a separate question from how it is built, and that answer comes from your local jurisdiction. Either way, **permit and zoning requirements are always the buyer's or builder's responsibility to confirm with their local jurisdiction** before placement, and requirements vary widely by county and property type.
 
 ## Which one fits your project?
 
