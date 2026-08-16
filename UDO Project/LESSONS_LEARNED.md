@@ -278,6 +278,29 @@ though no HTML page renders. So draft content reaches production assets and is s
 as published copy. This is independent support for the guard's existing `SCAN_DRAFT_POSTS = true` setting, and a
 standing argument against any future proposal to scan only published content in order to keep a gate green.
 
+> **CORRECTION, 2026-08-16. THE PARAGRAPH ABOVE IS WRONG, AND IT IS LEFT STANDING ON PURPOSE SO THE ERROR IS
+> LEGIBLE RATHER THAN QUIETLY EDITED AWAY.** An independent pre-push verifier re-checked it against a clean
+> `rm -rf dist && npm run build` and refuted it. The three chunks do exist by name, in
+> `dist/_worker.js/manifest_CSy0WTIG.mjs` and on disk, which is what the 08-14 check saw. **But each one is 63
+> bytes and contains only the string `// Contents removed by Astro as it's used for prerendering only`.** The
+> post's title, its description and its body prose appear NOWHERE in `dist`. The only thing that leaks is the
+> slug inside the manifest. The safety margin is wider still on the real deploy: this build had the draft
+> present on disk, whereas Cloudflare builds a clean checkout where the file does not exist at all, so the
+> stubs are never generated.
+>
+> **What actually went wrong on 08-14 was the instrument, again, which makes this the same family as L003, L009,
+> L010 and L016.** The check confirmed that three chunks bearing the slug EXISTED. It did not open them. Presence
+> of a named artifact was read as presence of its content, and the conclusion inherited a confidence the evidence
+> never supported. The correct instrument was one `wc -c` or one `cat`.
+>
+> **What survives the correction:** keep `SCAN_DRAFT_POSTS = true` anyway. The reason is now different and
+> weaker, so state it honestly rather than leaning on a refuted one. Drafts get published, usually by flipping a
+> single frontmatter field with no re-review, so scanning them catches a violation before the flip rather than
+> after. That is a good reason. "The bytes are already on the CDN" was a better one, and it is not true.
+>
+> **What does NOT survive:** do not cite this lesson as proof that draft content reaches production assets. It
+> does not. Anyone re-deriving that claim should open the chunks first.
+
 **Consequence worth acting on:** with both findings closed the guard runs clean, so T-036's stated reason for not
 wiring it to the build ("it is legitimately red") no longer exists. That is now a decision rather than a
 dependency. Related: [[L016]], and T-114, which records that this same guard cannot see a flat unhedged assertion
