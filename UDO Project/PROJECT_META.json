@@ -1,0 +1,10 @@
+{
+  "name": "Steel Box Direct",
+  "description": "Astro 4 marketing site for Steel Box Direct, a shipping container sales business serving OH, IN, KY, and western WV within 250 miles of Cincinnati. Deployed to Cloudflare Pages at https://steelboxdirect.com. Focus: SEO/AEO visibility, city and use-case landing pages, and lead generation.",
+  "created": "2026-05-22",
+  "owner": "Eli Carder (eli.carder@wowbrands.com)",
+  "tags": ["astro", "seo", "aeo", "cloudflare-pages", "shipping-containers", "local-seo", "lead-gen"],
+  "repository": "https://github.com/carderel/steelboxdirect-v2.git",
+  "udo_version": "2.2",
+  "protocol_strict": true
+}

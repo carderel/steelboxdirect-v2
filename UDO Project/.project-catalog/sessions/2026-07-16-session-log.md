@@ -1,0 +1,33 @@
+# Session Log — 2026-07-15 → 2026-07-16 — WillScot teardown, city-block design (paused), ScrapeBox playbook, NAP citation sheet, GKP volume read
+
+**Repo:** steelboxdirect-v2 · **Branch:** main · **HEAD == origin == a53ccd9** (NO commits this session — all work is `.outputs/` + `competitor-profiles/` analysis; no product/source code touched)
+**Mode:** Orchestrator (The Architect). All research/build delegated to subagents per UDO L002; orchestrator did coordination + audit trail + small owner-decision edits to `.outputs/` deliverables.
+**Checkpoints:** `.checkpoints/2026-07-15-10-48-scrapebox-backlinks-nap/` (mid) + `.checkpoints/2026-07-16-16-50-session-closeout/` (final).
+
+## Delivered this session (all analysis, no code)
+
+1. **WillScot competitor teardown** — `competitor-profiles/willscot.md`. Owner flagged the "Industries we cater to in Columbus OH" section. Finding: NOT programmatic city×industry pages — a fixed set of 6 national `/solutions/[industry]` hubs linked from every localized branch page under a city-stamped heading (hub-and-spoke + local relevance). WillScot local pages have real branch NAP + live-price inventory but ZERO schema. Read: SBD already owns the pieces (4 use-case pages); transferable move = a localized "common uses in [City]" link block on the city-page template.
+
+2. **City-page "common uses" block — BRAINSTORM IN PROGRESS / PAUSED (tasks #2-#4 open).** Design settled + owner-approved on the key decision: new `<section class="local-uses">` on `src/pages/[citySlug].astro` (flat sibling insert, no injection risk), placed after `local-content` before `cta-section`; mirror `uc-city-grid` reversed; 4 CONSTANT persona cards → `/for/{farmers,contractors,homeowners,businesses}/`; plus ONE genuinely-local `usesIntro` field per city (owner chose this over generic token-swap or per-persona copy). Draft intro lines written for all 4 cities. **NEXT:** owner confirms the 4 intro lines + persona one-liners read right → write spec (`docs/superpowers/specs/`) → writing-plans → build (astro-developer subagent) → verify. Guardrails: $-free, links-only, completes bidirectional city↔use-case mesh.
+
+3. **ScrapeBox backlink playbook** — `.outputs/seo/2026-07-15-scrapebox-backlink-playbook.md`. WHITE-HAT ONLY: ScrapeBox = harvester/QA feeding MANUAL outreach; explicit refusal to use the auto-poster/comment-spam (would risk the ranking+AI-cited site). Two plays owner picked: local citations (32 footprints + geo list + junk-filter chain + SAB/NAP rules) and resource-page/broken-link outreach (30 footprints + Broken Links Checker workflow + dead-topic→SBD-URL map + 2 plain-voice email templates). Extends the 2026-06-23 backlink docs. Highest-leverage first action = hand-submit ~15 known-real core directories before touching ScrapeBox. OPEN: proxies vs Bing/DDG-only; verify `/blog/sample-container-vs-pole-barn/` is published (smells like a draft).
+
+4. **NAP citation submission sheet** — `.outputs/seo/2026-07-15-nap-citation-submission-sheet.md`. Agent-ready, 12 sections. NAP verified CONSISTENT across schema/footer/nav/terms/privacy — nothing fabricated: Steel Box Direct · parent Freedom Conex LLC, **Hillsboro TX (owner-verified accurate)** · phone **(513) 546-2543** · steelboxdirect.com · support@steelboxdirect.com · Cincinnati OH · Est. 2009 · GBP CID 16337072236475848136 · geo 39.1365839,-84.540972 (owner-confirmed) · LinkedIn present · logo 1024². **All 6 blocking ⚠️ flags RESOLVED via owner decisions (2026-07-16):** hours = no set hours / contact anytime; category = per-platform decision framework (prefer `Container supplier`; fallback ladder; avoid self-storage/mover/warehouse); street address = hidden/service-area only, enter only if a platform absolutely requires it else skip (never fabricate); service area = ⭐ priority field, fill thoroughly; geo pin confirmed. Non-blocking still-open: Facebook page (doesn't exist), payment-methods field (owner don't-disclose), support@ monitored?, Doug Froh public-contact confirm. Sheet is hand-off ready.
+
+5. **GKP keyword volume read** — `.outputs/seo/2026-07-16-gkp-keyword-volume-read.md` (+ archived CSV `2026-07-16-gkp-keyword-stats.csv`). Owner: "not a lot of volume for what we're targeting" — CONFIRMED. 365 kw; ~81% get ≤10/mo; only 15 >100. Head terms are junk (`steel` 2400) / national-generic High-comp (`shipping container` 1300, `storage container` 1000, `conex box` 480) / informational dimensions cluster (~170). Real local-commercial buy-intent slice ≈ a few hundred searches/mo total (`cincinnati container` 110, `for sale cincinnati` ~90, `near me` 50). Inferred the export is geo-scoped to the region (confirm). REINFORCES the authority-hub PASS: SEO volume isn't SBD's engine; AEO + GBP reviews + local citations are. Owner "will get back to it."
+
+## Non-SBD advisory (separate AEO-Practice venture — conversational only, nothing written to this repo)
+- Refined the owner's warm referral outreach for the freelance AI-visibility service. Opener sent = SBD proof story (2wk build / ranked in 6d / AI citations <2wk). Landed on an **audit-led referral ask** blending "one person + vivid trigger scenario + low-pressure out" (Version A structure) with the cheap/fast **AI-visibility-check front door** (quick money; execution + new-site = long-term revenue). Rationale captured: leading the *referral* with the cheap audit slashes both the referred-person's barrier and the referrer's social risk → wider pool. Belongs in `/Users/flackfizer/Documents/Projects/AEO-Practice/` if formalized.
+- Answered: Cloudflare Pages went live ~2026-05-18/19 (repo init 05-19 + same-day live-site fixes); custom-domain DNS still an open PROJECT_STATE todo.
+
+## Guardrails honored
+No $ anywhere · city pages remain $-free · no fabricated NAP/reviews/ratings (integrity rule enforced on the NAP sheet) · WWT-only · SAB no-street-address rule · auto-poster link spam explicitly refused · GKP treated as primary/trusted keyword source.
+
+## Next session
+- City-page block: owner confirm intro lines → spec → plan → build/verify (subagent).
+- Backlinks: owner resolves proxies-vs-Bing question; optionally pre-build `geos.txt`/`footprints.txt`; run the ~15 core-directory submissions from the NAP sheet + log to `backlink-prospect-tracker.csv`.
+- Keywords: pull de-duplicated local-commercial list per city page; confirm GKP geo-scope.
+- Standing owner actions unchanged: Supabase keep-alive workflow YAML (GitHub web editor), Facebook company page.
+
+## Compliance
+Tasks #1/#5/#6 completed; #2/#3/#4 open (city block, paused mid-brainstorm). Two checkpoints written. Session log created (this file). PROJECT_STATE updated. No hard-stop conflicts.

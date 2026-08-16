@@ -34,11 +34,11 @@ Thumbs.db
 .udo-backup-*/
 UDO/
 .agents/
-.checkpoints/
+/.checkpoints/
 .inputs/
 .memory/
 .outputs/
-.project-catalog/
+/.project-catalog/
 .rules/
 .templates/
 .tools/
@@ -59,3 +59,37 @@ netlify/
 upgrade.sh
 BACKUP_INFO.md
 For Upload.zip
+
+# --- UDO runtime (added by upgrade.py) ---
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+*~
+.sublime-project
+.sublime-workspace
+npm-debug.log
+yarn-error.log
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+env/
+.venv
+*.tmp
+*.bak
+build/
+.cache/
+UDO Project/.outputs/*
+!UDO Project/.outputs/.gitkeep
+UDO Project/.memory/working/*
+!UDO Project/.memory/working/.gitkeep
+UDO Project/.memory/disposable/*
+!UDO Project/.memory/disposable/.gitkeep
+UDO Project/User Uploads/*
+!UDO Project/User Uploads/.gitkeep
+UDO Project/.project-catalog/backups/*
+!UDO Project/.project-catalog/backups/.gitkeep
+UDO Project/.udo/hook-state.json
+# --- end UDO runtime ---

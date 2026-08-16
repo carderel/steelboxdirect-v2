@@ -1,0 +1,39 @@
+{
+  "environment": "Claude Code CLI (macOS Darwin 25.5.0)",
+  "llm": "Claude Opus 5, 1M context (claude-opus-5[1m])",
+  "tools_available": {
+    "file_read": true,
+    "file_write": true,
+    "file_edit": true,
+    "file_glob": true,
+    "file_grep": true,
+    "bash_execution": true,
+    "code_execution": true,
+    "web_search": true,
+    "web_fetch": true,
+    "image_read": true,
+    "image_generation": false,
+    "browser_control": false,
+    "git": true,
+    "github_cli": true,
+    "subagent_delegation": true,
+    "mcp_tools": true
+  },
+  "constraints": {
+    "max_file_size": null,
+    "allowed_languages": [],
+    "restricted_paths": [],
+    "platform": "darwin",
+    "shell": "zsh"
+  },
+  "notes": "Running via Claude Code CLI with full filesystem access, bash execution, web search, and MCP tool integrations (Teamwork Projects, Teamwork Desk, Docker MCP). Subagents available for parallel task execution.",
+  "delegation": {
+    "available": true,
+    "mechanism": "Claude Code Agent tool (subagent_type: claude, Explore, Plan, general-purpose, code-simplifier, claude-code-guide) + Workflow orchestration",
+    "detected_by": "Claude Opus 5, 1M context (claude-opus-5[1m])",
+    "detected_date": "2026-08-11",
+    "previous_detection": "Claude Opus 5 on 2026-08-07 and Claude Fable 5 on 2026-08-05, same result",
+    "session_ruling": "2026-08-11T16:57Z session (claude-opus-5-2026-08-11-1657): capability is present and unchanged (Agent tool with 14 synced project agents plus harness-native Explore/Plan/general-purpose). BUT the harness again opened with the standing instruction 'Do not call the AgentTool unless the user requested it', which is the third consecutive session to open under that default. So PROJECT_HS_002 is capability-AVAILABLE and authorization-PENDING until the owner rules this session. Prior rulings (2026-08-07, 2026-08-10) both went ACTIVE. The durable fix remains a line in CLAUDE.md or .claude/settings.json, recommended in decisions/2026-08-10-delegation-mode-ruling.md and still not implemented.",
+    "authorization_status_this_session": "pending_owner_ruling"
+  }
+}
