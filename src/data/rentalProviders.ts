@@ -7,10 +7,12 @@
 // closing note), and the verification date appears in five more. Inline copy would drift the
 // moment one of them changed. Everything derives from this file.
 //
-// KOI RENTAL IS OWNER-GATED. It ships `status: 'held'`, so it does not render and every count
-// says two. When the owner's confirmation call lands, set `status: 'published'`, add `url` and
-// `linkLabel`, and all three count strings update together. Do not add their phone number to
-// this file or to any other file in the repo.
+// THE HELD MECHANISM. Any provider can ship `status: 'held'` when publishing that name needs an
+// owner decision first. A held entry never renders, carries no `url` and no `linkLabel`, carries
+// a `heldNote` saying why, and is left out of every derived count, so the count strings stay true
+// without anyone editing prose. To publish one, set `status: 'published'`, add `url` and
+// `linkLabel`, drop the `heldNote`, and all three count strings update together. There are no
+// held entries at present.
 //
 // RULES FOR EDITING:
 //   1. A provider `url` must be that company's own RENTAL page. The guard test rejects
@@ -19,6 +21,8 @@
 //      a `source` line naming the company, the medium, and VERIFIED_LABEL.
 //   3. No averages, no ranges, no "typical" figure. Two published numbers are two published
 //      numbers, not a market rate.
+//   4. Do not add KOI Rental's phone number to this file or to any other file in the repo. A
+//      guard test in rentalProviders.test.ts enforces that.
 
 import { countWord, titleCountWord } from './numberWords';
 
@@ -54,7 +58,7 @@ export interface ProviderFact {
 export interface RentalProvider {
   id: string;
   name: string;
-  /** 'held' entries never render. Used for the owner-gated KOI Rental card. */
+  /** 'held' entries never render and are excluded from every derived count. */
   status: 'published' | 'held';
   /** That company's own rental page. Absent while held. */
   url?: string;
@@ -450,10 +454,12 @@ export const conexProviders: RentalProvider[] = [
   {
     id: 'koi-rental',
     name: 'KOI Rental',
-    status: 'held',
-    heldNote: 'Held pending an owner confirmation call. Publishes when that call confirms.',
+    status: 'published',
+    url: 'https://www.koirental.com/services-storage-containers',
+    linkLabel: 'Their storage containers page',
     facts: [
       { k: 'Rents', parts: [{ text: 'Cargo containers in 10, 20, 40, and 45 foot, plus dry vans' }] },
+      { k: 'Yard', parts: [{ text: 'Florence, Kentucky, in Boone County' }] },
       {
         k: 'Service area',
         parts: [{ text: 'They state Ohio, Kentucky, and Indiana, worked from Northern Kentucky' }],
