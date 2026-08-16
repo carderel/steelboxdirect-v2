@@ -32,13 +32,19 @@ import { homeFaqs } from '../../data/homeFaq';
   .big{font-family:var(--narrow);font-weight:700;font-size:var(--t-big);line-height:.9;letter-spacing:-.02em;text-transform:uppercase;margin:0}
   .big em{font-style:italic;color:var(--c5-permits);font-weight:700}
 
-  /* FAQ */
-  .faq{background:var(--c5-permits);color:var(--cream);padding:2.5em 0;border-bottom:2.5px solid var(--ink)}
-  .faq .sh{border-color:var(--cream);color:var(--cream)}
-  .faq .big{color:var(--cream);margin-bottom:48px}
-  .faq .big em{color:var(--ink);font-style:italic}
-  .faq-list{border-top:2px solid var(--cream)}
-  .faq-item{border-bottom:2px solid var(--cream);padding:32px 0;display:grid;grid-template-columns:60px 1fr;row-gap:16px;column-gap:32px;align-items:start}
+  /* FAQ.
+     Ink on signal orange, not cream: cream/#FF5A1F is 2.77:1 and fails WCAG AA at both the
+     normal (4.5:1) and large (3:1) thresholds. Ink on the same orange is 6.14:1, 5.58:1
+     through the answers' .9 opacity and 5.22:1 through the numerals' .85. Same swap as the
+     .loc-faq block on /locations/, matching /shipping-container-guides/. Section colour,
+     spacing and copy unchanged; the heading em now reads as italic alone and inherits the
+     run's colour, since ink no longer contrasts it. */
+  .faq{background:var(--c5-permits);color:var(--ink);padding:2.5em 0;border-bottom:2.5px solid var(--ink)}
+  .faq .sh{border-color:var(--ink);color:var(--ink)}
+  .faq .big{color:var(--ink);margin-bottom:48px}
+  .faq .big em{color:inherit;font-style:italic}
+  .faq-list{border-top:2px solid var(--ink)}
+  .faq-item{border-bottom:2px solid var(--ink);padding:32px 0;display:grid;grid-template-columns:60px 1fr;row-gap:16px;column-gap:32px;align-items:start}
   .faq-item .n{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;opacity:.85;padding-top:8px}
   .faq-item .q{font-family:var(--narrow);font-weight:700;font-size:clamp(26px,3.2vw,44px);line-height:1;letter-spacing:-.015em;text-transform:uppercase;margin:0;grid-column:2}
   .faq-item .a{font-size:18px;line-height:1.5;opacity:.9;grid-column:2;margin:0;max-width:760px;font-weight:500}
