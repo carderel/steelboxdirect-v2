@@ -8,6 +8,15 @@ import {
   guideTitleCountWord,
   guideListItems,
 } from '../../data/guides';
+// tools.ts is deliberately a separate list from guides.ts. A calculator is not a guide, and the
+// counts here are load bearing: guideTitleCountWord feeds the metaDescription below and two lines
+// of visible prose, and guideListItems feeds the CollectionPage ItemList that llms.txt describes
+// as eight buying guides. The Tools strip renders from tools and touches neither count.
+//
+// Keep this comment free of apostrophes and quote characters. The hs003 guard pairs quote
+// characters across the whole frontmatter to find string literals, so one stray apostrophe up here
+// re-pairs every literal below it and turns the compliant permit FAQ into a false finding.
+import { tools } from '../../data/tools';
 import lineupPhoto from '../../assets/photos/blog/20ft-40ft-high-cube-container-size-comparison-hero.jpg';
 import haulPhoto from '../../assets/photos/blog/container-chained-on-delivery-truck-bed-rig.jpg';
 import wwtPhoto from '../../assets/photos/blog/wind-water-tight-weathered-blue-container-hero.jpg';
@@ -221,6 +230,31 @@ const faqs = [
             </a>
           ))}
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2B. TOOLS -->
+  <section class="tools" aria-labelledby="tools-title">
+    <div class="wrap">
+      <div class="tools-hd">
+        <span class="tools-eyebrow">§ Tools</span>
+        <h2 id="tools-title">Some questions are arithmetic, not reading</h2>
+        <p>
+          These are calculators rather than guides, which is why they are not in the count above.
+          Each one takes numbers you supply and hands back a single figure, and neither one fills
+          anything in for you.
+        </p>
+      </div>
+      <div class="tools-grid">
+        {tools.map((t) => (
+          <a class="tool-card" href={t.url}>
+            <span class="tool-code"><span class="code">{t.code}</span><span class="kind">{t.kind}</span></span>
+            <h3>{t.question}</h3>
+            <p class="tool-body">{t.blurb}</p>
+            <span class="tool-go">Open the calculator →</span>
+          </a>
+        ))}
       </div>
     </div>
   </section>
@@ -542,6 +576,22 @@ const faqs = [
   .rt-card.c-prm{border-left-color:var(--c5-permits)}
   .rt-card.c-buy{border-left-color:var(--ink-2)}
 
+  /* ---- TOOLS STRIP ---- */
+  .tools{background:var(--cream);padding:64px 0 88px}
+  .tools-hd{max-width:760px;margin-bottom:28px}
+  .tools-eyebrow{font-family:var(--mono);font-size:var(--t-meta);letter-spacing:.1em;text-transform:uppercase;opacity:.6;display:block;margin-bottom:10px}
+  .tools-hd h2{font-family:var(--narrow);font-weight:700;font-size:clamp(24px,2.8vw,34px);line-height:1;text-transform:uppercase;letter-spacing:-.01em;margin:0}
+  .tools-hd p{font-size:15.5px;line-height:1.6;opacity:.75;margin-top:12px}
+  .tools-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:26px;max-width:900px}
+  .tool-card{display:flex;flex-direction:column;gap:14px;background:#fff;border:2px solid var(--ink);border-left:8px solid var(--c4-cost);box-shadow:8px 8px 0 var(--ink);padding:26px 26px 22px;transition:transform .15s ease,box-shadow .15s ease}
+  .tool-card:hover{transform:translate(-3px,-3px);box-shadow:11px 11px 0 var(--ink)}
+  .tool-code{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .tool-code .code{font-family:var(--narrow);font-weight:700;font-size:26px;line-height:1;letter-spacing:-.01em}
+  .tool-code .kind{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;opacity:.6}
+  .tool-card h3{font-family:var(--narrow);font-weight:700;font-size:var(--t-card);line-height:1.02;text-transform:uppercase;letter-spacing:-.015em;margin:0}
+  .tool-card .tool-body{font-size:15px;line-height:1.6;opacity:.85;flex:1;margin:0}
+  .tool-go{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;display:inline-flex;align-items:center;gap:8px}
+
   /* ---- TERMINOLOGY ---- */
   .terms{background:var(--ink);color:var(--cream);padding:96px 0;border-top:2.5px solid var(--ink)}
   .terms .sh{border-color:var(--cream)}
@@ -622,10 +672,10 @@ const faqs = [
     .gh-lede{font-size:19px}
   }
   @media (max-width:760px){
-    .rt-grid,.rt-grid.two{grid-template-columns:1fr}
+    .rt-grid,.rt-grid.two,.tools-grid{grid-template-columns:1fr}
     .sh{grid-template-columns:auto 1fr;row-gap:6px}
     .sh .tg{grid-column:1 / -1;text-align:left;opacity:.6}
-    .terms,.faq,.start,.router{padding-top:64px;padding-bottom:64px}
+    .terms,.faq,.start,.router,.tools{padding-top:64px;padding-bottom:64px}
     .cta{padding:72px 0}
   }
 </style>

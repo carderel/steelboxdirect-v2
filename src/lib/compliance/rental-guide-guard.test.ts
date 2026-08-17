@@ -9,6 +9,7 @@
 import { describe, it, expect } from 'vitest';
 import { readFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
+import { guideListItems } from '../../data/guides';
 
 const REPO_ROOT = import.meta.dirname
   ? join(import.meta.dirname, '..', '..', '..')
@@ -136,9 +137,12 @@ describe('cannibalization controls: link direction between the rental pages', ()
   const rentToOwn = read('src/pages/rent-to-own/index.astro');
   const productHub = read('src/pages/shipping-containers-for-sale/index.astro');
   const rentalGuide = read('src/pages/container-rental-guide/index.astro');
+  const rentVsBuy = read('src/pages/container-rent-vs-buy-calculator/index.astro');
+  const hub = read('src/pages/shipping-container-guides/index.astro');
   const nav = read('src/components/SiteNav.astro');
   const footer = read('src/components/SiteFooter.astro');
   const llms = read('public/llms.txt');
+  const flatten = (s: string): string => s.replace(/\s+/g, ' ');
 
   it('/rent-to-own/ sends EXACTLY ONE deep link to the guide, inside an html twin', () => {
     const hits = (rentToOwn.match(/\/container-rental-guide\//g) ?? []).length;
@@ -187,6 +191,68 @@ describe('cannibalization controls: link direction between the rental pages', ()
     expect(llms).toContain('https://steelboxdirect.com/shipping-container-guides/');
     const rentalLine = llms.split('\n').find((l) => l.includes('/container-rental-guide/')) ?? '';
     expect(rentalLine).toMatch(/does not rent/i);
+  });
+
+  it('the guide signposts the rent vs buy calculator exactly once, and never from the hero', () => {
+    const hits = (rentalGuide.match(/\/container-rent-vs-buy-calculator\//g) ?? []).length;
+    expect(hits).toBe(1);
+    const heroStart = rentalGuide.indexOf('<!-- 1. HERO');
+    const heroEnd = rentalGuide.indexOf('<!-- 2. THE DURATION FORK');
+    expect(heroStart).toBeGreaterThan(-1);
+    expect(heroEnd).toBeGreaterThan(heroStart);
+    expect(rentalGuide.slice(heroStart, heroEnd))
+      .not.toContain('/container-rent-vs-buy-calculator/');
+  });
+
+  it('REFRAME NOT REMOVAL: the guide still refuses to price its own arithmetic, and now says where the priced version lives', () => {
+    // The refusal is the credibility of the whole calculator block. The signpost was added beside
+    // it, not instead of it, so the original closing sentence must survive verbatim.
+    expect(flatten(rentalGuide)).toContain(
+      'And it is not a comparison against any price of ours, because putting one here would make '
+      + 'this a sales pitch instead of arithmetic.',
+    );
+    const anchor = rentalGuide
+      .match(/<a href="\/container-rent-vs-buy-calculator\/">([^<]+)<\/a>/)?.[1] ?? '';
+    expect(flatten(anchor).trim()).toMatch(/rent vs buy calculator/);
+  });
+
+  it('OWNER OVERRIDE: the calculator sits in the nav Tools dropdown, beside the other calculator', () => {
+    // A calculator filed under Guides is a category error, and the Tools dropdown already exists,
+    // so nothing new is being exposed at the top level. Codes match tools.ts.
+    expect((nav.match(/\/container-rent-vs-buy-calculator\//g) ?? []).length).toBe(1);
+    const toolsStart = nav.indexOf('nav-tl-drop');
+    const toolsEnd = nav.indexOf('nav-loc', toolsStart);
+    expect(toolsStart).toBeGreaterThan(-1);
+    expect(toolsEnd).toBeGreaterThan(toolsStart);
+    expect(nav.slice(toolsStart, toolsEnd)).toContain('/container-rent-vs-buy-calculator/');
+    const guidesStart = nav.indexOf('nav-gd-drop');
+    const guidesEnd = nav.indexOf('nav-blog-link');
+    expect(nav.slice(guidesStart, guidesEnd))
+      .not.toContain('/container-rent-vs-buy-calculator/');
+  });
+
+  it('footer and llms.txt carry the calculator, with the non-rental fact inside the llms entry', () => {
+    expect(footer).toContain('/container-rent-vs-buy-calculator/');
+    expect(llms).toContain('https://steelboxdirect.com/container-rent-vs-buy-calculator/');
+    // llms.txt is read stripped of all other site context, so the fact has to live in the entry.
+    const line = llms.split('\n')
+      .find((l) => l.includes('/container-rent-vs-buy-calculator/')) ?? '';
+    expect(line).toMatch(/does not rent/i);
+  });
+
+  it('CONDITION 2 VALVE: the calculator hands rental intent back to the guide', () => {
+    expect((rentVsBuy.match(/\/container-rental-guide\//g) ?? []).length)
+      .toBeGreaterThanOrEqual(2);
+    expect((rentVsBuy.match(/\/container-rental-guide\/#shape/g) ?? []).length).toBe(1);
+  });
+
+  it('the hub Tools strip leaves the hub a collection of exactly eight guides', () => {
+    expect(guideListItems).toHaveLength(8);
+    expect(hub).toContain("from '../../data/tools'");
+    expect(hub).toContain('tools.map(');
+    expect(hub).toContain('items: guideListItems');
+    expect(hub).toContain('description={metaDescription}');
+    expect(hub).toContain('${guideTitleCountWord} shipping container guides');
   });
 
   it('NO CROSS-CANONICAL: neither page overrides its canonical', () => {
