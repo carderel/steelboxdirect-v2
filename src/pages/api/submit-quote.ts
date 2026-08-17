@@ -103,19 +103,57 @@ function getPaymentIntentLabel(data: QuoteFormData): string {
   }
 }
 
+// Buyer-facing labels for the raw select values in /quote/. A string argument to
+// String.replace() swaps only the FIRST match, so "wind_water_tight" was reaching buyers
+// as "wind water_tight" and "1_3_months" as "1-3_months". Keep these in sync with the
+// <option> values in src/pages/quote/index.astro. Condition stays single-grade on purpose:
+// the site sells Wind and Water Tight used only.
+const SIZE_LABELS: Record<string, string> = {
+  '20ft': '20ft Standard',
+  '40ft': '40ft Standard',
+  '40ft_hc': '40ft High Cube',
+  not_sure: 'Not sure yet',
+};
+
+const CONDITION_LABELS: Record<string, string> = {
+  wind_water_tight: 'Wind and Water Tight (used)',
+  not_sure: 'Not sure yet',
+};
+
+const TIMELINE_LABELS: Record<string, string> = {
+  asap: 'As soon as possible',
+  '1_3_months': '1 to 3 months',
+  '3_6_months': '3 to 6 months',
+  researching: 'Just researching',
+};
+
+// Any value not in the map degrades to a global underscore swap (readable, never blank),
+// so adding an <option> without touching this file cannot leak "undefined" to a buyer.
+function getOptionLabel(labels: Record<string, string>, value: string | undefined): string {
+  if (!value) return 'Not sure yet';
+  return labels[value] || value.replace(/_/g, ' ');
+}
+
 async function sendBuyerConfirmation(data: QuoteFormData): Promise<string | null> {
   try {
     const { resend } = getClients();
     // RTO-only additions — non-RTO buyer emails stay byte-for-byte unchanged.
     const rtoSummaryLine = isRentToOwn(data) ? `\n- Payment: ${getPaymentIntentLabel(data)}` : '';
+    // A self-pickup RTO lead is not being scheduled a delivery, and this line sits directly
+    // under the pick-up all-in paragraph, so the noun has to follow receive_method.
     const rtoHeadsUp = isRentToOwn(data)
-      ? '\n\nHeads up: rent-to-own delivery is scheduled after your application is approved by My Container Rental, the independent third party that administers the program.'
+      ? `\n\nHeads up: rent-to-own ${data.receive_method === 'pickup' ? 'pick-up' : 'delivery'} is scheduled after your application is approved by My Container Rental, the independent third party that administers the program.`
       : '';
+    // The all-in promise is delivery-specific. A self-pickup buyer is not being quoted
+    // delivery at all, so promising "delivery to your ZIP" contradicts their own summary line.
+    const allInLine = data.receive_method === 'pickup'
+      ? 'Good to know: the price we send you covers the container at the pick-up yard. There is no delivery charge because you are arranging transport yourself, and the seller will confirm the yard location when they reach out.'
+      : 'Good to know: the price we send you is all-in — the container plus delivery to your ZIP and placement on flat ground. No surprise freight charges tacked on later.';
     const { data: emailData, error } = await resend.emails.send({
       from: 'Steel Box Direct <noreply@steelboxdirect.com>',
       to: data.email,
       subject: 'We received your quote request',
-      text: `Hi ${data.name},\n\nWe received your request for a shipping container quote.\n\nYour request summary:\n- Size: ${data.size_preference === 'not_sure' ? 'Not sure yet' : data.size_preference}\n- Condition: ${data.condition_preference === 'not_sure' ? 'Not sure yet' : data.condition_preference.replace('_', ' ')}\n- ${data.receive_method === 'pickup' ? 'Self pick-up near' : 'Delivery to'}: ${data.delivery_zip}\n- Timeline: ${data.timeline.replace('_', '-')}${rtoSummaryLine}\n\nWhat happens next:\nA seller will review your request and contact you within 1 business day with pricing and availability for your area.\n\nGood to know: the price we send you is all-in — the container plus delivery to your ZIP and placement on flat ground. No surprise freight charges tacked on later.${rtoHeadsUp}\n\nNo action needed from you. If you have questions, reply to this email.\n\n---\nSteel Box Direct`,
+      text: `Hi ${data.name},\n\nWe received your request for a shipping container quote.\n\nYour request summary:\n- Size: ${getOptionLabel(SIZE_LABELS, data.size_preference)}\n- Condition: ${getOptionLabel(CONDITION_LABELS, data.condition_preference)}\n- ${data.receive_method === 'pickup' ? 'Self pick-up near' : 'Delivery to'}: ${data.delivery_zip}\n- Timeline: ${getOptionLabel(TIMELINE_LABELS, data.timeline)}${rtoSummaryLine}\n\nWhat happens next:\nA seller will review your request and contact you within 1 business day with pricing and availability for your area.\n\n${allInLine}${rtoHeadsUp}\n\nNo action needed from you. If you have questions, reply to this email.\n\n---\nSteel Box Direct`,
     });
     if (error) {
       console.error('Email send error:', error);
