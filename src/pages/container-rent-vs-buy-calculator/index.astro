@@ -1,0 +1,1184 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { Image } from 'astro:assets';
+import truckPhoto from '../../assets/photos/blog/container-chained-on-delivery-truck-bed-rig.jpg';
+import acreagePhoto from '../../assets/photos/homeowners/homeowner-acreage-container-woodline-storage.jpg';
+import jobsitePhoto from '../../assets/photos/contractors/jobsite-container-delivery-hero.jpg';
+import padPhoto from '../../assets/photos/homeowners/container-corner-block-gravel-pad.jpg';
+import { composeRentalStance } from '../../data/rentalStance';
+import { pricing, formatPrice, asOfLabel, type Pricing } from '../../data/pricing';
+
+// Static page. There is deliberately NO prerender directive here: output is 'hybrid', which
+// prerenders plain pages by default, exactly like src/pages/cost/index.astro and src/pages/permits/.
+
+const crumbs = [{ name: 'Home', path: '/' }, { name: 'Rent vs Buy Calculator' }];
+
+// Display labels for the seed dropdown. The approved wording differs from the pricing.ts
+// labels for two of the three keys ("20ft" not "20ft Cargo", "40ft High Cube" not
+// "40ft Standard HC"). Any key not listed falls back to its own label, so a key added by a
+// pricing.ts change still renders a correct option.
+const SEED_DISPLAY: Record<string, string> = {
+  '20ftCargo': '20ft',
+  '40ftStandard': '40ft Standard',
+  '40ftStandardHC': '40ft High Cube',
+};
+
+type PriceKey = Exclude<keyof Pricing, 'asOf'>;
+const priceKeys = (Object.keys(pricing) as (keyof Pricing)[])
+  .filter((k): k is PriceKey => k !== 'asOf');
+
+// Every Steel Box Direct figure on this page comes from here. The script holds none: the only
+// channel from pricing.ts into the running calculator is the rendered option value attributes.
+const sizeSeeds = priceKeys.map((k) => {
+  const display = SEED_DISPLAY[k] ?? pricing[k].label;
+  return {
+    value: pricing[k].price,
+    display,
+    label: `${display}, ${formatPrice(pricing[k].price)}`,
+  };
+});
+
+// FAQ 8 enumerates the same array, so a fourth priced key cannot silently make its prose false.
+const seedPhrases = sizeSeeds.map((s) => `${formatPrice(s.value)} for a ${s.display}`);
+const seedSentence = seedPhrases.length > 1
+  ? `${seedPhrases.slice(0, -1).join(', ')}, and ${seedPhrases[seedPhrases.length - 1]}`
+  : seedPhrases.join('');
+
+// The canonical non-rental fact is composed, never typed, in both places this page states it:
+// the closing paragraph of the renting-wins section and the schema-bound FAQ below.
+const stanceClose = composeRentalStance({
+  context:
+    'So if the answer is renting, the answer is somebody else, and we would rather say that '
+    + 'here than waste your phone call.',
+});
+
+const stanceFaq = composeRentalStance({
+  context:
+    'The rental column exists because the comparison is useless without it, and the rate that '
+    + 'goes into it is your own, off your own written quote, because we have no way to tilt it '
+    + 'and no reason to. If the arithmetic says renting is the better call over your timeline, '
+    + 'this page says so and sends you to our container rental guide, which lists the rental '
+    + 'companies we were able to verify across Ohio, Indiana, Kentucky, and western West '
+    + 'Virginia.',
+});
+
+// Single source for the page FAQ. These strings ARE the FAQPage JSON-LD answers, and the first
+// three also render visibly in the QuickFacts card, which is why the non-rental fact sits at
+// index 2: buildPageSchema and QuickFacts both slice the first three onto that card.
+const faqs: { q: string; a: string; priceDisc?: boolean }[] = [
+  {
+    q: 'Is it cheaper to rent or buy a shipping container?',
+    a: 'It depends entirely on how long you need it, which is why there is no single answer. '
+      + 'Renting is cheaper up to a certain month, and buying is cheaper after it, and that month '
+      + 'is set by your rental rate and the purchase price you can get. Work out where your '
+      + 'break-even falls, then compare it against how long you actually need the container. If '
+      + 'your need ends before the break-even, rent. If it runs past it, or has no end date at '
+      + 'all, price buying before you sign an open-ended agreement.',
+  },
+  {
+    q: 'At what month does renting a shipping container cost more than buying one?',
+    a: "Divide the purchase price by the monthly rental rate, after subtracting the rental's "
+      + 'one-time delivery and pickup fees from the purchase price, then round up to the next '
+      + 'whole month. That month is the break-even, the point where the rental has cost you what '
+      + 'buying would have. There is no standard answer to quote, because rental rates vary by '
+      + 'company and by market, and purchase prices move with condition, size, and how far the '
+      + 'container has to travel. Use your own written quotes, not an average.',
+  },
+  {
+    q: 'If you do not rent containers, why does this calculator price a rental?',
+    a: stanceFaq.a,
+  },
+  {
+    q: 'How do I calculate the total cost of renting a shipping container?',
+    a: 'Multiply the monthly rate by the number of months you actually need it, then add the '
+      + 'one-time delivery fee and the pickup fee. Pickup is the one people forget, because it '
+      + 'is billed months later when the rental is already over. Ask for all three numbers in '
+      + 'writing before you sign, because a monthly rate compared against another monthly rate '
+      + 'is not a comparison.',
+  },
+  {
+    q: 'When is renting a shipping container the better choice?',
+    a: 'Renting is the better choice whenever your need has an end date, whenever you will not '
+      + 'control the site long term, and whenever you want the container to disappear without '
+      + 'arranging that yourself. A job with a completion date, a remodel, a season, a leased '
+      + 'yard, or a first try at whether a container even solves your problem are all cases where '
+      + 'renting is the deal that matches the situation. Renting also wins when the up-front cost '
+      + 'of buying is the actual obstacle, because a payment you can make beats a total you '
+      + 'cannot.',
+  },
+  {
+    q: 'What does a rent vs buy calculator leave out?',
+    a: 'It leaves out site prep, relocation, disposal at the end, and the resale value of a '
+      + 'container you own. Site prep costs roughly the same either way, so it does not move the '
+      + 'break-even month, but relocation and disposal fall differently on each side and can be '
+      + 'significant. The largest omission is on the buying side: the calculator treats an owned '
+      + 'container as worth nothing at the end, which understates buying, and we leave it that '
+      + 'way rather than invent a resale figure that depends on condition and on the market on '
+      + 'the day you sell.',
+  },
+  {
+    q: 'Can I sell a shipping container after I buy it?',
+    a: 'Yes. A container you own can be sold whenever the need goes away, and that option does '
+      + 'not exist on a rental, because the container was never yours. What it would fetch '
+      + 'depends on its condition and on the market at the time, and nobody can tell you that '
+      + 'number in advance, so treat it as an option you hold rather than as money you are '
+      + 'counting on.',
+  },
+  {
+    q: 'How much does a used shipping container cost from Steel Box Direct?',
+    a: `As of ${asOfLabel}, average starting prices are ${seedSentence}. These are average `
+      + 'starting prices, not quotes, and yours may be more or less, mostly depending on how far '
+      + 'we deliver and on current market supply. We sell used Wind and Water Tight containers '
+      + 'with a Lifetime Leak Warranty, and a quote comes back as one all-in delivered number.',
+    priceDisc: true,
+  },
+];
+
+// QuickFacts cells render into <td> elements, which are atomic surfaces with no room for a
+// hedge, so no cell carries a dollar figure. The dated currency claim carries no figure at all.
+const specs = [
+  { k: 'What this compares', v: 'Renting a container vs buying one outright' },
+  { k: 'Rental side adds', v: 'Delivery and pickup, entered by you' },
+  { k: 'Purchase side uses', v: 'Our average starting prices, not a quote' },
+  { k: 'Prices confirmed', v: asOfLabel },
+  { k: 'Steel Box Direct rents', v: 'No. We sell, and we offer rent-to-own' },
+  { k: 'Rental rate', v: 'Yours, from your own written quote' },
+];
+---
+
+<BaseLayout
+  pageType="guide"
+  title="Shipping Container Rent vs Buy Calculator | Steel Box Direct"
+  description="Compare renting a shipping container over your timeline against buying one outright, delivery on both sides. Find the month where buying costs less."
+  datePublished="2026-08-17"
+  dateModified="2026-08-17"
+  breadcrumbs={crumbs}
+  schema={{
+    kind: 'guide',
+    title: 'Shipping Container Rent vs Buy Break-Even Calculator',
+    specs,
+    faqs: faqs.map((f) => ({ q: f.q, a: f.a })),
+  }}
+>
+
+  <!-- ============ 1. HERO ============ -->
+  <div class="rr-hero">
+    <div class="wrap">
+      <p class="rr-crumbs"><a href="/">Home</a> / Rent vs Buy Calculator</p>
+      <div class="rr-eyebrow">
+        <span class="idx">§ CALC</span>
+        <span class="nm">Decision: Rent or Buy</span>
+        <span class="tg">Break-Even Tool</span>
+      </div>
+      <h1 class="rr-headline">Rent or buy a container?<br /><em>Find your <span class="nb">break-even</span> month.</em></h1>
+
+      <div class="rr-statement">
+        <span class="m rr-statement-k">Read this first</span>
+        <p>Renting and buying are not two prices for the same thing.</p>
+        <p class="rr-statement-body">
+          They are two different deals that end in two different places, and the only way to compare
+          them is over your real timeline, not per month. This page does that one sum. Put in the
+          rental rate you were actually quoted, put in what a container would cost you to buy, and it
+          tells you the month where the rental has cost more, and what happens to the money after that.
+        </p>
+        <p class="rr-statement-body">
+          Steel Box Direct sells containers, so we have an obvious interest in how this comes out.
+          Which is why the page is built to give you the other answer when the other answer is right.
+          Put in a short timeline and it will tell you plainly that renting wins, and send you to our
+          list of rental companies instead. If that is your situation, go rent. We would rather be the
+          page that told you the truth than the page that got you on the phone.
+        </p>
+      </div>
+
+      <ul class="rr-hero-jump">
+        <li><a href="#tool">Do the arithmetic</a></li>
+        <li><a href="#meaning">What the break-even month means</a></li>
+        <li><a href="#rent">When renting is the right answer</a></li>
+        <li><a href="#gaps">What this leaves out</a></li>
+        <li><a href="#faq">Common questions</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ============ 2. THE TOOL ============ -->
+  <section class="rr-tool" id="tool" aria-labelledby="tool-h">
+    <div class="wrap">
+      <div class="rr-sh rr-sh-dark">
+        <span class="m">Do the arithmetic yourself</span>
+        <h2 class="rr-h2" id="tool-h">At what month has the rental cost more than buying?</h2>
+        <p class="rr-sh-sub">
+          This multiplies your rental quote out across the calendar and compares the running total
+          against a purchase price. Nothing is sent anywhere, nothing is saved, and there is no
+          sign-up. Use the numbers on your own written quote. If you do not have a purchase quote
+          yet, you can start from our average starting prices, which are averages and not offers.
+        </p>
+      </div>
+
+      <figure class="rr-fig rr-fig-dark rr-fig-band tool-fig">
+        <Image src={truckPhoto} width={1200} format="webp" loading="lazy" decoding="async"
+          alt="A rust coloured twenty foot shipping container chained down on a flatbed trailer, moving along a two lane highway past crop fields at dusk." />
+        <figcaption>
+          <b>Two trucks, two line items.</b> A container arrives on a truck and it leaves on a truck.
+          On a rental, those two journeys are usually billed apart from the monthly rate, which is why
+          the sheet below asks for them separately.
+        </figcaption>
+      </figure>
+
+      <div class="calc" id="rvb-calc-wrap">
+        <!-- The delivery asymmetry. The single most useful honest thing on this page. -->
+        <div class="asym">
+          <div class="asym-card is-rent">
+            <span class="m">The rental side</span>
+            <h3>Delivery and pickup are usually charged separately</h3>
+            <p>
+              In this industry the monthly rate is the monthly rate, and the truck that drops the
+              container off and the truck that comes back for it are their own line items. That is why
+              there are two one-time fee boxes below. If your written quote says one of them is
+              included, put 0 in that box.
+            </p>
+          </div>
+          <div class="asym-card is-buy">
+            <span class="m">The purchase side</span>
+            <h3>Our average already contemplates delivery</h3>
+            <p>
+              There is no purchase delivery box, and that is deliberate. A Steel Box Direct quote comes
+              back as one all-in delivered figure, and the average starting prices below already
+              contemplate delivery, which is the biggest thing that moves them. If you are comparing
+              another seller's price, ask them whether theirs is delivered or whether freight is added.
+            </p>
+          </div>
+        </div>
+
+        <!-- No-JS fallback. Shown when the wrapper never gets .has-js. The example numbers are
+             invented and round on purpose, so the steps can be followed rather than the totals.
+             They are deliberately NOT sourced from pricing.ts. -->
+        <div class="calc-nojs">
+          <strong>JavaScript is off, so here is the same sum on paper.</strong>
+          <ol>
+            <li>Take the one-time fees on your rental quote, the delivery charge plus the pickup charge, and add them together.</li>
+            <li>Subtract that total from the price of buying a container.</li>
+            <li>Divide what is left by the monthly rental rate.</li>
+            <li>Round up to the next whole month. That is your break-even month.</li>
+          </ol>
+          <p>
+            Example of the shape, using round numbers so the arithmetic is easy to follow: one-time
+            fees of $200, a purchase price of $2,000, and a monthly rate of $150. Two thousand minus
+            two hundred is eighteen hundred. Eighteen hundred divided by one hundred and fifty is
+            twelve. Renting passes buying in month 12, and every payment after that is money spent on
+            a container you will hand back.
+          </p>
+          <p>
+            Then ask yourself the only question that matters: will you still need it in month 12? If
+            the answer is no, rent. If the answer is yes, or you do not know, price both.
+          </p>
+        </div>
+
+        <div class="calc-js">
+          <!-- The working sheet: cream, so the form reads as paper laid on the ink. -->
+          <div class="calc-sheet">
+          <form class="calc-form" id="rvb-form" novalidate>
+            <div class="calc-field">
+              <label for="calc-rate">Monthly rental rate you were quoted (dollars)</label>
+              <input type="number" id="calc-rate" name="calc-rate" inputmode="decimal" min="0" step="1" aria-describedby="help-rate" />
+              <p class="calc-help" id="help-rate">The recurring monthly figure only. Leave the one-time fees for the next two boxes.</p>
+            </div>
+
+            <div class="calc-field">
+              <label for="calc-rent-delivery">Rental delivery fee, one time (dollars)</label>
+              <input type="number" id="calc-rent-delivery" name="calc-rent-delivery" inputmode="decimal" min="0" step="1" aria-describedby="help-del" />
+              <p class="calc-help" id="help-del">Charged when they drop it off. Put 0 if your quote says delivery is included.</p>
+            </div>
+
+            <div class="calc-field">
+              <label for="calc-rent-pickup">Rental pickup fee at the end (dollars)</label>
+              <input type="number" id="calc-rent-pickup" name="calc-rent-pickup" inputmode="decimal" min="0" step="1" aria-describedby="help-pick" />
+              <p class="calc-help" id="help-pick">Charged when they come and take it back. This one is easy to forget, because it lands months later.</p>
+            </div>
+
+            <div class="calc-field">
+              <label for="calc-buy">Purchase price of the container (dollars)</label>
+              <input type="number" id="calc-buy" name="calc-buy" inputmode="decimal" min="0" step="1" aria-describedby="help-buy" />
+              <p class="calc-help" id="help-buy">Use a written purchase quote if you have one. Or pick a size below to start from our average.</p>
+            </div>
+
+            <div class="calc-field is-seed">
+              <label for="calc-size">Or start from an average starting price</label>
+              <select id="calc-size" name="calc-size" aria-describedby="help-size">
+                <option value="">No size chosen</option>
+                {sizeSeeds.map((s) => (<option value={s.value}>{s.label}</option>))}
+              </select>
+              <p class="calc-help" id="help-size">Optional. Choosing a size writes that figure into the purchase price box, and you can type over it.</p>
+              <p class="price-disc">
+                These are average starting prices, not quotes. What you pay can land above or below,
+                depending mostly on how far we deliver and current market supply.
+                <b>Average as of {asOfLabel}</b>
+              </p>
+            </div>
+
+            <div class="calc-field">
+              <label for="calc-months">Months you actually need it (optional)</label>
+              <input type="number" id="calc-months" name="calc-months" inputmode="numeric" min="0" step="1" aria-describedby="help-months" />
+              <p class="calc-help" id="help-months">If you know roughly how long, put it in and the answer gets a lot more useful. Leave it blank and you still get the break-even month.</p>
+            </div>
+          </form>
+
+          <div class="calc-actions">
+            <button type="submit" form="rvb-form" class="btn">Work it out</button>
+            <button type="button" class="calc-reset" id="calc-reset">Clear and start over</button>
+          </div>
+
+          <p class="calc-hint" id="calc-seed">
+            Every box starts empty on purpose. The rate should come off your own written rental quote,
+            not off a figure we chose for you. The size dropdown is the one shortcut here, and it fills
+            in an average, not a quote for your address.
+          </p>
+          </div>
+
+          <!-- The answer. Its own field, so the numeral is not competing with the inputs. -->
+          <div class="calc-out" id="calc-out" role="status" aria-live="polite">
+            <div class="calc-out-grid">
+              <div class="calc-out-a">
+                <span class="m calc-out-k">The break-even month</span>
+                <p class="calc-big" id="calc-total">Enter a monthly rate and a purchase price</p>
+              </div>
+              <div class="calc-out-b">
+                <p class="calc-verdict" id="calc-verdict" hidden></p>
+
+                <div class="calc-stats" id="calc-stats" hidden>
+                  <div>
+                    <span class="m" id="st-total-label">Total rental cost</span>
+                    <b id="st-total">$0</b>
+                  </div>
+                  <div>
+                    <span class="m">One-time rental fees</span>
+                    <b id="st-fees">$0</b>
+                  </div>
+                  <div>
+                    <span class="m">Purchase price compared</span>
+                    <b id="st-buy">$0</b>
+                  </div>
+                </div>
+
+                <p class="calc-after" id="calc-after">
+                  Put in the monthly rate you were quoted and what a container would cost to buy. The month
+                  where the rental total passes the purchase price appears here.
+                </p>
+
+                <p class="price-disc" id="calc-seed-disc" hidden>
+                  The purchase price above came from our size dropdown. These are average starting prices,
+                  not quotes. What you pay can land above or below, depending mostly on how far we deliver
+                  and current market supply.
+                  <b>Average as of {asOfLabel}</b>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="calc-rentwins" id="calc-rentwins" hidden>
+            <strong>On your timeline, renting is the right answer.</strong>
+            <p>
+              You do not need the rest of this page.
+              <a href="/container-rental-guide/">Here is where to rent in Ohio, Indiana, Kentucky, and West Virginia</a>,
+              including the nine questions worth asking any rental company before you sign.
+            </p>
+          </div>
+
+          <div class="calc-foot">
+            <p class="calc-honesty" id="calc-honesty">
+              This is arithmetic, not advice. It compares two totals, and totals are only one part of the
+              decision. Read the next two sections before you act on the number, because the break-even
+              month leaves several real costs out and it cannot tell you whether you will still want a
+              container in your yard a year from now.
+            </p>
+
+            <p class="calc-note">
+              Three things this deliberately does not do. It does not guess at a rental rate or a
+              purchase price for you, because we do not have your quotes in front of us. It does not add
+              site prep, relocation, or anything the container gets used for, which are listed further
+              down. And it does not put a resale value on the container you would own, because that
+              depends on its condition and on the market on the day you sell, and nobody can tell you
+              that in advance.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 3. WHAT THE NUMBER MEANS ============ -->
+  <section class="rr-mean" id="meaning" aria-labelledby="meaning-h">
+    <div class="wrap">
+      <div class="rr-sh">
+        <span class="m">What the number means</span>
+        <h2 class="rr-h2" id="meaning-h">The break-even month is a line, not a verdict</h2>
+      </div>
+
+      <div class="mean-grid">
+      <div class="mean-body">
+        <p>
+          The break-even month is the point where the money you have handed a rental company matches
+          what buying the same container would have cost. It is a real line and it is easy to check:
+          rate times months, plus the one-time fees, against the purchase price. Nothing clever happens
+          at that number. What changes is what each additional payment is doing. On the day before the
+          break-even, renting is the cheaper way to have a container. On every day after it, you are
+          paying for a container you have already covered the cost of, and the payments do not stop on
+          their own, because an open-ended rental has no last payment on the calendar.
+        </p>
+        <p>
+          That is the whole of what this number tells you, and it is worth being clear about the rest.
+          It does not know your rate will hold. Rental rates can change, and if yours goes up the
+          break-even arrives earlier than the tool says. It does not know whether you would actually
+          want to own a container, keep it maintained, and deal with it when the need ends. It does not
+          know how far you are from a depot, which moves the purchase side. And it does not account for
+          the fact that money spent later is easier to carry than money spent today, which is a genuine
+          argument for renting and one this page is not going to pretend away.
+        </p>
+        <p>
+          Use the break-even as a filter. If your need clearly ends before it, rent. If your need clearly
+          runs past it, price buying properly instead of assuming.
+        </p>
+      </div>
+
+        <figure class="rr-fig mean-fig">
+          <Image src={acreagePhoto} width={1200} format="webp" loading="lazy" decoding="async"
+            alt="A dark green shipping container standing on a gravel pad at the edge of a pine woodline, with a single storey house and a fenced lawn behind it in the evening light." />
+          <figcaption>
+            <b>What the payments end in.</b> One of these two deals leaves a container standing on your
+            ground with nobody coming for it. The other one ends with a truck. The break-even month is
+            only about the money, and this is the part it does not price.
+          </figcaption>
+        </figure>
+      </div>
+
+      <p class="mean-pull">
+        There is a separate, structural argument about what you are actually holding when the payments
+        stop, and it is not repeated here.
+        <a href="/container-rental-guide/#shape">Read it on the container rental guide</a>.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ 4. WHEN RENTING IS RIGHT ============ -->
+  <section class="rr-rent" id="rent" aria-labelledby="rent-h">
+    <div class="wrap">
+      <div class="rr-sh">
+        <span class="m">The other answer</span>
+        <h2 class="rr-h2" id="rent-h">Six times renting beats buying, and we mean it</h2>
+      </div>
+
+      <div class="rent-top">
+        <p class="rent-intro">
+          We sell containers. We do not rent them. That makes this the section you should trust least and
+          read most carefully, so here it is without hedging. In every case below, renting is the better
+          decision, and the break-even month above is beside the point.
+        </p>
+
+        <figure class="rr-fig">
+          <Image src={jobsitePhoto} width={1200} format="webp" loading="lazy" decoding="async"
+            alt="A tilt bed truck with a green shipping container angled off the back of its bed toward the dirt shoulder of a highway construction site at dusk, two workers in high visibility vests standing alongside it while traffic streams past on the open lanes." />
+          <figcaption>
+            <b>A job with an end date on it.</b> The work finishes and the container has to be somewhere
+            else when it does. When the departure is already somebody else's job to schedule, that is
+            most of what the rental was buying.
+          </figcaption>
+        </figure>
+      </div>
+
+      <div class="case-list">
+        <details class="case">
+          <summary><span class="m">Case 1</span><h3>The job has an end date on a contract.</h3></summary>
+          <p>
+            A build finishes. A remodel finishes. A season finishes. When there is a real date and you
+            want the box gone on or near it, renting is the deal that matches. You pay for the window
+            you need, somebody else hauls it away, and you never think about it again. Buying a
+            container for a job that ends in ten weeks means owning a container in week eleven.
+          </p>
+        </details>
+
+        <details class="case">
+          <summary><span class="m">Case 2</span><h3>You will not control the site in six months.</h3></summary>
+          <p>
+            Leased ground, a rented yard, a job on someone else's property, a site that reverts when the
+            contract closes. Owning steel you cannot legally leave anywhere is not an asset, it is a
+            problem you now have to move. Rent it, hand it back, walk off the site clean.
+          </p>
+        </details>
+
+        <details class="case">
+          <summary><span class="m">Case 3</span><h3>You need it gone and you do not want to arrange the disposal.</h3></summary>
+          <p>
+            This is the underrated one. When a rental ends, the rental company sends a truck. When you
+            are done with a container you own, getting rid of it is your project: find a buyer or a yard
+            that wants it, agree a price, arrange the haul, and be there when it happens. If you know
+            now that you will not want that job later, renting is buying your way out of it in advance,
+            and that is a reasonable thing to buy.
+          </p>
+        </details>
+
+        <details class="case">
+          <summary><span class="m">Case 4</span><h3>You genuinely do not know if this will work.</h3></summary>
+          <p>
+            You think a container solves your storage problem but you have never had one on the
+            property. You are not sure the doors will open where you want to put it, or that you will
+            like looking at it, or that the ground will stay firm through a wet spring. A short rental
+            is a cheap way to find out before you commit, and finding out is worth paying for.
+          </p>
+        </details>
+
+        <details class="case">
+          <summary><span class="m">Case 5</span><h3>The cash matters more than the total right now.</h3></summary>
+          <p>
+            Buying puts the whole cost at the front. Renting spreads a smaller number across the
+            calendar. If the up-front number is the thing standing in your way this month, then the
+            lower monthly payment is not a worse deal, it is the deal you can actually do. Paying more
+            over two years to not pay it all in one week is a trade plenty of sensible people make on
+            purpose.
+          </p>
+        </details>
+
+        <details class="case">
+          <summary><span class="m">Case 6</span><h3>Your need is short and you already know it.</h3></summary>
+          <p>
+            If you can name the month you will be done, and it lands before the break-even the calculator
+            gave you, the arithmetic has already answered. Rent. Nothing further down this page changes
+            that.
+          </p>
+        </details>
+      </div>
+
+      <div class="rent-close">
+        <p>
+          If any of those six is you, close this page and go rent. We keep a list of rental companies
+          across Ohio, Indiana, Kentucky, and western West Virginia, checked on their own websites, with
+          no paid placements and no lead form in the middle of it.
+        </p>
+        <p><a class="big-link" href="/container-rental-guide/">Where to rent a shipping container near you</a></p>
+        <p>{stanceClose.a}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 5. WHAT IT LEAVES OUT ============ -->
+  <section class="rr-gaps" id="gaps" aria-labelledby="gaps-h">
+    <div class="wrap">
+      <div class="rr-sh rr-sh-dark">
+        <span class="m">The honest gaps</span>
+        <h2 class="rr-h2" id="gaps-h">Six costs the calculator leaves out, on both sides</h2>
+      </div>
+
+      <p class="rr-sh-sub" style="margin:0 0 34px">
+        A break-even month made from two numbers is only as good as the two numbers. Here is everything
+        the tool is not counting, listed on whichever side it belongs to, so you can add it yourself.
+      </p>
+
+      <p class="rr-table-caption" id="gaps-tbl-cap">
+        Six omissions, and what to do about each one.
+        <span class="rr-table-hint">Scroll the table sideways on a small screen</span>
+      </p>
+      <div class="tbl-scroll" role="region" aria-labelledby="gaps-tbl-cap" tabindex="0">
+        <table class="rr-table">
+          <thead>
+            <tr>
+              <th scope="col" class="rt-rowhead"><span class="rt-title">What is missing</span></th>
+              <th scope="col"><span class="rt-title">Which side it lands on</span></th>
+              <th scope="col" class="rt-hi"><span class="rt-title">What to do about it</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Delivery to your site</th>
+              <td>Both. Rental delivery is usually a separate line item. On a purchase, ask whether the quoted price is delivered or whether freight is added.</td>
+              <td class="is-hi">Get the delivery figure in writing from both, and put the rental one into the calculator above. Our quotes come back as one all-in delivered number, so ask any seller for theirs the same way.</td>
+            </tr>
+            <tr>
+              <th scope="row">Pickup at the end</th>
+              <td>Rental only. There is no pickup on a container you own, because nobody is coming for it.</td>
+              <td class="is-hi">Ask what the pickup fee is and whether it is quoted now or set at the rate in effect on the day you call for it.</td>
+            </tr>
+            <tr>
+              <th scope="row">Site prep</th>
+              <td>Both, equally. Level ground, gravel, and blocking cost the same whichever way the container got there.</td>
+              <td class="is-hi">Price it once, then leave it out of the comparison, because it does not move the break-even. It does move your total.</td>
+            </tr>
+            <tr>
+              <th scope="row">Relocation</th>
+              <td>Both. Moving a container after it is set is its own job and its own bill.</td>
+              <td class="is-hi">On a rental, ask for the move fee up front. On a container you own, it is your arrangement to make, so get a haul quote before you assume it is easy.</td>
+            </tr>
+            <tr>
+              <th scope="row">Getting rid of it at the end</th>
+              <td>Purchase only. A rental ends by itself. A container you own ends when you decide it does.</td>
+              <td class="is-hi">Decide now whether you want that job later. If you do not, that is a real argument for renting, and it is Case 3 above.</td>
+            </tr>
+            <tr>
+              <th scope="row">The container as an asset</th>
+              <td>Purchase only, and the calculator gives you no credit for it.</td>
+              <td class="is-hi">A container you own can be sold when the need goes away, and one you rent cannot, because it was never yours. We are not putting a number on that, and neither should anyone else. What it would fetch depends on its condition and on the market on the day you sell.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="gaps-after">
+        <figure class="rr-fig rr-fig-dark">
+          <Image src={padPhoto} width={1200} format="webp" loading="lazy" decoding="async"
+            alt="A close view of the corner casting of a grey shipping container resting on a concrete block bedded into a gravel pad, in a fenced residential back yard." />
+          <figcaption>
+            <b>The ground under it is the same bill either way.</b> Blocking and a gravel pad get priced
+            once, and they do not move the break-even month, because a rented container needs level
+            ground exactly as much as one you own.
+          </figcaption>
+        </figure>
+
+      <p class="gaps-close">
+        Two of those cut against buying and one of them cuts for it, which is roughly how an honest
+        comparison usually lands. The two that cut against buying are the up-front cash and the disposal
+        job at the end. The one that cuts for it is that the break-even month treats a container you own
+        as worth nothing, and it is not worth nothing, it is a steel box standing on your property that
+        somebody will want. We are deliberately not modelling that, because the moment we put a resale
+        figure in the tool we would be selling you something instead of adding up your quote.
+      </p>
+      </div>
+
+      <div class="gaps-notes">
+        <div class="gaps-note">
+          <strong>Where you put it is not our call.</strong>
+          <p>
+            Whether a container is allowed on your property, and whether anything needs to be filed
+            first, is a matter for your local zoning or building department, and confirming it before
+            delivery is the property owner's responsibility. Steel Box Direct does not make permit or
+            zoning determinations. This applies the same way whether the container is rented or bought.
+          </p>
+          <a href="/permits/">More on how to ask that question</a>
+        </div>
+        <div class="gaps-note">
+          <strong>What we sell.</strong>
+          <p>
+            Used Wind and Water Tight containers, which means built to keep weather out, with a Lifetime
+            Leak Warranty. Surface rust and cosmetic wear are normal on a used box. If you have a use in
+            mind that turns on how much the steel can take, on a modification, or on holding weight
+            overhead, that is a question for a licensed engineer or the manufacturer, not for us and not
+            for a calculator.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 6. FAQ ============ -->
+  <section class="rr-faq" id="faq" aria-labelledby="faq-h">
+    <div class="wrap">
+      <div class="rr-sh">
+        <span class="m">Common questions</span>
+        <h2 class="rr-h2" id="faq-h">Rent vs buy, answered straight</h2>
+      </div>
+
+      <div class="faq-grid">
+        {faqs.map((f) => (
+          <div class="faq-card">
+            <h3>{f.q}</h3>
+            <p>{f.a}</p>
+            {f.priceDisc && (
+              <p class="price-disc">
+                These are average starting prices, not quotes. What you pay can land above or below,
+                depending mostly on how far we deliver and current market supply.
+                <b>Average as of {asOfLabel}</b>
+              </p>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 7. CLOSING CTA ============ -->
+  <section class="rr-cta" aria-labelledby="cta-h">
+    <div class="wrap rr-cta-inner">
+      <p class="m rr-cta-kicker">However it came out</p>
+      <h2 id="cta-h">Whatever the number said, that is the number</h2>
+      <p class="rr-cta-body">
+        If the break-even lands past your finish date, rent. That is the right call, our rental guide is
+        the useful page for you, and we would rather you go use it than fill in a form here.
+      </p>
+      <p class="rr-cta-body">
+        If it lands before your finish date, or your need never had a finish date to begin with, then it
+        is worth getting a real purchase number instead of comparing against an average. Tell us the
+        size and your delivery zip and you get one all-in delivered figure back, on a used Wind and
+        Water Tight container with a Lifetime Leak Warranty, across Ohio, Indiana, Kentucky, and western
+        West Virginia. If you would rather spread it, we offer rent-to-own over 12, 24, 36, or 48 months
+        with no traditional credit check, subject to approval by My Container Rental, the independent
+        third party that administers the program, so approval is not ours to promise.
+      </p>
+      <p class="rr-cta-body">No pressure either way. The arithmetic above works whether or not you ever call us.</p>
+      <div class="rr-cta-btns">
+        <a href="/quote/" class="btn rr-btn-yellow">Get My Quote →</a>
+        <a href="/container-rental-guide/" class="btn-ghost">Where to rent instead</a>
+        <a href="/rent-to-own/" class="btn-ghost">How rent-to-own works</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 8. CONTINUE RESEARCHING ============ -->
+  <section class="rr-next" aria-labelledby="next-h">
+    <div class="wrap">
+      <p class="rr-next-label" id="next-h">Continue researching</p>
+      <div class="rr-next-links">
+        <a href="/cost/">What a container costs</a>
+        <a href="/size/">What size do I need</a>
+        <a href="/condition/">Condition grades explained</a>
+        <a href="/delivery/">How delivery works</a>
+        <a href="/permits/">Do I need a permit</a>
+        <a href="/shipping-container-guides/">All guides</a>
+      </div>
+    </div>
+  </section>
+
+  <script is:inline>
+    /* Rent vs buy break-even arithmetic. No libraries, no network, no storage.
+       The wrapper class flips the JS block on immediately so the paper fallback
+       never flashes. Every box starts empty on purpose. The only price channel
+       into this script is the rendered option value attributes. */
+    (function () {
+      var wrap = document.getElementById('rvb-calc-wrap');
+      if (wrap) wrap.classList.add('has-js');
+
+      var form = document.getElementById('rvb-form');
+      if (!form) return;
+
+      var rateEl = document.getElementById('calc-rate');
+      var delEl = document.getElementById('calc-rent-delivery');
+      var pickEl = document.getElementById('calc-rent-pickup');
+      var buyEl = document.getElementById('calc-buy');
+      var sizeEl = document.getElementById('calc-size');
+      var monthsEl = document.getElementById('calc-months');
+
+      var totalEl = document.getElementById('calc-total');
+      var verdictEl = document.getElementById('calc-verdict');
+      var statsEl = document.getElementById('calc-stats');
+      var stTotalLabel = document.getElementById('st-total-label');
+      var stTotal = document.getElementById('st-total');
+      var stFees = document.getElementById('st-fees');
+      var stBuy = document.getElementById('st-buy');
+      var afterEl = document.getElementById('calc-after');
+      var seedDisc = document.getElementById('calc-seed-disc');
+      var rentWins = document.getElementById('calc-rentwins');
+      var honestyEl = document.getElementById('calc-honesty');
+      var resetBtn = document.getElementById('calc-reset');
+
+      var DEFAULT_HONESTY = honestyEl.textContent;
+      var seeded = false;
+
+      function money(n) {
+        var hasCents = Math.round(n * 100) % 100 !== 0;
+        return '$' + n.toLocaleString('en-US', {
+          minimumFractionDigits: hasCents ? 2 : 0,
+          maximumFractionDigits: 2
+        });
+      }
+
+      function num(el) {
+        var v = parseFloat(el.value);
+        return (isFinite(v) && v >= 0) ? v : 0;
+      }
+
+      function monthWord(n) { return n === 1 ? 'month' : 'months'; }
+
+      function setBig(text, isNum) {
+        /* classList, not className: assigning className would strip the scoped
+           style attribute Astro puts on this element. */
+        if (isNum) { totalEl.classList.add('is-num'); } else { totalEl.classList.remove('is-num'); }
+        totalEl.innerHTML = '';
+        if (isNum) {
+          var label = document.createElement('span');
+          label.className = 'mo';
+          /* Trailing space so a screen reader says "Month 14", not "Month14". */
+          label.textContent = 'Month ';
+          totalEl.appendChild(label);
+          totalEl.appendChild(document.createTextNode(text));
+        } else {
+          totalEl.textContent = text;
+        }
+      }
+
+      function emptyState(headline, body) {
+        setBig(headline, false);
+        verdictEl.hidden = true;
+        statsEl.hidden = true;
+        rentWins.hidden = true;
+        afterEl.textContent = body;
+        honestyEl.textContent = DEFAULT_HONESTY;
+        seedDisc.hidden = !seeded;
+      }
+
+      function update() {
+        var rate = parseFloat(rateEl.value);
+        var buy = parseFloat(buyEl.value);
+        var oneTime = num(delEl) + num(pickEl);
+        var monthsRaw = parseFloat(monthsEl.value);
+        var hasMonths = isFinite(monthsRaw) && monthsRaw > 0;
+        var months = hasMonths ? Math.round(monthsRaw) : 0;
+
+        var rateOk = isFinite(rate) && rate > 0;
+        var buyOk = isFinite(buy) && buy > 0;
+
+        /* Nothing usable yet, or only one of the two required figures. Never throw an error. */
+        if (!rateOk && !buyOk) {
+          emptyState('Enter a monthly rate and a purchase price',
+            'Put in the monthly rate you were quoted and what a container would cost to buy. The month where the rental total passes the purchase price appears here.');
+          return;
+        }
+        if (!rateOk || !buyOk) {
+          emptyState('One more number to go',
+            'Add the other figure and the break-even month appears here.');
+          return;
+        }
+
+        seedDisc.hidden = !seeded;
+        stFees.textContent = money(oneTime);
+        stBuy.textContent = money(buy);
+
+        /* Case D. The one-time fees alone already match or beat the purchase price. */
+        if (oneTime >= buy) {
+          setBig('Before the first monthly payment', false);
+          verdictEl.hidden = true;
+          statsEl.hidden = false;
+          stTotalLabel.textContent = 'One-time fees alone';
+          stTotal.textContent = money(oneTime);
+          rentWins.hidden = true;
+          honestyEl.textContent = DEFAULT_HONESTY;
+          afterEl.textContent = 'The delivery and pickup fees on their own come to ' + money(oneTime)
+            + ', which already matches or beats a purchase price of ' + money(buy)
+            + '. Check those two figures, because that is an unusual quote. If they are right, the monthly rate is not the number deciding this.';
+          return;
+        }
+
+        /* The break-even month: the first whole month at which the running rental
+           total is at or above the purchase price. Round up, never down. */
+        var n = Math.ceil((buy - oneTime) / rate);
+        if (n < 1) n = 1;
+
+        setBig(String(n), true);
+        statsEl.hidden = false;
+
+        var feesClause = oneTime > 0 ? ', plus ' + money(oneTime) + ' in one-time rental fees' : '';
+
+        if (!hasMonths) {
+          /* Case A. Months left blank. The default result. */
+          verdictEl.hidden = true;
+          stTotalLabel.textContent = 'Rental total at month ' + n;
+          stTotal.textContent = money(oneTime + rate * n);
+          rentWins.hidden = true;
+          honestyEl.textContent = DEFAULT_HONESTY;
+          afterEl.textContent = 'At ' + money(rate) + ' a month' + feesClause + ', the rental passes '
+            + money(buy) + ' in month ' + n + '. Everything you pay from month ' + n
+            + ' onward is money that would have bought the container outright. At the end of the rental you hand it back.';
+          return;
+        }
+
+        var rentalTotal = oneTime + rate * months;
+        stTotalLabel.textContent = 'Total rental over ' + months + ' ' + monthWord(months);
+        stTotal.textContent = money(rentalTotal);
+
+        if (months < n) {
+          /* Case B. Renting wins on this timeline, and we say so. */
+          verdictEl.hidden = false;
+          verdictEl.textContent = 'Renting costs less over ' + months + ' ' + monthWord(months);
+          rentWins.hidden = false;
+          honestyEl.textContent = DEFAULT_HONESTY;
+          afterEl.textContent = 'Over ' + months + ' ' + monthWord(months) + ', the rental comes to '
+            + money(rentalTotal) + ', which is ' + money(buy - rentalTotal) + ' less than buying at '
+            + money(buy) + '. Renting does not overtake buying until month ' + n
+            + ', and you are done before then. On these numbers renting is the better call, and you also get to hand the container back instead of owning something you no longer need.';
+          return;
+        }
+
+        /* Case C. The timeline is at or past the break-even month. */
+        verdictEl.hidden = false;
+        verdictEl.textContent = money(rentalTotal) + ' over ' + months + ' ' + monthWord(months)
+          + '. Break-even at month ' + n + '.';
+        rentWins.hidden = true;
+        honestyEl.textContent = DEFAULT_HONESTY;
+        afterEl.textContent = 'By month ' + months + ' the rental has cost ' + money(rentalTotal)
+          + ', which is ' + money(rentalTotal - buy) + ' more than buying at ' + money(buy)
+          + '. It passed the purchase price in month ' + n
+          + ', and it has been passing it every month since. At the end of month ' + months
+          + ' the container goes back on a truck and you own nothing.';
+      }
+
+      sizeEl.addEventListener('change', function () {
+        if (sizeEl.value) {
+          buyEl.value = sizeEl.value;
+          seeded = true;
+        } else {
+          seeded = false;
+        }
+        update();
+      });
+
+      buyEl.addEventListener('input', function () {
+        /* Typing over the seeded figure means it is the reader's number now. */
+        if (seeded && buyEl.value !== sizeEl.value) {
+          seeded = false;
+          sizeEl.value = '';
+        }
+        update();
+      });
+
+      [rateEl, delEl, pickEl, monthsEl].forEach(function (el) {
+        el.addEventListener('input', update);
+      });
+
+      form.addEventListener('submit', function (e) { e.preventDefault(); update(); });
+
+      resetBtn.addEventListener('click', function () {
+        form.reset();
+        seeded = false;
+        emptyState('Enter a monthly rate and a purchase price',
+          'Put in the monthly rate you were quoted and what a container would cost to buy. The month where the rental total passes the purchase price appears here.');
+        rateEl.focus();
+      });
+    })();
+  </script>
+
+</BaseLayout>
+
+<style>
+  /* The user-agent [hidden] rule loses to the author rules below, so the four result slots
+     that ship hidden would render in their empty state on first paint without this. */
+  [hidden]{display:none!important}
+
+  .rr-btn-yellow{background:var(--yellow);color:var(--ink);border-color:var(--yellow)}
+  .rr-btn-yellow:hover{background:transparent;color:var(--yellow)}
+
+  /* ============ SHARED SECTION HEADER ============ */
+  .rr-sh{border-top:4px solid var(--ink);padding-top:18px;margin-bottom:40px}
+  .rr-sh .m{display:block;opacity:.65;margin-bottom:10px}
+  .rr-sh-dark{border-top-color:var(--yellow)}
+  .rr-sh-dark .m{color:var(--yellow);opacity:1}
+  .rr-h2{font-family:var(--narrow);font-weight:700;text-transform:uppercase;font-size:clamp(30px,4.5vw,48px);line-height:1;letter-spacing:-.01em;margin:0}
+  .rr-sh-sub{font-size:17px;line-height:1.55;max-width:820px;margin:18px 0 0;opacity:.82}
+
+  /* ============ HERO ============ */
+  .rr-hero{background:var(--c3-deliver);color:var(--cream);padding:44px 0 56px;border-bottom:2.5px solid var(--ink)}
+  .rr-crumbs{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;opacity:.9;margin:0 0 24px}
+  .rr-crumbs a{border-bottom:1px solid rgba(246,241,231,.4)}
+  .rr-eyebrow{display:inline-flex;align-items:center;gap:14px;flex-wrap:wrap;border:2px solid var(--cream);padding:8px 14px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+  .rr-eyebrow .idx{font-weight:700}
+  .rr-eyebrow .tg{opacity:.9}
+  .rr-headline{font-family:var(--narrow);font-weight:700;text-transform:uppercase;font-size:clamp(38px,5.6vw,78px);line-height:1.02;letter-spacing:-.02em;margin:24px 0 0;max-width:18ch}
+  .rr-headline .nb{white-space:nowrap}
+  .rr-headline em{font-style:normal;background:var(--ink);color:var(--cream);padding:0 .1em;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+  .rr-statement{background:var(--ink);color:var(--cream);border:2.5px solid var(--ink);box-shadow:10px 10px 0 rgba(11,15,26,.35);padding:30px 32px;margin:34px 0 0;max-width:900px}
+  .rr-statement .rr-statement-k{display:block;color:var(--yellow);margin-bottom:14px}
+  .rr-statement p{margin:0;font-size:clamp(18px,2.1vw,24px);line-height:1.35;font-family:var(--narrow);font-weight:700;text-transform:uppercase;letter-spacing:-.01em}
+  .rr-statement p.rr-statement-body{font-family:var(--display);font-weight:400;text-transform:none;letter-spacing:0;font-size:16.5px;line-height:1.6;opacity:.88;margin-top:16px}
+  .rr-hero-jump{display:flex;flex-wrap:wrap;gap:12px;margin:28px 0 0;padding:0;list-style:none}
+  .rr-hero-jump a{display:inline-block;border:2px solid var(--cream);padding:9px 14px;font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase}
+  .rr-hero-jump a:hover{background:var(--cream);color:var(--c3-deliver)}
+
+  /* ============ FIGURES (treatment lifted from the rental guide) ============ */
+  .rr-fig{margin:0;border:2.5px solid var(--ink);background:#fff;box-shadow:8px 8px 0 var(--ink)}
+  .rr-fig img{width:100%;height:auto;display:block;aspect-ratio:1200/654;object-fit:cover}
+  .rr-fig figcaption{padding:15px 20px;border-top:2.5px solid var(--ink);font-size:14.5px;line-height:1.55;opacity:.88}
+  .rr-fig figcaption b{font-family:var(--narrow);font-weight:700;text-transform:uppercase;letter-spacing:.01em;opacity:1}
+  .rr-fig-dark{border-color:var(--cream);background:rgba(246,241,231,.06);box-shadow:8px 8px 0 var(--yellow)}
+  .rr-fig-dark figcaption{border-top-color:var(--cream);color:var(--cream);opacity:.86}
+  /* Letterbox band: the photo works as a horizontal rule that happens to be a photograph. */
+  .rr-fig-band img{aspect-ratio:1320/430;object-position:center 58%}
+
+  /* ============ THE TOOL ============ */
+  /* The ink field is treated as graph paper rather than a slab of black: the working
+     (cream sheet) and the answer (yellow stamp) are laid on top of it, not built from it. */
+  .rr-tool{padding:84px 0 96px;background-color:var(--ink);color:var(--cream);
+    background-image:
+      repeating-linear-gradient(0deg,rgba(246,241,231,.05) 0 1px,transparent 1px 68px),
+      repeating-linear-gradient(90deg,rgba(246,241,231,.05) 0 1px,transparent 1px 68px);
+    background-position:0 0}
+  .rr-tool .rr-h2{color:var(--cream)}
+  .rr-tool .rr-sh-sub{opacity:.85}
+  .tool-fig{margin:0 0 34px}
+  .calc{margin:0}
+
+  /* The asymmetry block: the single most useful honest thing on the page.
+     Two solid grounds, because they are two different deals and should not look alike. */
+  .asym{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:0 0 34px}
+  .asym-card{border:2.5px solid var(--ink);padding:20px 22px;box-shadow:8px 8px 0 rgba(11,15,26,.55)}
+  .asym-card.is-rent{background:var(--c3-deliver);color:var(--cream);border-color:var(--cream)}
+  .asym-card.is-buy{background:var(--yellow);color:var(--ink)}
+  .asym-card .m{display:block;opacity:.85;margin-bottom:9px;font-weight:700}
+  .asym-card h3{font-family:var(--narrow);font-weight:700;font-size:20px;text-transform:uppercase;line-height:1.14;margin:0 0 9px}
+  .asym-card p{margin:0;font-size:14.5px;line-height:1.58}
+  .asym-card.is-rent p{opacity:.95}
+
+  /* The working sheet. Inputs come off the ink and onto cream so the form reads as paper. */
+  .calc-sheet{background:var(--cream);color:var(--ink);border:2.5px solid var(--ink);border-top:10px solid var(--ink);box-shadow:14px 14px 0 var(--yellow);padding:30px 32px 32px}
+  .calc-form{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px 24px;margin:26px 0 0;align-items:start}
+  .calc-field{display:flex;flex-direction:column;gap:7px}
+  .calc-field label{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;line-height:1.5;font-weight:700}
+  .calc-field input,.calc-field select{width:100%;padding:13px 14px;border:2.5px solid var(--ink);background:#fff;color:var(--ink);font-family:var(--mono);font-size:16px}
+  .calc-field input:focus-visible,.calc-field select:focus-visible{outline:3px solid var(--c3-deliver);outline-offset:2px}
+  summary:focus-visible,.btn:focus-visible,a:focus-visible,.calc-reset:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+  /* On the cream sheet the focus ring switches to cobalt: yellow on cream is 1.3:1 and would not read. */
+  .calc-sheet .btn:focus-visible,.calc-sheet a:focus-visible,.calc-reset:focus-visible{outline-color:var(--c3-deliver)}
+  .calc-help{font-family:var(--display);font-size:13px;line-height:1.5;opacity:.72;margin:0;text-transform:none;letter-spacing:0}
+  .calc-field.is-seed{grid-column:span 1}
+  .price-disc{margin:10px 0 0;font-size:12.5px;line-height:1.6;opacity:.85;border-left:2.5px solid var(--yellow);padding-left:12px}
+  .price-disc b{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;display:block;margin-top:5px;color:var(--yellow)}
+  .calc-sheet .price-disc{border-left-color:var(--ink);opacity:.9}
+  .calc-sheet .price-disc b{color:var(--ink)}
+  .calc-actions{display:flex;align-items:center;gap:22px;flex-wrap:wrap;margin:26px 0 0;padding-top:24px;border-top:2.5px solid var(--ink)}
+  .calc-reset{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;border-bottom:1.5px solid currentColor;background:none;border-top:none;border-left:none;border-right:none;color:var(--ink);cursor:pointer;padding:3px 0;opacity:.75}
+  /* Hover darkens to full ink rather than to red: red on cream is 3.75:1 and fails AA. */
+  .calc-reset:hover{opacity:1;color:var(--ink)}
+  .calc-hint{margin:22px 0 0;max-width:900px;font-size:13.5px;line-height:1.65;opacity:.8;border-left:2.5px solid var(--ink);padding-left:14px}
+
+  /* Results panel. The break-even MONTH is the climax, so it gets a field of its own. */
+  .calc-out{margin:34px 0 0;background:var(--yellow);color:var(--ink);border:2.5px solid var(--ink);box-shadow:14px 14px 0 var(--cream)}
+  .calc-out-grid{display:grid;grid-template-columns:minmax(280px,.82fr) 1.18fr;align-items:start}
+  .calc-out-a{padding:28px 30px 30px;border-right:2.5px solid var(--ink);align-self:stretch;display:flex;flex-direction:column;justify-content:center}
+  .calc-out-b{padding:28px 30px 30px}
+  .calc-out-k{display:block;opacity:.75;margin-bottom:12px;font-weight:700}
+  .calc-big{font-family:var(--narrow);font-weight:700;font-size:clamp(24px,2.8vw,34px);text-transform:uppercase;line-height:1.05;margin:0;letter-spacing:-.01em}
+  .calc-big.is-num{font-size:clamp(104px,11vw,168px);line-height:.8;letter-spacing:-.04em}
+  /* :global because the script creates this span, so it never carries the scope attribute. */
+  .calc-big :global(.mo){display:block;font-size:.16em;letter-spacing:.14em;line-height:1;opacity:.75;margin-bottom:.22em;font-family:var(--mono);font-weight:500}
+  .calc-verdict{margin:0 0 18px;padding:13px 16px;background:var(--ink);color:var(--cream);font-family:var(--narrow);font-weight:700;font-size:clamp(17px,1.9vw,22px);text-transform:uppercase;line-height:1.2}
+  /* Ledger, not a row of tiles. Reads like the receipt the arithmetic came off. */
+  .calc-stats{display:block;margin:0 0 18px;border-top:2.5px solid var(--ink)}
+  .calc-stats div{display:flex;justify-content:space-between;align-items:baseline;gap:18px;padding:11px 0;border-bottom:1.5px solid rgba(11,15,26,.3)}
+  .calc-stats div:last-child{border-bottom:2.5px solid var(--ink)}
+  .calc-stats .m{display:block;opacity:.8;line-height:1.4}
+  .calc-stats b{font-family:var(--narrow);font-weight:700;font-size:clamp(20px,2.2vw,27px);line-height:1;white-space:nowrap}
+  .calc-after{margin:0;font-size:15.5px;line-height:1.62}
+  .calc-out .price-disc{border-left-color:var(--ink);opacity:.85}
+  .calc-out .price-disc b{color:var(--ink)}
+  .calc-rentwins{margin:24px 0 0;padding:20px 22px;background:var(--c5-permits);color:var(--ink);border:2.5px solid var(--ink);box-shadow:8px 8px 0 var(--ink)}
+  .calc-rentwins strong{font-family:var(--narrow);font-weight:700;font-size:clamp(18px,2.2vw,24px);text-transform:uppercase;line-height:1.15;display:block;margin-bottom:8px}
+  .calc-rentwins p{margin:0;font-size:15px;line-height:1.55}
+  .calc-rentwins a{border-bottom:2px solid var(--ink);font-weight:700}
+  /* Footnotes sit side by side so the ink at the foot of the section is a margin, not a wall. */
+  .calc-foot{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin:36px 0 0;padding-top:26px;border-top:2px solid rgba(246,241,231,.28)}
+  .calc-honesty{margin:0;padding-left:16px;border-left:2.5px solid var(--c5-permits);font-size:14.5px;line-height:1.65;opacity:.92}
+  .calc-note{margin:0;padding-left:16px;border-left:2.5px solid rgba(246,241,231,.35);font-size:14px;line-height:1.65;opacity:.78}
+  .calc-nojs{background:var(--cream);color:var(--ink);border:2.5px solid var(--ink);border-top:10px solid var(--ink);box-shadow:14px 14px 0 var(--yellow);padding:26px 28px;font-size:14.5px;line-height:1.65}
+  .calc-nojs strong{display:block;font-family:var(--narrow);font-weight:700;font-size:20px;text-transform:uppercase;margin-bottom:12px}
+  .calc-nojs ol{margin:0 0 14px;padding-left:20px}
+  .calc-nojs li{margin-bottom:6px}
+  .calc-nojs p{margin:0 0 12px}
+  .calc-nojs p:last-child{margin-bottom:0}
+  .calc-js{display:none}
+  .calc.has-js .calc-js{display:block}
+  .calc.has-js .calc-nojs{display:none}
+
+  /* ============ MEANING SECTION ============ */
+  .rr-mean{padding:88px 0;background:var(--cream);border-bottom:1.5px solid rgba(11,15,26,.1)}
+  .mean-grid{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(0,.88fr);gap:48px;align-items:start}
+  .mean-fig{position:sticky;top:120px}
+  .mean-body{max-width:860px}
+  .mean-body p{font-size:17px;line-height:1.68;margin:0 0 20px}
+  .mean-body p:last-child{margin-bottom:0}
+  .mean-pull{border-left:8px solid var(--c3-deliver);background:#fff;border:2px solid var(--ink);border-left:8px solid var(--c3-deliver);box-shadow:8px 8px 0 var(--ink);padding:22px 26px;margin:32px 0 0;max-width:860px;font-size:15.5px;line-height:1.6}
+  .mean-pull a{border-bottom:2px solid var(--c3-deliver);font-weight:700}
+
+  /* ============ RENTING WINS SECTION ============ */
+  .rr-rent{padding:88px 0;background:#fff;border-bottom:1.5px solid rgba(11,15,26,.1)}
+  .rent-top{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:32px;align-items:center;margin:0 0 36px}
+  .rent-intro{font-size:17px;line-height:1.62;margin:0;padding:26px 28px;background:var(--ink);color:var(--cream);border-left:10px solid var(--c4-cost)}
+  .case-list{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}
+  .case{background:var(--cream);border:2px solid var(--ink);border-left:8px solid var(--c4-cost);box-shadow:8px 8px 0 var(--ink)}
+  .case summary{list-style:none;cursor:pointer;padding:20px 24px;display:block}
+  .case summary::-webkit-details-marker{display:none}
+  .case summary .m{display:block;opacity:.65;margin-bottom:8px;font-weight:700}
+  .case summary h3{font-family:var(--narrow);font-weight:700;font-size:21px;text-transform:uppercase;line-height:1.14;margin:0;display:flex;justify-content:space-between;gap:14px;align-items:flex-start}
+  .case summary h3::after{content:"+";font-family:var(--mono);font-weight:400;font-size:22px;line-height:1;flex-shrink:0;color:var(--c4-cost)}
+  .case[open] summary h3::after{content:"-"}
+  .case summary:hover{background:#fff}
+  .case p{margin:0;padding:0 24px 22px;font-size:15.5px;line-height:1.62}
+  .rent-close{margin:32px 0 0;max-width:900px;padding:24px 26px;background:var(--cream);border:2px solid var(--ink);box-shadow:8px 8px 0 var(--c4-cost)}
+  .rent-close p{margin:0 0 14px;font-size:16px;line-height:1.62}
+  .rent-close p:last-child{margin-bottom:0}
+  .rent-close a.big-link{display:inline-block;font-family:var(--narrow);font-weight:700;font-size:20px;text-transform:uppercase;border-bottom:3px solid var(--c4-cost);margin-top:4px}
+  .rent-close a.big-link:hover{color:var(--c4-cost)}
+
+  /* ============ GAPS SECTION ============ */
+  .rr-gaps{padding:88px 0;background:var(--ink);color:var(--cream)}
+  .rr-gaps .rr-h2{color:var(--cream)}
+  .rr-gaps .rr-sh-sub{opacity:.8}
+  .tbl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .rr-table{width:100%;border-collapse:collapse;background:var(--cream);color:var(--ink);border:2.5px solid var(--cream);box-shadow:12px 12px 0 var(--yellow);table-layout:fixed;min-width:900px}
+  .rr-table-caption{text-align:left;font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;opacity:.7;margin:0 0 14px;line-height:1.5;color:var(--cream);max-width:820px}
+  .rr-table-hint{display:none}
+  .rr-table thead th{vertical-align:bottom;padding:18px 20px;border-bottom:2.5px solid var(--ink);text-align:left}
+  .rt-rowhead{width:26%;background:var(--ink);color:var(--cream)}
+  .rt-hi{background:var(--yellow)}
+  .rt-alt{background:#fff}
+  .rt-title{font-family:var(--narrow);font-weight:700;font-size:19px;line-height:1.05;text-transform:uppercase}
+  .rr-table tbody th{text-align:left;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:500;padding:16px 20px;background:var(--ink);color:var(--cream);border-bottom:1px solid rgba(246,241,231,.12);vertical-align:top}
+  .rr-table tbody td{padding:16px 20px;font-size:14.5px;line-height:1.5;border-bottom:1px solid rgba(11,15,26,.12);border-left:1px solid rgba(11,15,26,.12);vertical-align:top}
+  .rr-table tbody td.is-hi{background:rgba(255,211,0,.18)}
+  .rr-table tbody tr:last-child th,.rr-table tbody tr:last-child td{border-bottom:none}
+  .gaps-after{display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);gap:44px;align-items:start;margin:48px 0 0}
+  .gaps-close{font-size:15.5px;line-height:1.68;opacity:.88;margin:0}
+  .gaps-notes{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:36px 0 0}
+  .gaps-note{border:2px dashed rgba(246,241,231,.4);padding:22px 24px}
+  .gaps-note strong{display:block;font-family:var(--narrow);font-weight:700;font-size:20px;text-transform:uppercase;color:var(--yellow);margin-bottom:10px}
+  .gaps-note p{margin:0;font-size:14.5px;line-height:1.62;opacity:.88}
+  .gaps-note a{display:inline-block;margin-top:12px;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;border-bottom:1.5px solid var(--yellow);color:var(--yellow)}
+
+  /* ============ FAQ ============ */
+  .rr-faq{padding:88px 0;background:var(--cream)}
+  .faq-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+  .faq-card{background:#fff;border:2px solid var(--ink);border-left:8px solid var(--c3-deliver);box-shadow:8px 8px 0 var(--ink);padding:24px 26px}
+  .faq-card h3{font-family:var(--narrow);font-weight:700;font-size:21px;text-transform:uppercase;line-height:1.15;margin:0 0 12px}
+  .faq-card p{margin:0;font-size:15.5px;line-height:1.62}
+  .faq-card .price-disc{border-left-color:var(--c4-cost);opacity:.85;font-size:12.5px}
+  .faq-card .price-disc b{color:var(--c4-cost)}
+
+  /* ============ CTA + NEXT ============ */
+  .rr-cta{padding:76px 0;background:var(--ink);color:var(--cream);border-top:1px solid rgba(246,241,231,.15)}
+  .rr-cta-inner{display:flex;flex-direction:column;align-items:flex-start;gap:22px;max-width:800px}
+  .rr-cta-kicker{color:var(--yellow);margin:0}
+  .rr-cta h2{font-family:var(--narrow);font-weight:700;text-transform:uppercase;font-size:clamp(28px,4vw,46px);line-height:1.05;margin:0}
+  .rr-cta-body{font-size:17px;line-height:1.6;opacity:.82;margin:0}
+  .rr-cta-btns{display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+  .rr-cta .btn-ghost{color:var(--cream)}
+  .rr-cta .btn-ghost:hover{color:var(--yellow)}
+  .rr-next{padding:48px 0;background:var(--ink);color:var(--cream);border-top:2px solid rgba(255,255,255,.08)}
+  .rr-next-label{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--yellow);margin:0 0 16px}
+  .rr-next-links{display:flex;flex-wrap:wrap;gap:20px}
+  .rr-next-links a{font-family:var(--narrow);font-size:17px;font-weight:600;color:var(--cream);border-bottom:2px solid rgba(255,255,255,.2);padding-bottom:2px}
+  .rr-next-links a:hover{color:var(--yellow);border-color:var(--yellow)}
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width:1180px){
+    .calc-form{grid-template-columns:1fr 1fr}
+  }
+  @media (max-width:1080px){
+    .case-list,.faq-grid,.gaps-notes{grid-template-columns:1fr}
+    .mean-grid,.rent-top,.gaps-after,.calc-out-grid,.calc-foot{grid-template-columns:1fr}
+    .mean-grid,.gaps-after{gap:36px}
+    .mean-fig{position:static}
+    .calc-out-a{border-right:none;border-bottom:2.5px solid var(--ink)}
+    .calc-foot{gap:24px}
+  }
+  @media (max-width:960px){
+    .rr-hero{padding:36px 0 48px}
+    .rr-tool,.rr-mean,.rr-rent,.rr-gaps,.rr-faq{padding:60px 0}
+    .asym,.calc-form{grid-template-columns:1fr}
+    .rr-fig-band img{aspect-ratio:1200/560}
+    .rr-table-hint{display:block;margin-top:6px;color:var(--yellow);opacity:.9}
+  }
+  @media (max-width:720px){
+    .rr-statement{padding:22px;box-shadow:6px 6px 0 rgba(11,15,26,.35)}
+    .calc-sheet,.calc-nojs{padding:22px 20px;box-shadow:7px 7px 0 var(--yellow)}
+    .calc-out{box-shadow:7px 7px 0 var(--cream)}
+    .calc-out-a,.calc-out-b{padding:22px 20px}
+    .asym-card{box-shadow:6px 6px 0 rgba(11,15,26,.55)}
+    .rr-fig,.rr-fig-dark{box-shadow:6px 6px 0 var(--ink)}
+    .rr-fig-dark{box-shadow:6px 6px 0 var(--yellow)}
+    .rr-table{box-shadow:6px 6px 0 var(--yellow)}
+    .case p{padding:0 20px 20px}
+    .case summary{padding:18px 20px}
+    .faq-card,.rent-close{padding:20px}
+  }
+</style>
