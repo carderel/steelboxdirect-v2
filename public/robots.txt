@@ -1,21 +1,84 @@
+# Steel Box Direct robots.txt
+#
+# HOW THIS FILE WORKS, AND WHY EVERY RULE IS REPEATED
+# RFC 9309 section 2.2.1: a crawler obeys only the single most specific group that matches its
+# product token, and groups do NOT inherit from the * group. So a rule added to * alone applies
+# to nothing except crawlers that fall through to *. Every rule that must bind a named crawler is
+# therefore repeated inside that crawler group. If you add a rule, add it to EVERY group.
+# Within a group the longest matching path wins, so Disallow: /admin/ beats Allow: / for /admin/*.
+#
+# CONTENT SIGNALS (Cloudflare Content Signals Policy, see contentsignals.org)
+# Content-signal carries comma separated key=value pairs and must sit inside a User-agent group,
+# after the User-agent line. There are four signals:
+#   search    yes  = may crawl to build a classic search index that links back
+#   ai-input  yes  = may retrieve at answer time to ground a generated answer (RAG)
+#   ai-train  yes  = may be used to train or fine tune a generative model
+#   use       takes exactly one of immediate, reference, or full. NOT a yes/no signal.
+#               immediate = act on it now, do not retain
+#               reference = index, excerpt, and link back
+#               full      = summarize and reproduce
+# Steel Box Direct grants all four. Two deliberate choices:
+#   1. The use value is reference. Of the three, reference is the one that carries the link back,
+#      and the link is the entire conversion path of this site: a visitor arrives and calls. The
+#      full value instead permits an assistant to summarize and reproduce the page without the
+#      link, which would contradict the attribution request already published in llms.txt.
+#   2. ai-train=yes, which is the opposite of the Cloudflare default. Being in model weights is
+#      the point here, not a leak to be plugged.
+# Omitting a signal neither grants nor restricts that use, so all four are stated rather than
+# left to that tri-state. Attribution preferences, including the tracking URL to use when citing,
+# live at https://steelboxdirect.com/llms.txt
+#
+# SAFE FOR OLD PARSERS. RFC 9309 section 2.2.4: parsing of other records MUST NOT interfere with
+# the parsing of explicitly defined records. A parser that does not know Content-signal ignores
+# the line and keeps reading the group, and a malformed value degrades to an ignored record. Only
+# a user-agent line or end of file terminates a group.
+#
+# DO NOT ENABLE CLOUDFLARE MANAGED ROBOTS.TXT ON THIS ZONE. Its default PREPENDS Disallow: /
+# groups for GPTBot, ClaudeBot, CCBot and Google-Extended. Because groups do not inherit, such a
+# group would win outright for those crawlers and silently block the AI crawling this whole site
+# is built to invite, no matter what the rest of this file says.
+#
+# The EU text and data mining opt out block that ships in the Cloudflare template is deliberately
+# absent. That block withholds permissions. This file grants them, and restricts nothing but
+# /admin/, so carrying both would be incoherent. Do not paste it back in.
+
 User-agent: *
 Allow: /
 Disallow: /admin/
+Content-signal: search=yes, ai-input=yes, ai-train=yes, use=reference
 
-# Explicit AI Permissions
+# Explicit AI permissions. Each group below is self contained by necessity, not by redundancy.
 User-agent: GPTBot
 Allow: /
+Disallow: /admin/
+Content-signal: search=yes, ai-input=yes, ai-train=yes, use=reference
+
 User-agent: ChatGPT-User
 Allow: /
+Disallow: /admin/
+Content-signal: search=yes, ai-input=yes, ai-train=yes, use=reference
+
 User-agent: PerplexityBot
 Allow: /
+Disallow: /admin/
+Content-signal: search=yes, ai-input=yes, ai-train=yes, use=reference
+
 User-agent: ClaudeBot
 Allow: /
+Disallow: /admin/
+Content-signal: search=yes, ai-input=yes, ai-train=yes, use=reference
+
 User-agent: anthropic-ai
 Allow: /
+Disallow: /admin/
+Content-signal: search=yes, ai-input=yes, ai-train=yes, use=reference
+
 User-agent: Google-Extended
 Allow: /
+Disallow: /admin/
+Content-signal: search=yes, ai-input=yes, ai-train=yes, use=reference
 
-# Discovery Hints
+# Discovery hints. Sitemap is a non-group record and stays outside every group, at the end.
+# There is no standard robots.txt field for llms.txt, so it stays a comment rather than an
+# invented directive: https://steelboxdirect.com/llms.txt
 Sitemap: https://steelboxdirect.com/sitemap-index.xml
-# llms.txt: https://steelboxdirect.com/llms.txt
