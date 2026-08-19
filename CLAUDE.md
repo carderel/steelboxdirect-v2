@@ -27,7 +27,9 @@ These apply regardless of what the user asks. No exceptions.
 ## HARD STOPS (inline — full list in HARD_STOPS.md)
 
 - NEVER commit secrets, API keys, or credentials
-- NEVER add dollar amounts or pricing to city pages
+- NEVER hand-type a dollar amount on a city page. City pages may show a price ONLY when it is
+  interpolated from the pricing module, scoped to a named ZIP, and shown with its effective date
+  and disclaimer (policy changed 2026-08-17, see quick facts below)
 - NEVER end a session without a session log
 - NEVER proceed past 5 todos without a checkpoint
 - NEVER ignore a UDO circuit breaker
@@ -41,7 +43,7 @@ These apply regardless of what the user asks. No exceptions.
 - Build: `npm run build`
 - Deploy: `git push` → triggers Cloudflare Pages auto-deploy
 - All dynamic routes need `export const prerender = true`
-- Pricing policy (updated 2026-07-09): average prices ALLOWED on homepage, product/size pages, and use-case pages — must be sourced from `src/data/pricing.ts` and shown with the "average starting price, your quote may be more or less" disclaimer. Still NEVER on city pages (see hard stop below). Rationale + scope: `.project-catalog/decisions/2026-07-09-pricing-display-policy.md`
+- Pricing policy (updated 2026-08-17): average prices ALLOWED on homepage, product/size pages, use-case pages, and NOW CITY PAGES. All must be sourced from `src/data/pricing.ts` (never hardcoded) and shown with the "average starting price, your quote may be more or less" disclaimer. **City pages additionally require** a named ZIP, the `effectiveSince` date, and the population-centroid basis. The old city-page hard stop is SUPERSEDED: its original reason was staleness, and a daily-verified feed cures staleness. Rationale + scope: `.project-catalog/decisions/2026-08-17-city-page-pricing-override.md`, which supersedes the city clause in `.project-catalog/decisions/2026-07-09-pricing-display-policy.md`
 - Agents: `.agents/astro-developer.md`, `.agents/seo-analyst.md`, `.agents/verifier.md`, `.agents/stuck.md`
 - Session logs: `.project-catalog/sessions/`
 - Checkpoints: `.checkpoints/`
