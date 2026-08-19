@@ -2,7 +2,6 @@ export const SITE_URL = 'https://steelboxdirect.com';
 export const ORG_ID = `${SITE_URL}/#organization`;
 export const LOCALBUSINESS_ID = `${SITE_URL}/#localbusiness`;
 export const WEBSITE_ID = `${SITE_URL}/#website`;
-export const FREEDOMCONEX_ID = `${SITE_URL}/#freedomconex`;
 
 const SAME_AS = [
   'https://maps.google.com/?cid=16337072236475848136',
@@ -69,14 +68,16 @@ const AREA_SERVED = [CORE_MARKET_AREA, NATIONAL_AREA];
  */
 export const SERVICE_AREA_LINE = '250 mi from Cincinnati, OH · nationwide from depot hubs';
 
+/**
+ * Deliberately NO parentOrganization property and no parent company Organization node anywhere
+ * in this graph.
+ *
+ * Owner ruling, 2026-08-19: the parent company stays in visible HTML, meaning the footer agent
+ * credit, the nav agent strip, and the legal pages, but it gets zero presence in structured data.
+ * Adding either the node back or a parentOrganization reference to it will fail the guard test in
+ * entities.test.ts. Do not reintroduce one without a new ruling.
+ */
 export function globalNodes(): Record<string, unknown>[] {
-  const freedomConex = {
-    '@type': 'Organization',
-    '@id': FREEDOMCONEX_ID,
-    name: 'Freedom Conex LLC',
-    url: 'https://www.freedomconex.com',
-  };
-
   const organization = {
     '@type': 'Organization',
     '@id': ORG_ID,
@@ -87,7 +88,6 @@ export function globalNodes(): Record<string, unknown>[] {
       'Shipping container buying guide and quote service. Core home region within 250 miles of Cincinnati, Ohio, with nationwide delivery from depot hubs.',
     foundingDate: '2009',
     areaServed: AREA_SERVED,
-    parentOrganization: { '@id': FREEDOMCONEX_ID },
     contactPoint: {
       '@type': 'ContactPoint',
       contactType: 'Sales',
@@ -115,7 +115,6 @@ export function globalNodes(): Record<string, unknown>[] {
     geo: { '@type': 'GeoCoordinates', latitude: '39.1365839', longitude: '-84.540972' },
     areaServed: AREA_SERVED,
     hasMap: 'https://maps.google.com/?cid=16337072236475848136',
-    parentOrganization: { '@id': FREEDOMCONEX_ID },
     makesOffer: OFFERED_SERVICE,
     sameAs: SAME_AS,
   };
@@ -128,5 +127,5 @@ export function globalNodes(): Record<string, unknown>[] {
     publisher: { '@id': ORG_ID },
   };
 
-  return [organization, freedomConex, localBusiness, website];
+  return [organization, localBusiness, website];
 }

@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { buildPageSchema } from './buildPageSchema';
+import type { PageSchemaInput } from './types';
 import { WEBSITE_ID, SERVICE_AREA_LINE } from './entities';
 import { pricing, priceValidUntil, formatPrice } from '../../data/pricing';
 
@@ -33,6 +34,48 @@ describe('buildPageSchema core', () => {
     };
     walk(graph);
     for (const r of refs) expect(ids.has(r)).toBe(true);
+  });
+
+  /**
+   * Site wide companion to the guard in entities.test.ts. That one covers the three global nodes
+   * every page carries. This one covers the per page branches, so the ruling holds for the whole
+   * builder rather than for a single page type.
+   *
+   * Owner ruling, 2026-08-19: the parent company keeps every visible HTML reference and gets none
+   * in structured data. What this catches is a branch reintroducing the link locally, for example a
+   * Product growing a brand or manufacturer that points at the parent, or a city branch naming the
+   * depot operator.
+   *
+   * FAQ answers are caller supplied page copy rather than something the builder writes, and the
+   * copy that does name the parent is a word for word mirror of a visible sentence. So the fixtures
+   * here keep FAQ text neutral on purpose: the subject under test is the builder.
+   */
+  it('no page kind puts the parent company in the graph, in any spelling (owner ruling)', () => {
+    const container: any = { slug: '20-foot-shipping-container', name: '20ft', seo: { description: '20ft.' } };
+    const city: any = { slug: 'houston-shipping-containers', city: 'Houston', state: 'Texas', region: 'depot' };
+    const faqs = [{ q: 'Do you deliver?', a: 'Yes, from a depot in the area.' }];
+    const kinds: PageSchemaInput[] = [
+      { kind: 'home', faqs },
+      { kind: 'productHub', faqs },
+      { kind: 'product', container, price: { label: '20ft', price: 2010, sqft: 160 }, specs: [] },
+      { kind: 'city', city, faqs },
+      { kind: 'useCase', audience: 'farms', title: 'Farms', specs: [], faqs },
+      { kind: 'guide', topic: 'cost', title: 'Cost', specs: [], faqs },
+      { kind: 'collection', title: 'Guides', items: [{ name: 'Cost', url: '/cost/' }], faqs },
+      { kind: 'blogPost', title: 'T', description: 'd', author: 'A', datePublished: '2026-01-01',
+        dateModified: '2026-01-02', takeaways: ['t'], faqs },
+      { kind: 'excluded' },
+    ];
+    // if a new kind joins the union, extend the list above rather than editing this number
+    expect(kinds).toHaveLength(9);
+    for (const page of kinds) {
+      const json = JSON.stringify(buildPageSchema({ ...base, page }).graph);
+      for (const spelling of [/freedom[\s_-]*conex/i, /#freedomconex/i, /freedomconex\.com/i]) {
+        expect(json, page.kind).not.toMatch(spelling);
+      }
+      expect(json, page.kind).not.toContain('parentOrganization');
+      expect(json, page.kind).not.toContain('subOrganization');
+    }
   });
 
   it('breadcrumb node lists items in order with absolute URLs', () => {
