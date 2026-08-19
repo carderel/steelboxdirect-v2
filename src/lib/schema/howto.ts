@@ -2,6 +2,18 @@ import { CONDITION } from '../../data/condition';
 import { STATS } from '../../data/stats';
 import type { GuideTopic } from './types';
 
+/**
+ * ASCII normalizer for typographic dashes, both code points written as escapes so this file cannot
+ * contain the characters it removes.
+ *
+ * WHY. Structured data gets quoted verbatim by assistants, which makes a stray U+2014 or U+2013 a
+ * worse instance of T-112 than the same character in body prose: it travels into an answer that the
+ * reader never sees this page for. The savings figure is authored with an en dash in
+ * src/data/stats.ts, where it is correct for the visible pages that render it, so it is normalized
+ * here at the schema boundary rather than changed at the source.
+ */
+const ascii = (s: string): string => s.replace(/[\u2014\u2013]/g, '-');
+
 // Size Guide Schema
 const sizeGuideSchema = {
   '@type': 'HowTo',
@@ -99,7 +111,7 @@ const pricingGuideSchema = {
       '@type': 'HowToStep',
       'position': 1,
       'name': 'Container Condition',
-      'text': `Every container we sell is ${CONDITION.label} — structurally sound, weather-tight steel at ${STATS.usedSavingsVsNew.value} less than new.`
+      'text': `Every container we sell is ${CONDITION.label}: structurally sound, weather-tight steel at ${ascii(STATS.usedSavingsVsNew.value)} less than new.`
     },
     {
       '@type': 'HowToStep',
@@ -111,7 +123,14 @@ const pricingGuideSchema = {
       '@type': 'HowToStep',
       'position': 3,
       'name': 'Delivery Distance',
-      'text': 'Distance from our location affects delivery cost. We serve 250 miles from Cincinnati.'
+      // Two clause service area, same shape and same order as SERVICE_AREA_LINE in entities.ts:
+      // the 250 mi home region first, then the nationwide capability qualified as coming from depot
+      // hubs. It replaces a 250 miles from Cincinnati only sentence that the visible page now
+      // contradicts, since /cost/ publishes delivered pricing for fifteen metros, most of them
+      // outside that radius. No state list, for the reason entities.ts gives: naming states implies
+      // the unnamed ones are excluded, which is the contradiction commit e429343 had to undo.
+      'text':
+        'Delivery cost depends on the distance from the depot your container ships from. Our home region reaches 250 miles from Cincinnati, OH, and we deliver nationwide from depot hubs.'
     },
     {
       '@type': 'HowToStep',

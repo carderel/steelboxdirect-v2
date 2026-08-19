@@ -1,5 +1,232 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { cities } from '../../data/cities';
+import { publishingCentroids } from '../../data/geoCentroids';
+import { geoPricing, geoSkuKeys, type GeoSkuKey } from '../../data/geoPricing';
+import { pricing, formatPrice, effectiveSinceLabel } from '../../data/pricing';
+
+// THE METRO PRICE TABLE, and why not one figure on this page is typed.
+//
+// Until 2026-08-18 the sidebar of this page carried the sentence Cincinnati pricing is 15 percent
+// lower than coastal markets. Recomputed against the live feed it was inverted: Cincinnati sits
+// ABOVE the ocean-port metros on all three sizes we sell. The number was hand typed in May, the
+// assumption behind it was disproved by the live probe recorded in src/data/geoCentroids.ts, and
+// nothing on the page could tell. So every figure below, and every comparison drawn from one, is
+// computed from src/data/geoPricing.ts at build time. If the feed moves, the copy moves with it,
+// and if the direction of a comparison reverses, the wording reverses too. See
+// UDO Project/.project-catalog/decisions/2026-08-17-city-page-pricing-override.md for the
+// provenance rule these figures satisfy: interpolated, scoped to a named ZIP, dated, disclaimed.
+//
+// AN EMPTY FEED IS A LEGITIMATE STATE, documented as such in geoPricing.ts, and it is the state
+// this page shipped in before the first harvest committed. So the gate is an absence rather than a
+// setting: with no records, costRows is empty, the whole section is skipped, and every derived
+// sentence is skipped with it. Nothing renders a blank cell, and nothing renders NaN.
+
+const cityBySlug = new Map(cities.map((c) => [c.slug, c]));
+
+// Display wording per size, matching the city page template so the two surfaces cannot disagree
+// about what a size is called. Falls back to the label in pricing.ts so a fourth SKU renders a
+// correct heading rather than an empty one.
+const SIZE_DISPLAY: Record<string, string> = {
+  '20ftCargo': '20ft',
+  '40ftStandard': '40ft standard',
+  '40ftStandardHC': '40ft high cube',
+};
+
+const sizeLabel = (key: GeoSkuKey): string => SIZE_DISPLAY[key] ?? pricing[key].label;
+
+interface CostCell {
+  key: GeoSkuKey;
+  /** Delivered total, or null when the feed reports the size unavailable in that metro. */
+  delivered: number | null;
+}
+
+interface CostRow {
+  city: string;
+  state: string;
+  href: string;
+  zip: string;
+  cells: CostCell[];
+  /** Latest change date among the sizes actually shown in the row. */
+  effectiveSince: string;
+}
+
+// Rows come from the publish flags in geoCentroids.ts, the human owned half of the pair, so the
+// unattended daily job can change what a metro costs but never which metros appear here. A metro
+// with no feed record, or with every size unavailable, is dropped rather than shown empty: a row of
+// blanks reads as a price of zero to a scraper, and geoPricing.ts is explicit that it is not one.
+const costRows: CostRow[] = publishingCentroids
+  .map((centroid): CostRow | null => {
+    const record = geoPricing[centroid.slug];
+    const city = cityBySlug.get(centroid.slug);
+    if (!record || !city) return null;
+
+    const cells: CostCell[] = geoSkuKeys.map((key) => ({
+      key,
+      delivered: record.skus[key].available ? record.skus[key].delivered : null,
+    }));
+    if (cells.every((cell) => cell.delivered === null)) return null;
+
+    // The LATEST change among the figures on display, on the same reasoning as the city page: every
+    // figure in the row has held since that date, so one date is true of all of them. The earliest
+    // would claim the newest figure had held longer than it has.
+    const effectiveSince = geoSkuKeys
+      .filter((key) => record.skus[key].available)
+      .map((key) => record.skus[key].effectiveSince)
+      .reduce((latest, date) => (date.localeCompare(latest) > 0 ? date : latest), '');
+
+    return {
+      city: city.city,
+      state: city.state,
+      href: `/locations/${city.stateSlug}/${city.slug}/`,
+      // The ZIP is read from the centroid module, never from the generated one. The two echo each
+      // other and city-pricing-guard.test.ts asserts they agree, so a serialiser that priced the
+      // wrong ZIP shows up in a diff instead of on the phone.
+      zip: centroid.zip,
+      cells,
+      effectiveSince,
+    };
+  })
+  .filter((row): row is CostRow => row !== null)
+  .sort((a, b) => a.city.localeCompare(b.city));
+
+const hasCostTable = costRows.length > 0;
+
+const tableEffectiveSince = costRows
+  .map((row) => row.effectiveSince)
+  .reduce((latest, date) => (date.localeCompare(latest) > 0 ? date : latest), '');
+
+// The size the prose compares on. Taken from the feed key order rather than named, so removing a
+// SKU upstream cannot leave a sentence pointing at a column that no longer exists.
+const referenceSku: GeoSkuKey | undefined = geoSkuKeys[0];
+const referenceLabel = referenceSku ? sizeLabel(referenceSku) : '';
+
+interface Figure {
+  city: string;
+  zip: string;
+  delivered: number;
+  effectiveSince: string;
+}
+
+const referenceFigures: Figure[] = referenceSku
+  ? costRows
+      .map((row) => {
+        const cell = row.cells.find((c) => c.key === referenceSku);
+        return cell && cell.delivered !== null
+          ? { city: row.city, zip: row.zip, delivered: cell.delivered, effectiveSince: row.effectiveSince }
+          : null;
+      })
+      .filter((f): f is Figure => f !== null)
+  : [];
+
+const lowestReference = referenceFigures.reduce<Figure | null>(
+  (low, f) => (low === null || f.delivered < low.delivered ? f : low),
+  null,
+);
+const highestReference = referenceFigures.reduce<Figure | null>(
+  (high, f) => (high === null || f.delivered > high.delivered ? f : high),
+  null,
+);
+const referenceSpread =
+  lowestReference && highestReference ? highestReference.delivered - lowestReference.delivered : null;
+const showReferenceRange = referenceFigures.length > 1 && referenceSpread !== null && referenceSpread > 0;
+
+// THE COAST AND INLAND COMPARISON, which is the claim that shipped inverted and so is the one place
+// on this page where the ARITHMETIC has to carry the direction rather than the sentence.
+//
+// WHY THIS IS NO LONGER A PERCENTAGE, second pass on 2026-08-18. The bullet used to publish the home
+// metro as a percentage above the MEAN of the five ocean-port metros. The missing explanation was
+// only half of what was wrong with it. A percentage against a computed multi-metro average is a bad
+// unit for a reader: it asks them to hold five metros and a mean in their head, and the conclusion it
+// lands on reads as being overcharged, because nobody in Cincinnati can buy at the Charleston price.
+// So the bullet now does the job the page title asks of it. It states the mechanism in plain words
+// and anchors that with two figures the reader can see in the table directly above: the cheapest
+// ocean-port metro and the home metro. No percentage, no average, and nothing left for the reader to
+// compute.
+//
+// WHAT IS DELIBERATELY NOT QUANTIFIED. The strongest version of this point would decompose the gap
+// and say that most of it is the delivery leg rather than the container. The generated feed does not
+// carry what that needs. Per SKU it serialises delivered, pickup, pickupDistanceMiles, available and
+// effectiveSince, and baseDeliveryCost never leaves scripts/harvest-geo-pricing.mjs. Pickup is not
+// the delivered figure with the delivery taken back off, geoPricing.ts says so in as many words and
+// the guard on this page forbids the page touching it at all, so a split computed from that pair
+// would be invented rather than derived. The mechanism is therefore stated without a split. Nothing
+// here claims the gap is not a markup either: margin composition is out of scope for this work, and
+// two real published figures plus the shipping mechanism carry the point without it.
+//
+// The set below is geography and nothing else: the five metros we price that sit on a saltwater
+// container port. It is hand maintained because it is a fact about coastlines rather than a fact
+// about prices, and a coastline does not move when the feed does. What is NOT hand maintained is
+// which way the comparison points or how large it is. Both are computed, and the wording switches
+// on the computed sign, so the inversion that shipped in May cannot recur silently: it would have to
+// survive an if statement reading the same numbers the table prints.
+const PORT_METRO_SLUGS = [
+  'charleston-shipping-containers',
+  'savannah-shipping-containers',
+  'houston-shipping-containers',
+  'norfolk-shipping-containers',
+  'new-york-shipping-containers',
+];
+
+// The anchor pair is chosen BY RULE from the same figures the table prints, never by hand, so the
+// sentence survives the feed moving and survives a metro being added or dropped. The low anchor is
+// the cheapest ocean-port metro, which is the end of the sentence where the container comes off a
+// ship. The high anchor is the home metro, which is the number most readers of this page are trying
+// to understand.
+const portAnchor: Figure | null = referenceSku
+  ? PORT_METRO_SLUGS.map((slug): Figure | null => {
+      const record = geoPricing[slug];
+      const city = cityBySlug.get(slug);
+      if (!record || !city) return null;
+      const sku = record.skus[referenceSku];
+      if (!sku.available) return null;
+      return { city: city.city, zip: record.zip, delivered: sku.delivered, effectiveSince: sku.effectiveSince };
+    })
+      .filter((f): f is Figure => f !== null)
+      .reduce<Figure | null>((low, f) => (low === null || f.delivered < low.delivered ? f : low), null)
+  : null;
+
+// Named by slug and rendered through the name in cities.ts, so the sentence cannot say one metro
+// while the figure beside it belongs to another row.
+const HOME_METRO_SLUG = 'cincinnati-shipping-containers';
+
+const homeRecord = geoPricing[HOME_METRO_SLUG];
+const homeCity = cityBySlug.get(HOME_METRO_SLUG);
+const homeReference: Figure | null =
+  referenceSku && homeRecord && homeCity && homeRecord.skus[referenceSku].available
+    ? {
+        city: homeCity.city,
+        zip: homeRecord.zip,
+        delivered: homeRecord.skus[referenceSku].delivered,
+        effectiveSince: homeRecord.skus[referenceSku].effectiveSince,
+      }
+    : null;
+
+// The bullet renders only while the arithmetic agrees with the sentence it is inside. The further
+// inland reading is true only if the home metro sits ABOVE the cheapest port metro, and the two have
+// to be different metros or the sentence compares a row to itself. If the feed ever inverts that, the
+// bullet disappears rather than argue with the two figures printed inside it. That is the same
+// protection the computed direction word used to give, moved onto the claim that is actually made.
+const showCoastInland =
+  portAnchor !== null &&
+  homeReference !== null &&
+  portAnchor.city !== homeReference.city &&
+  homeReference.delivered > portAnchor.delivered;
+
+// The cheapest ocean-port metro is usually also the cheapest metro in the whole table, so the coast
+// bullet and the lowest in the table bullet can end up quoting the same figure for the same metro two
+// lines apart. When they coincide the second bullet drops the figure and keeps what it alone carries,
+// which is the ZIP it was priced from and the date it last changed. Stating one number twice in one
+// sidebar reads as two findings when it is one.
+const coastAnchorIsLowest =
+  showCoastInland && portAnchor !== null && lowestReference !== null && portAnchor.city === lowestReference.city;
+
+// The date this page copy was last reviewed by a human. dateModified takes whichever is later, so a
+// feed that moves tonight advances the page date, and a feed that sits still cannot drag it back
+// behind the review.
+const COPY_LAST_REVIEWED = '2026-08-18';
+const pageDateModified =
+  tableEffectiveSince.localeCompare(COPY_LAST_REVIEWED) > 0 ? tableEffectiveSince : COPY_LAST_REVIEWED;
 ---
 
 <BaseLayout
@@ -8,7 +235,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   title="What Does a Shipping Container Cost? Pricing Factors | Steel Box Direct"
   description="Understand what affects shipping container pricing. Size, condition, location, delivery, and market factors explained."
   datePublished="2026-03-10"
-  dateModified="2026-05-26"
+  dateModified={pageDateModified}
   schema={{ kind: 'guide', topic: 'cost', title: 'What Does a Shipping Container Cost? Pricing Factors', specs: [], faqs: [] }}
 >
   <div class="guide-header guide_header" style="background: var(--c4-cost); color: var(--cream);">
@@ -25,6 +252,74 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       </p>
     </div>
   </div>
+
+  {hasCostTable && (
+    <section class="cost-table-section" id="metro-prices">
+      <div class="wrap">
+        <div class="sh cost_table_eyebrow">
+          <span class="idx">Delivered totals</span>
+          <span class="nm">{costRows.length} metros</span>
+          <span class="tg">Used wind and water tight</span>
+        </div>
+        <h2 class="cost_table_headline">What a container costs, metro by metro.</h2>
+        <p class="cost_table_lede">
+          Each figure is a delivered total for a used wind and water tight container: the container,
+          the delivery, and placement on flat ground, priced from the population-centroid ZIP of that
+          metro.
+          {showReferenceRange && lowestReference && highestReference && referenceSpread !== null && (
+            <> A {referenceLabel} container runs from {formatPrice(lowestReference.delivered)} in {lowestReference.city} to {formatPrice(highestReference.delivered)} in {highestReference.city}, a spread of {formatPrice(referenceSpread)} on the same size and the same grade.</>
+          )}
+        </p>
+
+        <div class="cost-table-scroll" role="region" aria-labelledby="metro-prices-caption" tabindex="0">
+          <table class="cost-table">
+            <caption id="metro-prices-caption" class="cost_table_caption">
+              Delivered totals for used wind and water tight containers across {costRows.length} metros,
+              each priced from the population-centroid ZIP shown in its row and rounded to the nearest
+              ten. Most recent change {effectiveSinceLabel(tableEffectiveSince)}.
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col">Metro</th>
+                <th scope="col">Priced from</th>
+                {geoSkuKeys.map((key) => <th scope="col" class="cost_table_col_figure">{sizeLabel(key)}</th>)}
+                <th scope="col">In effect since</th>
+              </tr>
+            </thead>
+            <tbody>
+              {costRows.map((row) => (
+                <tr>
+                  <th scope="row" class="cost_table_metro">
+                    <a href={row.href}>{row.city}</a>
+                    <span class="cost_table_state">{row.state}</span>
+                  </th>
+                  <td class="cost_table_zip">{row.zip}</td>
+                  {row.cells.map((cell) => (
+                    <td class="cost_table_figure">
+                      {cell.delivered === null
+                        ? <span class="cost_table_ask">Ask us</span>
+                        : formatPrice(cell.delivered)}
+                    </td>
+                  ))}
+                  <td class="cost_table_date">
+                    <time datetime={row.effectiveSince}>{effectiveSinceLabel(row.effectiveSince)}</time>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <p class="cost_table_note">
+          Your ZIP is not one of these, and delivery distance is most of what moves the number, so
+          read a row as a published figure for the ZIP beside it rather than as your quote. Figures
+          move with the shipping market, which is why each row carries the date its own figures last
+          changed.
+          <a href="/quote/">Request a quote</a> and we will run yours.
+        </p>
+      </div>
+    </section>
+  )}
 
   <section class="guide-content guide_content">
     <div class="wrap">
@@ -49,7 +344,14 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
           <div class="driver-card guide_comparison_item" style="border-left-color: var(--c3-deliver);">
             <h3>3. Logistics</h3>
             <div class="m guide_comparison_item_meta" style="color: var(--c3-deliver); margin-bottom: 12px;">Delivery distance</div>
-            <p>Delivery is often 15-25% of the total project. Within 100 miles of Cincinnati is our primary tier. Complex sites requiring cranes add to the labor cost.</p>
+            <p>
+              Geography moves a delivered total more than anything else we can measure, because we
+              price one grade and one condition.
+              {showReferenceRange && lowestReference && highestReference && referenceSpread !== null && (
+                <> In the table above, the same {referenceLabel} container runs {formatPrice(lowestReference.delivered)} delivered in {lowestReference.city} and {formatPrice(highestReference.delivered)} in {highestReference.city}: a {formatPrice(referenceSpread)} spread on an identical box, on geography alone.</>
+              )}
+              A site that needs a crane adds that labor on top.
+            </p>
           </div>
 
           <div class="driver-card guide_comparison_item" style="border-left-color: var(--yellow);">
@@ -64,8 +366,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
           <div class="driver-card guide_comparison_item" style="border-left-color: var(--c3-deliver);">
             <h3>Why a Low Sticker Price Misleads</h3>
             <div class="m guide_comparison_item_meta" style="color: var(--c3-deliver); margin-bottom: 12px;">Compare delivered totals</div>
-            <p>Shipping a steel box isn't cheap, and a seller who leaves it off the headline number can look hundreds of dollars cheaper than they really are. As an example of the trap: a $900 box advertised online can land near $1,600 once delivery to your site is added. Always compare the <strong>delivered total</strong> — not the sticker price.</p>
-            <p style="margin-top: 12px;"><em>That $900-to-$1,600 figure illustrates how hidden shipping works elsewhere — it isn't our pricing.</em> When you <a href="/quote/">request a quote</a>, the number we give you is the all-in delivered total: container, delivery to your ZIP, and placement on flat ground.</p>
+            <p>Shipping a steel box is not cheap, and a seller who leaves freight off the headline number can look cheaper than they are until the freight arrives at the end. Compare the <strong>delivered total</strong> instead of the sticker.</p>
+            <p style="margin-top: 12px;">{hasCostTable ? 'Every figure in the table above is already a delivered total: container, delivery, and placement on flat ground, with the ZIP it was priced from printed beside it.' : 'The number to compare is the delivered total: container, delivery, and placement on flat ground.'} When you <a href="/quote/">request a quote</a>, that is the number we give you, run for your own ZIP.</p>
           </div>
 
           <p style="margin-top: 28px;">If renting for a stretch is still on the table, the comparison worth running is not sticker against sticker but total against total over the months you need it. Our rent vs buy calculator will <a href="/container-rent-vs-buy-calculator/">work out your break-even month</a>, the month where buying stops costing more than renting.</p>
@@ -75,8 +377,24 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
           <div class="authority-card guide_callout">
             <div class="m guide_callout_label">Pricing Insights</div>
             <ul>
-              <li><strong>Cincinnati</strong> pricing is 15% lower than coastal markets.</li>
-              <li><strong>Logistics labor</strong> is 20% of the total quote.</li>
+              {showCoastInland && portAnchor && homeReference && (
+                <li>
+                  <strong>Coast and inland.</strong> Containers arrive by ship, so the further inland you are,
+                  the more of your price is trucking rather than steel. A {referenceLabel} container delivered
+                  in {portAnchor.city} on the coast is {formatPrice(portAnchor.delivered)}; the same container
+                  delivered in {homeReference.city} is {formatPrice(homeReference.delivered)}. Same box and same
+                  grade, so the gap between the two is distance rather than a different container.
+                </li>
+              )}
+              {hasCostTable && lowestReference && (
+                <li>
+                  <strong>Lowest in the table.</strong>
+                  {coastAnchorIsLowest
+                    ? <> No metro we price comes in under that {lowestReference.city} figure, which was priced from ZIP {lowestReference.zip} and has been in effect since {effectiveSinceLabel(lowestReference.effectiveSince)}.</>
+                    : <> {formatPrice(lowestReference.delivered)} for a {referenceLabel} container delivered to {lowestReference.zip} in {lowestReference.city}, in effect since {effectiveSinceLabel(lowestReference.effectiveSince)}.</>}
+                </li>
+              )}
+              <li><strong>Every figure we publish</strong> is a delivered total, priced from a named ZIP and stamped with the date it last changed.</li>
               <li><strong>Used units</strong> provide equivalent weather protection for 50% less.</li>
             </ul>
           </div>
@@ -107,6 +425,111 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     .guide-content {
       padding: 96px 0;
       background: var(--cream);
+    }
+
+    /* The metro table. The scroll container is the point: a fifteen row, six column table cannot
+       fit 390px, so it scrolls inside its own box instead of widening the page. role=region plus
+       tabindex makes that box reachable from the keyboard, which an overflow div is not. */
+    .cost-table-section {
+      padding: 72px 0 64px;
+      background: white;
+      border-bottom: 2.5px solid var(--ink);
+    }
+    .cost_table_headline {
+      font-family: var(--narrow);
+      font-weight: 700;
+      font-size: clamp(30px, 5vw, 46px);
+      text-transform: uppercase;
+      letter-spacing: -.01em;
+      line-height: .95;
+      margin: 24px 0 20px;
+    }
+    .cost_table_lede { font-size: 18px; line-height: 1.55; max-width: 760px; margin: 0 0 32px; }
+    .cost-table-scroll {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      border: 2px solid var(--ink);
+      box-shadow: 8px 8px 0 var(--c4-cost);
+    }
+    .cost-table-scroll:focus-visible { outline: 3px solid var(--c4-cost); outline-offset: 3px; }
+    .cost-table { width: 100%; min-width: 660px; border-collapse: collapse; background: white; }
+    .cost_table_caption {
+      caption-side: bottom;
+      text-align: left;
+      font-family: var(--mono);
+      font-size: 11px;
+      line-height: 1.6;
+      letter-spacing: .04em;
+      padding: 14px 16px;
+      border-top: 1.5px solid rgba(11,15,26,.15);
+      color: rgba(11,15,26,.72);
+    }
+    .cost-table thead th {
+      background: var(--ink);
+      color: var(--cream);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      text-align: left;
+      padding: 12px 16px;
+      white-space: nowrap;
+    }
+    .cost-table tbody th, .cost-table tbody td {
+      padding: 12px 16px;
+      border-bottom: 1.5px solid rgba(11,15,26,.12);
+      vertical-align: baseline;
+      text-align: left;
+    }
+    .cost-table tbody tr:last-child th, .cost-table tbody tr:last-child td { border-bottom: none; }
+    .cost_table_metro { white-space: nowrap; }
+    .cost_table_metro a {
+      font-family: var(--narrow);
+      font-weight: 700;
+      font-size: 19px;
+      text-transform: uppercase;
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: 2px solid var(--c4-cost);
+    }
+    .cost_table_metro a:hover { background: var(--c4-cost); color: var(--cream); }
+    .cost_table_state {
+      display: block;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: rgba(11,15,26,.6);
+      margin-top: 3px;
+    }
+    .cost_table_zip, .cost_table_date {
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: .04em;
+      white-space: nowrap;
+      color: rgba(11,15,26,.72);
+    }
+    .cost_table_figure {
+      font-family: var(--narrow);
+      font-weight: 700;
+      font-size: 22px;
+      letter-spacing: -.01em;
+      white-space: nowrap;
+    }
+    .cost_table_ask {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: rgba(11,15,26,.6);
+    }
+    .cost_table_note {
+      font-size: 16px;
+      line-height: 1.6;
+      max-width: 720px;
+      margin: 24px 0 0;
+      opacity: .85;
     }
 
     .row {
@@ -163,6 +586,13 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     }
     .cta-card h4 { font-family: var(--narrow); font-size: 24px; text-transform: uppercase; margin-bottom: 8px; }
     .cta-card p { font-size: 15px; margin-bottom: 20px; }
+
+    @media (max-width: 720px) {
+      .cost-table-section { padding: 48px 0 44px; }
+      .cost-table-scroll { box-shadow: 5px 5px 0 var(--c4-cost); }
+      .cost_table_figure { font-size: 19px; }
+      .cost_table_lede { font-size: 17px; }
+    }
 
     @media (max-width: 960px) {
       .row { grid-template-columns: 1fr; gap: 48px; }
