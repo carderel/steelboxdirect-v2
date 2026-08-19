@@ -4,6 +4,9 @@ export const prerender = true;
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { cities } from '../../../data/cities';
 import type { City } from '../../../data/cities';
+import { centroidBySlug } from '../../../data/geoCentroids';
+import { geoPricing, geoSkuKeys, type GeoSkuKey } from '../../../data/geoPricing';
+import { pricing, formatPrice, effectiveSinceLabel } from '../../../data/pricing';
 
 export function getStaticPaths() {
   return cities.map((c) => ({ params: { state: c.stateSlug, citySlug: c.slug }, props: { city: c } }));
@@ -16,6 +19,101 @@ const deliveryFaqAnswer =
   c.region === 'home'
     ? `We serve ${c.delivery.counties.join(', ')} with flat-fee delivery from Cincinnati, Ohio.`
     : `We serve ${c.delivery.counties.join(', ')} with delivery from a depot in the ${c.city} area through our supplier network.`;
+
+// THE PRICE BLOCK, and the two conditions under which any of it renders.
+//
+// Every figure below comes from src/data/geoPricing.ts, the module the daily harvest rewrites, and
+// not one of them is typed on this page. Two things have to hold. The metro needs its publish flag
+// set in src/data/geoCentroids.ts, which is the per metro kill switch and the only human owned half
+// of the pair. And the feed needs a record for that metro at all, which is the gate that does the
+// real work here, because it is an ABSENCE rather than a setting: before the first harvest run every
+// metro is unpriced, so every city page renders exactly what it rendered before this block existed,
+// and nothing had to be remembered to make that true.
+//
+// A metro with no centroid entry renders no price rather than throwing. A build that dies over one
+// missing metro dies unattended at five in the morning, and the place that error belongs is
+// geoCentroids.test.ts, which already fails on a missing entry with the slug in the message.
+const centroid = centroidBySlug[c.slug];
+const metroPrices = centroid && centroid.publish ? geoPricing[c.slug] : undefined;
+
+// Display wording per size, on the same pattern as the rent vs buy calculator: the approved copy
+// wording for the keys we sell, falling back to the label in pricing.ts so a fourth SKU renders a
+// correct line rather than an empty one.
+const SIZE_DISPLAY: Record<string, string> = {
+  '20ftCargo': '20ft',
+  '40ftStandard': '40ft standard',
+  '40ftStandardHC': '40ft high cube',
+};
+
+interface PriceLine {
+  label: string;
+  delivered: number;
+  pickup: number | null;
+  pickupMiles: number | null;
+}
+
+// A size the metro cannot supply is dropped rather than shown, because a figure for something that
+// cannot be delivered is not a price, it is the memory of one.
+const priceLines: PriceLine[] = metroPrices
+  ? geoSkuKeys
+      .filter((k: GeoSkuKey) => metroPrices.skus[k].available)
+      .map((k: GeoSkuKey) => {
+        const sku = metroPrices.skus[k];
+        return {
+          label: SIZE_DISPLAY[k] ?? pricing[k].label,
+          delivered: sku.delivered,
+          pickup: sku.pickup,
+          pickupMiles:
+            sku.pickupDistanceMiles === null ? null : Math.round(sku.pickupDistanceMiles),
+        };
+      })
+  : [];
+
+const showPrice = priceLines.length > 0;
+
+// One date for the block, and it is the LATEST change among the figures on display rather than the
+// earliest. Every figure shown has held since that date, so one sentence is true of all of them.
+// The earliest would claim the newest figure had held longer than it has, which overstates
+// stability, and a date per figure would put three dates in a block whose job is to state a number
+// plainly. Understating how long a price has held is the conservative direction of the two.
+//
+// This same date is handed to BaseLayout as dateModified. Stated honestly, that is INERT today: the
+// city branch of the schema builder emits Service, FAQPage, WebPage and BreadcrumbList, none of
+// which carries a date, so nothing renders from it. It is passed anyway because the alternative is
+// worse. The moment that branch gains a dated node it would fall through to the March 2026 default
+// that the guide branch uses, and a page whose visible copy states one date while its graph states
+// another is the contradiction this whole workstream exists to avoid. The prop costs one line and
+// removes that failure mode in advance.
+const priceEffectiveSince = metroPrices
+  ? geoSkuKeys
+      .filter((k: GeoSkuKey) => metroPrices.skus[k].available)
+      .map((k: GeoSkuKey) => metroPrices.skus[k].effectiveSince)
+      .reduce((latest, date) => (date.localeCompare(latest) > 0 ? date : latest), '')
+  : '';
+
+const priceZip = centroid ? centroid.zip : '';
+
+// Pickup is a different quantity, not the delivered figure with the delivery taken back off: the
+// live feed returns pickup unit prices that are sometimes HIGHER than the delivery unit price for
+// the same size. So the page publishes both numbers and refuses the subtraction. A reader who wants
+// the difference can take it, and the difference they take will be right, which is more than any
+// rule this page could state about it would be.
+const pickupLines = priceLines.filter(
+  (line): line is PriceLine & { pickup: number } => line.pickup !== null,
+);
+
+// The QuickFacts payload, handed over only when there is a figure to hand over. Absence is the
+// signal: it is what tells the builder to print no price cells and to leave the price disclaimer
+// off, so no second condition is written there. The headline figure is the first line on display,
+// which is the smallest size the metro can supply.
+const cityPrice = showPrice
+  ? {
+      zip: priceZip,
+      delivered: priceLines[0].delivered,
+      sizeLabel: priceLines[0].label,
+      effectiveSince: priceEffectiveSince,
+    }
+  : undefined;
 ---
 
 <BaseLayout
@@ -28,11 +126,12 @@ const deliveryFaqAnswer =
     { name: c.state },
     { name: c.city },
   ]}
+  dateModified={priceEffectiveSince || undefined}
   schema={{ kind: 'city', city: c, faqs: [
     { q: `Do you deliver shipping containers to ${c.city}, ${c.state}?`, a: `Yes. We deliver to ${c.delivery.counties.join(', ')} and surrounding areas. ${c.delivery.body}` },
     { q: `What areas near ${c.city} do you serve?`, a: deliveryFaqAnswer },
     { q: `How quickly can I get a container quote in ${c.city}?`, a: c.cta.body },
-  ] }}
+  ], ...(cityPrice ? { price: cityPrice } : {}) }}
 >
 
   <section class="local-hero">
@@ -46,6 +145,64 @@ const deliveryFaqAnswer =
       <p class="lede local_hero_lede">{c.lede}</p>
     </div>
   </section>
+
+  {showPrice && (
+    <section class="local-price">
+      <div class="wrap">
+        <div class="price-band">
+          <div class="m local_price_label">Delivered price</div>
+          <h2 class="local_price_headline">What a container costs in {c.city}.</h2>
+
+          <ul class="price-lines">
+            {priceLines.map((line) => (
+              <li class="local_price_line">
+                <span class="local_price_figure">{formatPrice(line.delivered)}</span>
+                <span class="local_price_scope">delivered to {priceZip} for a {line.label}</span>
+              </li>
+            ))}
+          </ul>
+
+          <p class="local_price_allin">
+            That is the container and the delivery together, with nothing added later.
+            {priceLines.length > 1 ? ' These prices have' : ' This price has'} been in effect since {effectiveSinceLabel(priceEffectiveSince)}.
+          </p>
+          <p class="local_price_hedge">
+            Your ZIP will be different from the one we price from, and delivery distance is most of
+            what moves the number, so call and we will run yours.
+          </p>
+
+          {pickupLines.length > 0 && (
+            <details class="local-pickup">
+              <summary>Would you rather pick it up yourself?</summary>
+              <div class="local_pickup_body">
+                <p>
+                  If you would rather collect it yourself, we can do that. Pickup is priced
+                  differently from delivery and it is not the delivery fee taken back off, so here
+                  are both numbers side by side.
+                </p>
+                <ul class="pickup-lines">
+                  {pickupLines.map((line) => (
+                    <li class="local_pickup_line">
+                      <span class="local_pickup_size">{line.label}</span>
+                      <span class="local_pickup_figures">
+                        {formatPrice(line.delivered)} delivered, or {formatPrice(line.pickup)} collected
+                        {line.pickupMiles !== null && <> from a yard about {line.pickupMiles} miles out</>}.
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+                <p>
+                  Which sizes are sitting at a nearby yard changes week to week, and the closest yard
+                  for one size is not always the closest yard for another. Call and we will check what
+                  is there and tell you where it is before you commit to the drive.
+                </p>
+              </div>
+            </details>
+          )}
+        </div>
+      </div>
+    </section>
+  )}
 
   {c.region === 'depot' && (
     <section class="local-bridge">
@@ -170,6 +327,25 @@ const deliveryFaqAnswer =
   .local-hero { padding: 120px 0 80px; background: var(--yellow); border-bottom: 2.5px solid var(--ink); }
   .lede { font-size: 24px; line-height: 1.4; max-width: 800px; margin-top: 32px; font-weight: 500; }
 
+  .local-price { padding: 72px 0 64px; background: white; border-bottom: 1.5px solid rgba(11,15,26,.1); }
+  .price-band { max-width: 880px; }
+  .local_price_label { margin-bottom: 12px; }
+  .local_price_headline { font-family: var(--narrow); font-weight: 700; font-size: clamp(30px, 5vw, 44px); text-transform: uppercase; letter-spacing: -.01em; line-height: .95; margin: 0 0 28px; }
+  .price-lines { list-style: none; padding: 0; margin: 0 0 28px; border-top: 2.5px solid var(--ink); }
+  .local_price_line { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 18px; padding: 16px 0; border-bottom: 1.5px solid rgba(11,15,26,.15); }
+  .local_price_figure { font-family: var(--narrow); font-weight: 700; font-size: 40px; line-height: 1; letter-spacing: -.02em; }
+  .local_price_scope { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; opacity: .72; }
+  .local_price_allin { font-size: 18px; line-height: 1.5; font-weight: 500; margin: 0 0 10px; }
+  .local_price_hedge { font-size: 16px; line-height: 1.6; margin: 0; opacity: .8; max-width: 720px; }
+  .local-pickup { margin-top: 28px; border-left: 4px solid var(--yellow); padding-left: 20px; }
+  .local-pickup summary { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; }
+  .local_pickup_body { margin-top: 14px; }
+  .local_pickup_body p { font-size: 15px; line-height: 1.6; opacity: .85; margin: 0 0 14px; max-width: 720px; }
+  .pickup-lines { list-style: none; padding: 0; margin: 0 0 14px; display: grid; gap: 8px; }
+  .local_pickup_line { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; }
+  .local_pickup_size { font-family: var(--narrow); font-weight: 700; font-size: 16px; text-transform: uppercase; min-width: 110px; }
+  .local_pickup_figures { font-size: 15px; line-height: 1.5; }
+
   .local-bridge { padding: 56px 0; background: white; border-bottom: 1.5px solid rgba(11,15,26,.1); }
   .bridge-band { border-left: 4px solid var(--yellow); padding-left: 24px; max-width: 860px; }
   .local_bridge_label { margin-bottom: 12px; }
@@ -230,4 +406,11 @@ const deliveryFaqAnswer =
   .zoning-list a { font-family: var(--mono); font-size: 13px; border-bottom: 1.5px solid currentColor; padding-bottom: 2px; }
   .zoning-list a:hover { color: var(--c5-permits); }
   .local_zoning_zips { font-family: var(--mono); font-size: 12px; opacity: .7; }
+
+  @media (max-width: 768px) {
+    .local-price { padding: 48px 0 44px; }
+    .local_price_figure { font-size: 32px; }
+    .local_price_allin { font-size: 16px; }
+    .local_pickup_size { min-width: 0; }
+  }
 </style>
