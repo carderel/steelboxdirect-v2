@@ -97,13 +97,40 @@ describe('/container-rent-vs-buy-calculator/ page guards', () => {
     }
     // The only dollar literals allowed are the invented no-JS worked example and the $0 slot
     // placeholders in the results ledger.
-    const allowed = new Set(['$200', '$2,000', '$150', '$0']);
+    //
+    // WHY THE EXAMPLE FIGURES LOOK ODD. The three prices above are derived from the daily metro
+    // feed and move without anybody editing this page, so an example figure that a derived price
+    // can ever equal turns an ordinary price move into a failure of the loop above. The example was
+    // 200 / 2000 / 150 and the second of those became reachable: a derived national figure of 2000
+    // formats to the same literal. Both properties below are structural, not lucky, and both come
+    // from bounds asserted in geoPricing.test.ts, where every figure is a whole multiple of ten
+    // between 1200 and 6000. The purchase example ends in a digit other than zero, so no rounded
+    // figure can ever equal it. The fee and rate examples sit below the 1200 floor, so no delivered
+    // figure can reach them. Restate the sum however you like, but keep those two properties.
+    const allowed = new Set(['$225', '$2,475', '$150', '$0']);
     for (const found of src.match(/\$[0-9](?:[0-9,]*[0-9])?/g) ?? []) {
       expect(allowed, `unexpected dollar literal ${found}`).toContain(found);
     }
-    for (const example of ['$200', '$2,000', '$150']) {
+    for (const example of ['$225', '$2,475', '$150']) {
       expect(nojs, `${example} belongs in the no-JS worked example`).toContain(example);
     }
+    // The properties themselves, asserted rather than trusted to the comment above, so a later edit
+    // that reintroduces a collidable figure fails here with the reason attached.
+    for (const example of ['225', '2475']) {
+      expect(
+        Number(example) % 10 !== 0 || Number(example) < 1200,
+        `the ${example} example figure is a roundable in-bounds value and can collide with a derived price`,
+      ).toBe(true);
+    }
+  });
+
+  it('dates the QuickFacts cell as an effective date and never as a verification date', () => {
+    // asOf is the date the figures last CHANGED, not the date they were last checked, and the
+    // verification date is deliberately unrendered anywhere on the site. A cell reading Prices
+    // confirmed would assert the one thing that value is not. Wording matches the city pages.
+    expect(src).toContain("{ k: 'Prices in effect since', v: asOfLabel }");
+    expect(src).not.toContain('Prices confirmed');
+    expect(src).not.toMatch(/verified/i);
   });
 
   it('holds no hardcoded as-of label: the dated claim derives from pricing.ts', () => {

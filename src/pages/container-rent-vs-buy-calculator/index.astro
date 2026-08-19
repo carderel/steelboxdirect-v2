@@ -140,7 +140,7 @@ const specs = [
   { k: 'What this compares', v: 'Renting a container vs buying one outright' },
   { k: 'Rental side adds', v: 'Delivery and pickup, entered by you' },
   { k: 'Purchase side uses', v: 'Our average starting prices, not a quote' },
-  { k: 'Prices confirmed', v: asOfLabel },
+  { k: 'Prices in effect since', v: asOfLabel },
   { k: 'Steel Box Direct rents', v: 'No. We sell, and we offer rent-to-own' },
   { k: 'Rental rate', v: 'Yours, from your own written quote' },
 ];
@@ -250,8 +250,16 @@ const specs = [
         </div>
 
         <!-- No-JS fallback. Shown when the wrapper never gets .has-js. The example numbers are
-             invented and round on purpose, so the steps can be followed rather than the totals.
-             They are deliberately NOT sourced from pricing.ts. -->
+             invented and divide cleanly on purpose, so the steps can be followed rather than the
+             totals. They are deliberately NOT sourced from pricing.ts.
+             WHY THESE THREE FIGURES AND NOT ROUNDER ONES. rent-vs-buy-guard.test.ts allowlists them
+             by value and separately forbids any figure equal to a national price from pricing.ts,
+             which is now derived from the daily metro feed and moves on its own. So an example
+             figure that a derived national price can ever equal turns a price move into a red
+             suite. Every derived figure is a whole multiple of ten between 1200 and 6000, the
+             bounds asserted in geoPricing.test.ts, so the purchase example ends in a digit other
+             than zero and the two smaller figures sit below that floor. Neither can collide with a
+             derived price at any market level. Keep both properties if you ever restate the sum. -->
         <div class="calc-nojs">
           <strong>JavaScript is off, so here is the same sum on paper.</strong>
           <ol>
@@ -261,14 +269,15 @@ const specs = [
             <li>Round up to the next whole month. That is your break-even month.</li>
           </ol>
           <p>
-            Example of the shape, using round numbers so the arithmetic is easy to follow: one-time
-            fees of $200, a purchase price of $2,000, and a monthly rate of $150. Two thousand minus
-            two hundred is eighteen hundred. Eighteen hundred divided by one hundred and fifty is
-            twelve. Renting passes buying in month 12, and every payment after that is money spent on
-            a container you will hand back.
+            Example of the shape, using numbers that divide cleanly so the arithmetic is easy to
+            follow: one-time fees of $225, a purchase price of $2,475, and a monthly rate of $150.
+            Two thousand four hundred and seventy five minus two hundred and twenty five is two
+            thousand two hundred and fifty. Two thousand two hundred and fifty divided by one hundred
+            and fifty is fifteen. Renting passes buying in month 15, and every payment after that is
+            money spent on a container you will hand back.
           </p>
           <p>
-            Then ask yourself the only question that matters: will you still need it in month 12? If
+            Then ask yourself the only question that matters: will you still need it in month 15? If
             the answer is no, rent. If the answer is yes, or you do not know, price both.
           </p>
         </div>
