@@ -4,7 +4,24 @@ export const prerender = true;
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { containers } from '../../data/containers';
 import type { Container } from '../../data/containers';
-import { priceBySlug, formatPrice, asOfLabel } from '../../data/pricing';
+import { priceBySlug, formatPrice, asOfLabel, nationalPriceLabel } from '../../data/pricing';
+
+// THE VISIBLE DATE STAYS AT MONTH PRECISION, and it is a decision rather than an oversight.
+//
+// The feed now carries day precision, and effectiveSinceLabel in src/data/pricing.ts renders it, so
+// the copy below could say in effect since August 18 instead of as of August 2026. Open Question O4 of
+// docs/superpowers/specs/2026-08-17-geo-pricing-feed-design.md proposed exactly that and it is
+// unanswered, so the weaker claim ships.
+//
+// It is not only a sign off question. pricing.asOf is ONE date for all three product pages: see
+// nationalEffectiveSince in src/data/pricing.ts, which takes the latest effectiveSince across every
+// metro and every SKU. On a day the 20ft moves in one metro and the two 40ft figures do not, that one
+// date advances for all three pages, so a day precision sentence on the 40ft pages would name a day on
+// which their own figure did not move. Month precision absorbs that. Day precision would not.
+//
+// So making O4 a yes needs a per SKU change date first, meaning a national effective date computed for
+// the SKU being rendered, and then the copy change. Doing the copy change alone would publish a
+// sharper number that is wrong more often than the blurry one it replaced.
 
 export function getStaticPaths() {
   return containers.map((c) => ({ params: { slug: c.slug }, props: { container: c } }));
@@ -26,7 +43,7 @@ const price = priceBySlug[c.slug];
       { k: 'Cubic capacity', v: c.specs.cubicCap },
       { k: 'Condition', v: 'Wind & Water Tight (used)' },
       { k: 'Warranty', v: 'Lifetime Leak' },
-      ...(price ? [{ k: 'Avg. starting price', v: formatPrice(price.price) }] : []),
+      ...(price ? [{ k: nationalPriceLabel, v: formatPrice(price.price) }] : []),
     ] }}>
 
   <!-- HERO -->
@@ -131,11 +148,12 @@ const price = priceBySlug[c.slug];
     <div class="wrap">
       <div class="pricing-card">
         <div class="m">Average Price</div>
-        <div class="price-figure">{formatPrice(price.price)}<span>avg. starting price · {c.shortName}</span></div>
+        <div class="price-figure">{formatPrice(price.price)}<span>{nationalPriceLabel} · {c.shortName}</span></div>
         <p class="price-disclaimer-text"><strong>This is an average starting price, not a quote.</strong> What you pay can land above or below — it depends mostly on how far we deliver and current market supply. We'll give you a real, all-in number when you request a quote. <em>(Average as of {asOfLabel}.)</em></p>
         {c.slug === '40-foot-high-cube-container' && (
           <p class="hc-supply-note">Supply runs deep right now, so the High Cube average can land below the standard 40ft.</p>
         )}
+        <p class="price-bridge">Prices vary by metro, and we publish a dated delivered figure for each one we serve: <a href="/locations/">see the delivered price in your city</a>.</p>
         <a href="/quote/" class="btn">Get a Current Quote <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
         <p class="response-note">Most requests answered within 4 business hours.</p>
       </div>
@@ -223,6 +241,8 @@ const price = priceBySlug[c.slug];
   .price-disclaimer-text strong { color: var(--yellow); }
   .price-disclaimer-text em { font-style: italic; opacity: .7; font-size: 13px; }
   .hc-supply-note { font-family: var(--mono); font-size: 11px !important; line-height: 1.55; letter-spacing: .02em; opacity: .55 !important; margin-bottom: 24px !important; }
+  .price-bridge { font-family: var(--mono); font-size: 11px !important; line-height: 1.55; letter-spacing: .02em; opacity: .7 !important; margin-bottom: 24px !important; }
+  .price-bridge a { color: var(--yellow); border-bottom: 1.5px solid currentColor; font-weight: 600; }
   .response-note { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; opacity: .45; margin-top: 16px; margin-bottom: 0; }
 
   /* GUIDE LINKS */

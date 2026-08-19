@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { buildPageSchema } from './buildPageSchema';
 import { WEBSITE_ID, SERVICE_AREA_LINE } from './entities';
-import { priceValidUntil } from '../../data/pricing';
+import { pricing, priceValidUntil, formatPrice } from '../../data/pricing';
 
 const base = {
   url: 'https://steelboxdirect.com/size/',
@@ -59,11 +59,65 @@ describe('buildPageSchema core', () => {
     expect(quickFacts!.faqs).toEqual([]);
   });
 
+  /**
+   * The price spec carries the date the figure came into effect. Two properties matter and neither is
+   * covered by the assertions above: the duplicated figure has to agree with the one on the offer,
+   * because two different numbers in one node is worse than one number, and validFrom has to be the
+   * CHANGE date rather than the date the price was last checked. A check date on a rendered surface
+   * would need a deploy every day to stay true, which is why pricing.asOf was redefined rather than
+   * repointed.
+   */
+  it('product branch states validFrom from the change date, with a figure that agrees with the offer', () => {
+    const container: any = { slug: '20-foot-shipping-container', name: '20ft', seo: { description: '20ft.' } };
+    const { graph } = buildPageSchema({
+      url: 'https://steelboxdirect.com/shipping-containers-for-sale/20-foot-shipping-container/',
+      title: '20ft', description: '20ft.',
+      page: { kind: 'product', container, price: { label: '20ft Cargo', price: 2010, sqft: 160 }, specs: [] },
+    });
+    const spec = (graph.find((n) => n['@type'] === 'Product') as any).offers.priceSpecification;
+    expect(spec['@type']).toBe('UnitPriceSpecification');
+    expect(spec.priceCurrency).toBe('USD');
+    expect(spec.validFrom).toBe(pricing.asOf);
+    expect(spec.validFrom).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+    expect(spec.price).toBe(2010);
+    // the two figures in the one node, asserted equal rather than assumed equal
+    for (const p of [{ price: 2010, sqft: 160, label: 'a' }, { price: 2710, sqft: 320, label: 'b' }]) {
+      const { graph: g } = buildPageSchema({
+        url: 'https://steelboxdirect.com/shipping-containers-for-sale/x/', title: 'X', description: 'x',
+        page: { kind: 'product', container, price: p, specs: [] },
+      });
+      const offers = (g.find((n) => n['@type'] === 'Product') as any).offers;
+      expect(offers.price).toBe(offers.priceSpecification.price);
+    }
+  });
+
+  /**
+   * priceValidUntil is anchored to the build date, not to pricing.asOf plus a year. Under a feed that
+   * commits only when a figure moves, asOf stops advancing on its own, so the old derivation would
+   * publish an expired date on three product pages once a price held for more than a year. The
+   * assertion that matters is therefore that the value is in the future, which a frozen date fails
+   * and which the equality assertion above cannot see.
+   */
+  it('priceValidUntil is a future date, one year from the build date rather than from the change date', () => {
+    const today = new Date().toISOString().slice(0, 10);
+    expect(priceValidUntil).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+    expect(priceValidUntil.localeCompare(today)).toBeGreaterThan(0);
+    const oneYearOut = (() => {
+      const d = new Date();
+      d.setFullYear(d.getFullYear() + 1);
+      return d.toISOString().slice(0, 10);
+    })();
+    expect(priceValidUntil).toBe(oneYearOut);
+    expect(Number(priceValidUntil.slice(0, 4))).toBe(Number(today.slice(0, 4)) + 1);
+  });
+
   it('product branch omits price when none supplied', () => {
     const container: any = { slug: 'x', name: 'X', seo: { description: 'x' } };
     const { graph } = buildPageSchema({ url: 'https://steelboxdirect.com/shipping-containers-for-sale/x/', title: 'X', description: 'x', page: { kind: 'product', container, specs: [] } });
     const prod = graph.find((n) => n['@type'] === 'Product') as any;
     expect('price' in prod.offers).toBe(false);
+    // no figure means no price spec either, rather than a spec with an undefined figure in it
+    expect('priceSpecification' in prod.offers).toBe(false);
   });
 
   it('city branch: Service with areaServed, NO price anywhere, block $-free', () => {
@@ -104,6 +158,70 @@ describe('buildPageSchema core', () => {
     const depotJson = JSON.stringify(depotQf);
     expect(depotJson).not.toMatch(/250\s*mi|miles/i);
     expect(depotJson).not.toMatch(/freedom\s*conex/i);
+  });
+
+  /**
+   * The split: a product page carries a machine readable figure, a city page carries a human readable
+   * one. So the resolved city payload has to reach the visible cells and reach nothing in the graph.
+   *
+   * The graph half is asserted as a COUNT against a non-city baseline for the same URL, not as an
+   * absence. The site-wide Organization and LocalBusiness nodes already carry a priceless offer node
+   * on every page, so a literal absence assertion would fail at baseline and get deleted by whoever
+   * hit it. The count says what is meant: this branch adds none of its own.
+   */
+  it('city branch with a resolved price fills the visible cells and adds nothing priced to the graph', () => {
+    const city: any = { slug: 'dayton-shipping-containers', city: 'Dayton', state: 'Ohio', region: 'home' };
+    const url = 'https://steelboxdirect.com/locations/ohio/dayton-shipping-containers/';
+    const args = { url, title: 'Dayton', description: 'd', breadcrumbs: [{ name: 'Home', path: '/' }] };
+    const { graph, quickFacts } = buildPageSchema({
+      ...args,
+      page: {
+        kind: 'city', city, faqs: [{ q: 'Deliver?', a: 'Yes.' }],
+        price: { zip: '45404', delivered: 2040, sizeLabel: '20ft', effectiveSince: '2026-08-12' },
+      },
+    });
+    const baseline = buildPageSchema({ ...args, page: { kind: 'excluded' } }).graph;
+    const countType = (node: unknown, type: string): number => {
+      if (Array.isArray(node)) return node.reduce<number>((n, v) => n + countType(v, type), 0);
+      if (node && typeof node === 'object') {
+        const obj = node as Record<string, unknown>;
+        return Object.values(obj).reduce<number>((n, v) => n + countType(v, type), obj['@type'] === type ? 1 : 0);
+      }
+      return 0;
+    };
+
+    // visible half: the figure is scoped to its ZIP and its size, and the date is split off into its
+    // own cell so each one stands up alone when a scraper reads one row and not the other
+    expect(quickFacts!.specs[0]).toEqual({ k: 'Delivered price', v: `${formatPrice(2040)} for a 20ft to 45404` });
+    expect(quickFacts!.specs[1]).toEqual({ k: 'Price in effect since', v: 'August 12' });
+    expect(quickFacts!.specs[1].v).not.toMatch(/\d{4}-\d{2}-\d{2}/);
+    expect(quickFacts!.specs.length).toBeLessThanOrEqual(8);
+    expect(quickFacts!.showPriceDisclaimer).toBe(true);
+    // the Serves cell is untouched by the price payload
+    expect(quickFacts!.serves).toBe('Dayton + surrounding counties · 250 mi home region');
+
+    // graph half: nothing priced, and nothing from the payload
+    expect(countType(graph, 'Offer')).toBe(countType(baseline, 'Offer'));
+    expect(countType(graph, 'Product')).toBe(0);
+    const json = JSON.stringify(graph);
+    expect(json).not.toContain('$');
+    expect(json).not.toContain('45404');
+    expect(json).not.toContain('2040');
+    for (const key of ['"price"', '"offers"', '"priceSpecification"', '"priceValidUntil"', '"validFrom"']) {
+      expect(json, `the city graph must not carry ${key}`).not.toContain(key);
+    }
+  });
+
+  it('city branch without a resolved price prints no cells and no disclaimer', () => {
+    const city: any = { slug: 'norfolk-shipping-containers', city: 'Norfolk', state: 'Virginia', region: 'depot' };
+    const { quickFacts } = buildPageSchema({
+      url: 'https://steelboxdirect.com/locations/virginia/norfolk-shipping-containers/', title: 'Norfolk', description: 'n',
+      page: { kind: 'city', city, faqs: [] },
+    });
+    expect(quickFacts!.specs.map((s) => s.k)).not.toContain('Delivered price');
+    expect(quickFacts!.specs.map((s) => s.k)).not.toContain('Price in effect since');
+    expect(quickFacts!.showPriceDisclaimer).toBe(false);
+    expect(JSON.stringify(quickFacts)).not.toContain('$');
   });
 
   it('useCase branch: Service with audience + quickFacts specs', () => {
@@ -231,6 +349,65 @@ describe('QuickFacts "Serves" cell agrees with areaServed', () => {
       const { quickFacts } = buildPageSchema({ ...base, page: s.page });
       // escaped on purpose: the guard must not itself put a literal dash in the repo
       expect(quickFacts!.serves, s.kind).not.toMatch(/[\u2014\u2013]/);
+    }
+  });
+});
+
+/**
+ * The HowTo nodes are structured data, so they are held to a stricter standard than body prose.
+ *
+ * TWO FAILURES ON 2026-08-18, both in the /cost/ HowTo in src/lib/schema/howto.ts, both invisible
+ * because nothing read the node:
+ *   1. A U+2014 and a U+2013 shipped inside the step text. Assistants quote structured data
+ *      verbatim, so a typographic dash there travels further than the same dash in a paragraph.
+ *   2. The delivery step said the service area is 250 miles from Cincinnati, while the visible
+ *      /cost/ page publishes delivered pricing for fifteen metros, most of them outside that
+ *      radius. The machine layer contradicted the table above it, on one page.
+ * Commit e429343 fixed the same class of contradiction in the visible Serves cell. These tests
+ * hold the schema side of it.
+ */
+describe('HowTo nodes are dash clean and do not understate the service area', () => {
+  const TOPICS = ['size', 'condition', 'delivery', 'cost', 'permits'] as const;
+
+  const howtoFor = (topic: (typeof TOPICS)[number]): any => {
+    const { graph } = buildPageSchema({
+      ...base,
+      url: `https://steelboxdirect.com/${topic}/`,
+      page: { kind: 'guide', topic, title: topic, specs: [], faqs: [] },
+    });
+    const node = graph.find((n) => n['@type'] === 'HowTo');
+    expect(node, `no HowTo node for topic ${topic}`).toBeDefined();
+    return node;
+  };
+
+  const stepText = (node: any): string[] => (node.step ?? []).map((s: any) => String(s.text ?? ''));
+
+  it('the /cost/ HowTo carries no em dash and no en dash', () => {
+    // escaped code points on purpose, so this guard cannot contain what it forbids
+    for (const text of stepText(howtoFor('cost'))) {
+      expect(text).not.toMatch(/[\u2014\u2013]/);
+    }
+  });
+
+  it('the /cost/ delivery step pairs the 250 mi home region with the nationwide capability', () => {
+    const delivery = stepText(howtoFor('cost')).find((t) => /250 mi/i.test(t));
+    expect(delivery, 'no step states the home region radius').toBeDefined();
+    // the radius alone reads as the whole footprint, which the visible price table contradicts
+    expect(delivery!).toMatch(/nationwide/i);
+    expect(delivery!).toMatch(/nationwide[^.]*\b(hub|hubs|network|depot)\b/i);
+    expect(delivery!.search(/250 mi/i)).toBeLessThan(delivery!.search(/nationwide/i));
+    // no state list: naming states implies the unnamed states are excluded
+    expect(delivery!).not.toMatch(/\b(Ohio|Indiana|Kentucky|West Virginia)\b/);
+    // no pricing inside a geography claim
+    expect(delivery!).not.toContain('$');
+  });
+
+  it('no HowTo step anywhere claims a service area the price tables outgrew', () => {
+    for (const topic of TOPICS) {
+      for (const text of stepText(howtoFor(topic))) {
+        if (!/250 mi/i.test(text)) continue;
+        expect(text, `${topic} step states the radius with no nationwide clause`).toMatch(/nationwide/i);
+      }
     }
   });
 });

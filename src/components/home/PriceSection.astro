@@ -1,5 +1,5 @@
 ---
-import { pricing, formatPrice, asOfLabel } from '../../data/pricing';
+import { pricing, formatPrice, asOfLabel, nationalPriceLabel } from '../../data/pricing';
 
 const p20 = pricing['20ftCargo'];
 const p40 = pricing['40ftStandard'];
@@ -25,7 +25,7 @@ const p40hc = pricing['40ftStandardHC'];
     <div class="pgrid pricing_grid">
       <div class="pcard pricing_card">
         <div class="tag pricing_name"><span class="name">20-ft cargo</span><span class="chip">Most available</span></div>
-        <div class="num">{formatPrice(p20.price)}<small>Avg. starting price</small></div>
+        <div class="num">{formatPrice(p20.price)}<small>{nationalPriceLabel}</small></div>
         <ul class="pricing_features">
           <li>~160 sq ft · fits a tractor or a lot of tools</li>
           <li>Wind &amp; Water Tight, minor surface rust</li>
@@ -35,7 +35,7 @@ const p40hc = pricing['40ftStandardHC'];
       </div>
       <div class="pcard pricing_card">
         <div class="tag pricing_name"><span class="name">40-ft cargo</span><span class="chip">Best value</span></div>
-        <div class="num">{formatPrice(p40.price)}<small>Avg. starting price</small></div>
+        <div class="num">{formatPrice(p40.price)}<small>{nationalPriceLabel}</small></div>
         <ul class="pricing_features">
           <li>~320 sq ft · equipment + implements + shelving</li>
           <li>The Sweet Spot — best value per square foot</li>
@@ -45,7 +45,7 @@ const p40hc = pricing['40ftStandardHC'];
       </div>
       <div class="pcard rec pricing_card">
         <div class="tag pricing_name"><span class="name">40ft HC</span><span class="chip">Most popular</span></div>
-        <div class="num">{formatPrice(p40hc.price)}<small>Avg. starting price</small></div>
+        <div class="num">{formatPrice(p40hc.price)}<small>{nationalPriceLabel}</small></div>
         <p class="hc-note">Supply runs deep right now, so the High Cube average can land below the standard 40ft.</p>
         <ul class="pricing_features">
           <li>Same 40ft footprint — a full foot taller at 9'6"</li>

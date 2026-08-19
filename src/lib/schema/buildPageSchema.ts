@@ -1,6 +1,6 @@
 import type { BuildSchemaArgs, BuiltSchema, QuickFacts, QuickFaq } from './types';
 import { globalNodes, ORG_ID, LOCALBUSINESS_ID, WEBSITE_ID, SITE_URL, SERVICE_AREA_LINE } from './entities';
-import { priceValidUntil } from '../../data/pricing';
+import { pricing, priceValidUntil, formatPrice, effectiveSinceLabel } from '../../data/pricing';
 import { howtoByTopic } from './howto';
 
 const nodeId = (url: string, frag: string) => `${url}#${frag}`;
@@ -67,6 +67,20 @@ export function buildPageSchema(args: BuildSchemaArgs): BuiltSchema {
           '@type': 'Offer',
           priceCurrency: 'USD',
           ...(p.price ? { price: p.price.price } : {}),
+          // The same figure again, with the date it came into effect attached. The duplication is the
+          // cost of stating validFrom in the place the locked decision names, and the two prices must
+          // stay equal, which buildPageSchema.test.ts asserts. validFrom is a change date, never a
+          // check date: see the asOf docstring in src/data/pricing.ts.
+          ...(p.price
+            ? {
+                priceSpecification: {
+                  '@type': 'UnitPriceSpecification',
+                  price: p.price.price,
+                  priceCurrency: 'USD',
+                  validFrom: pricing.asOf,
+                },
+              }
+            : {}),
           priceValidUntil,
           itemCondition: 'https://schema.org/UsedCondition',
           availability: 'https://schema.org/InStock',
@@ -105,10 +119,27 @@ export function buildPageSchema(args: BuildSchemaArgs): BuiltSchema {
       graph.push(faqNode(args.url, p.faqs));
       graph.push(webPageNode(args, svcId, nodeId(args.url, 'faq')));
       const isDepot = p.city.region === 'depot';
+      // The resolved price, or nothing at all. It reaches the visible cells and never the graph. A
+      // city page states a figure scoped to one ZIP in prose; a machine readable price node would
+      // restate the same number as a general claim about the whole city, which is the thing the
+      // locked decision keeps off this branch. Absence means this metro prints no figure.
+      const cityPrice = p.price;
       quickFacts = {
         entityTitle: `Containers in ${p.city.city}, ${p.city.state}`,
         entitySubtitle: 'Wind & Water Tight (used) · delivered on-site',
         specs: [
+          // The figure and its date are two cells on purpose. Each cell is read alone by a scraper,
+          // so a scoped figure and a bare date each stand up by themselves, where one merged cell
+          // would have to carry both scopes or quietly drop one.
+          ...(cityPrice
+            ? [
+                {
+                  k: 'Delivered price',
+                  v: `${formatPrice(cityPrice.delivered)} for a ${cityPrice.sizeLabel} to ${cityPrice.zip}`,
+                },
+                { k: 'Price in effect since', v: effectiveSinceLabel(cityPrice.effectiveSince) },
+              ]
+            : []),
           {
             k: 'Service area',
             v: isDepot
@@ -120,7 +151,10 @@ export function buildPageSchema(args: BuildSchemaArgs): BuiltSchema {
           { k: 'Delivery', v: 'All-in quote, about two weeks' },
         ],
         faqs: p.faqs.slice(0, 3),
-        showPriceDisclaimer: false,
+        // Gated on the page having handed over a figure, which it does only for a metro whose
+        // publish flag is on and which the feed has priced. Safe to flip per page here in a way it
+        // was not on the shared guide branch, because this branch serves city pages and nothing else.
+        showPriceDisclaimer: Boolean(cityPrice),
         // Both city tiers set `serves` explicitly so no city page falls through to the
         // site-wide default. A city page is a local surface: it should state its own area,
         // not the network's ceiling.

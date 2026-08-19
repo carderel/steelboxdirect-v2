@@ -2,7 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { containers } from '../../data/containers';
 import { CONDITION } from '../../data/condition';
-import { priceBySlug, formatPrice, asOfLabel } from '../../data/pricing';
+import { priceBySlug, formatPrice, asOfLabel, nationalPriceLabel } from '../../data/pricing';
 import { composeRentalStance } from '../../data/rentalStance';
 
 // Single source for the page FAQ. `a` (plain text) feeds BOTH the JSON-LD schema
@@ -88,7 +88,7 @@ const faqs: { q: string; a: string; html?: string }[] = [
             <h2 class="pc-name">{c.name}</h2>
             <div class="pc-dims">{c.specs.externalDims}</div>
             <div class="pc-cap">{c.specs.cubicCap} capacity</div>
-            <div class="pc-price">{formatPrice(priceBySlug[c.slug].price)}<span>avg. starting price</span></div>
+            <div class="pc-price">{formatPrice(priceBySlug[c.slug].price)}<span>{nationalPriceLabel}</span></div>
             <p class="pc-tag">{c.tagline}</p>
             <div class="pc-cta">See specs <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></div>
           </a>
@@ -98,6 +98,7 @@ const faqs: { q: string; a: string; html?: string }[] = [
         <p><strong>These are average starting prices, not quotes.</strong> What you pay can land above or below — it depends mostly on how far we deliver and current market supply. We'll give you a real, all-in number when you <a href="/quote/">request a quote</a>. <em>(Average as of {asOfLabel}.)</em></p>
         <p class="hub-disclaimer-note">Supply runs deep right now, so the 40ft High Cube average can land below the standard 40ft.</p>
         <p class="hub-disclaimer-note">Not sure buying is the right shape yet? The rent vs buy calculator works out <a href="/container-rent-vs-buy-calculator/">how that compares to renting</a> over the number of months you actually need it.</p>
+        <p class="hub-disclaimer-note">Prices vary by metro, and we publish a dated delivered figure for each one we serve: <a href="/locations/">see the delivered price in your city</a>.</p>
       </div>
     </div>
   </section>
