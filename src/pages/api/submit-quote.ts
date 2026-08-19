@@ -178,7 +178,12 @@ async function sendSellerNotification(
     const priority = getPriorityLabel(score);
     const inServiceArea = distance === null || distance <= SERVICE_RADIUS_MILES;
     const pagesVisited = data.pages_visited?.join(', ') || 'Unknown';
-    const sellerEmail = import.meta.env.SELLER_EMAIL || process.env.SELLER_EMAIL || 'seller@example.com';
+    // Annotated because import.meta.env is typed any here, so without it the string flowing out of
+    // this line is any too, and the callback parameter three lines down became an implicit any that
+    // failed npx tsc --noEmit. The daily price harvest gates on a clean type check, so a tolerated
+    // error would have to be tolerated by a count threshold, and a threshold passes the day one error
+    // is fixed and another appears. Type only, no runtime change.
+    const sellerEmail: string = import.meta.env.SELLER_EMAIL || process.env.SELLER_EMAIL || 'seller@example.com';
     if (sellerEmail === 'seller@example.com') {
       console.error('🚨 SELLER_EMAIL is not set — seller lead alerts are going to the placeholder seller@example.com and will NOT be received. Set SELLER_EMAIL in the environment.');
     }

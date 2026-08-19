@@ -51,6 +51,21 @@ describe('cities ground-truth dataset integrity', () => {
         expect(blob).not.toMatch(/highest ISO standards/i);
       });
 
+      // KEEP THIS. The city-page pricing override of 2026-08-17 lifted the prohibition on the PAGE
+      // and not on the DATA, so this assertion stands unchanged. A city page may now render a
+      // delivered figure, but only one interpolated from the generated feed in src/data/geoPricing.ts,
+      // scoped to a named centroid ZIP, carrying its effective date and its disclaimer. A dollar
+      // figure hand typed into a lede, a delivery body, a stat or a FAQ answer is exactly the
+      // hand-typed price the replacement rule still forbids, and this blob scan is the only thing in
+      // the repository that catches it.
+      //
+      // The rule SPLIT, it did not move. The page half now lives in
+      // src/lib/compliance/city-pricing-guard.test.ts, which is a new file because there had never
+      // been a guard on the city template at all. Deleting this assertion in the belief that the new
+      // guard covers it would leave the data side unguarded, and the data side is the half a human
+      // edits by hand.
+      //
+      // Decision: UDO Project/.project-catalog/decisions/2026-08-17-city-page-pricing-override.md.
       it('contains NO dollar amounts (hard stop)', () => {
         expect(blob).not.toMatch(/\$\s*\d/);
       });
