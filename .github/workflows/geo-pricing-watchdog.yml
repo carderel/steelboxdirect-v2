@@ -1,0 +1,155 @@
+name: Geo pricing watchdog
+
+# THE HAZARD THIS EXISTS FOR, stated first because it is not obvious: a dead harvest and a stable
+# market are indistinguishable from inside the repository. The harvest commits only when a figure
+# moves, so a quiet fortnight and a job that died three weeks ago produce the identical diff, which is
+# no diff at all. A feature whose success state and whose total failure state look the same needs an
+# alarm that does not read the diff.
+#
+# The harvest shouts when it RUNS and fails. It cannot shout about the failures that stop it running:
+# a schedule GitHub silently disabled after 60 days of repository inactivity, a workflow file deleted
+# by a bad merge, a revoked secret, a runner outage. None of those execute any of our code. So this is
+# a second, independent workflow with no shared code and a different cron. It reads the Actions API for
+# the last SUCCESSFUL geo-pricing-harvest run and complains if that is more than 48 hours old.
+#
+# Forty eight hours means one missed daily run is tolerated and two are not.
+#
+# DO NOT MERGE THIS INTO THE HARVEST. A watchdog that shares a process with the thing it watches is
+# not a watchdog. It is deliberately dumb, and it depends on nothing in this repository except the
+# harvest workflow file name.
+#
+# Design: docs/superpowers/specs/2026-08-17-geo-pricing-feed-design.md, Silent Failure, Layer 3.
+
+on:
+  schedule:
+    # 22:00 UTC, twelve hours off the harvest, so a runner incident that swallows one hour of the day
+    # cannot take both jobs with it.
+    - cron: '0 22 * * *'
+  workflow_dispatch:
+    inputs:
+      threshold_hours:
+        description: Hours of silence tolerated before the alarm fires. Lower it to test the alarm.
+        required: false
+        default: '48'
+
+permissions:
+  actions: read   # read the harvest run history
+  issues: write   # raise the alarm
+
+concurrency:
+  group: geo-pricing-watchdog
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check how long since the harvest last succeeded
+        env:
+          GH_TOKEN: ${{ github.token }}
+          THRESHOLD_HOURS: ${{ github.event.inputs.threshold_hours || '48' }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          HARVEST_URL: ${{ github.server_url }}/${{ github.repository }}/actions/workflows/geo-pricing-harvest.yml
+        run: |
+          set -uo pipefail
+          runs="${RUNNER_TEMP}/harvest-runs.json"
+          body="${RUNNER_TEMP}/watchdog-body.md"
+
+          # WHEN THE API CALL ITSELF FAILS. There is nothing useful this job can conclude, because it
+          # cannot tell a healthy harvest from a dead one, and it cannot open an issue either since
+          # that needs the same API. So it fails the step instead. A failing scheduled workflow emails
+          # the repository owner on its own, which is the notification of last resort, and a watchdog
+          # that swallowed the error and exited green would be worse than no watchdog: it would report
+          # health it never measured.
+          set +e
+          gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/geo-pricing-harvest.yml/runs?status=success&per_page=1" > "${runs}"
+          api_code=$?
+          set -e
+          if [ "${api_code}" -ne 0 ] || [ ! -s "${runs}" ]; then
+            echo "::error::the Actions API lookup for geo-pricing-harvest.yml failed with exit ${api_code}. The watchdog cannot tell a healthy harvest from a dead one, and it cannot open an issue either, because that needs the same API. This job is failing so that the workflow failure notification is the alarm. A 404 here means the harvest workflow file was renamed or deleted, which is itself one of the failures this job exists to catch."
+            exit 1
+          fi
+
+          reader='
+            const { readFileSync } = require("node:fs");
+            const data = JSON.parse(readFileSync(process.argv[1], "utf8"));
+            const run = (data.workflow_runs ?? [])[0];
+            const field = process.argv[2];
+            if (!run) { process.stdout.write(""); process.exit(0); }
+            if (field === "age_hours") {
+              const stamp = run.updated_at ?? run.run_started_at ?? run.created_at;
+              const hours = (Date.now() - Date.parse(stamp)) / 3600000;
+              process.stdout.write(hours.toFixed(1));
+              process.exit(0);
+            }
+            process.stdout.write(String(run[field] ?? ""));
+          '
+          finished=$(node -e "${reader}" "${runs}" updated_at)
+          age=$(node -e "${reader}" "${runs}" age_hours)
+          run_number=$(node -e "${reader}" "${runs}" run_number)
+
+          if [ -z "${age}" ]; then
+            reason="the harvest has NEVER completed a successful run"
+            note=", so there is no timestamp for the threshold to measure"
+            stale=1
+            echo "Zero successful harvest runs found."
+          else
+            reason="the harvest last succeeded ${age} hours ago, at ${finished}, on run number ${run_number}"
+            note=", which is past the ${THRESHOLD_HOURS} hour threshold"
+            echo "Last successful harvest: ${finished}, ${age} hours ago. Threshold ${THRESHOLD_HOURS} hours."
+            stale=$(node -e 'process.stdout.write(Number(process.argv[1]) > Number(process.argv[2]) ? "1" : "0")' "${age}" "${THRESHOLD_HOURS}")
+          fi
+
+          {
+            echo "### Watchdog"
+            echo ""
+            echo "${reason}. Threshold: ${THRESHOLD_HOURS} hours. Stale: ${stale}."
+          } >> "${GITHUB_STEP_SUMMARY}"
+
+          if [ "${stale}" != "1" ]; then
+            echo "Harvest is alive. Nothing to do."
+            exit 0
+          fi
+
+          {
+            echo "The container price harvest looks dead."
+            echo ""
+            echo "At $(date -u +%Y-%m-%dT%H:%M:%SZ), ${reason}${note}."
+            echo ""
+            echo "Why this matters more than it looks: the harvest commits only when a price moves, so a"
+            echo "dead job and a stable market leave the repository looking identical. Nothing else in the"
+            echo "system can notice this, which is why this separate job exists."
+            echo ""
+            echo "What to check, cheapest first:"
+            echo ""
+            echo "1. Was the schedule disabled? GitHub disables scheduled workflows after 60 days with no"
+            echo "   repository activity, and it does not warn loudly. Re enable it here: ${HARVEST_URL}"
+            echo "2. Are the last few harvest runs red? If so the failure comments on the pricing-feed"
+            echo "   issue already say why, and this comment is a duplicate of a known problem."
+            echo "3. Does .github/workflows/geo-pricing-harvest.yml still exist on main?"
+            echo "4. Run the harvest manually from the Actions tab with workflow_dispatch and watch it."
+            echo ""
+            echo "Prices are not wrong while this is open. They are only unverified: the last committed"
+            echo "figures keep serving, with the effective dates they were committed with."
+            echo ""
+            echo "Watchdog run log: ${RUN_URL}"
+          } > "${body}"
+
+          # One reused issue, shared with the harvest failures under the same label, because muting is
+          # a bigger hazard than duplication. If a harvest failure issue is already open, this comments
+          # on it: the owner is then reading one thread about one problem rather than two threads that
+          # each look like half of it.
+          gh label create pricing-feed --color B60205 --description "Daily container price feed" >/dev/null 2>&1 || true
+          existing=$(gh issue list --label pricing-feed --state open --limit 1 --json number --jq '.[0].number // empty' 2>/dev/null || true)
+          if [ -n "${existing}" ]; then
+            echo "Commenting on the open pricing-feed issue #${existing}."
+            gh issue comment "${existing}" --body-file "${body}"
+          else
+            gh issue create \
+              --title "Geo pricing harvest looks dead as of $(date -u +%Y-%m-%d)" \
+              --label pricing-feed \
+              --body-file "${body}"
+          fi
+          echo "::error::${reason}${note}. Alarm raised on the pricing-feed issue."
+          exit 1

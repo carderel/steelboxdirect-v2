@@ -1,0 +1,278 @@
+name: Geo pricing harvest
+
+# Rewrites src/data/geoPricing.ts from the live supplier feed once a day, and ONLY on the days a
+# figure actually moved. Most days are no ops and end here without a commit, which is the whole point
+# of the design: deploys drop from 365 a year to however often prices really move.
+#
+# Design: docs/superpowers/specs/2026-08-17-geo-pricing-feed-design.md, Task 6.
+# Decision: UDO Project/.project-catalog/decisions/2026-08-17-city-page-pricing-override.md
+#
+# FOUR THINGS IN HERE ARE LOAD BEARING. Do not simplify any of them away.
+#
+#   1. The branch is read from the machine readable summary the script prints on stdout, from the
+#      status and changeCount fields, never from a file diff. The script is the only thing that knows
+#      the difference between nothing moved and a validation abort, and both of those leave the
+#      working tree clean.
+#   2. The commit uses an EXPLICIT PATHSPEC naming one file. git add -A is forbidden in this
+#      repository. It carries dozens of deliberately unstaged deletions and a large untracked tree,
+#      so a blanket add from an unattended job would sweep hundreds of paths into a commit nobody
+#      reviewed. There is also a staged change guard below that fails the run if anything other than
+#      the generated module is staged.
+#   3. The test suite, the harvest suite, the type check and the build all run BEFORE the push, and a
+#      red one means no commit. A commit that never happens can never deploy, so this is the deploy
+#      gate. Cloudflare auto deploy on push stays ON deliberately: turning it off would change deploy
+#      behaviour for every human push too, which is a separate infrastructure decision (T-036).
+#   4. The sidecar state file is persisted through the cache so it survives no op days. Losing it is
+#      not fatal, it degrades the availability hysteresis to a documented cold path for one run, and
+#      the script says so in its summary and on stderr.
+#
+# WHAT HAPPENS WHEN IT FAILS. Any failing step, crash or clean validation abort alike, comments on a
+# single reused issue labelled pricing-feed. One issue with nine comments, never nine issues, because
+# nine issues is how an alarm gets muted. A job that never runs at all cannot report anything, which
+# is what geo-pricing-watchdog.yml exists for.
+
+on:
+  schedule:
+    # 10:00 UTC, pinned. Actions cron is UTC and 5am Eastern is 09:00 or 10:00 depending on daylight
+    # saving, so a fixed hour means the job lands at 6am Eastern in summer and 5am in winter. That is
+    # accepted on purpose, in preference to a schedule that drifts an hour twice a year.
+    - cron: '0 10 * * *'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write   # push the regenerated module to main
+  issues: write     # open or comment on the failure issue
+
+concurrency:
+  group: geo-pricing-harvest
+  cancel-in-progress: false
+
+jobs:
+  harvest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out main
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          # Pinned rather than latest. An unattended job that writes prices should not change its
+          # runtime underneath itself on a Tuesday.
+          node-version: '22'
+          cache: npm
+
+      - name: Restore the harvest sidecar state
+        uses: actions/cache/restore@v4
+        with:
+          path: .cache/geo-pricing-state.json
+          # A unique key per run with a prefix restore, which is the only way actions/cache stores a
+          # NEW value every run. A single fixed key would hit on every run after the first and never
+          # save again, so the availability hysteresis would freeze on day one flags. The matching
+          # save step at the end of this job is deliberately separate for the same reason.
+          key: geo-pricing-state-v1-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            geo-pricing-state-v1-
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Harvest the feed
+        id: harvest
+        run: |
+          set -uo pipefail
+          summary="${RUNNER_TEMP}/harvest-summary.json"
+          # set +e on purpose, and it has to be explicit: the default shell for a run block is
+          # bash -e, so without this the step would die on the harvest exit code before it could read
+          # the summary. A non zero exit is data here, not an accident, because it is what separates a
+          # clean validation abort from a transport crash.
+          set +e
+          node scripts/harvest-geo-pricing.mjs > "${summary}"
+          code=$?
+          set -e
+          echo "summary=${summary}" >> "${GITHUB_OUTPUT}"
+          if [ ! -s "${summary}" ]; then
+            echo "::error::the harvest exited ${code} and printed no summary, so it crashed before it could report. Check the step log above."
+            echo "status=crashed" >> "${GITHUB_OUTPUT}"
+            echo "changeCount=0" >> "${GITHUB_OUTPUT}"
+            exit 1
+          fi
+          # Read the two fields the branch depends on out of the summary. One field per invocation,
+          # no process substitution, so a parse failure fails this step with a readable node error
+          # instead of an empty read.
+          reader='
+            const { readFileSync } = require("node:fs");
+            const line = readFileSync(process.argv[1], "utf8").trim().split("\n").pop();
+            const s = JSON.parse(line);
+            const field = process.argv[2];
+            process.stdout.write(String(s[field] ?? ""));
+          '
+          status=$(node -e "${reader}" "${summary}" status)
+          changes=$(node -e "${reader}" "${summary}" changeCount)
+          if [ -z "${status}" ]; then
+            echo "::error::the summary carried no status field, so this run cannot tell whether anything moved."
+            exit 1
+          fi
+          if [ -z "${changes}" ]; then changes=0; fi
+          echo "status=${status}" >> "${GITHUB_OUTPUT}"
+          echo "changeCount=${changes}" >> "${GITHUB_OUTPUT}"
+          {
+            echo "### Harvest"
+            echo ""
+            echo "status: \`${status}\`, changed figures: \`${changes}\`, exit code: \`${code}\`"
+          } >> "${GITHUB_STEP_SUMMARY}"
+          if [ "${code}" -ne 0 ] || [ "${status}" = "failed" ]; then
+            echo "::error::the harvest reported status ${status} and exited ${code}, so nothing was written and the committed figures still stand."
+            exit 1
+          fi
+          if [ "${status}" = "no-change" ]; then
+            echo "Nothing moved. No commit, no deploy. This is the expected outcome on most days."
+            exit 0
+          fi
+          if [ "${status}" != "written" ]; then
+            echo "::error::unexpected harvest status ${status}. Expected written or no-change."
+            exit 1
+          fi
+          echo "${changes} figures moved, so the gates below decide whether this ships."
+
+      # Every step from here on runs only when a figure actually moved.
+
+      - name: Guard the change set before any gate runs
+        if: steps.harvest.outputs.status == 'written'
+        run: |
+          set -euo pipefail
+          unexpected=$(git status --porcelain | awk '{ print $2 }' | grep -v '^src/data/geoPricing\.ts$' || true)
+          if [ -n "${unexpected}" ]; then
+            echo "::error::the harvest touched paths it does not own, so nothing will be committed: ${unexpected}"
+            exit 1
+          fi
+          if git diff --quiet -- src/data/geoPricing.ts; then
+            echo "::error::the harvest reported a change and the generated module is unmodified. That is a contradiction, so this run stops."
+            exit 1
+          fi
+          git --no-pager diff --stat -- src/data/geoPricing.ts
+
+      - name: Gate, unit and guard suites
+        if: steps.harvest.outputs.status == 'written'
+        run: npm test
+
+      - name: Gate, harvest script suite
+        if: steps.harvest.outputs.status == 'written'
+        run: npm run test:harvest
+
+      - name: Gate, type check
+        if: steps.harvest.outputs.status == 'written'
+        # Gated on the exit code, not on an error count. The one pre existing error this repository
+        # carried, an implicit any at src/pages/api/submit-quote.ts:186, was fixed in the same change
+        # that added this workflow, so a clean exit is achievable and therefore the right bar. An
+        # error count threshold would pass a run where the old error got fixed and a new one appeared
+        # on the same day, which is exactly the silent failure this feature is built to avoid.
+        run: npx tsc --noEmit
+
+      - name: Gate, production build
+        if: steps.harvest.outputs.status == 'written'
+        run: npm run build
+
+      - name: Commit and push the new figures
+        if: steps.harvest.outputs.status == 'written'
+        env:
+          CHANGE_COUNT: ${{ steps.harvest.outputs.changeCount }}
+        run: |
+          set -euo pipefail
+          git config user.name "geo-pricing-harvest"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # EXPLICIT PATHSPEC. See load bearing item 2 in the header. Never git add -A in here.
+          git add -- src/data/geoPricing.ts
+          staged=$(git diff --cached --name-only)
+          if [ -z "${staged}" ]; then
+            echo "::error::nothing staged after an explicit add of the generated module."
+            exit 1
+          fi
+          if [ "${staged}" != "src/data/geoPricing.ts" ]; then
+            echo "::error::more than the generated module is staged, so this run refuses to commit: ${staged}"
+            exit 1
+          fi
+          git commit -m "chore(pricing): refresh the geo pricing feed, ${CHANGE_COUNT} figures moved" \
+            -m "Written by .github/workflows/geo-pricing-harvest.yml from the live feed. Unit suite, harvest suite, type check and build all passed before this commit was created."
+          # Auto deploy on push is left ON deliberately. The gate is the green suite above, not a
+          # deploy hook. See load bearing item 3 in the header.
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+          echo "Pushed to ${GITHUB_REF_NAME}. Cloudflare will deploy it." >> "${GITHUB_STEP_SUMMARY}"
+
+      - name: Save the harvest sidecar state
+        # Runs even when the gates went red, because the sidecar records what the feed SAID, which
+        # stays true whether or not the figures shipped. Skipped when the file is absent, which is
+        # what a crash before the first write looks like, because actions/cache/save fails on a
+        # missing path.
+        if: always() && hashFiles('.cache/geo-pricing-state.json') != ''
+        uses: actions/cache/save@v4
+        with:
+          path: .cache/geo-pricing-state.json
+          key: geo-pricing-state-v1-${{ github.run_id }}-${{ github.run_attempt }}
+
+      - name: Report the failure on the single pricing feed issue
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SUMMARY_PATH: ${{ steps.harvest.outputs.summary }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -uo pipefail
+          body="${RUNNER_TEMP}/issue-body.md"
+          {
+            echo "The geo pricing harvest failed at $(date -u +%Y-%m-%dT%H:%M:%SZ)."
+            echo ""
+            echo "Nothing was written and nothing was pushed, so the committed figures in"
+            echo "src/data/geoPricing.ts are still serving. That is the designed degradation, not an outage."
+            echo ""
+            echo "Run log: ${RUN_URL}"
+            echo ""
+          } > "${body}"
+          if [ -n "${SUMMARY_PATH:-}" ] && [ -s "${SUMMARY_PATH:-/nonexistent}" ]; then
+            node -e '
+              const { readFileSync, appendFileSync } = require("node:fs");
+              const line = readFileSync(process.argv[1], "utf8").trim().split("\n").pop();
+              const out = process.argv[2];
+              let s;
+              try { s = JSON.parse(line); } catch { appendFileSync(out, "The summary on stdout was not valid JSON.\n"); process.exit(0); }
+              const rows = [];
+              rows.push("status: " + s.status + ", metros priced: " + s.metrosPriced + " of " + s.metrosRequested + ", hysteresis: " + s.hysteresis);
+              rows.push("");
+              if ((s.failures ?? []).length) {
+                rows.push("Failing checks:");
+                rows.push("");
+                for (const f of s.failures) {
+                  rows.push("- " + [f.check, f.slug, f.sku, f.detail].filter(Boolean).join(" / "));
+                }
+                rows.push("");
+              }
+              if ((s.warnings ?? []).length) {
+                rows.push("Warnings:");
+                rows.push("");
+                for (const w of s.warnings) rows.push("- " + [w.check, w.slug, w.sku, w.detail].filter(Boolean).join(" / "));
+                rows.push("");
+              }
+              if ((s.unsuppressed ?? []).length) {
+                rows.push("Unavailable but held for one run, no sidecar to confirm against:");
+                rows.push("");
+                for (const u of s.unsuppressed) rows.push("- " + u.slug + " " + u.sku + " " + u.reason);
+                rows.push("");
+              }
+              appendFileSync(out, rows.join("\n") + "\n");
+            ' "${SUMMARY_PATH}" "${body}" || echo "The summary could not be rendered into this comment. Read the run log." >> "${body}"
+          else
+            echo "No machine readable summary was produced, so the harvest died before it could report. Read the run log." >> "${body}"
+          fi
+          # The label has to exist before it can be filtered on, and creating it is idempotent here.
+          gh label create pricing-feed --color B60205 --description "Daily container price feed" >/dev/null 2>&1 || true
+          existing=$(gh issue list --label pricing-feed --state open --limit 1 --json number --jq '.[0].number // empty' 2>/dev/null || true)
+          if [ -n "${existing}" ]; then
+            echo "Commenting on the open pricing-feed issue #${existing} rather than opening another one."
+            gh issue comment "${existing}" --body-file "${body}"
+          else
+            gh issue create \
+              --title "Geo pricing harvest failed on $(date -u +%Y-%m-%d)" \
+              --label pricing-feed \
+              --body-file "${body}"
+          fi
