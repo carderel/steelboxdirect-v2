@@ -91,6 +91,32 @@ const priceEffectiveSince = metroPrices
       .reduce((latest, date) => (date.localeCompare(latest) > 0 ? date : latest), '')
   : '';
 
+// priceZip is the ZIP every figure above is scoped to, and it is read twice now: once per price line,
+// and once by the callout band at the foot of the same section.
+//
+// THE CALLOUT, and why it sits inside this section rather than beside the form at the foot of the
+// page. A reader who has just read a figure scoped to one ZIP thinks next that they do not live in
+// that ZIP, and until today the only thing on the page that answered that thought sat five sections
+// below and led to a form rather than to a phone. So the band asks the question in the words the
+// reader would use, and puts the number to dial beside it in plain sight rather than behind a click.
+//
+// WHY IT OFFERS ACCURACY AND NEVER FRESHNESS. An invitation to call for the up to date price would
+// fight the block it sits under. That block states the date every figure above it has held since, the
+// feed behind it rewrites those figures daily, and the whole point of that machinery is that the
+// published number IS the live one. Inviting a call for a newer number tells the reader the one they
+// just read is stale, which is the opposite of what the page has just spent a paragraph earning.
+// Accuracy carries no such conflict, because the page has already conceded it one line above: the
+// hedge says outright that the reader ZIP differs from the priced one and that distance is most of
+// what moves the number. Offering to close a gap the page admits is consistent. Offering to close a
+// gap the page denies is not. Note too that the button names the address rather than describing the
+// number, because the address is the thing the reader came here about, and that it borrows the idiom
+// the price lines already use, the price TO somewhere, so that the reader is not asked to learn a
+// second way of talking about the same thing.
+//
+// It renders inside the price conditional deliberately. With no figure there is no ZIP to name and
+// nothing for an exact price to be exact against, so an unpriced metro renders no band at all, and
+// the call path that metro keeps is the header, the footer and the facts strip, every one of which
+// carries the same number on every page of the site.
 const priceZip = centroid ? centroid.zip : '';
 
 // Pickup is a different quantity, not the delivered figure with the delivery taken back off: the
@@ -200,6 +226,23 @@ const cityPrice = showPrice
             </details>
           )}
         </div>
+      </div>
+
+      <!-- The ZIP callout. Loud on purpose, and placed here on purpose: the rationale sits above
+           priceZip in the frontmatter, the contrast figures sit above .zip-callout in the styles. -->
+      <div class="zip-callout">
+        <div class="callout-hazard" aria-hidden="true"></div>
+        <div class="wrap callout-inner">
+          <p class="callout-ask"><span class="callout-zip">{priceZip}</span> not your ZIP?</p>
+          <a class="callout-act" href="tel:+15135462543">
+            <svg class="callout-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 3h3l1.5 5-2 1.3a13 13 0 0 0 5.7 5.7l1.3-2 5 1.5v3a2 2 0 0 1-2 2A16 16 0 0 1 4.5 5a2 2 0 0 1 2-2z"/></svg>
+            <span class="callout-act-text">
+              <span class="callout-act-lab">Call for the price to your address</span>
+              <span class="callout-act-num">(513) 546-2543</span>
+            </span>
+          </a>
+        </div>
+        <div class="callout-hazard" aria-hidden="true"></div>
       </div>
     </section>
   )}
@@ -327,7 +370,7 @@ const cityPrice = showPrice
   .local-hero { padding: 120px 0 80px; background: var(--yellow); border-bottom: 2.5px solid var(--ink); }
   .lede { font-size: 24px; line-height: 1.4; max-width: 800px; margin-top: 32px; font-weight: 500; }
 
-  .local-price { padding: 72px 0 64px; background: white; border-bottom: 1.5px solid rgba(11,15,26,.1); }
+  .local-price { padding: 72px 0 0; background: white; }
   .price-band { max-width: 880px; }
   .local_price_label { margin-bottom: 12px; }
   .local_price_headline { font-family: var(--narrow); font-weight: 700; font-size: clamp(30px, 5vw, 44px); text-transform: uppercase; letter-spacing: -.01em; line-height: .95; margin: 0 0 28px; }
@@ -345,6 +388,35 @@ const cityPrice = showPrice
   .local_pickup_line { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; }
   .local_pickup_size { font-family: var(--narrow); font-weight: 700; font-size: 16px; text-transform: uppercase; min-width: 110px; }
   .local_pickup_figures { font-size: 15px; line-height: 1.5; }
+
+  /* ---- The ZIP callout ----
+     Every text pairing in this band, composited, with no opacity anywhere to composite through:
+       ink on signal orange, 6.14 to 1
+       yellow on ink, for the ZIP chip and for the button at rest, 13.28 to 1
+       ink on yellow, for the button on hover, 13.28 to 1
+     Cream and white are barred from this band. Cream on signal orange is 2.77 to 1 and fails AA,
+     and it is how the failures fixed on the fifteenth got written in the first place. No rule below
+     sets an opacity, so a label can never fade into the ground it sits on. The loudness comes from
+     scale, from colour blocking and from the hazard rules, none of which carries any text.
+     The yellow offset shadow and the yellow in the hazard rule are decoration, not text and not a
+     boundary: the button reads against the band on its ink fill and its ink border, at 6.14 to 1. */
+  .zip-callout { margin-top: 56px; background: var(--c5-permits); color: var(--ink); border-top: 2.5px solid var(--ink); border-bottom: 2.5px solid var(--ink); }
+  .callout-hazard { height: 12px; background: repeating-linear-gradient(135deg, var(--ink), var(--ink) 14px, var(--yellow) 14px, var(--yellow) 28px); }
+  .callout-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 24px 40px; padding-top: 34px; padding-bottom: 34px; }
+  .callout-ask { font-family: var(--narrow); font-weight: 700; font-size: clamp(32px, 5.6vw, 60px); line-height: .95; letter-spacing: -.02em; text-transform: uppercase; margin: 0; }
+  .callout-zip { display: inline-block; background: var(--ink); color: var(--yellow); padding: 0 .16em .04em; }
+  .callout-act { display: inline-flex; align-items: center; gap: 16px; min-height: 68px; padding: 14px 30px; background: var(--ink); color: var(--yellow); border: 3px solid var(--ink); box-shadow: 8px 8px 0 var(--yellow); transition: transform .12s, box-shadow .12s, background .12s, color .12s; }
+  .callout-act:hover { background: var(--yellow); color: var(--ink); box-shadow: 8px 8px 0 var(--ink); transform: translate(-2px,-2px); }
+  .callout-act:active { transform: translate(2px,2px); box-shadow: 2px 2px 0 var(--ink); }
+  .callout-act:focus-visible { outline: 4px solid var(--ink); outline-offset: 4px; }
+  .callout-ico { width: 26px; height: 26px; stroke: currentColor; stroke-width: 2.2; fill: none; flex-shrink: 0; }
+  .callout-act-text { display: grid; gap: 4px; }
+  .callout-act-lab { font-family: var(--mono); font-weight: 700; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; line-height: 1.35; text-wrap: balance; }
+  .callout-act-num { font-family: var(--mono); font-weight: 700; font-size: clamp(24px, 4.4vw, 32px); line-height: 1; letter-spacing: -.01em; white-space: nowrap; }
+  @media (prefers-reduced-motion: reduce) {
+    .callout-act { transition: none; }
+    .callout-act:hover, .callout-act:active { transform: none; }
+  }
 
   .local-bridge { padding: 56px 0; background: white; border-bottom: 1.5px solid rgba(11,15,26,.1); }
   .bridge-band { border-left: 4px solid var(--yellow); padding-left: 24px; max-width: 860px; }
@@ -408,9 +480,15 @@ const cityPrice = showPrice
   .local_zoning_zips { font-family: var(--mono); font-size: 12px; opacity: .7; }
 
   @media (max-width: 768px) {
-    .local-price { padding: 48px 0 44px; }
+    .local-price { padding: 48px 0 0; }
     .local_price_figure { font-size: 32px; }
     .local_price_allin { font-size: 16px; }
     .local_pickup_size { min-width: 0; }
+    .zip-callout { margin-top: 36px; }
+    .callout-inner { gap: 20px; padding-top: 26px; padding-bottom: 26px; }
+    .callout-ask { font-size: clamp(28px, 8.4vw, 42px); }
+    .callout-act { width: 100%; justify-content: center; padding: 14px 20px; box-shadow: 6px 6px 0 var(--yellow); }
+    .callout-act-lab { font-size: 10px; letter-spacing: .06em; }
+    .callout-act:hover { box-shadow: 6px 6px 0 var(--ink); }
   }
 </style>
