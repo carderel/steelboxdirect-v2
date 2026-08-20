@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro build",
+    "build": "npm run guard && astro build",
+    "guard": "vitest run src/lib/compliance/hs003-content-guard.test.ts src/lib/compliance/dash-guard.test.ts",
     "preview": "astro preview",
     "astro": "astro",
     "indexnow": "node scripts/indexnow.mjs",
