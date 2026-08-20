@@ -1,5 +1,81 @@
 # HANDOFF: start here for the next context window
 
+> ## CURRENT AS OF 2026-08-19. Everything below this block is older and partly superseded.
+>
+> **LIVE AT `014472f`. `main == origin`. NOTHING UNPUSHED.** First session close in this project's history
+> with a level tree and no deferred deploy. 398 tests across 17 files, build 56 pages, `tsc` exit 0, HS003
+> green at 0 findings.
+>
+> **Read the four session logs in order:** `2026-08-16`, `2026-08-17`, `2026-08-18`, `2026-08-19`. The
+> transcript was NOT split at any of the three midnight rollovers, per HS-UDO-012, and lives at
+> `.project-catalog/history/2026-08-16-session-transcript.md`. The logs are the entry point; the transcript
+> is long. Latest checkpoint: `.checkpoints/2026-08-19-1400-session-end/`.
+>
+> ### Two things that must stay untracked
+>
+> `src/content/blog/the-cheap-container-that-wasnt.md` and `.github/workflows/supabase-keepalive.yml`. Both
+> carry em dashes and would breach HS-OUT-001's create clause if committed. **`.github/` is untracked in its
+> entirety**, so `git add .github/` is the specific command that would do it. Add workflow files by
+> individual full path. The 34 UDO migration deletions also stay unstaged.
+>
+> ### What shipped, 21 commits, `0b63011` to `014472f`
+>
+> A daily FreedomConex geo-pricing feed covering 15 metros and 45 figures, harvested at 10:00 UTC and
+> committing only when a price actually moves. A delivered price on all 15 city pages, the first in the
+> site's history. `/container-rent-vs-buy-calculator/`. A 15-metro table on `/cost/`. National figures
+> rebased on the seven home metros at $2,080 / $2,610 / $2,400. A loud ZIP callout under every city price
+> block. Content Signals in `robots.txt`. The parent company out of the JSON-LD graph on all 56 pages while
+> every visible reference stands byte-identical.
+>
+> ### The pricing policy CHANGED. Read the decision before touching a price.
+>
+> `.project-catalog/decisions/2026-08-17-city-page-pricing-override.md`. The city-page dollar hard stop is
+> **superseded, not deleted**, and replaced by a stricter provenance rule: any dollar figure on a city page
+> must derive from the pricing module, be scoped to a named ZIP, and carry its effective date and
+> disclaimer. **A hand-typed amount on a city page remains forbidden.** `CLAUDE.md` lines 30 and 46 were
+> rewritten to match.
+>
+> ### Traps that will cost you time
+>
+> - **`fromPrice` is NOT the unit price.** It is `min(pickupUnitPrice, deliveryUnitPrice)`. Delivered totals
+>   must use `deliveryUnitPrice + baseDeliveryCost`. This took SIX correction passes because 1440.60 is the
+>   `fromPrice` at Dayton and the `deliveryUnitPrice` at Cincinnati, so one value plays two roles at two
+>   ZIPs. Never quote a price without naming its ZIP.
+> - **The HS003 guard pairs quote characters across a whole file, comments included.** It is a PARITY bug:
+>   an even number of stray apostrophes is benign, an odd number re-pairs every literal below it and can
+>   SUPPRESS a real finding. "Remove that apostrophe" is dangerous advice; the orchestrator gave it and it
+>   would have destroyed a file's coverage. See T-146, and fix it BEFORE T-036.
+> - **`grep $'\u2014\|\u2013' file` returns exit 1 even on a file containing both**, because BSD grep BRE
+>   treats `\|` as a literal pipe. One pattern per invocation, always.
+> - **`git check-ignore` consults the index by default.** Use `--no-index` for the real pattern decision.
+> - **Assert on tag-stripped text, not raw HTML.** The literal `45237 not your ZIP?` does not appear in
+>   served HTML because the ZIP renders inside a chip span.
+> - **Two agent definitions cannot write files.** `seo-analyst` and `researcher` lack Write, which forced
+>   three hand transcriptions into `.outputs/`. See T-148.
+>
+> ### Awaiting the owner, in priority order
+>
+> 1. **T-153.** He wants to review `/rent-to-own/` HIMSELF and asked that it not be audited for him. Do not
+>    dispatch a review of it unprompted.
+> 2. **T-142.** `.outputs/` is gitignored, so the fifteen researched ZIP codes behind the published prices
+>    live only on this machine.
+> 3. **T-150.** The harvest's JSON summary goes to `$RUNNER_TEMP` and is discarded, so an unattended daily
+>    job has no retrievable structured output. One `tee`.
+> 4. **T-146 before T-036**, for the parity reason above.
+> 5. **Re-run the Cloudflare AI diagnostic.** Content Signals should take Quick Wins to 4 of 5. Markdown for
+>    Agents was assessed as theatre on this stack; see the 08-18 log.
+> 6. **The blog dates.** `updatedDate` is wired end to end and unused on all five live posts, three of which
+>    were edited weeks after their claimed pubDate of 2026-07-06.
+>
+> ### The harvest is operational
+>
+> It has run once in production, run 32258976810, no-op path, sidecar cache saved so the next run comes up
+> warm. **The permissions question is settled empirically:** a workflow-level `permissions` block DOES
+> elevate above a repository default of `read`, proven by the run's own token grant. The scheduled run will
+> not silently 403 the first day a price moves. `main` is unprotected with 0 rulesets.
+
+---
+
 > ## CORRECTION, added 2026-08-11T17:00Z by session claude-opus-5-2026-08-11-1657
 >
 > **Item 1 below understates its own problem, and one sentence in it is false.** It says

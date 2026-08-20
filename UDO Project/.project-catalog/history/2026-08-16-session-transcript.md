@@ -728,3 +728,96 @@ returns **before `app.render()` is ever called**, so Astro middleware can never 
 `functions/_middleware.ts` is ignored whenever `_worker.js` exists. Snippets are Pro+. And the sharpest point:
 auto-converting 47 non-markdown pages would create a second full corpus **outside the HS003 guard's
 coverage**. Verdict: $20/month for Pro or stay at 3 of 5. Recommended staying.
+
+## Cycle 32, final verification and the release
+
+**Owner delegated fully with "Do what is best" three times**, then confirmed "commit and deploy".
+
+**Verifier: SAFE TO COMMIT, all twelve items.** Two of its methods are worth reusing. On the city-page hard
+stop it extracted every `$N` token from the visible DOM of all fifteen pages and **set-differenced against
+that metro's feed values** rather than grepping for dollar signs: zero strays. On the empty feed it rsynced
+to a scratch copy, emptied the module, rebuilt, and proved 56 pages with **zero NaN, Invalid Date, undefined
+or `$,`** rather than reading the fallback and trusting it.
+
+**It refused one claim.** "Dayton is the only metro where the bases differ" is inconclusive offline because
+`baseDeliveryCost` is deliberately not serialised, so `deliveryUnitPrice` is unrecoverable from the module.
+It named the resolution and noted the claim is not load-bearing.
+
+**The staging hazard the orchestrator would have hit:** `.github/` is untracked entirely and holds
+`supabase-keepalive.yml`, five weeks old and carrying an em dash, while this change set legitimately requires
+adding two files inside `.github/workflows/`. `git add .github/` would breach HS-OUT-001's create clause.
+
+**Three files were missing from the orchestrator's manifest**, including `CLAUDE.md`, which carries the
+hard-stop rewrite.
+
+**The first commit attempt stalled at 600s with zero commits made.** Cause was the brief: eight detailed
+bodies full of reasoning implicitly invited re-confirmation of work the verifier had already done. Lesson: a
+commit brief that supplies rich justification must state that the justification is established, or a careful
+agent will try to earn it. Re-dispatched with verification forbidden and one suite run at the end.
+
+Eight commits dispatched: the feed, the national basis, the city-page price, the `/cost/` rewrite, the
+calculator fix, `robots.txt`, the two workflows, and the audit trail.
+
+## Cycle 33, shipped, harvest run live, and the ZIP callout
+
+**Eight commits deployed**, `e3fc422..24d73c8`, all five checked URLs at 200. Orchestrator verified live rather
+than trusting the report: `robots.txt` shows 7 groups each carrying `Allow: /`, `Disallow: /admin/` and a
+`Content-signal:` line at `use=reference`, with no bare `Disallow: /` and no `use=full` anywhere. Cincinnati
+renders three delivered figures with no `offers` or `priceSpecification` key in any city graph. Homepage shows
+$2,080 / $2,400 / $2,610 with the scoped label in five places.
+
+**First production harvest run succeeded**, run 32258976810, 42 seconds. Steps 7 through 12 and 14 all skipped,
+which is only possible if the output was not `written`. The sidecar cache saved at 298 bytes scoped to
+`refs/heads/main`, so tomorrow comes up warm. Cold-hysteresis warning fired exactly as designed.
+
+**The permissions question was settled empirically, not by inference**, and the answer is favourable: the
+workflow-level `permissions` block DOES elevate above a repository default of `read`. Proof from the run's own
+`Set up job` group reporting `Contents: write` while the repo default is still `read`. So the 10:00 UTC run will
+not silently 403 the first day a price moves. `main` is also unprotected with 0 rulesets.
+
+**One diagnosability gap found and logged as T-150:** the harvest's machine-readable summary goes to
+`$RUNNER_TEMP` and is discarded with the runner, and `$GITHUB_STEP_SUMMARY` is not exposed through the REST API.
+So the structured output of an unattended daily job is unretrievable after the run. The agent **could not produce
+the summary line, said so plainly, and supplied equivalent proof from the step log** rather than paraphrasing a
+line it never had. That disclosure is the behaviour to reinforce.
+
+### The ZIP callout
+
+Owner asked for an "almost eyesore level" CTA using Don't Make Me Think. **The copy dropped the adjective**:
+`{zip} NOT YOUR ZIP?` then `CALL FOR THE PRICE TO YOUR ADDRESS` with the number as visible text. Not accurate,
+not exact, not up to date.
+
+**The owner ruling that shaped it:** orient on accuracy, never freshness, because an invitation to call for the
+up-to-date price would contradict the line directly above it. Accuracy is a gap the page already CONCEDES;
+freshness is a claim the page MAKES. Filling a conceded gap agrees with the copy; questioning a made claim
+undermines it.
+
+**Placement was the real finding.** The price block is section two; the only call CTA was section seven and drove
+to the quote form. The reader formed the thought at the price and could not act on it until after the zoning
+table.
+
+**The agent died on an API error mid-verification**, so the orchestrator finished the checks: contrast computed
+from real tokens (ink on orange 6.14:1, yellow on ink 13.28:1, zero cream), dash delta 3 to 3 and 0 to 0, the
+"up to date" hit traced to a comment and confirmed absent from dist, and the empty-feed path proven by emptying
+the module, building, and restoring byte-identical by sha.
+
+Live-verified on three metros. **One process note: the literal `45237 not your ZIP?` does not appear in served
+HTML**, because the ZIP renders inside a chip span, so a naive curl-and-grep reads as a missing deploy. Strip
+tags before asserting on rendered text.
+
+## Cycle 34, session close
+
+Owner: "Keep it on the content of the legal page but not in the schema... My bad on the Freedom Conex Program
+I should have thought that through. Let me review things again." Then, correcting a misread: "NO. I meant the
+rent to own page. I think I need to review it. As I rushed through it. While I do. Get ready for handoff."
+
+**The orchestrator had started inspecting terms and privacy schema on a misreading** and was interrupted.
+Corrected course immediately: the review target is `/rent-to-own/`, it is the owner's to do, and T-153
+records it with an explicit instruction not to audit it for him.
+
+Closeout written: `PROJECT_STATE.json` notes rewritten for a four-day session, T-153 logged, checkpoint at
+`.checkpoints/2026-08-19-1400-session-end/`, a current handoff block prepended to `HANDOFF.md` preserving the
+older content beneath it, and this transcript closed.
+
+**Final state: `main == origin == 014472f`, nothing unpushed, 398 tests, 56 pages, both landmines untracked,
+34 deletions unstaged.** First session close in this project with a level tree and no deferred deploy.
