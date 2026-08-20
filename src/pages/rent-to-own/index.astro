@@ -5,7 +5,7 @@ import { composeRentalStance } from '../../data/rentalStance';
 
 const crumbs = [{ name: 'Home', path: '/' }, { name: 'Rent to Own', path: '/rent-to-own/' }];
 
-// Single source of truth — this array feeds BOTH the visible FAQ list below
+// Single source of truth: this array feeds BOTH the visible FAQ list below
 // and the FAQPage JSON-LD (via the schema prop → buildPageSchema).
 const faqs: { q: string; a: string; html?: string }[] = [
   {
@@ -31,31 +31,31 @@ const faqs: { q: string; a: string; html?: string }[] = [
   },
   {
     q: 'Is approval guaranteed?',
-    a: "No. Approval decisions are made by My Container Rental, the independent third party that administers the program — the decision is theirs, independent of Steel Box Direct. There is no traditional credit check, but every application is reviewed, and we can't promise an outcome. What we can promise: we'll get your quote and your application in front of them fast, and keep you posted.",
+    a: "No. Approval decisions are made by an independent third party that administers the program and the final decision is theirs, independent of Steel Box Direct. There is no traditional credit check, but every application is reviewed, and we can't promise an outcome. What we can promise: we'll get your quote and your application in front of them fast, and keep you posted.",
   },
   {
-    q: 'Who is My Container Rental?',
-    a: "My Container Rental is the independent third party that administers the rent-to-own program for Freedom Conex, the national container company we represent as an authorised independent agent. They review applications, make the approval decisions, and service the rent-to-own agreement. Steel Box Direct handles your quote and your delivery; My Container Rental handles the program itself.",
+    q: 'Who is the third party application administrator?',
+    a: "We currently use My Container Rental as the independent third party that administers the rent-to-own program. They review applications, make the approval decisions, and service the rent-to-own agreement. Steel Box Direct handles your quote and your delivery; My Container Rental handles the program itself.",
   },
   {
     q: 'Do my payments build toward ownership?',
-    a: "Yes — that's the point of rent-to-own. Complete your chosen term (12, 24, 36, or 48 months) and the container belongs to you. Unlike self-storage rent, the payments aren't money out the window; they're steps toward owning a steel asset that sits on your property.",
+    a: "Yes, that's the point of rent-to-own. Complete your chosen term (12, 24, 36, or 48 months) and the container belongs to you. Unlike self-storage rent, the payments aren't money out the window; they're steps toward owning a steel asset that sits on your property.",
   },
   {
     q: 'What condition are rent-to-own containers?',
-    a: "The same single grade as every container we sell: Wind & Water Tight (used) — structurally sound and weather-tight, with surface rust that's purely cosmetic. The Lifetime Leak Warranty applies to rent-to-own units just like purchased ones.",
+    a: "The same single grade as every container we sell: Wind & Water Tight (used), which means structurally sound and weather-tight, with surface rust that's purely cosmetic. The Lifetime Leak Warranty applies to rent-to-own units just like purchased ones.",
   },
   {
     q: 'How fast is delivery on a rent-to-own container?',
-    a: "For rent-to-own, delivery is scheduled after your application is approved by My Container Rental, the independent third party that administers the program. From there it works like any other order: almost all deliveries take about two weeks, and we'll give you an honest window before you commit — then you'll hear from us at every step until it's on your property.",
+    a: "For rent-to-own, delivery is scheduled after your application is approved by the independent third party that administers the program. From there it works like any other order: almost all deliveries take about two weeks, and we'll give you an honest window before you commit. Then you'll hear from us at every step until it's on your property.",
   },
 ];
 ---
 
 <BaseLayout
   pageType="guide"
-  title="Rent to Own Shipping Containers — Ohio, Indiana & Kentucky | Steel Box Direct"
-  description="Rent to own a shipping container over 12, 24, 36, or 48 months with no traditional credit check. Applications administered by My Container Rental — delivery about two weeks after approval. Serving OH, IN & KY."
+  title="Rent to Own Shipping Containers in Ohio, Indiana & Kentucky | Steel Box Direct"
+  description="Rent to own a shipping container over 12, 24, 36, or 48 months. Fixed monthly payments, delivery included in your quote, and the container is yours at the end of the term. No traditional credit check; every application is reviewed by an independent administrator. Serving OH, IN & KY."
   datePublished="2026-07-30"
   dateModified="2026-07-30"
   breadcrumbs={crumbs}
@@ -66,7 +66,7 @@ const faqs: { q: string; a: string; html?: string }[] = [
     specs: [
       { k: 'Terms', v: '12 / 24 / 36 / 48 months' },
       { k: 'Credit', v: 'No traditional credit check' },
-      { k: 'Warranty', v: 'Lifetime Leak — applies to RTO' },
+      { k: 'Warranty', v: 'Lifetime Leak, applies to RTO' },
       { k: 'Delivery', v: 'About two weeks after approval' },
     ],
     faqs: faqs.map((f) => ({ q: f.q, a: f.a })) }}
@@ -82,9 +82,9 @@ const faqs: { q: string; a: string; html?: string }[] = [
       </div>
       <h1 class="big rto-headline">Rent to Own.<br><em>No Traditional Credit&nbsp;Check.</em></h1>
       <p class="rto-lede">
-        Own a Wind &amp; Water Tight container over 12, 24, 36, or 48 months through the Freedom Conex
-        rent-to-own program — delivered across Ohio, Indiana, and Kentucky, subject to third-party approval
-        by My Container Rental.
+        Own a Wind &amp; Water Tight container over 12, 24, 36, or 48 months through our rent-to-own
+        shipping containers program. Fixed monthly payments, delivery included in your quote, and when
+        the last payment clears the container is yours.
       </p>
     </div>
   </div>
@@ -100,23 +100,23 @@ const faqs: { q: string; a: string; html?: string }[] = [
         <div class="step-card" style="border-left-color: var(--yellow-d);">
           <span class="step-num m">Step 01</span>
           <h3>Get your quote from Steel Box Direct</h3>
-          <p>Tell us your size and delivery zip. You get one all-in delivered number — and you tell us you want the rent-to-own option. No obligation at this point.</p>
+          <p>Tell us your size and delivery zip. You get one all-in delivered number, and you tell us you want the rent-to-own option. No obligation at this point.</p>
         </div>
         <div class="step-card" style="border-left-color: var(--c3-deliver);">
           <span class="step-num m">Step 02</span>
-          <h3>Apply through My Container Rental</h3>
-          <p>My Container Rental is the independent program administrator — a third party, not Steel Box Direct. There's no traditional credit check, but they review every application and <strong>the approval decision is theirs</strong>.</p>
-          <div class="step-tag m">Subject to third-party approval</div>
+          <h3>Fill out the rent to own conex application</h3>
+          <p class="step-approval-note">There's no traditional credit check, each application is reviewed by an independent program administrator (not by Steel Box Direct) and the final decision is theirs.</p>
+          <div class="step-tag step-tag-soft m">Subject to third-party approval</div>
         </div>
         <div class="step-card" style="border-left-color: var(--c4-cost);">
           <span class="step-num m">Step 03</span>
-          <h3>Choose your term</h3>
-          <p>Pick the runway that fits: 12, 24, 36, or 48 months. Every term ends the same way — the container is yours.</p>
+          <h3>You get an answer either way</h3>
+          <p>Every application gets a decision. Whether it's approved or not, we contact you with the outcome and your next step.</p>
         </div>
         <div class="step-card" style="border-left-color: var(--c2-cond);">
           <span class="step-num m">Step 04</span>
-          <h3>After third-party approval, delivery</h3>
-          <p>Once My Container Rental approves your application, delivery works like any other order: almost all deliveries take about two weeks, and we'll give you an honest window before you commit.</p>
+          <h3>After approval, delivery</h3>
+          <p>Once your application is approved, delivery works like any other order and we'll coordinate with you on delivery. Almost all deliveries take about two weeks, and we'll give you an honest window before you commit.</p>
         </div>
       </div>
     </div>
@@ -126,19 +126,19 @@ const faqs: { q: string; a: string; html?: string }[] = [
   <section class="rto-terms">
     <div class="wrap">
       <div class="rto-sh rto-sh-dark">
-        <span class="m">Pick Your Runway</span>
+        <span class="m">Pick Your Term</span>
         <h2 class="rto-h2">Four terms. One destination: you own it.</h2>
       </div>
       <div class="rto-term-grid">
         <div class="term-chip">
           <span class="term-num">12</span>
           <span class="term-unit m">Months</span>
-          <p>The short runway — own the container in a year.</p>
+          <p>The shortest term: own the container in a year.</p>
         </div>
         <div class="term-chip">
           <span class="term-num">24</span>
           <span class="term-unit m">Months</span>
-          <p>Two years — the middle path most buyers picture first.</p>
+          <p>Two years: the middle path most buyers picture first.</p>
         </div>
         <div class="term-chip">
           <span class="term-num">36</span>
@@ -148,14 +148,14 @@ const faqs: { q: string; a: string; html?: string }[] = [
         <div class="term-chip">
           <span class="term-num">48</span>
           <span class="term-unit m">Months</span>
-          <p>The longest runway the program offers — the most room to spread it out.</p>
+          <p>The longest term the program offers, with the most room to spread out the payoff.</p>
         </div>
       </div>
-      <p class="rto-term-note m">Every term · no traditional credit check · subject to third-party approval by My Container Rental</p>
+      <p class="rto-term-note m">Every term · no traditional credit check · subject to third-party approval</p>
     </div>
   </section>
 
-  <!-- 4. IS IT RIGHT FOR YOU — COMPARISON -->
+  <!-- 4. IS IT RIGHT FOR YOU: COMPARISON -->
   <section class="rto-compare">
     <div class="wrap">
       <div class="rto-sh">
@@ -163,7 +163,7 @@ const faqs: { q: string; a: string; html?: string }[] = [
         <h2 class="rto-h2">Rent-to-own vs. buying outright vs. self-storage</h2>
       </div>
       <table class="rto-table">
-        <caption class="rto-table-caption">Three ways to get storage — compared on what actually matters at the end.</caption>
+        <caption class="rto-table-caption">Three ways to get storage, compared on what actually matters at the end.</caption>
         <thead>
           <tr>
             <th scope="col" class="rt-rowhead"><span class="m">Compare</span></th>
@@ -175,32 +175,32 @@ const faqs: { q: string; a: string; html?: string }[] = [
         <tbody>
           <tr>
             <th scope="row">Ownership at the end</th>
-            <td class="is-rto" data-label="Rent-to-own">Yes — finish your term and the container is yours</td>
-            <td data-label="Buy outright">Yes — yours on day one</td>
-            <td data-label="Self-storage">No — you never own the unit</td>
+            <td class="is-rto" data-label="Rent-to-own">Yes: finish your term and the container is yours</td>
+            <td data-label="Buy outright">Yes: yours on day one</td>
+            <td data-label="Self-storage">No: you never own the unit</td>
           </tr>
           <tr>
             <th scope="row">Upfront cost</th>
-            <td class="is-rto" data-label="Rent-to-own">Lowest to start — spread across your term</td>
+            <td class="is-rto" data-label="Rent-to-own">Lowest to start, spread across your term</td>
             <td data-label="Buy outright">One payment up front</td>
             <td data-label="Self-storage">Low to start, but it never ends</td>
           </tr>
           <tr>
             <th scope="row">Credit requirement</th>
-            <td class="is-rto" data-label="Rent-to-own">No traditional credit check — application reviewed by My Container Rental</td>
-            <td data-label="Buy outright">None — pay in full</td>
+            <td class="is-rto" data-label="Rent-to-own">No traditional credit check, application reviewed by an independent third party</td>
+            <td data-label="Buy outright">None: pay in full</td>
             <td data-label="Self-storage">Varies by facility</td>
           </tr>
           <tr>
             <th scope="row">If you stop paying</th>
-            <td class="is-rto" data-label="Rent-to-own">You don't keep the container — your My Container Rental agreement sets the terms</td>
-            <td data-label="Buy outright">Nothing to stop — you already own it</td>
+            <td class="is-rto" data-label="Rent-to-own">You don't keep the container; your agreement with the independent program administrator sets the terms</td>
+            <td data-label="Buy outright">Nothing to stop: you already own it</td>
             <td data-label="Self-storage">You move out and keep nothing</td>
           </tr>
           <tr>
             <th scope="row">End state</th>
             <td class="is-rto" data-label="Rent-to-own">A Wind &amp; Water Tight container on your property, with the Lifetime Leak Warranty</td>
-            <td data-label="Buy outright">Same container, same warranty — just paid all at once</td>
+            <td data-label="Buy outright">Same container, same warranty, just paid all at once</td>
             <td data-label="Self-storage">An ongoing bill and an empty unit to hand back</td>
           </tr>
         </tbody>
@@ -219,15 +219,15 @@ const faqs: { q: string; a: string; html?: string }[] = [
         </div>
         <div class="trust-cell">
           <span class="trust-k m">Warranty</span>
-          <span class="trust-v">Lifetime Leak Warranty — applies to rent-to-own units</span>
+          <span class="trust-v">Lifetime Leak Warranty applies to rent-to-own units</span>
         </div>
         <div class="trust-cell">
-          <span class="trust-k m">Track record</span>
-          <span class="trust-v">Est. 2009</span>
+          <span class="trust-k m">Ownership</span>
+          <span class="trust-v">Family-owned</span>
         </div>
         <div class="trust-cell">
           <span class="trust-k m">The program</span>
-          <span class="trust-v">Authorised independent agent of Freedom Conex · program administered by My Container Rental</span>
+          <span class="trust-v">Authorised independent agent of Freedom Conex · program administered by an independent third party</span>
         </div>
       </div>
     </div>
@@ -255,8 +255,8 @@ const faqs: { q: string; a: string; html?: string }[] = [
   <section class="rto-cta">
     <div class="wrap rto-cta-inner">
       <p class="m rto-cta-kicker">Start the process</p>
-      <h2>Get your quote — pick rent-to-own when you do.</h2>
-      <p class="rto-cta-body">Tell us your size and delivery zip and choose the rent-to-own option on the form. We'll get you an all-in delivered number, then point you to the application — subject to third-party approval by My Container Rental.</p>
+      <h2>Get your quote and pick rent-to-own when you do.</h2>
+      <p class="rto-cta-body">Tell us your size and delivery zip and choose the rent-to-own option on the form. We'll get you an all-in delivered number, then point you to the application.</p>
       <div class="rto-cta-btns">
         <a href="/quote/?pay=rto" class="btn rto-btn-yellow">Start My Rent-to-Own Quote →</a>
         <a href="/shipping-containers-for-sale/" class="btn-ghost rto-ghost">Browse containers first</a>
@@ -320,6 +320,10 @@ const faqs: { q: string; a: string; html?: string }[] = [
       display: inline-block; margin-top: 16px; padding: 4px 8px;
       background: var(--ink); color: var(--cream); font-weight: 500;
     }
+    /* Step 2 approval framing, deliberately downplayed per owner spec:
+       smaller font, no background, low-contrast #b1aca3 (owner-chosen) */
+    .step-card p.step-approval-note { font-size: 14px; color: #b1aca3; opacity: 1; }
+    .step-tag.step-tag-soft { background: none; color: #b1aca3; font-size: 10px; padding: 0; }
 
     /* ---- TERMS ---- */
     .rto-terms { padding: 96px 0; background: var(--ink); color: var(--cream); }
