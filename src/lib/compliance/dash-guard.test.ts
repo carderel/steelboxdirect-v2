@@ -139,10 +139,11 @@ describe('HS-OUT-001 dash guard: scan wiring', () => {
     expect(rels).toContain('src/lib/compliance/hs003-content-guard.test.ts');
   });
 
-  it('the all-checks exclusion targets a file that actually exists (stale exclusions fail)', () => {
-    for (const e of EXCLUDE_ALL) {
-      expect(existsSync(join(REPO_ROOT, e)), `stale EXCLUDE_ALL entry: ${e}`).toBe(true);
-    }
+  it('tracked exclusion entries exist (stale exclusions fail); untracked-by-design entries may be absent in CI', () => {
+    // EXCLUDE_ALL holds exactly the owner-reserved UNTRACKED draft. It exists on the owner's
+    // machine and is legitimately ABSENT in CI checkouts (Cloudflare builds from git), so its
+    // existence must not be asserted: doing so failed the first CI build on 2026-08-20.
+    // When such a file IS present, the walker still skips it, which the live scan exercises.
     for (const e of EXCLUDE_ENTITIES) {
       expect(existsSync(join(REPO_ROOT, e)), `stale EXCLUDE_ENTITIES entry: ${e}`).toBe(true);
     }
