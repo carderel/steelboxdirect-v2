@@ -111,7 +111,7 @@ export function buildPageSchema(args: BuildSchemaArgs): BuiltSchema {
       graph.push({
         '@type': 'Service',
         '@id': svcId,
-        name: `Shipping Container Delivery — ${p.city.city}, ${p.city.state}`,
+        name: `Shipping Container Delivery in ${p.city.city}, ${p.city.state}`,
         serviceType: 'Shipping container sales and delivery',
         provider: { '@id': LOCALBUSINESS_ID },
         areaServed: { '@type': 'City', name: `${p.city.city}, ${p.city.state}` },
@@ -185,7 +185,7 @@ export function buildPageSchema(args: BuildSchemaArgs): BuiltSchema {
     case 'home': {
       graph.push(faqNode(args.url, p.faqs));
       graph.push(webPageNode(args, ORG_ID, nodeId(args.url, 'faq')));
-      quickFacts = { entityTitle: 'Steel Box Direct', entitySubtitle: 'Wind & Water Tight containers · Est. 2009', specs: [], faqs: p.faqs.slice(0, 3), showPriceDisclaimer: false };
+      quickFacts = { entityTitle: 'Steel Box Direct', entitySubtitle: 'Wind & Water Tight containers', specs: [], faqs: p.faqs.slice(0, 3), showPriceDisclaimer: false };
       break;
     }
     case 'guide': {

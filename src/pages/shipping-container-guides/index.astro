@@ -13,9 +13,8 @@ import {
 // of visible prose, and guideListItems feeds the CollectionPage ItemList that llms.txt describes
 // as eight buying guides. The Tools strip renders from tools and touches neither count.
 //
-// Keep this comment free of apostrophes and quote characters. The hs003 guard pairs quote
-// characters across the whole frontmatter to find string literals, so one stray apostrophe up here
-// re-pairs every literal below it and turns the compliant permit FAQ into a false finding.
+// Resolved 2026-08-19 (T-146): the hs003 guard now strips comments before pairing string literals,
+// so apostrophes in comments no longer corrupt the scan. The old warning here is retired.
 import { tools } from '../../data/tools';
 import lineupPhoto from '../../assets/photos/blog/20ft-40ft-high-cube-container-size-comparison-hero.jpg';
 import haulPhoto from '../../assets/photos/blog/container-chained-on-delivery-truck-bed-rig.jpg';
@@ -115,7 +114,7 @@ const faqs = [
       <div class="gh-hero-foot">
         <span class="gh-stat">Written by a regional dealer, not a marketplace</span>
         <span class="gh-stat">No sign-up to read anything</span>
-        <span class="gh-stat">Est. 2009</span>
+        <span class="gh-stat">Family-owned</span>
       </div>
     </div>
     <div class="spectrum" aria-hidden="true">

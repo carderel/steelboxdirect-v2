@@ -33,6 +33,17 @@ describe('globalNodes', () => {
     expect(json).not.toContain('subOrganization');
   });
 
+  /**
+   * Owner ruling, 2026-08-20: no founding date anywhere. The 2009 claim could not be
+   * substantiated (the fulfilling company incorporated in 2023), so the property is removed
+   * outright rather than replaced with another year. This guard keeps it out of the graph.
+   */
+  it('never claims a founding date, in any spelling (owner ruling)', () => {
+    const json = JSON.stringify(nodes);
+    expect(json).not.toContain('foundingDate');
+    expect(json).not.toContain('2009');
+  });
+
   it('areaServed pairs the core GeoCircle with a US Country node, so reach is not capped at 250 miles', () => {
     for (const id of [LOCALBUSINESS_ID, ORG_ID]) {
       const area = byId(id).areaServed as any[];

@@ -25,7 +25,7 @@ const { facts } = Astro.props;
         )}
 
         <div class="qf-biz">
-          <div class="bcell"><span class="k">Seller</span><span class="v">Steel Box Direct · Est. 2009</span></div>
+          <div class="bcell"><span class="k">Seller</span><span class="v">Steel Box Direct</span></div>
           <div class="bcell"><span class="k">Serves</span><span class="v">{facts.serves ?? SERVICE_AREA_LINE}</span></div>
           <div class="bcell"><span class="k">Call</span><span class="v"><a href="tel:+15135462543">(513) 546-2543</a></span></div>
         </div>
@@ -40,7 +40,7 @@ const { facts } = Astro.props;
         )}
 
         {facts.showPriceDisclaimer && (
-          <p class="qf-disc">Prices shown are average starting prices — your quote may be more or less.</p>
+          <p class="qf-disc">Prices shown are average starting prices; your quote may be more or less.</p>
         )}
       </div>
     </div>

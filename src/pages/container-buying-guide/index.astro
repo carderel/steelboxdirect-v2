@@ -14,52 +14,52 @@ const checklist: ChecklistItem[] = [
   {
     n: '01',
     title: 'Verify a real, accountable business behind the sale',
-    body: `Before you send a deposit, find out who you're actually buying from. A legitimate dealer is a traceable business — a registered company, a real address, and a track record — not just a phone number and a stock photo of a container yard. Steel Box Direct is the authorized independent agent of Freedom Conex LLC, an operating company that's sold containers since 2009.`,
+    body: `Before you send a deposit, find out who you're actually buying from. A legitimate dealer is a traceable business (a registered company, a real address, and a track record), not just a phone number and a stock photo of a container yard. Steel Box Direct is the authorized independent agent of Freedom Conex LLC, an operating company that sells containers.`,
   },
   {
     n: '02',
     title: 'Get the warranty in writing',
-    body: `Any seller can say a container is "leak-free." A legitimate one puts it in writing, with terms you can read before you pay — what's covered, for how long, and how a claim gets resolved. Steel Box Direct backs every unit with a written Lifetime Leak Warranty, spelled out in our terms, not a verbal promise made over the phone.`,
+    body: `Any seller can say a container is "leak-free." A legitimate one puts it in writing, with terms you can read before you pay: what's covered, for how long, and how a claim gets resolved. Steel Box Direct backs every unit with a written Lifetime Leak Warranty, spelled out in our terms, not a verbal promise made over the phone.`,
   },
   {
     n: '03',
     title: 'Verify the actual unit, not stock photos',
-    body: `Scam listings often reuse photos scraped from real container yards to sell units that don't exist. Ask for photos of the specific container you're buying, including its CSC Safety Approval Plate — the stamped ID that proves the unit is real and traceable. Here's `,
+    body: `Scam listings often reuse photos scraped from real container yards to sell units that don't exist. Ask for photos of the specific container you're buying, including its CSC Safety Approval Plate, the stamped ID that proves the unit is real and traceable. Here's `,
     link: { href: '/container-reference/#markings', label: 'how to read a container\'s markings & CSC plate' },
   },
   {
     n: '04',
     title: 'Know exactly what grade you\'re buying',
-    body: `Bait-and-switch grading is one of the most common tactics in this market — a seller quotes a nicer grade, then delivers something worse. Get the exact condition grade in writing before you commit. Steel Box Direct sells one honest grade — Wind & Water Tight (used) — no upsell games, no surprise downgrade at delivery. See `,
+    body: `Bait-and-switch grading is one of the most common tactics in this market: a seller quotes a nicer grade, then delivers something worse. Get the exact condition grade in writing before you commit. Steel Box Direct sells one honest grade, Wind & Water Tight (used): no upsell games, no surprise downgrade at delivery. See `,
     link: { href: '/condition/', label: 'our condition guide' },
   },
   {
     n: '05',
     title: 'Confirm real, local delivery',
-    body: `An anonymous reseller model can leave you with no real delivery operation — and no accountability if something goes wrong on drop-off day. Ask exactly where the truck comes from and how far the seller actually delivers. Steel Box Direct delivers within roughly 250 miles of Cincinnati, across Ohio, Indiana, Kentucky, and western West Virginia, from real regional depots. See `,
+    body: `An anonymous reseller model can leave you with no real delivery operation, and no accountability if something goes wrong on drop-off day. Ask exactly where the truck comes from and how far the seller actually delivers. Steel Box Direct delivers within roughly 250 miles of Cincinnati, across Ohio, Indiana, Kentucky, and western West Virginia, from real regional depots. See `,
     link: { href: '/locations/', label: 'where we deliver' },
   },
   {
     n: '06',
     title: 'Use a payment method with buyer protection',
-    body: `This one applies to any seller, anywhere: be cautious if you're pressured to wire money, send Zelle, or pay in cryptocurrency up front, especially before you've verified who you're dealing with. Favor payment methods that carry some form of buyer protection or a paper trail, and treat manufactured urgency — "today only," "another buyer is waiting" — as a reason to slow down, not skip your other checks.`,
+    body: `This one applies to any seller, anywhere: be cautious if you're pressured to wire money, send Zelle, or pay in cryptocurrency up front, especially before you've verified who you're dealing with. Favor payment methods that carry some form of buyer protection or a paper trail, and treat manufactured urgency ("today only," "another buyer is waiting") as a reason to slow down, not skip your other checks.`,
   },
   {
     n: '07',
     title: 'Ask whether the price includes delivery',
-    body: `A cheap container price often leaves out freight — and shipping a steel box isn't cheap, so a low headline number can hide hundreds of dollars in delivery cost. Always ask for the all-in delivered total, and compare that number across sellers instead of the sticker price. Steel Box Direct quotes all-in from the start: the container, delivery to your ZIP, and placement on flat ground. See `,
+    body: `A cheap container price often leaves out freight, and shipping a steel box isn't cheap, so a low headline number can hide hundreds of dollars in delivery cost. Always ask for the all-in delivered total, and compare that number across sellers instead of the sticker price. Steel Box Direct quotes all-in from the start: the container, delivery to your ZIP, and placement on flat ground. See `,
     link: { href: '/cost/', label: 'what really drives container cost' },
   },
 ];
 
 interface RecapRow { check: string; sbd: string }
 const recap: RecapRow[] = [
-  { check: 'Real, accountable business', sbd: 'Authorized independent agent of Freedom Conex LLC, operating since 2009' },
+  { check: 'Real, accountable business', sbd: 'Authorized independent agent of Freedom Conex LLC, an operating company you can verify' },
   { check: 'Warranty in writing', sbd: 'Lifetime Leak Warranty, spelled out in our terms' },
-  { check: 'One honest condition grade', sbd: 'Wind & Water Tight (used) — the only grade we sell' },
+  { check: 'One honest condition grade', sbd: 'Wind & Water Tight (used), the only grade we sell' },
   { check: 'Real, local delivery', sbd: '~250 miles of Cincinnati, across Ohio, Indiana, Kentucky & western WV' },
-  { check: 'Verifiable unit identity', sbd: 'CSC plate & markings you can check yourself — see our reference guide' },
-  { check: 'Delivery included in the price', sbd: 'All-in quotes — container, delivery to your ZIP & flat-ground placement, no surprise freight' },
+  { check: 'Verifiable unit identity', sbd: 'CSC plate & markings you can check yourself; see our reference guide' },
+  { check: 'Delivery included in the price', sbd: 'All-in quotes: container, delivery to your ZIP & flat-ground placement, no surprise freight' },
 ];
 
 interface Faq { q: string; a: string }
@@ -70,23 +70,23 @@ const faqs: Faq[] = [
   },
   {
     q: 'How can I tell if a container seller is legitimate?',
-    a: `A legitimate seller is a traceable business, not just a phone number — they can point to a registered company, a track record, and a location they actually operate from. They put warranty terms in writing, will verify the specific unit you're buying rather than lean on generic yard photos, and are upfront about exactly what condition grade you're paying for.`,
+    a: `A legitimate seller is a traceable business, not just a phone number: they can point to a registered company, a track record, and a location they actually operate from. They put warranty terms in writing, will verify the specific unit you're buying rather than lean on generic yard photos, and are upfront about exactly what condition grade you're paying for.`,
   },
   {
     q: 'What is a CSC plate and why does it matter?',
-    a: `The CSC Safety Approval Plate, required under the IMO International Convention for Safe Containers, is a container's structural passport — it records approval and inspection history and stays with the unit for its working life. Asking to see a specific container's CSC plate is one of the simplest ways to confirm you're buying a real, identifiable unit and not a photo pulled from someone else's yard.`,
+    a: `The CSC Safety Approval Plate, required under the IMO International Convention for Safe Containers, is a container's structural passport: it records approval and inspection history and stays with the unit for its working life. Asking to see a specific container's CSC plate is one of the simplest ways to confirm you're buying a real, identifiable unit and not a photo pulled from someone else's yard.`,
   },
   {
     q: 'Is Steel Box Direct a broker or a real dealer?',
-    a: `Steel Box Direct is not an anonymous broker. We're the authorized independent agent of Freedom Conex LLC, an operating company that's sold containers since 2009 — an accountable business you can verify, not a middleman reselling someone else's inventory under a different name each time.`,
+    a: `Steel Box Direct is not an anonymous broker. We're the authorized independent agent of Freedom Conex LLC, an operating container company: an accountable business you can verify, not a middleman reselling someone else's inventory under a different name each time.`,
   },
   {
     q: 'What condition are the containers?',
-    a: `Every container Steel Box Direct sells is Wind & Water Tight (used) — one honest grade, sealed against rain, wind, snow, and pests, and structurally sound for storage and on-site use. We don't sell multiple grades with upsell pressure; what you're quoted is what gets delivered.`,
+    a: `Every container Steel Box Direct sells is Wind & Water Tight (used): one honest grade, sealed against rain, wind, snow, and pests, and structurally sound for storage and on-site use. We don't sell multiple grades with upsell pressure; what you're quoted is what gets delivered.`,
   },
   {
     q: 'Does the container price include delivery?',
-    a: `Always ask, because often it doesn't. A cheap container price frequently excludes freight, and shipping a steel box can add hundreds of dollars — so the lowest sticker price isn't always the lowest delivered cost. Compare the all-in delivered total across sellers, not the container price alone. Steel Box Direct quotes all-in: the number we give you covers the container, delivery to your ZIP, and placement on flat ground.`,
+    a: `Always ask, because often it doesn't. A cheap container price frequently excludes freight, and shipping a steel box can add hundreds of dollars, so the lowest sticker price isn't always the lowest delivered cost. Compare the all-in delivered total across sellers, not the container price alone. Steel Box Direct quotes all-in: the number we give you covers the container, delivery to your ZIP, and placement on flat ground.`,
   },
 ];
 
@@ -95,7 +95,7 @@ const faqs: Faq[] = [
 <BaseLayout
   pageType="guide"
   title="How to Buy a Shipping Container Safely (Buyer's Guide) | Steel Box Direct"
-  description="Real scams exist in the used-container market — ghost sellers, bait-and-switch grading, and stolen photos. This buyer's guide shows how to vet a seller, and how a legitimate dealer should measure up."
+  description="Real scams exist in the used-container market: ghost sellers, bait-and-switch grading, and stolen photos. This buyer's guide shows how to vet a seller, and how a legitimate dealer should measure up."
   datePublished="2026-07-04"
   dateModified="2026-07-04"
   breadcrumbs={breadcrumbs}
@@ -110,7 +110,7 @@ const faqs: Faq[] = [
         <span class="tg">Vetting Checklist</span>
       </div>
       <h1 class="big">How to Buy a Container<br><em>Without Getting Scammed.</em></h1>
-      <p class="lede">The used shipping container market has real scams: ghost sellers who take a deposit and vanish, bait-and-switch grading, photos scraped from a real yard to sell a unit that doesn't exist, and pressure to pay by an untraceable method. This guide shows how to protect yourself — and exactly how a legitimate seller should measure up.</p>
+      <p class="lede">The used shipping container market has real scams: ghost sellers who take a deposit and vanish, bait-and-switch grading, photos scraped from a real yard to sell a unit that doesn't exist, and pressure to pay by an untraceable method. This guide shows how to protect yourself, and exactly how a legitimate seller should measure up.</p>
       <nav class="bg-jump">
         <a href="#checklist">The vetting checklist</a>
         <a href="#recap">How SBD measures up</a>
@@ -123,7 +123,7 @@ const faqs: Faq[] = [
   <section id="checklist" class="bg-section bg-checklist">
     <div class="wrap">
       <h2 class="section-title">The Vetting Checklist</h2>
-      <p class="section-intro">Seven things to check before you send anyone a deposit on a shipping container. Each one is a real scam vector — and a real question you can ask.</p>
+      <p class="section-intro">Seven things to check before you send anyone a deposit on a shipping container. Each one is a real scam vector, and a real question you can ask.</p>
       <div class="check-list">
         {checklist.map((c) => (
           <div class="check-item">
@@ -142,7 +142,7 @@ const faqs: Faq[] = [
   <section id="recap" class="bg-section bg-recap">
     <div class="wrap">
       <h2 class="section-title">How Steel Box Direct Measures Up</h2>
-      <p class="section-intro">We're not asking you to take our word for it — every claim below is something you can verify. Here's how we stack up against the checklist above.</p>
+      <p class="section-intro">We're not asking you to take our word for it; every claim below is something you can verify. Here's how we stack up against the checklist above.</p>
       <div class="table-wrap">
         <table class="bg-table">
           <thead><tr><th>Check</th><th>Steel Box Direct</th></tr></thead>
@@ -155,7 +155,7 @@ const faqs: Faq[] = [
       </div>
       <div class="bg-callout">
         <h4>What we won't claim</h4>
-        <p>We sell one condition grade (Wind &amp; Water Tight, used) — never presented as new or a higher grade. Permit and zoning requirements are always the buyer's responsibility to confirm locally. And we won't tell you what specific payment method to use here; that's between you and whichever seller you choose to work with — just apply the buyer-protection check above to anyone you're buying from.</p>
+        <p>We sell one condition grade (Wind &amp; Water Tight, used), never presented as new or a higher grade. Permit and zoning requirements are always the buyer's responsibility to confirm locally. And we won't tell you what specific payment method to use here; that's between you and whichever seller you choose to work with. Just apply the buyer-protection check above to anyone you're buying from.</p>
       </div>
     </div>
   </section>
@@ -187,7 +187,7 @@ const faqs: Faq[] = [
       </div>
       <div class="cta-box">
         <h2>Bought your due diligence. Now get a real quote.</h2>
-        <p>Tell us your size, zip code, and intended use — we'll get back to you within 4 business hours.</p>
+        <p>Tell us your size, zip code, and intended use, and we'll get back to you within 4 business hours.</p>
         <a href="/quote/" class="btn">Get My Quote <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
       </div>
     </div>

@@ -86,7 +86,6 @@ export function globalNodes(): Record<string, unknown>[] {
     logo: `${SITE_URL}/logo.png`,
     description:
       'Shipping container buying guide and quote service. Core home region within 250 miles of Cincinnati, Ohio, with nationwide delivery from depot hubs.',
-    foundingDate: '2009',
     areaServed: AREA_SERVED,
     contactPoint: {
       '@type': 'ContactPoint',
