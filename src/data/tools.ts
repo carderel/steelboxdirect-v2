@@ -21,9 +21,8 @@
 //      tool everywhere it appears. Two to four uppercase letters, the shape every other .dc code in
 //      the nav already uses.
 //   3. Nothing here is exported into a schema graph. The strip is navigation, not a collection.
-//   4. Keep every comment in this file free of apostrophes and quote characters. The hs003 guard
-//      pairs quote characters across the whole file to find string literals, so one stray
-//      apostrophe up here re-pairs every literal below it and can suppress a real finding.
+//   4. Resolved 2026-08-19 (T-146): the hs003 guard now strips comments before pairing string
+//      literals, so the old rule against apostrophes in comments no longer applies.
 
 export interface Tool {
   id: string;

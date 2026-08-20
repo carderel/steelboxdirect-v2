@@ -70,6 +70,18 @@
  * four gates, so they are not live, but flipping one live is a one-word edit and the `.bak` file
  * above is proof that non-rendered files rot. Set SCAN_DRAFT_POSTS to false to change the policy.
  *
+ * COMMENT STRIPPING IN THE EXTRACTOR (2026-08-19, T-146)
+ * ------------------------------------------------------
+ * String-literal extraction runs on frontmatter and data-file source with `//` and block comments
+ * stripped first, by the string-aware, length-preserving `stripJsComments` below. Before this, the
+ * literal-pairing regex ran over raw source, so an ODD number of stray quote characters in
+ * comments (one apostrophe was enough) re-paired every literal below it, swallowed real atomic
+ * literals into giant non-atomic blobs, silently destroyed the file's scan coverage, and once
+ * manufactured a phantom class-1 finding against a compliant FAQ. An EVEN count was benign, which
+ * is why the defect hid. The in-file "keep comments free of apostrophes" warnings that guarded
+ * against this (shipping-container-guides hub, tools.ts editing rules) are resolved as of this fix
+ * and now carry one-line historical notes instead.
+ *
  * HOW TO CLEAR A FAILURE (two documented escapes, both require a reason)
  * ---------------------------------------------------------------------
  *   1. Fix the copy. Copy a compliant template; they are listed in the failure message.
@@ -83,25 +95,28 @@
  *
  * WHAT ELSE IS IN HERE
  * --------------------
- * A second invariant at the bottom of the file, which is not a text check: on the persona pages a
- * few FAQ answers are ALSO hardcoded in an `{i === N ? (<p>...` copy-override branch, and only the
- * `faqs` array copy reaches the FAQPage JSON-LD. That test asserts the two stay identical after
- * anchor stripping and entity decoding, because a page that ships one answer to humans and another
- * to answer engines defeats every text check above it.
+ * Two more suites below the live scan, neither of which is a text check:
+ *   1. The T-146 comment-stripping regression suite: fixtures with odd and even counts of comment
+ *      apostrophes must extract the identical, correct unit list, URLs inside literals must
+ *      survive, reported line numbers must stay true, and the hedged permit FAQ must produce no
+ *      phantom finding.
+ *   2. The persona FAQ copy-override invariant: on the persona pages a few FAQ answers are ALSO
+ *      hardcoded in an `{i === N ? (<p>...` copy-override branch, and only the `faqs` array copy
+ *      reaches the FAQPage JSON-LD. That test asserts the two stay identical after anchor
+ *      stripping and entity decoding, because a page that ships one answer to humans and another
+ *      to answer engines defeats every text check above it.
  *
- * CURRENT STATE WHEN THIS LANDED (2026-08-10)
- * -------------------------------------------
- * 45 assertions pass. The live-surface scan FAILS with 5 findings across 4 claims, all pre-existing
- * and all reported to the owner rather than fixed, per the HS_003 violation protocol:
- *   1. `src/components/home/HeroSection.astro:46` and `:55`, "Most farm storage is zoned exempt".
- *      Homepage ticker, ships twice in `dist/index.html`, present at baseline 544077b.
- *   2. `src/pages/for/farmers/index.astro:136`, "building a permanent structure you can't move".
- *   3. `src/content/blog/sample-container-vs-pole-barn.md:49` (draft), "A pole barn is typically a
- *      permanent structure tied to your property".
- *   4. `src/content/blog/wind-and-water-tight-explained.md:45` (published), "the frame, corner
- *      posts, and floor can still carry a load".
- * Do not allowlist these to make the suite green. Either the copy gets reframed or the owner rules
- * on them; both outcomes remove the failure honestly.
+ * CURRENT STATE (2026-08-19)
+ * --------------------------
+ * All tests pass and the live-surface scan reports ZERO findings. History, kept because the
+ * failure messages and fixtures reference it: when the guard landed on 2026-08-10 the scan FAILED
+ * with 5 findings across 4 claims (the HeroSection "zoned exempt" ticker, farmers :136, the
+ * pole-barn draft post, and wind-and-water-tight-explained :45), all reported to the owner per the
+ * HS_003 violation protocol rather than fixed in that change. Every one has since been reframed in
+ * place (none was allowlisted): the ticker copy is gone from HeroSection, and the blog and persona
+ * copy now defers load ratings to the manufacturer or a licensed engineer. The pre-cleanup
+ * versions survive as the KNOWN_VIOLATIONS and LIVE_UNFIXED_FIXTURES positive fixtures below, so
+ * the guard still proves it would catch each of them.
  *
  * NOTE ON DASHES: HS-OUT-001 forbids em and en dashes in project output, and the pre-cleanup
  * fixture strings below contain them, so they are written as \u2014 escapes. The runtime string is
@@ -529,6 +544,61 @@ const lineAt = (src: string, index: number): number => src.slice(0, index).split
 const ATOMIC_TAGS = /^(?:h[1-6]|td|th|span|strong|em|summary|figcaption|dt)$/i;
 const ATOMIC_MAX_CHARS = 120;
 
+/**
+ * Strips `//` line comments and block comments from JS/TS source BEFORE string-literal extraction
+ * (T-146). Without this, a stray quote character inside a comment is treated as an opening string
+ * delimiter and re-pairs every literal below it. The failure is a PARITY bug: an even number of
+ * comment quotes is benign, an odd number swallows real atomic literals into giant non-atomic
+ * blobs, silently destroying scan coverage while every test stays green. It manufactured a phantom
+ * class-1 finding against a compliant FAQ before it was diagnosed.
+ *
+ * String-aware by a character walk, not a regex:
+ *   - Inside a string literal (opened by " ' or `, honoring backslash escapes): comment markers are
+ *     literal text and survive, so a URL like 'https://example.com' stays intact. Template-literal
+ *     content is treated simply; `${}` interiors are not re-tokenized, which is fine because
+ *     scanUnit blanks `${...}` spans anyway.
+ *   - Inside a comment: every stripped character becomes a space and newlines are kept, so the
+ *     output is the SAME LENGTH as the input. That matters: findings report `file:line` positions
+ *     computed by `lineAt` from match indices, and index fidelity is what keeps them true.
+ * Known, accepted limitation: regex literals are not tokenized, so a regex containing `//` (for
+ * example an escaped-slash URL pattern) would open a false line comment to end of line. No scanned
+ * file does this today; the exposure is one line, not the rest of the file.
+ */
+export function stripJsComments(code: string): string {
+  let out = '';
+  let i = 0;
+  let quote = '';
+  while (i < code.length) {
+    const ch = code[i] ?? '';
+    const next = code[i + 1] ?? '';
+    if (quote) {
+      if (ch === '\\') { out += ch + next; i += 2; continue; }
+      if (ch === quote) quote = '';
+      out += ch;
+      i += 1;
+      continue;
+    }
+    if (ch === '"' || ch === "'" || ch === '`') { quote = ch; out += ch; i += 1; continue; }
+    if (ch === '/' && next === '/') {
+      while (i < code.length && code[i] !== '\n') { out += ' '; i += 1; }
+      continue;
+    }
+    if (ch === '/' && next === '*') {
+      out += '  ';
+      i += 2;
+      while (i < code.length && !(code[i] === '*' && code[i + 1] === '/')) {
+        out += code[i] === '\n' ? '\n' : ' ';
+        i += 1;
+      }
+      if (i < code.length) { out += '  '; i += 2; }
+      continue;
+    }
+    out += ch;
+    i += 1;
+  }
+  return out;
+}
+
 function extractUnits(file: string, src: string): Unit[] {
   const units: Unit[] = [];
   const push = (startIdx: number, raw: string, text: string, atomic: boolean): void => {
@@ -572,7 +642,9 @@ function extractUnits(file: string, src: string): Unit[] {
   }
 
   // Frontmatter / data-file string literals. This is the surface that feeds the FAQPage JSON-LD.
-  const litSrc = isAstro ? head : src;
+  // Comments are stripped first (T-146): the stripper is length-preserving, so match indices, and
+  // therefore the file:line numbers findings report, still point at the original source.
+  const litSrc = stripJsComments(isAstro ? head : src);
   const litOffset = isAstro && head ? src.indexOf(head) : 0;
   for (const m of litSrc.matchAll(/(["'`])((?:\\.|(?!\1)[\s\S])*?)\1/g)) {
     const raw = m[2] ?? '';
@@ -885,6 +957,8 @@ const KNOWN_VIOLATIONS: Fixture[] = [
  *   - So the literals are asserted BOTH ways: as absolute phrases, and again with the phrase list
  *     disabled, because the next one will use words nobody enumerated either.
  * Reported to the owner as a finding. NOT fixed here, and NOT allowlisted.
+ * (Status 2026-08-19: the ticker copy has since been reframed and this string is no longer live.
+ * The fixtures stay, as the proof the guard catches the shape; only the array name is now dated.)
  */
 const LIVE_UNFIXED_FIXTURES: Fixture[] = [
   {
@@ -1234,6 +1308,94 @@ describe('PROJECT_HS_003 content guard: live content surfaces', () => {
       }
     }
     expect(findings.length, failureMessage(findings)).toBe(0);
+  });
+});
+
+/* ------------------------------------------------------------------ T-146 comment stripping */
+
+/**
+ * Regression suite for the T-146 parity defect. The shared literal lines are deliberately the shape
+ * that got hurt: a compliant, properly hedged permit FAQ (a class-1 trigger topic that must NOT
+ * fire) plus a literal carrying a URL, so the tests prove both that comment quotes no longer
+ * re-pair the literals and that comment markers inside strings still survive.
+ */
+const T146_LITERAL_LINES = [
+  "const q = 'Do I need a permit for a storage container?';",
+  'const a = "Whether a permit is required depends on your jurisdiction, and confirming it with your local zoning office is the buyer\'s responsibility. We do not determine permit requirements.";',
+  "const source = 'See the county fee schedule at https://example.com/permits before you call.';",
+];
+
+const T146_EXPECTED_TEXTS = [
+  'Do I need a permit for a storage container?',
+  "Whether a permit is required depends on your jurisdiction, and confirming it with your local zoning office is the buyer's responsibility. We do not determine permit requirements.",
+  'See the county fee schedule at https://example.com/permits before you call.',
+];
+
+/** Builds a minimal .astro source: fence, the given frontmatter lines, fence, inert body. */
+const t146Fixture = (...frontmatterLines: string[]): string =>
+  ['---', ...frontmatterLines, '---', '<main>{a}</main>', ''].join('\n');
+
+const t146Units = (src: string): Unit[] => extractUnits('src/pages/t146-fixture.astro', src);
+const t146Texts = (src: string): string[] => t146Units(src).map((u) => u.text);
+
+describe('PROJECT_HS_003 content guard: frontmatter comment stripping (T-146)', () => {
+  it('extracts the correct units from comment-free frontmatter (control fixture)', () => {
+    expect(t146Texts(t146Fixture(...T146_LITERAL_LINES))).toEqual(T146_EXPECTED_TEXTS);
+  });
+
+  it('one apostrophe in a // comment (odd parity) no longer re-pairs the literals below it', () => {
+    const withComment = t146Fixture(
+      "// Doug's routing notes live in the CRM, not in this file.",
+      ...T146_LITERAL_LINES,
+    );
+    const units = t146Units(withComment);
+    // Exactly the real literals, correctly bounded, identical to the comment-free extraction.
+    expect(units.map((u) => u.text)).toEqual(T146_EXPECTED_TEXTS);
+    expect(units.map((u) => u.text)).toEqual(t146Texts(t146Fixture(...T146_LITERAL_LINES)));
+    // Line numbers still point at the original source: fence 1, comment 2, literals 3 to 5.
+    expect(units.map((u) => u.line)).toEqual([3, 4, 5]);
+    // And the properly hedged class-1 topic produces NO phantom finding.
+    expect(units.flatMap((u) => scanUnit(u.text, { atomic: u.atomic }))).toEqual([]);
+  });
+
+  it('a string literal containing https:// survives stripping intact and is extracted whole', () => {
+    const texts = t146Texts(t146Fixture(...T146_LITERAL_LINES));
+    expect(texts[2]).toBe('See the county fee schedule at https://example.com/permits before you call.');
+  });
+
+  it('a block comment carrying apostrophes does not disturb extraction or line numbers', () => {
+    const withBlock = t146Fixture(
+      '/*',
+      " * Owner's note: don't edit Doug's copy without asking first.",
+      ' */',
+      ...T146_LITERAL_LINES,
+    );
+    const units = t146Units(withBlock);
+    expect(units.map((u) => u.text)).toEqual(T146_EXPECTED_TEXTS);
+    // Comment chars become spaces, newlines stay, so the literals still report lines 5 to 7.
+    expect(units.map((u) => u.line)).toEqual([5, 6, 7]);
+    expect(units.flatMap((u) => scanUnit(u.text, { atomic: u.atomic }))).toEqual([]);
+  });
+
+  it('parity sanity: three (odd) and four (even) comment apostrophes extract the identical correct unit list', () => {
+    const even = t146Fixture("// it's here, it's Doug's yard, and it's fine", ...T146_LITERAL_LINES);
+    const odd = t146Fixture("// don't edit Doug's copy, per Eli's request", ...T146_LITERAL_LINES);
+    expect(t146Texts(even)).toEqual(T146_EXPECTED_TEXTS);
+    expect(t146Texts(odd)).toEqual(T146_EXPECTED_TEXTS);
+    expect(t146Texts(odd)).toEqual(t146Texts(even));
+  });
+
+  it('stripJsComments is string-aware, honors escapes, and preserves length exactly', () => {
+    const code = 'const u = \'https://a.b/c\'; // gone\n'
+      + 'const v = "say \\"hi\\" // not a comment"; /* x */ const w = `tpl ${\'//\'} ok`;';
+    const stripped = stripJsComments(code);
+    expect(stripped.length).toBe(code.length);
+    expect(stripped.split('\n').length).toBe(code.split('\n').length);
+    expect(stripped).toContain("'https://a.b/c'");
+    expect(stripped).toContain('\\"hi\\" // not a comment');
+    expect(stripped).toContain("`tpl ${'//'} ok`");
+    expect(stripped).not.toContain('// gone');
+    expect(stripped).not.toContain('/* x */');
   });
 });
 
