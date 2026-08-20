@@ -1,6 +1,6 @@
 ---
 title: "Shipping Container vs. Pole Barn for On-Site Storage (Sample Post)"
-description: "SAMPLE / PLACEHOLDER — A side-by-side look at how a Wind & Water Tight shipping container compares to a pole barn for equipment and material storage."
+description: "SAMPLE / PLACEHOLDER: A side-by-side look at how a Wind & Water Tight shipping container compares to a pole barn for equipment and material storage."
 pubDate: 2026-06-08
 updatedDate: 2026-06-10
 category: "Comparisons & Alternatives"
@@ -9,7 +9,7 @@ persona: "contractor"
 format: "comparison"
 keywords: ["shipping container vs pole barn", "container storage alternative", "on-site storage comparison"]
 heroImage: "contractors/jobsite-container-delivery-hero.jpg"
-heroImageAlt: "Shipping container delivered to a contractor jobsite (FPO — placeholder image)"
+heroImageAlt: "Shipping container delivered to a contractor jobsite (FPO, placeholder image)"
 author: "Steel Box Direct"
 draft: true
 takeaways:
@@ -26,23 +26,23 @@ When you need secure on-site storage, a pole barn and a shipping container solve
 
 ## Setup time
 
-A pole barn is a construction project — site prep, a foundation or footings, framing, and a roof. A used shipping container is a delivered unit: it arrives on a truck and is set in place the same day, weather permitting.
+A pole barn is a construction project: site prep, a foundation or footings, framing, and a roof. A used shipping container is a delivered unit: it arrives on a truck and is set in place the same day, weather permitting.
 
-![Tilt-bed truck delivering a shipping container to a jobsite (FPO — placeholder image)](../../assets/photos/contractors/tilt-bed-container-delivery-jobsite.jpg)
+![Tilt-bed truck delivering a shipping container to a jobsite (FPO, placeholder image)](../../assets/photos/contractors/tilt-bed-container-delivery-jobsite.jpg)
 
-*(FPO — placeholder image. A tilt-bed delivery sets the container in place the same day — no framing crew, no multi-week build.)*
+*(FPO, placeholder image. A tilt-bed delivery sets the container in place the same day: no framing crew, no multi-week build.)*
 
 ## Security
 
 Steel walls and a factory-built locking door system give a container a security profile that's hard to match without added hardware. A pole barn's security depends entirely on the doors, windows, and locks you install.
 
-![Close-up of a puck lock securing a shipping container's cargo doors (FPO — placeholder image)](../../assets/photos/contractors/puck-lock-container-lockbox-closeup.jpg)
+![Close-up of a puck lock securing a shipping container's cargo doors (FPO, placeholder image)](../../assets/photos/contractors/puck-lock-container-lockbox-closeup.jpg)
 
-*(FPO — placeholder image. A puck-lock hasp on steel doors is a harder target than the hardware on a typical pole barn entry.)*
+*(FPO, placeholder image. A puck-lock hasp on steel doors is a harder target than the hardware on a typical pole barn entry.)*
 
 ## Weather resistance
 
-Every container we sell is Wind & Water Tight (used) — sealed against rain, wind, snow, and pests out of the gate. A pole barn's weather-tightness depends on the quality of its build and ongoing maintenance of the roof and siding.
+Every container we sell is Wind & Water Tight (used): sealed against rain, wind, snow, and pests out of the gate. A pole barn's weather-tightness depends on the quality of its build and ongoing maintenance of the roof and siding.
 
 ## Permanence and permitting
 

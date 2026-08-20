@@ -87,7 +87,7 @@ function getPriorityLabel(score: number): string {
 }
 
 // Email-only pass-through like receive_method (self-pickup): never inserted into the DB,
-// and a missing value (old cached forms) is treated as "not_sure" — never a 400/500.
+// and a missing value (old cached forms) is treated as "not_sure", never a 400/500.
 function isRentToOwn(data: QuoteFormData): boolean {
   return data.payment_intent === 'rent_to_own';
 }
@@ -137,7 +137,7 @@ function getOptionLabel(labels: Record<string, string>, value: string | undefine
 async function sendBuyerConfirmation(data: QuoteFormData): Promise<string | null> {
   try {
     const { resend } = getClients();
-    // RTO-only additions — non-RTO buyer emails stay byte-for-byte unchanged.
+    // RTO-only additions; non-RTO buyer emails stay byte-for-byte unchanged.
     const rtoSummaryLine = isRentToOwn(data) ? `\n- Payment: ${getPaymentIntentLabel(data)}` : '';
     // A self-pickup RTO lead is not being scheduled a delivery, and this line sits directly
     // under the pick-up all-in paragraph, so the noun has to follow receive_method.
@@ -148,7 +148,7 @@ async function sendBuyerConfirmation(data: QuoteFormData): Promise<string | null
     // delivery at all, so promising "delivery to your ZIP" contradicts their own summary line.
     const allInLine = data.receive_method === 'pickup'
       ? 'Good to know: the price we send you covers the container at the pick-up yard. There is no delivery charge because you are arranging transport yourself, and the seller will confirm the yard location when they reach out.'
-      : 'Good to know: the price we send you is all-in — the container plus delivery to your ZIP and placement on flat ground. No surprise freight charges tacked on later.';
+      : 'Good to know: the price we send you is all-in. It covers the container plus delivery to your ZIP and placement on flat ground. No surprise freight charges tacked on later.';
     const { data: emailData, error } = await resend.emails.send({
       from: 'Steel Box Direct <noreply@steelboxdirect.com>',
       to: data.email,
@@ -185,13 +185,13 @@ async function sendSellerNotification(
     // is fixed and another appears. Type only, no runtime change.
     const sellerEmail: string = import.meta.env.SELLER_EMAIL || process.env.SELLER_EMAIL || 'seller@example.com';
     if (sellerEmail === 'seller@example.com') {
-      console.error('🚨 SELLER_EMAIL is not set — seller lead alerts are going to the placeholder seller@example.com and will NOT be received. Set SELLER_EMAIL in the environment.');
+      console.error('🚨 SELLER_EMAIL is not set: seller lead alerts are going to the placeholder seller@example.com and will NOT be received. Set SELLER_EMAIL in the environment.');
     }
     // SELLER_EMAIL can be a comma-separated list to alert multiple recipients.
     const sellerRecipients = sellerEmail.split(',').map((e) => e.trim()).filter(Boolean);
     const dbWarning = dbSaved
       ? ''
-      : '\n⚠️ DATABASE SAVE FAILED — this lead is NOT in the seller dashboard. Capture these details manually and follow up directly.\n';
+      : '\n⚠️ DATABASE SAVE FAILED: this lead is NOT in the seller dashboard. Capture these details manually and follow up directly.\n';
     const rtoBanner = isRentToOwn(data)
       ? '\n🔶 PAYMENT INTENT: RENT-TO-OWN (subject to third-party approval)\n'
       : '';
@@ -252,7 +252,7 @@ export const POST: APIRoute = async ({ request }) => {
     const distance = getZipDistance(data.delivery_zip);
     const inServiceArea = distance === null || distance <= SERVICE_RADIUS_MILES;
 
-    // 1) Try to save to the database — but DO NOT abort if it fails (e.g. Supabase paused/down).
+    // 1) Try to save to the database, but DO NOT abort if it fails (e.g. Supabase paused/down).
     //    The seller email below is the safety net so a DB outage never silently loses a lead.
     let leadId: string | null = null;
     let dbSaved = false;
@@ -293,7 +293,7 @@ export const POST: APIRoute = async ({ request }) => {
       console.error('API: DB insert threw (continuing to email seller):', e?.message || e);
     }
 
-    // 2) Seller notification ALWAYS fires — the safety net if the DB is down.
+    // 2) Seller notification ALWAYS fires: the safety net if the DB is down.
     const sellerNotified = await sendSellerNotification(data, leadId, leadScore, distance, dbSaved);
 
     // 3) Buyer confirmation (best effort); record its id only if we have a DB row to update.
@@ -313,9 +313,9 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     // Loud, non-silent alerting: a 200 to the buyer must never hide a broken email path.
-    // (leadId is a UUID, not PII — safe to log per HS-DATA-001.)
+    // (leadId is a UUID, not PII, so it is safe to log per HS-DATA-001.)
     if (!sellerNotified) {
-      console.error(`🚨 SELLER ALERT NOT SENT for lead ${leadId || '(unsaved)'} — Resend send failed or SELLER_EMAIL misconfigured. Lead ${dbSaved ? 'IS in the dashboard, follow up there.' : 'is NOT in the dashboard.'}`);
+      console.error(`🚨 SELLER ALERT NOT SENT for lead ${leadId || '(unsaved)'}. Resend send failed or SELLER_EMAIL misconfigured. Lead ${dbSaved ? 'IS in the dashboard, follow up there.' : 'is NOT in the dashboard.'}`);
     }
     if (!emailId) {
       console.error(`⚠️ Buyer confirmation send failed for lead ${leadId || '(unsaved)'}.`);
@@ -334,8 +334,8 @@ export const POST: APIRoute = async ({ request }) => {
       }), { status: 200 });
     }
 
-    // Both the DB write and the seller email failed — the lead would be lost. Surface an error.
-    console.error('API: lead capture FAILED on both DB and seller email — lead not captured');
+    // Both the DB write and the seller email failed, so the lead would be lost. Surface an error.
+    console.error('API: lead capture FAILED on both DB and seller email; lead not captured');
     return new Response(JSON.stringify({ error: 'We could not submit your request. Please call us or try again shortly.' }), { status: 500 });
 
   } catch (err) {

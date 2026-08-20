@@ -10,7 +10,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     <h1>What affects container pricing?</h1>
 
     <p class="intro">
-      Container prices vary based on several factors. The good news: a container is typically cheaper than building storage and lasts 15–20+ years. The key is understanding what drives cost so you can evaluate quotes fairly and know if you're getting value for your money.
+      Container prices vary based on several factors. The good news: a container is typically cheaper than building storage and lasts 15-20+ years. The key is understanding what drives cost so you can evaluate quotes fairly and know if you're getting value for your money.
     </p>
 
     <section>
@@ -32,25 +32,25 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
             <thead><tr><th>Size</th><th>Relative Cost</th><th>Best For</th></tr></thead>
             <tbody>
               <tr><td>20-foot</td><td>Base</td><td>One tractor, seasonal equipment, hobby use (Mike)</td></tr>
-              <tr><td>40-foot</td><td>~40–60% more</td><td>Multiple farm equipment, growing business (Tom, Sarah)</td></tr>
-              <tr><td>40-foot High Cube</td><td>~5–10% more than standard 40</td><td>Tall equipment, workspace conversion (Tom, Sarah)</td></tr>
+              <tr><td>40-foot</td><td>~40-60% more</td><td>Multiple farm equipment, growing business (Tom, Sarah)</td></tr>
+              <tr><td>40-foot High Cube</td><td>~5-10% more than standard 40</td><td>Tall equipment, workspace conversion (Tom, Sarah)</td></tr>
             </tbody>
           </table>
         </div>
-        <p><strong>Tom's ROI math:</strong> A 40-foot used container costs ~$3,500–$4,500. Building a 40ft × 8ft storage shed: $8,000–$12,000+. The container is not just cheaper; it's mobile and lasts longer.</p>
+        <p><strong>Tom's ROI math:</strong> A 40-foot used container costs ~$3,500-$4,500. Building a 40ft × 8ft storage shed: $8,000-$12,000+. The container is not just cheaper; it's mobile and lasts longer.</p>
       </div>
 
       <div class="driver-card">
         <h3>2. Condition (Biggest Price Variance)</h3>
-        <p>Condition has the biggest impact on price after size. The spread is significant: a cargo-worthy container might cost 40–60% less than new.</p>
+        <p>Condition has the biggest impact on price after size. The spread is significant: a cargo-worthy container might cost 40-60% less than new.</p>
         <div class="table-wrap">
           <table>
             <thead><tr><th>Condition</th><th>Relative Cost</th><th>Best For</th><th>Lifespan</th></tr></thead>
             <tbody>
               <tr><td>New (One-Trip)</td><td>Highest (100%)</td><td>Premium appearance, workspace conversion (Sarah)</td><td>20+ years</td></tr>
-              <tr><td>Cargo Worthy</td><td>Mid (60–70%)</td><td>Farm equipment storage—best value (Tom, Mike)</td><td>15+ years</td></tr>
-              <tr><td>Wind &amp; Water Tight</td><td>Lower (40–50%)</td><td>Budget storage, back-field placement (Mike)</td><td>10+ years</td></tr>
-              <tr><td>As-Is</td><td>Lowest (30–40%)</td><td>Projects, parts—not recommended for storage</td><td>Variable</td></tr>
+              <tr><td>Cargo Worthy</td><td>Mid (60-70%)</td><td>Farm equipment storage: best value (Tom, Mike)</td><td>15+ years</td></tr>
+              <tr><td>Wind &amp; Water Tight</td><td>Lower (40-50%)</td><td>Budget storage, back-field placement (Mike)</td><td>10+ years</td></tr>
+              <tr><td>As-Is</td><td>Lowest (30-40%)</td><td>Projects, parts; not recommended for storage</td><td>Variable</td></tr>
             </tbody>
           </table>
         </div>
@@ -60,13 +60,13 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
       <div class="driver-card">
         <h3>3. Delivery Distance and Site Complexity</h3>
-        <p>Delivery is often a larger cost factor than buyers expect—sometimes as much as the container itself.</p>
+        <p>Delivery is often a larger cost factor than buyers expect, sometimes as much as the container itself.</p>
         <p><strong>Distance impacts cost:</strong> Containers are available from depot locations. The farther from a depot, the higher the delivery cost. Our regional service area covers approximately 250 miles from Cincinnati, Ohio. Within 100 miles = lower delivery. 150+ miles = higher delivery (but we can usually accommodate).</p>
         <p><strong>Site complexity impacts cost:</strong></p>
         <ul>
           <li><strong>Standard delivery:</strong> Straight driveway, 10+ ft wide, 14+ ft clearance, firm ground = lowest cost</li>
           <li><strong>Medium complexity:</strong> Minor obstacles (trim branches, remove gates temporarily), slightly soft ground (prep with gravel) = moderate cost</li>
-          <li><strong>Crane required:</strong> Narrow driveway, tight turns, limited truck access = adds $500–$1,500</li>
+          <li><strong>Crane required:</strong> Narrow driveway, tight turns, limited truck access = adds $500-$1,500</li>
         </ul>
         <p><strong>What you control:</strong> Know your site conditions before requesting a quote. Clear obstacles, prepare ground, or trim branches before delivery (DIY savings). Be flexible on exact placement if access is tight. The delivery cost difference between $200 site prep and crane delivery is significant.</p>
         <p><strong>Tom & Mike:</strong> If your property is rural but reasonably accessible, don't assume crane is necessary. Describe your situation; most rural driveways work with standard tilt-bed. See our <a href="/delivery/">Delivery Guide</a> for access requirements.</p>
@@ -83,7 +83,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
           <li><strong>Condition mix:</strong> Some months have more new containers available, other months fewer cargo-worthy options</li>
         </ul>
         <p><strong>Real impact:</strong> A cargo-worthy 40-foot might cost $3,800 in March and $4,200 in May. That's typical seasonal variation.</p>
-        <p><strong>What you can do:</strong> Be flexible on timing if possible. Need a container next week? Expect premium pricing. Can wait 4–6 weeks? Pricing may be lower. Specific condition/size may have limited stock. Alternative specifications (different size, slightly lower condition) may be available immediately at lower cost.</p>
+        <p><strong>What you can do:</strong> Be flexible on timing if possible. Need a container next week? Expect premium pricing. Can wait 4-6 weeks? Pricing may be lower. Specific condition/size may have limited stock. Alternative specifications (different size, slightly lower condition) may be available immediately at lower cost.</p>
         <p><strong>Tom & Sarah:</strong> If you need it urgently, plan for higher pricing. If you can wait, patience = savings.</p>
       </div>
     </section>
@@ -123,10 +123,10 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
         <li><strong>Delivery method specified?</strong> Standard tilt-bed or crane? If unclear, ask specifically about your site's access.</li>
         <li><strong>Delivery timeline realistic?</strong> When will it arrive? Guaranteed or estimated? (Guaranteed timelines = higher cost usually)</li>
         <li><strong>What's the recourse process?</strong> If the container doesn't match description (condition, dimensions, etc.), what's the resolution? Return? Adjustment? This matters.</li>
-        <li><strong>Warranty or inspection period?</strong> Can you inspect upon delivery and raise issues? (Most sellers allow 24–48 hours post-delivery)</li>
+        <li><strong>Warranty or inspection period?</strong> Can you inspect upon delivery and raise issues? (Most sellers allow 24-48 hours post-delivery)</li>
         <li><strong>Any regional differences?</strong> Is this pricing specific to your area or estimate only? (Prices vary significantly by region)</li>
       </ol>
-      <p><strong>Pro tip:</strong> Get 2–3 quotes before deciding. One outlier quote (too low or too high) helps you spot red flags or exceptional deals.</p>
+      <p><strong>Pro tip:</strong> Get 2-3 quotes before deciding. One outlier quote (too low or too high) helps you spot red flags or exceptional deals.</p>
     </section>
 
     <section>
@@ -135,11 +135,11 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
         <table>
           <thead><tr><th>Scenario</th><th>Typical Choice</th><th>Why (Persona)</th><th>Approximate Cost Range</th></tr></thead>
           <tbody>
-            <tr><td>Farm equipment storage (Tom)</td><td>Cargo Worthy 40'</td><td>Function over appearance. 15+ year lifespan protects investment. ROI-focused.</td><td>$4,000–$5,500</td></tr>
-            <tr><td>Growing business inventory (Sarah)</td><td>Mixed: New 20' visible + CW 40' hidden</td><td>New for professional appearance where customers see. Used for back-storage. Scales investment.</td><td>$6,000–$9,000</td></tr>
-            <tr><td>Hobby equipment storage (Mike)</td><td>WWT 20' or CW 20'</td><td>Budget-conscious. Single-tractor storage. Used acceptable.</td><td>$2,500–$3,500</td></tr>
-            <tr><td>Workshop/workspace conversion</td><td>New or CW 40' HC</td><td>Headroom matters. Cleaner interior if people work inside. Professional appearance or long-term investment.</td><td>$5,500–$8,000</td></tr>
-            <tr><td>Temporary/short-term project</td><td>WWT 20'</td><td>Lowest cost. Weatherproof for 2–3 years of use. Not concerned with long-term durability.</td><td>$2,000–$2,800</td></tr>
+            <tr><td>Farm equipment storage (Tom)</td><td>Cargo Worthy 40'</td><td>Function over appearance. 15+ year lifespan protects investment. ROI-focused.</td><td>$4,000-$5,500</td></tr>
+            <tr><td>Growing business inventory (Sarah)</td><td>Mixed: New 20' visible + CW 40' hidden</td><td>New for professional appearance where customers see. Used for back-storage. Scales investment.</td><td>$6,000-$9,000</td></tr>
+            <tr><td>Hobby equipment storage (Mike)</td><td>WWT 20' or CW 20'</td><td>Budget-conscious. Single-tractor storage. Used acceptable.</td><td>$2,500-$3,500</td></tr>
+            <tr><td>Workshop/workspace conversion</td><td>New or CW 40' HC</td><td>Headroom matters. Cleaner interior if people work inside. Professional appearance or long-term investment.</td><td>$5,500-$8,000</td></tr>
+            <tr><td>Temporary/short-term project</td><td>WWT 20'</td><td>Lowest cost. Weatherproof for 2-3 years of use. Not concerned with long-term durability.</td><td>$2,000-$2,800</td></tr>
           </tbody>
         </table>
       </div>

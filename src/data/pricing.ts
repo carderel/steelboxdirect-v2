@@ -4,7 +4,7 @@
 // the homepage price section (home/PriceSection.astro), the product hub
 // (/shipping-containers-for-sale/), the product spec pages ([slug].astro), the rent-vs-buy
 // calculator (/container-rent-vs-buy-calculator/) and the schema builder (lib/schema).
-// Prices are AVERAGE starting prices, not quotes — always render with the disclaimer.
+// Prices are AVERAGE starting prices, not quotes. Always render with the disclaimer.
 // See decision 2026-06-04-cost-comparison-content-and-dollar-exception.md.
 //
 // WHERE THE MONEY COMES FROM. The three figures and the date below are no longer typed here. They

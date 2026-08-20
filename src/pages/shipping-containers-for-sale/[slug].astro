@@ -149,7 +149,7 @@ const price = priceBySlug[c.slug];
       <div class="pricing-card">
         <div class="m">Average Price</div>
         <div class="price-figure">{formatPrice(price.price)}<span>{nationalPriceLabel} · {c.shortName}</span></div>
-        <p class="price-disclaimer-text"><strong>This is an average starting price, not a quote.</strong> What you pay can land above or below — it depends mostly on how far we deliver and current market supply. We'll give you a real, all-in number when you request a quote. <em>(Average as of {asOfLabel}.)</em></p>
+        <p class="price-disclaimer-text"><strong>This is an average starting price, not a quote.</strong> What you pay can land above or below; it depends mostly on how far we deliver and current market supply. We'll give you a real, all-in number when you request a quote. <em>(Average as of {asOfLabel}.)</em></p>
         {c.slug === '40-foot-high-cube-container' && (
           <p class="hc-supply-note">Supply runs deep right now, so the High Cube average can land below the standard 40ft.</p>
         )}
@@ -163,7 +163,7 @@ const price = priceBySlug[c.slug];
   <!-- GUIDE LINKS -->
   <section class="prod-guides">
     <div class="wrap">
-      <p class="guides-label">Before you buy — answers to common questions</p>
+      <p class="guides-label">Before you buy: answers to common questions</p>
       <div class="guides-row">
         <a href="/permits/" class="guide-link">Do I need a permit? →</a>
         <a href="/cost/" class="guide-link">What does it cost? →</a>
@@ -179,7 +179,7 @@ const price = priceBySlug[c.slug];
     <div class="wrap">
       <div class="cta-box">
         <h2>Ready for a {c.shortName} quote?</h2>
-        <p>Tell us your zip code and we'll get you a real number — fast.</p>
+        <p>Tell us your zip code and we'll get you a real number, fast.</p>
         <a href="/quote/" class="btn">Get My Quote <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
       </div>
     </div>

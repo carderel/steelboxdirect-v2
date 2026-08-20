@@ -195,7 +195,7 @@ describe('buildPageSchema core', () => {
       url: 'https://steelboxdirect.com/locations/texas/houston-shipping-containers/', title: 'Houston', description: 'h',
       page: { kind: 'city', city: depot, faqs: [] },
     });
-    // depot city: qualitative depot framing — no distance claim, no supplier name
+    // depot city: qualitative depot framing, no distance claim, no supplier name
     expect(depotQf!.serves).toBe('Depot in the Houston area · our supplier network');
     expect(depotQf!.specs[0].v).toBe('Delivered from a depot in the Houston area through our supplier network');
     const depotJson = JSON.stringify(depotQf);

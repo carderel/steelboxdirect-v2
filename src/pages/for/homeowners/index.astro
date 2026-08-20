@@ -20,11 +20,11 @@ const crumbs = [{ name: 'Home', path: '/' }, { name: 'Homeowners', path: '/for/h
 const faqs = [
   {
     q: 'Will a 20ft container fit in a standard suburban driveway?',
-    a: 'Usually, yes. A 20ft container is 8 feet wide and 20 feet long — roughly the footprint of a large SUV and a half-car length. Most standard suburban driveways are wide enough, though placement depends on attached garages, fence lines, or utility setbacks. More important than the footprint is delivery clearance: the truck needs about 50 feet of unobstructed approach. A standard residential street with traffic is typically workable. Include your address when requesting a quote and we can assess the approach.',
+    a: 'Usually, yes. A 20ft container is 8 feet wide and 20 feet long, roughly the footprint of a large SUV and a half-car length. Most standard suburban driveways are wide enough, though placement depends on attached garages, fence lines, or utility setbacks. More important than the footprint is delivery clearance: the truck needs about 50 feet of unobstructed approach. A standard residential street with traffic is typically workable. Include your address when requesting a quote and we can assess the approach.',
   },
   {
     q: 'Do I need a permit to have a shipping container on my residential property in Ohio?',
-    a: "It depends on your location and intended use, and confirming it is the buyer's responsibility before purchasing. Rules differ widely from one jurisdiction to the next — some municipalities require a permit, some set a size threshold, some have setback rules, and some have no restriction at all; agricultural and unincorporated properties are often treated differently from residential lots inside city limits. The reliable way to find out is to call your county auditor or zoning office and confirm what applies to your property. We do not determine, advise on, or guarantee permit requirements.",
+    a: "It depends on your location and intended use, and confirming it is the buyer's responsibility before purchasing. Rules differ widely from one jurisdiction to the next: some municipalities require a permit, some set a size threshold, some have setback rules, and some have no restriction at all; agricultural and unincorporated properties are often treated differently from residential lots inside city limits. The reliable way to find out is to call your county auditor or zoning office and confirm what applies to your property. We do not determine, advise on, or guarantee permit requirements.",
   },
   {
     q: 'How does delivery work in a residential neighborhood?',
@@ -32,7 +32,7 @@ const faqs = [
   },
   {
     q: 'How does buying a container compare to renting a storage unit long-term?',
-    a: `The math usually favors ownership for anything beyond 2–3 years. A standard 10×10 self-storage unit averages about $120 per month nationally and tends to increase over time — though prices vary by region. Over 5 years, that's roughly $7,200 in fees for space you never own. A 20ft container is a one-time purchase of ${ownPurchaseDisplay} today — far less over that horizon, and you can sell it when you're done. The container also holds more than a 10×10 unit and sits on your property. The tradeoff: you need the outdoor space, and a storage facility protects climate-sensitive items better since containers have no HVAC.`,
+    a: `The math usually favors ownership for anything beyond 2-3 years. A standard 10×10 self-storage unit averages about $120 per month nationally and tends to increase over time, though prices vary by region. Over 5 years, that's roughly $7,200 in fees for space you never own. A 20ft container is a one-time purchase of ${ownPurchaseDisplay} today, far less over that horizon, and you can sell it when you're done. The container also holds more than a 10×10 unit and sits on your property. The tradeoff: you need the outdoor space, and a storage facility protects climate-sensitive items better since containers have no HVAC.`,
   },
   {
     q: 'Can I add shelving, electricity, or other modifications to a container?',
@@ -44,19 +44,19 @@ const faqs = [
   },
   {
     q: 'Will my stuff get damp or moldy inside a steel container?',
-    a: 'It can if you don\'t plan for it. Containers are weathertight against rain and snow, but a sealed steel box with no airflow can build condensation when warm, humid air meets cold steel — sometimes called "container rain." The fix is simple: add a couple of passive roof vents or louver vents for cross-flow, keep items off the floor on pallets or shelving, and toss in moisture-absorber buckets for anything sensitive. For most home storage — tools, furniture, equipment, seasonal items — basic ventilation is plenty. Climate-sensitive belongings (electronics, paper, anything that fears humidity swings) are still better off in a conditioned space, since containers have no HVAC.',
+    a: 'It can if you don\'t plan for it. Containers are weathertight against rain and snow, but a sealed steel box with no airflow can build condensation when warm, humid air meets cold steel, sometimes called "container rain." The fix is simple: add a couple of passive roof vents or louver vents for cross-flow, keep items off the floor on pallets or shelving, and toss in moisture-absorber buckets for anything sensitive. For most home storage (tools, furniture, equipment, seasonal items) basic ventilation is plenty. Climate-sensitive belongings (electronics, paper, anything that fears humidity swings) are still better off in a conditioned space, since containers have no HVAC.',
   },
   {
     q: 'Is a shipping container a good alternative to a storage shed?',
-    a: "For most homeowners, yes — especially for security and durability. A shed is easier on the eyes and blends into a backyard, but it's wood or vinyl over a light frame with a basic latch, and it can rot, leak, and let rodents in over the years. A steel container is Wind & Water Tight, seals against weather and pests, and locks with a puck-lock hasp that's far harder to defeat than a shed door. The tradeoffs are the boxy, industrial look and confirming local zoning for placement. For a workshop-style building you want to spend time inside, a shed or small pole barn may suit better; for locking up tools, equipment, and overflow that has to survive outside, the container is the tougher, longer-lived option.",
+    a: "For most homeowners, yes, especially for security and durability. A shed is easier on the eyes and blends into a backyard, but it's wood or vinyl over a light frame with a basic latch, and it can rot, leak, and let rodents in over the years. A steel container is Wind & Water Tight, seals against weather and pests, and locks with a puck-lock hasp that's far harder to defeat than a shed door. The tradeoffs are the boxy, industrial look and confirming local zoning for placement. For a workshop-style building you want to spend time inside, a shed or small pole barn may suit better; for locking up tools, equipment, and overflow that has to survive outside, the container is the tougher, longer-lived option.",
   },
   {
     q: 'Will a steel container last longer than a wooden or plastic shed?',
-    a: "By a wide margin. A wood or vinyl shed typically degrades over the years — the roof pools water, the frame swells and warps, and the resale value drops toward zero. A shipping container is built from weathering (Cor-Ten) steel engineered for decades of open-ocean freight; sitting on dry ground in the Midwest is easy duty. Keep it off wet ground on blocks or a gravel pad and touch up any scratches, and a Wind & Water Tight unit holds its structural and weathertight integrity — and much of its resale value — far longer than a shed.",
+    a: "By a wide margin. A wood or vinyl shed typically degrades over the years: the roof pools water, the frame swells and warps, and the resale value drops toward zero. A shipping container is built from weathering (Cor-Ten) steel engineered for decades of open-ocean freight; sitting on dry ground in the Midwest is easy duty. Keep it off wet ground on blocks or a gravel pad and touch up any scratches, and a Wind & Water Tight unit holds its structural and weathertight integrity (and much of its resale value) far longer than a shed.",
   },
   {
     q: 'Does my HOA or city allow a shipping container in a residential backyard?',
-    a: "That varies widely, and confirming it is the buyer's responsibility before purchasing. Some municipalities allow residential containers outright, some set a size threshold or a setback from the property line, some require a permit, and some prohibit them on residential lots — and an HOA can add its own rules on top of local zoning. Agricultural and unincorporated properties are often treated differently from lots inside city limits. The reliable way to know is to check with your county or city zoning office and your HOA before you buy. We do not determine, advise on, or guarantee permit or HOA requirements.",
+    a: "That varies widely, and confirming it is the buyer's responsibility before purchasing. Some municipalities allow residential containers outright, some set a size threshold or a setback from the property line, some require a permit, and some prohibit them on residential lots; an HOA can add its own rules on top of local zoning. Agricultural and unincorporated properties are often treated differently from lots inside city limits. The reliable way to know is to check with your county or city zoning office and your HOA before you buy. We do not determine, advise on, or guarantee permit or HOA requirements.",
   },
 ];
 ---
@@ -71,26 +71,26 @@ const faqs = [
   floatingSidebar
   schema={{ kind: 'useCase', audience: 'homeowners', title: 'Backyard Storage Without the Monthly Bill',
     specs: [
-      { k: 'Common size', v: '20ft — 8ft wide, fits most driveways' },
-      { k: 'Foundation', v: 'None needed — corner blocks or gravel pad' },
+      { k: 'Common size', v: '20ft: 8ft wide, fits most driveways' },
+      { k: 'Foundation', v: 'None needed; corner blocks or gravel pad' },
       { k: 'Condition', v: 'Wind & Water Tight (used)' },
       { k: 'Service area', v: 'OH · IN · KY · W. WV' },
     ],
     faqs: faqs.map((f) => ({ q: f.q, a: f.a })) }}
 >
 
-  <!-- 1. HERO — full-bleed acreage poster split (copy panel + edge-to-edge photo) -->
+  <!-- 1. HERO: full-bleed acreage poster split (copy panel + edge-to-edge photo) -->
   <section class="uc-hero">
     <div class="uc-hero-copy">
       <Breadcrumbs items={crumbs} />
       <span class="uc-eyebrow">For Homeowners</span>
       <h1 class="uc-h1">Backyard Storage Without the <span class="uc-h1-mark">Monthly Bill.</span></h1>
-      <p class="uc-lede">One purchase. No renewal notices. No unit fee increases. Weatherproof storage that lives on your property — not in a facility across town.</p>
-      <p class="uc-lede-support">We deliver 20ft and 40ft containers to homes across Ohio, Indiana, Kentucky, and western West Virginia — direct from Cincinnati. They work for suburban driveways, side lots, gravel pads, and larger properties where a shed simply is not enough.</p>
+      <p class="uc-lede">One purchase. No renewal notices. No unit fee increases. Weatherproof storage that lives on your property, not in a facility across town.</p>
+      <p class="uc-lede-support">We deliver 20ft and 40ft containers to homes across Ohio, Indiana, Kentucky, and western West Virginia, direct from Cincinnati. They work for suburban driveways, side lots, gravel pads, and larger properties where a shed simply is not enough.</p>
       <p class="uc-trust-strip m">Delivered within 250 mi of Cincinnati · Quote in 4 business hours · No monthly fees, ever</p>
     </div>
 
-    <!-- IMAGE SLOT 1 — hero (full-bleed). filename: homeowner-acreage-container-woodline-storage.jpg -->
+    <!-- IMAGE SLOT 1: hero (full-bleed). filename: homeowner-acreage-container-woodline-storage.jpg -->
     <figure class="uc-hero-media" data-img-slot="hero">
       <Image
         class="uc-img-real"
@@ -103,7 +103,7 @@ const faqs = [
       <div class="uc-hero-scrim" aria-hidden="true"></div>
       <figcaption class="uc-hero-stamp m">
         <span class="uc-hero-stamp-k">OH · IN · KY · Western WV</span>
-        More than a shed — storage that sits where the property has room
+        More than a shed: storage that sits where the property has room
       </figcaption>
     </figure>
   </section>
@@ -115,18 +115,18 @@ const faqs = [
         <span class="m">Why It Works</span>
         <h2 class="uc-h2">Why containers work for homeowners</h2>
       </div>
-      <p class="uc-section-intro">A shipping container solves the same problem as a rented storage unit or a backyard shed — but it does it once, for a single price, on ground you already own. Here's why homeowners across the Cincinnati region keep choosing steel over a recurring bill.</p>
+      <p class="uc-section-intro">A shipping container solves the same problem as a rented storage unit or a backyard shed, but it does it once, for a single price, on ground you already own. Here's why homeowners across the Cincinnati region keep choosing steel over a recurring bill.</p>
       <div class="uc-why-grid">
         <div class="uc-block">
           <h3>Own it instead of renting it</h3>
-          <p>A standard 10×10 self-storage unit runs about $120 per month on the <a href="https://www.sparefoot.com/blog/how-much-does-a-storage-unit-cost" target="_blank" rel="noopener">national average</a>. Over five years, that's roughly $7,200 in fees — for a space you never own, that you have to drive to, and that tends to raise its rate over time. A 20ft container is a one-time purchase of {ownPurchaseDisplay} today — roughly {ownMonthlyDisplay} per month if you spread it across the same five years — and it belongs to you permanently. There is no renewal notice and no annual increase. When you no longer need it, you can resell it: steel holds its value because it doesn't rot, warp, or depreciate the way a wood shed does. For anyone storing longer than two or three years, the math runs strongly in favor of ownership.</p>
-          <p class="uc-price-note">Based on the national average — storage rental prices vary by region. Container pricing reflects current market · updated {asOfLabel}.</p>
+          <p>A standard 10×10 self-storage unit runs about $120 per month on the <a href="https://www.sparefoot.com/blog/how-much-does-a-storage-unit-cost" target="_blank" rel="noopener">national average</a>. Over five years, that's roughly $7,200 in fees for a space you never own, that you have to drive to, and that tends to raise its rate over time. A 20ft container is a one-time purchase of {ownPurchaseDisplay} today (roughly {ownMonthlyDisplay} per month if you spread it across the same five years) and it belongs to you permanently. There is no renewal notice and no annual increase. When you no longer need it, you can resell it: steel holds its value because it doesn't rot, warp, or depreciate the way a wood shed does. For anyone storing longer than two or three years, the math runs strongly in favor of ownership.</p>
+          <p class="uc-price-note">Based on the national average; storage rental prices vary by region. Container pricing reflects current market · updated {asOfLabel}.</p>
         </div>
         <div class="uc-block">
           <h3>More secure than a shed, more accessible than a storage facility</h3>
-          <p>A shipping container is built from <a href="https://en.wikipedia.org/wiki/Weathering_steel" target="_blank" rel="noopener">weathering (Cor-Ten) steel</a> — the same steel used to cross oceans loaded with freight. There's no OSB, no vinyl skin to cut through, no plastic windows, and no flat roof to pool water and rot. The double cargo doors close onto a steel hasp built for a padlock or a puck lock, so the most vulnerable point on a typical shed simply isn't there. And because it sits on your property, access is yours alone: no facility gate code, no business hours, no drive across town at 9pm when you remember the camping gear is in unit 214. You open the doors when you want them open.</p>
+          <p>A shipping container is built from <a href="https://en.wikipedia.org/wiki/Weathering_steel" target="_blank" rel="noopener">weathering (Cor-Ten) steel</a>, the same steel used to cross oceans loaded with freight. There's no OSB, no vinyl skin to cut through, no plastic windows, and no flat roof to pool water and rot. The double cargo doors close onto a steel hasp built for a padlock or a puck lock, so the most vulnerable point on a typical shed simply isn't there. And because it sits on your property, access is yours alone: no facility gate code, no business hours, no drive across town at 9pm when you remember the camping gear is in unit 214. You open the doors when you want them open.</p>
 
-          <!-- IMAGE SLOT 2 — security detail. filename: container-door-puck-lock-residential.jpg -->
+          <!-- IMAGE SLOT 2: security detail. filename: container-door-puck-lock-residential.jpg -->
           <figure class="uc-img uc-img-inline" data-img-slot="security">
             <Image class="uc-img-real" src={imgSecurity} width={1000} format="webp"
               alt="Steel container cargo door secured with a puck lock in a residential lockbox hasp" />
@@ -135,9 +135,9 @@ const faqs = [
         </div>
         <div class="uc-block">
           <h3>A 20ft container fits most suburban properties</h3>
-          <p>The most common residential size is the 20ft container: <a href="https://www.shippingcontainerdepot.com/20-foot-shipping-container-dimensions/" target="_blank" rel="noopener">8 feet wide, 8'6" tall</a>, and 20 feet long — about the footprint of two standard parking spaces parked end to end. Most suburban driveways and backyards in Ohio, Indiana, Kentucky, and western West Virginia can take a 20ft unit without any special site work. What matters more than the footprint is the <em>approach</em>: the delivery truck needs roughly 50 feet of clear, reasonably level run to back in and tilt the container off. A standard residential street is usually enough. Low branches, tight gate posts, and soft spring ground are the things to flag — and we'd rather hear about them before delivery day than discover them on it.</p>
+          <p>The most common residential size is the 20ft container: <a href="https://www.shippingcontainerdepot.com/20-foot-shipping-container-dimensions/" target="_blank" rel="noopener">8 feet wide, 8'6" tall</a>, and 20 feet long, about the footprint of two standard parking spaces parked end to end. Most suburban driveways and backyards in Ohio, Indiana, Kentucky, and western West Virginia can take a 20ft unit without any special site work. What matters more than the footprint is the <em>approach</em>: the delivery truck needs roughly 50 feet of clear, reasonably level run to back in and tilt the container off. A standard residential street is usually enough. Low branches, tight gate posts, and soft spring ground are the things to flag, and we'd rather hear about them before delivery day than discover them on it.</p>
 
-          <!-- IMAGE SLOT 1B — driveway proof point. filename: homeowner-20ft-container-suburban-driveway.jpg -->
+          <!-- IMAGE SLOT 1B: driveway proof point. filename: homeowner-20ft-container-suburban-driveway.jpg -->
           <figure class="uc-img uc-img-inline" data-img-slot="driveway">
             <Image class="uc-img-real" src={imgDriveway} width={1000} format="webp"
               alt="20ft shipping container placed on a suburban driveway for homeowner storage" />
@@ -145,21 +145,21 @@ const faqs = [
           </figure>
         </div>
         <div class="uc-block">
-          <h3>Permit requirements vary — confirm yours before you buy</h3>
-          <p>Some municipalities require a zoning permit for a storage container; many don't. Agricultural and unincorporated properties are often treated differently from residential lots inside city limits — in Ohio, for example, the <a href="https://ohioaglaw.wordpress.com/2013/05/22/agricultural-activities-in-ohio-can-be-exempt-from-local-zoning/" target="_blank" rel="noopener">agricultural zoning exemption (OSU Extension)</a> addresses buildings used in agriculture. Residential lots inside city limits are the most likely to need a permit, and the rules differ from one town to the next — some set a size threshold, some require a setback from the property line, some have no rule at all. These are general references, not a determination for your property. The reliable answer comes from your county auditor or zoning office, and confirming it before you purchase is the buyer's responsibility. We do not determine, advise on, or guarantee permit requirements.</p>
+          <h3>Permit requirements vary, so confirm yours before you buy</h3>
+          <p>Some municipalities require a zoning permit for a storage container; many don't. Agricultural and unincorporated properties are often treated differently from residential lots inside city limits; in Ohio, for example, the <a href="https://ohioaglaw.wordpress.com/2013/05/22/agricultural-activities-in-ohio-can-be-exempt-from-local-zoning/" target="_blank" rel="noopener">agricultural zoning exemption (OSU Extension)</a> addresses buildings used in agriculture. Residential lots inside city limits are the most likely to need a permit, and the rules differ from one town to the next: some set a size threshold, some require a setback from the property line, some have no rule at all. These are general references, not a determination for your property. The reliable answer comes from your county auditor or zoning office, and confirming it before you purchase is the buyer's responsibility. We do not determine, advise on, or guarantee permit requirements.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- 2.5 RENT VS OWN — COST COMPARISON CENTERPIECE -->
+  <!-- 2.5 RENT VS OWN: COST COMPARISON CENTERPIECE -->
   <section class="uc-compare">
     <div class="wrap">
       <div class="uc-sh" style="border-color: var(--c2-cond);">
         <span class="m">The 5-Year Math</span>
         <h2 class="uc-h2">Rent vs. own, over five years</h2>
       </div>
-      <p class="uc-compare-lead">Renting a standard 10×10 storage unit costs about <strong>$120 a month</strong> on the <a href="https://www.sparefoot.com/blog/how-much-does-a-storage-unit-cost" target="_blank" rel="noopener">national average</a> — and tends to climb over time. Buying a 20ft container is a single payment of <strong>{ownPurchaseDisplay}</strong> — about <strong>{ownMonthlyDisplay} a month</strong> spread over five years — after which you own an asset you can resell.</p>
+      <p class="uc-compare-lead">Renting a standard 10×10 storage unit costs about <strong>$120 a month</strong> on the <a href="https://www.sparefoot.com/blog/how-much-does-a-storage-unit-cost" target="_blank" rel="noopener">national average</a>, and tends to climb over time. Buying a 20ft container is a single payment of <strong>{ownPurchaseDisplay}</strong> (about <strong>{ownMonthlyDisplay} a month</strong> spread over five years), after which you own an asset you can resell.</p>
 
       <table class="uc-compare-table">
         <caption class="uc-compare-caption">Renting a 10×10 storage unit versus owning a 20ft container, over a five-year horizon.</caption>
@@ -190,7 +190,7 @@ const faqs = [
           <tr>
             <th scope="row">Rate over time</th>
             <td>Rises most years</td>
-            <td class="is-own">Fixed — you already paid</td>
+            <td class="is-own">Fixed; you already paid</td>
           </tr>
           <tr>
             <th scope="row">Access</th>
@@ -200,7 +200,7 @@ const faqs = [
           <tr>
             <th scope="row">At the end</th>
             <td>Own nothing</td>
-            <td class="is-own">Resells — steel holds value</td>
+            <td class="is-own">Resells; steel holds value</td>
           </tr>
           <tr>
             <th scope="row">The tradeoff</th>
@@ -210,13 +210,13 @@ const faqs = [
         </tbody>
       </table>
 
-      <p class="uc-price-note uc-compare-note">Container pricing reflects current market · updated {asOfLabel}. Storage-unit figure is the national average — rental prices vary by region — and is not a Steel Box Direct rate.</p>
+      <p class="uc-price-note uc-compare-note">Container pricing reflects current market · updated {asOfLabel}. Storage-unit figure is the national average (rental prices vary by region) and is not a Steel Box Direct rate.</p>
 
       <p class="uc-compare-lead uc-rto-callout">The table above compares a container against a self-storage unit. If the comparison you are actually weighing is renting a container against buying one, <a href="/container-rent-vs-buy-calculator/">the rent vs buy calculator</a> runs both columns on your own timeline and finds the month the two totals cross.</p>
 
-      <p class="uc-compare-lead uc-rto-callout">There's a third path: <a href="/rent-to-own/">rent to own</a> a container over 12, 24, 36, or 48 months — no traditional credit check, subject to third-party approval — and own it outright at the end of the term.</p>
+      <p class="uc-compare-lead uc-rto-callout">There's a third path: <a href="/rent-to-own/">rent to own</a> a container over 12, 24, 36, or 48 months (no traditional credit check, subject to third-party approval) and own it outright at the end of the term.</p>
 
-      <!-- IMAGE SLOT 3 — cost comparison. filename: storage-unit-vs-container-comparison.jpg -->
+      <!-- IMAGE SLOT 3: cost comparison. filename: storage-unit-vs-container-comparison.jpg -->
       <figure class="uc-img uc-img-wide" data-img-slot="cost">
         <Image class="uc-img-real" src={imgCost} width={1600} format="webp"
           alt="Self-storage units versus an owned backyard shipping container for home storage" />
@@ -234,7 +234,7 @@ const faqs = [
       </div>
       <p class="uc-section-intro">Three sizes cover almost every home use. Here's the quick way to choose.</p>
 
-      <!-- IMAGE SLOT 4 — delivery. filename: tilt-bed-delivery-residential-driveway.jpg -->
+      <!-- IMAGE SLOT 4: delivery. filename: tilt-bed-delivery-residential-driveway.jpg -->
       <figure class="uc-img uc-img-wide uc-img-recs" data-img-slot="delivery">
         <Image class="uc-img-real" src={imgDelivery} width={1600} format="webp"
           alt="Tilt-bed truck delivering a shipping container to a home driveway in a neighborhood" />
@@ -244,17 +244,17 @@ const faqs = [
       <div class="uc-rec-grid">
         <a href="/shipping-containers-for-sale/20-foot-shipping-container/" class="uc-rec" style="border-top-color: var(--c2-cond);">
           <span class="uc-rec-size">20ft</span>
-          <p class="uc-rec-body"><strong>Best for: most residential properties.</strong> Fits the footprint of a large shed and holds about what a two-car garage holds — lawn equipment, seasonal decor, furniture between moves, the overflow from a finished basement. Sits on most driveways and backyards without special site prep.</p>
+          <p class="uc-rec-body"><strong>Best for: most residential properties.</strong> Fits the footprint of a large shed and holds about what a two-car garage holds: lawn equipment, seasonal decor, furniture between moves, the overflow from a finished basement. Sits on most driveways and backyards without special site prep.</p>
           <span class="uc-rec-link">View 20ft container →</span>
         </a>
         <a href="/shipping-containers-for-sale/40-foot-shipping-container/" class="uc-rec" style="border-top-color: var(--c2-cond);">
           <span class="uc-rec-size">40ft</span>
-          <p class="uc-rec-body"><strong>Best for: larger lots with a full driveway or a dedicated storage spot.</strong> Roughly twice the capacity of a 20ft — the right call if you're storing a vehicle, a workshop's worth of equipment, or a whole household mid-renovation. Needs a longer, straighter approach for delivery.</p>
+          <p class="uc-rec-body"><strong>Best for: larger lots with a full driveway or a dedicated storage spot.</strong> Roughly twice the capacity of a 20ft, and the right call if you're storing a vehicle, a workshop's worth of equipment, or a whole household mid-renovation. Needs a longer, straighter approach for delivery.</p>
           <span class="uc-rec-link">View 40ft container →</span>
         </a>
         <a href="/shipping-containers-for-sale/40-foot-high-cube-container/" class="uc-rec" style="border-top-color: var(--c2-cond);">
           <span class="uc-rec-size">40ft HC</span>
-          <p class="uc-rec-body"><strong>Best for: tall storage and conversions.</strong> A full foot of extra interior height over a standard 40ft — about 2,694 cubic feet — for stacked storage, tall gear, or a build where headroom matters. Wind &amp; Water Tight (used) — structurally sound, weather-tight steel.</p>
+          <p class="uc-rec-body"><strong>Best for: tall storage and conversions.</strong> A full foot of extra interior height over a standard 40ft (about 2,694 cubic feet) for stacked storage, tall gear, or a build where headroom matters. Wind &amp; Water Tight (used): structurally sound, weather-tight steel.</p>
           <span class="uc-rec-link">View 40ft High Cube →</span>
         </a>
       </div>
@@ -269,7 +269,7 @@ const faqs = [
         <span class="m">Where We Deliver</span>
         <h2 class="uc-h2">Where we deliver</h2>
       </div>
-      <p class="uc-deliver-lede">We deliver to driveways, backyards, and side lots within 250 miles of Cincinnati — across Ohio, Indiana, Kentucky, and western West Virginia (Huntington, Charleston, Parkersburg). If you're in or around one of these metro areas, a residential delivery is routine for us; if you're between them, you're very likely still in range. These are the markets we serve most:</p>
+      <p class="uc-deliver-lede">We deliver to driveways, backyards, and side lots within 250 miles of Cincinnati, across Ohio, Indiana, Kentucky, and western West Virginia (Huntington, Charleston, Parkersburg). If you're in or around one of these metro areas, a residential delivery is routine for us; if you're between them, you're very likely still in range. These are the markets we serve most:</p>
       <div class="uc-city-grid">
         <a href="/locations/ohio/cincinnati-shipping-containers/" class="uc-city"><span class="uc-city-code">CIN</span><span class="uc-city-name">Cincinnati, OH</span><span class="uc-city-arrow">→</span></a>
         <a href="/locations/ohio/dayton-shipping-containers/" class="uc-city"><span class="uc-city-code">DAY</span><span class="uc-city-name">Dayton, OH</span><span class="uc-city-arrow">→</span></a>
@@ -295,7 +295,7 @@ const faqs = [
             <h3>{f.q}</h3>
             <p>{f.a}</p>
             {i === 5 && (
-              /* IMAGE SLOT 5 — foundation / placement. filename: container-corner-block-gravel-pad.jpg */
+              /* IMAGE SLOT 5: foundation / placement. filename: container-corner-block-gravel-pad.jpg */
               <figure class="uc-img uc-img-inline uc-img-faq" data-img-slot="foundation">
                 <Image class="uc-img-real" src={imgFoundation} width={1000} format="webp"
                   alt="Shipping container corner casting set on a concrete block over a gravel pad, no foundation" />
@@ -303,7 +303,7 @@ const faqs = [
               </figure>
             )}
             {i === 6 && (
-              /* IMAGE SLOT 6 — condensation / venting. filename: container-louver-vent-condensation.jpg */
+              /* IMAGE SLOT 6: condensation / venting. filename: container-louver-vent-condensation.jpg */
               <figure class="uc-img uc-img-inline uc-img-faq" data-img-slot="condensation">
                 <Image class="uc-img-real" src={imgCondensation} width={1000} format="webp"
                   alt="Passive louver vent on a steel storage container wall to reduce interior condensation" />
@@ -316,16 +316,16 @@ const faqs = [
 
       <p class="uc-refline">Curious what the markings on a container mean? Our <a href="/container-reference/#markings">Container Reference</a> decodes them.</p>
 
-      <p class="uc-refline">Planning what goes inside? Read <a href="/blog/why-does-my-container-rain-inside-condensation/">why containers “rain” inside — and the simple fixes</a>, and see <a href="/blog/12-things-never-store-in-a-shipping-container/">12 things you shouldn’t store in a container</a>.</p>
+      <p class="uc-refline">Planning what goes inside? Read <a href="/blog/why-does-my-container-rain-inside-condensation/">why containers “rain” inside, and the simple fixes</a>, and see <a href="/blog/12-things-never-store-in-a-shipping-container/">12 things you shouldn’t store in a container</a>.</p>
 
       <div class="uc-sources">
         <span class="m">Sources</span>
         <ul>
-          <li>Self-storage pricing — <a href="https://www.sparefoot.com/blog/how-much-does-a-storage-unit-cost" target="_blank" rel="noopener">SpareFoot, "How Much Does a Storage Unit Cost?"</a></li>
-          <li>Container steel — <a href="https://en.wikipedia.org/wiki/Weathering_steel" target="_blank" rel="noopener">Weathering (Cor-Ten) steel</a></li>
-          <li>20ft container dimensions — <a href="https://www.shippingcontainerdepot.com/20-foot-shipping-container-dimensions/" target="_blank" rel="noopener">Shipping Container Depot</a></li>
-          <li>Storage shed vs shipping container comparison — <a href="https://www.conexwest.com/blog/shipping-container-vs-shed-which-better-storage-solution" target="_blank" rel="noopener">Conexwest</a></li>
-          <li>Ohio agricultural zoning exemption — <a href="https://ohioaglaw.wordpress.com/2013/05/22/agricultural-activities-in-ohio-can-be-exempt-from-local-zoning/" target="_blank" rel="noopener">OSU Extension (ORC §519.21)</a></li>
+          <li>Self-storage pricing: <a href="https://www.sparefoot.com/blog/how-much-does-a-storage-unit-cost" target="_blank" rel="noopener">SpareFoot, "How Much Does a Storage Unit Cost?"</a></li>
+          <li>Container steel: <a href="https://en.wikipedia.org/wiki/Weathering_steel" target="_blank" rel="noopener">Weathering (Cor-Ten) steel</a></li>
+          <li>20ft container dimensions: <a href="https://www.shippingcontainerdepot.com/20-foot-shipping-container-dimensions/" target="_blank" rel="noopener">Shipping Container Depot</a></li>
+          <li>Storage shed vs shipping container comparison: <a href="https://www.conexwest.com/blog/shipping-container-vs-shed-which-better-storage-solution" target="_blank" rel="noopener">Conexwest</a></li>
+          <li>Ohio agricultural zoning exemption: <a href="https://ohioaglaw.wordpress.com/2013/05/22/agricultural-activities-in-ohio-can-be-exempt-from-local-zoning/" target="_blank" rel="noopener">OSU Extension (ORC §519.21)</a></li>
         </ul>
       </div>
     </div>

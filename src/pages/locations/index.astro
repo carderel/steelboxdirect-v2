@@ -9,7 +9,7 @@ const faqs = [
   },
   {
     q: 'How long does delivery take?',
-    a: "Almost all deliveries take about two weeks. Depot inventory is stacked and sequenced — units aren't staged for quick pull — and drivers book out several weeks in advance. We'll give you an honest window before you commit.",
+    a: "Almost all deliveries take about two weeks. Depot inventory is stacked and sequenced (units aren't staged for quick pull) and drivers book out several weeks in advance. We'll give you an honest window before you commit.",
   },
   {
     q: "What's included in the price?",
@@ -17,7 +17,7 @@ const faqs = [
   },
   {
     q: 'Do I need to be home for delivery?',
-    a: 'Not necessarily — but someone familiar with the site should be reachable by phone. The driver needs a clear run and a flat drop spot. We review site access with you before scheduling so there are no surprises on delivery day.',
+    a: 'Not necessarily, but someone familiar with the site should be reachable by phone. The driver needs a clear run and a flat drop spot. We review site access with you before scheduling so there are no surprises on delivery day.',
   },
 ];
 
@@ -54,7 +54,7 @@ const cityUrl = (c: (typeof cities)[number]) => `/locations/${c.stateSlug}/${c.s
 ---
 
 <BaseLayout
-  title="Shipping Containers Near You — Steel Box Direct Delivery Locations"
+  title="Shipping Containers Near You | Steel Box Direct Delivery Locations"
   description="Shipping containers delivered across our Ohio, Indiana, Kentucky, and West Virginia home region, plus Cleveland, Savannah, Charleston, Norfolk, Houston, New York, Detroit, and Kansas City from regional depots. Find your market."
   pageType="guide"
   breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'Locations' }]}
@@ -66,10 +66,10 @@ const cityUrl = (c: (typeof cities)[number]) => `/locations/${c.stateSlug}/${c.s
       <div class="sh">
         <span class="idx">Locations</span>
         <span class="nm">Shipping Container Delivery</span>
-        <span class="tg">Regional dealer · Est. 2009</span>
+        <span class="tg">Regional dealer · Family-owned</span>
       </div>
       <h1 class="big">Shipping Containers<br><em>for Sale Near You.</em></h1>
-      <p class="loc-lede">New and used containers delivered to your door. We work with regional depots and local drivers — no broker markup, no call center. Select your market below.</p>
+      <p class="loc-lede">New and used containers delivered to your door. We work with regional depots and local drivers: no broker markup, no call center. Select your market below.</p>
     </div>
   </section>
 
@@ -80,7 +80,7 @@ const cityUrl = (c: (typeof cities)[number]) => `/locations/${c.stateSlug}/${c.s
     </div>
   </div>
 
-  <!-- ============ CITY GRID — HOME REGION ============ -->
+  <!-- ============ CITY GRID: HOME REGION ============ -->
   <section class="city-section">
     <div class="city-hd">
       <h2>Our home region</h2>
@@ -103,10 +103,10 @@ const cityUrl = (c: (typeof cities)[number]) => `/locations/${c.stateSlug}/${c.s
       ))}
     </div>
 
-    <!-- ============ CITY GRID — REGIONAL DEPOTS ============ -->
+    <!-- ============ CITY GRID: REGIONAL DEPOTS ============ -->
     <div class="city-hd depot-hd">
       <h2>Served from regional depots</h2>
-      <p>Markets we fulfill through our supplier network, from a depot right in each metro — sourcing from a local yard keeps freight short, and short freight keeps costs down.</p>
+      <p>Markets we fulfill through our supplier network, from a depot right in each metro. Sourcing from a local yard keeps freight short, and short freight keeps costs down.</p>
     </div>
     <div class="city-grid">
       {depotCities.map((c) => (
@@ -132,7 +132,7 @@ const cityUrl = (c: (typeof cities)[number]) => `/locations/${c.stateSlug}/${c.s
       <div class="sh">
         <span class="idx">§ Local Advantage</span>
         <span class="nm">Why Steel Box Direct</span>
-        <span class="tg">Regional dealer · Est. 2009</span>
+        <span class="tg">Regional dealer · Family-owned</span>
       </div>
     </div>
     <div class="why-grid">
@@ -158,7 +158,7 @@ const cityUrl = (c: (typeof cities)[number]) => `/locations/${c.stateSlug}/${c.s
         <div class="why-num">1d</div>
         <h3>Real<br>follow-through</h3>
         <p>Same-day quote response. You'll know your delivery window before you commit, and we'll keep you updated at every step.</p>
-        <span class="why-tag">Est. 2009 · Family owned</span>
+        <span class="why-tag">Family owned</span>
       </div>
 
     </div>
@@ -185,7 +185,7 @@ const cityUrl = (c: (typeof cities)[number]) => `/locations/${c.stateSlug}/${c.s
         <div class="faq-item">
           <span class="n">Q · 02</span>
           <h3 class="q">How long does delivery take?</h3>
-          <p class="a">Almost all deliveries take about two weeks. Depot inventory is stacked and sequenced — units aren't staged for quick pull — and drivers book out several weeks in advance. We'll give you an honest window before you commit.</p>
+          <p class="a">Almost all deliveries take about two weeks. Depot inventory is stacked and sequenced (units aren't staged for quick pull) and drivers book out several weeks in advance. We'll give you an honest window before you commit.</p>
         </div>
 
         <div class="faq-item">
@@ -197,7 +197,7 @@ const cityUrl = (c: (typeof cities)[number]) => `/locations/${c.stateSlug}/${c.s
         <div class="faq-item">
           <span class="n">Q · 04</span>
           <h3 class="q">Do I need to be home for delivery?</h3>
-          <p class="a">Not necessarily — but someone familiar with the site should be reachable by phone. The driver needs a clear run and a flat drop spot. We review site access with you before scheduling so there are no surprises on delivery day.</p>
+          <p class="a">Not necessarily, but someone familiar with the site should be reachable by phone. The driver needs a clear run and a flat drop spot. We review site access with you before scheduling so there are no surprises on delivery day.</p>
         </div>
 
       </div>
@@ -208,8 +208,8 @@ const cityUrl = (c: (typeof cities)[number]) => `/locations/${c.stateSlug}/${c.s
   <section class="outofarea">
     <div class="inner">
       <h2 class="big">Don't see your area?<br><em>We're expanding.</em></h2>
-      <p>A quote is just information. Tell us your ZIP — we'll check nearby depot inventory and freight cost before you commit to anything. If we can reach you, we'll tell you straight.</p>
-      <a class="btn" href="/quote/">Check my ZIP — request a quote <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+      <p>A quote is just information. Tell us your ZIP, and we'll check nearby depot inventory and freight cost before you commit to anything. If we can reach you, we'll tell you straight.</p>
+      <a class="btn" href="/quote/">Check my ZIP: request a quote <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
       <div class="reassure">
         <span>No obligation</span>
         <span>Expanding to new markets</span>
@@ -219,7 +219,7 @@ const cityUrl = (c: (typeof cities)[number]) => `/locations/${c.stateSlug}/${c.s
   </section>
 
   <style>
-    /* Shared section header — matches homepage .sh */
+    /* Shared section header: matches homepage .sh */
     .sh{display:grid;grid-template-columns:auto 1fr auto;gap:20px;align-items:center;padding:18px 0;border-top:2px solid currentColor;border-bottom:2px solid currentColor;margin-bottom:72px}
     .sh .idx{font-family:var(--mono);font-size:var(--t-meta);letter-spacing:.08em;text-transform:uppercase}
     .sh .nm{font-family:var(--narrow);font-weight:700;font-size:22px;text-transform:uppercase;letter-spacing:-.01em}
@@ -256,7 +256,7 @@ const cityUrl = (c: (typeof cities)[number]) => `/locations/${c.stateSlug}/${c.s
     .city-cta{background:var(--yellow);padding:14px 24px;color:var(--ink);font-family:var(--narrow);font-weight:700;font-size:16px;letter-spacing:.04em;text-transform:uppercase;transition:background .15s}
     .city-card:hover .city-cta{background:var(--c1-size)}
 
-    /* Why — five-section style */
+    /* Why: five-section style */
     .why{background:var(--ink);color:var(--cream);padding:0;border-bottom:2.5px solid var(--ink)}
     .why .why-header{padding-top:96px;padding-bottom:0}
     .why .sh{border-color:var(--cream);color:var(--cream)}
@@ -297,7 +297,7 @@ const cityUrl = (c: (typeof cities)[number]) => `/locations/${c.stateSlug}/${c.s
     .faq-item .q{font-family:var(--narrow);font-weight:700;font-size:clamp(26px,3.2vw,44px);line-height:1;letter-spacing:-.015em;text-transform:uppercase;margin:0;grid-column:2}
     .faq-item .a{font-size:18px;line-height:1.5;opacity:.9;grid-column:2;margin:0;max-width:760px;font-weight:500}
 
-    /* Out-of-area CTA — cta-section style */
+    /* Out-of-area CTA: cta-section style */
     .outofarea{background:var(--yellow);color:var(--ink);padding:140px 0 120px;border-bottom:2.5px solid var(--ink);position:relative;overflow:hidden}
     .outofarea .inner{max-width:1200px;margin:0 auto;padding:0 32px;text-align:center;position:relative;z-index:1}
     .outofarea .big{font-size:clamp(30px,5.5vw,90px);line-height:.84;margin-bottom:32px}

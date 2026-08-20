@@ -50,7 +50,7 @@ const heroImg = await resolveHeroImage(post.data.heroImage);
 const heroAlt = post.data.heroImageAlt ?? post.data.title;
 
 // Absolute URL of the same optimized webp the post actually renders, for
-// og:image/twitter:image and the Article schema's `image` — so shared links
+// og:image/twitter:image and the Article schema's `image`, so shared links
 // and AI crawlers see the post's real hero photo, not the generic site image.
 const ogImageUrl = heroImg
   ? `https://steelboxdirect.com${(await getImage({ src: heroImg, format: 'webp', width: 1200 })).src}`
@@ -93,7 +93,7 @@ const breadcrumbs = [
     <!-- HERO IMAGE + TITLE (overlaid on hero when an image exists; compact bar otherwise) -->
     <header class="post-hero-wrap">
       <div class="wrap">
-        {post.data.draft && <div class="draft-banner">DRAFT / SAMPLE — not published content</div>}
+        {post.data.draft && <div class="draft-banner">DRAFT / SAMPLE: not published content</div>}
         {heroImg ? (
           <figure class="post-hero-figure">
             <Image
@@ -206,7 +206,7 @@ const breadcrumbs = [
       <div class="wrap">
         <div class="cta-box">
           <h2>Have a project like this?</h2>
-          <p>Tell us your size, zip code, and intended use — we'll get back to you within 4 business hours.</p>
+          <p>Tell us your size, zip code, and intended use, and we'll get back to you within 4 business hours.</p>
           <a href="/quote/" class="btn">Get My Quote <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
         </div>
       </div>
@@ -255,7 +255,7 @@ const breadcrumbs = [
 <style>
   .draft-banner { background: var(--c2-cond); color: white; font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 8px 14px; display: inline-block; margin-bottom: 8px; }
 
-  /* Visible breadcrumb trail — sits above the hero, clears the sticky nav. Kept tight. */
+  /* Visible breadcrumb trail: sits above the hero, clears the sticky nav. Kept tight. */
   .post-breadcrumb-wrap { background: var(--cream); padding: 10px 0 0; }
 
   /* HERO: compact banner (capped height, not a tall/full block). Title + meta are
@@ -271,7 +271,7 @@ const breadcrumbs = [
   .post-hero-overlay .post-meta { color: var(--cream); opacity: .92; }
   .post-hero-overlay .m-sep { opacity: .65; }
 
-  /* Fallback when a post has no hero image — compact bar, no overlay needed */
+  /* Fallback when a post has no hero image: compact bar, no overlay needed */
   .post-hero-plain { background: var(--yellow); border: 2.5px solid var(--ink); box-shadow: 8px 8px 0 var(--ink); padding: 16px 24px 20px; }
   .post-hero-plain .sh { margin-bottom: 10px; }
   .post-hero-plain .big { font-family: var(--narrow); font-size: clamp(28px, 4.2vw, 52px); text-transform: uppercase; line-height: 1.05; font-weight: 800; margin: 0 0 10px; }
@@ -282,14 +282,14 @@ const breadcrumbs = [
   .m-sep { opacity: .5; }
 
   /* INTRO: what-you'll-learn + auto TOC, sit above the body in the same reading column.
-     Kept tight — this is the block the reader has to get through before the TOC/body. */
+     Kept tight; this is the block the reader has to get through before the TOC/body. */
   .post-intro-wrap { background: white; padding: 12px 0 0; }
   .post-intro { max-width: 760px; display: grid; grid-template-columns: 1fr; gap: 14px; align-items: start; }
   .post-intro.has-both { grid-template-columns: 1fr 1fr; }
   .takeaways-box, .toc-box { background: var(--cream); border: 2.5px solid var(--ink); padding: 14px 20px; box-shadow: 6px 6px 0 var(--yellow); }
 
   /* Accordion: native <details>/<summary>. Content stays in the DOM when
-     collapsed (crawlers/LLMs still read it) — only visually hidden via the
+     collapsed (crawlers/LLMs still read it) and is only visually hidden via the
      [open] attribute selector below. Default marker removed; own chevron added. */
   .intro-label { font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; margin: 0; list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
   .intro-label::-webkit-details-marker { display: none; }
@@ -305,7 +305,7 @@ const breadcrumbs = [
   .toc-box li { counter-increment: toc; margin-bottom: 5px; font-size: 14.5px; line-height: 1.35; }
   .toc-box li::before { content: counter(toc) '.'; font-family: var(--mono); font-weight: 700; margin-right: 6px; opacity: .55; }
   .toc-box li.toc-d3 { padding-left: 18px; }
-  .toc-box li.toc-d3::before { content: '–'; }
+  .toc-box li.toc-d3::before { content: '-'; }
   .toc-box a { font-weight: 600; border-bottom: 1.5px solid transparent; }
   .toc-box a:hover { border-bottom-color: var(--yellow-d); }
 
@@ -323,8 +323,8 @@ const breadcrumbs = [
   .post-body :global(code) { font-family: var(--mono); background: rgba(11,15,26,.06); padding: 2px 6px; font-size: 15px; }
 
   /* In-body markdown images: ![alt](path) on its own line, followed (as its own
-     paragraph, separated by a blank line) by an *(FPO — caption)* line. Images
-     render at the body column width (max 760px) — never wider — so they can
+     paragraph, separated by a blank line) by an *(FPO, caption)* line. Images
+     render at the body column width (max 760px), never wider, so they can
      never overflow the viewport at any breakpoint. */
   .post-body :global(img) { width: 100%; height: auto; border: 2.5px solid var(--ink); box-shadow: 6px 6px 0 var(--yellow); }
   .post-body :global(p:has(> img:only-child)) { margin: 28px 0 8px; }

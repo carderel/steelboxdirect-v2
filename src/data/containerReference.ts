@@ -19,7 +19,7 @@ export interface ReferenceSize {
 }
 
 // Figures per ISO 668:2020 general-purpose containers (fuller precision than the
-// rounded product-page specs — intentional; different audiences, no same-page clash).
+// rounded product-page specs. That is intentional; different audiences, no same-page clash).
 export const referenceSizes: ReferenceSize[] = [
   {
     code: '10ft Std', label: '10ft Standard', sold: false,
@@ -69,7 +69,7 @@ export const bicIdParts: MarkingPart[] = [
 
 export interface SizeTypeCode { code: string; meaning: string }
 
-// ISO 6346 size/type code — first char = length.
+// ISO 6346 size/type code: first char = length.
 export const lengthCodes: SizeTypeCode[] = [
   { code: '1', meaning: '10ft' },
   { code: '2', meaning: '20ft' },
@@ -78,7 +78,7 @@ export const lengthCodes: SizeTypeCode[] = [
   { code: 'L', meaning: '45ft' },
 ];
 
-// ISO 6346 size/type code — second char = height & width.
+// ISO 6346 size/type code: second char = height & width.
 export const heightWidthCodes: SizeTypeCode[] = [
   { code: '0', meaning: `8'0" high` },
   { code: '2', meaning: `8'6" high (standard)` },
@@ -87,7 +87,7 @@ export const heightWidthCodes: SizeTypeCode[] = [
   { code: 'C', meaning: `8'6" high & over 8' wide` },
 ];
 
-// ISO 6346 size/type code — third & fourth chars = container type.
+// ISO 6346 size/type code: third & fourth chars = container type.
 export const typeCodes: SizeTypeCode[] = [
   { code: 'G0 / G1', meaning: 'General-purpose dry van (G1 = passive-vented)' },
   { code: 'V0 / V2', meaning: 'Mechanically ventilated' },
@@ -97,19 +97,19 @@ export const typeCodes: SizeTypeCode[] = [
 
 export interface LifecycleFact { title: string; body: string }
 
-// Qualitative only — no contested statistics (honors the uncited-stat rule).
+// Qualitative only: no contested statistics (honors the uncited-stat rule).
 export const lifecycleFacts: LifecycleFact[] = [
   {
     title: 'Built from weathering steel',
-    body: `Shipping containers are made from Cor-Ten (weathering) steel, which forms a stable, non-porous patina as it ages. That's why the surface rust you see on a used box is usually cosmetic, not structural — the steel is protecting itself.`,
+    body: `Shipping containers are made from Cor-Ten (weathering) steel, which forms a stable, non-porous patina as it ages. That's why the surface rust you see on a used box is usually cosmetic, not structural: the steel is protecting itself.`,
   },
   {
     title: 'Decades of service life',
-    body: `A container spends roughly 10–12 years in active maritime service, then can last 25+ years in static land use with basic maintenance. A Wind & Water Tight unit is retired from the sea, not worn out.`,
+    body: `A container spends roughly 10-12 years in active maritime service, then can last 25+ years in static land use with basic maintenance. A Wind & Water Tight unit is retired from the sea, not worn out.`,
   },
   {
     title: 'Why used units are abundant',
-    body: `North America imports far more containerized freight than it exports, and repositioning empty boxes back overseas costs more than building new ones. So shipping lines sell them off here — which is why a sound used container is widely available and a smart-value buy.`,
+    body: `North America imports far more containerized freight than it exports, and repositioning empty boxes back overseas costs more than building new ones. So shipping lines sell them off here, which is why a sound used container is widely available and a smart-value buy.`,
   },
 ];
 
@@ -126,10 +126,10 @@ export const referenceFaqs: RefFaq[] = [
   },
   {
     q: 'What is the CSC plate on a shipping container?',
-    a: `The CSC Safety Approval Plate, required under the IMO International Convention for Safe Containers, is the container's passport — it records structural approval and inspection history and stays with the unit into the used market.`,
+    a: `The CSC Safety Approval Plate, required under the IMO International Convention for Safe Containers, is the container's passport: it records structural approval and inspection history and stays with the unit into the used market.`,
   },
   {
     q: 'Is surface rust on a used container a problem?',
-    a: `Usually not. Containers are built from Cor-Ten weathering steel that forms a protective patina, so surface rust is typically cosmetic. Every container we sell is Wind & Water Tight — structurally sound and sealed against rain, wind, snow, and pests.`,
+    a: `Usually not. Containers are built from Cor-Ten weathering steel that forms a protective patina, so surface rust is typically cosmetic. Every container we sell is Wind & Water Tight: structurally sound and sealed against rain, wind, snow, and pests.`,
   },
 ];

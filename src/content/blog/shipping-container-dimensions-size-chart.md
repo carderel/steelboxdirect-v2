@@ -1,5 +1,5 @@
 ---
-title: "Shipping Container Dimensions: The Complete Size Chart (10ft–45ft)"
+title: "Shipping Container Dimensions: The Complete Size Chart (10ft-45ft)"
 description: "See the exact inside and outside measurements for every standard shipping container size, 10ft to 45ft, plus which sizes Steel Box Direct sells."
 pubDate: 2026-07-06
 category: "Container Specs & Reference"
@@ -14,11 +14,11 @@ keywords:
   - "20ft container dimensions"
   - "container capacity cubic feet"
 heroImage: "blog/20ft-40ft-high-cube-container-size-comparison-hero.jpg"
-heroImageAlt: "Three used shipping containers — 20ft, 40ft, and 40ft High Cube — lined up with their cargo doors facing out at a commercial container yard, forklift working in the background"
+heroImageAlt: "Three used shipping containers (20ft, 40ft, and 40ft High Cube) lined up with their cargo doors facing out at a commercial container yard, forklift working in the background"
 author: "Steel Box Direct"
 draft: false
 takeaways:
-  - "The exact size chart for every standard container size, 10ft to 45ft — outside, inside, door, and how much it holds"
+  - "The exact size chart for every standard container size, 10ft to 45ft: outside, inside, door, and how much it holds"
   - "Why the inside of a container is always a little smaller than the size in its name"
   - "What 'High Cube' means, and why the extra foot of height matters"
   - "Which three sizes Steel Box Direct actually sells, Wind & Water Tight (used)"
@@ -27,7 +27,7 @@ faq:
   - q: "What is the actual inside size of a 20-foot shipping container?"
     a: "A 20-foot container measures about 19 feet 4 inches long inside. It's about 7 feet 8 inches wide and 7 feet 10 inches tall inside. That's a little smaller than its 20-foot outside length, because the steel walls and corner posts take up some space. All together, that's about 150 square feet of floor space and 1,172 cubic feet of room."
   - q: "What's the difference between a standard container and a high cube container?"
-    a: "A high cube container is the same length and width as a standard one. But it's about a foot taller inside — roughly 8 feet 10 inches instead of 7 feet 10 inches. That extra height helps when you're stacking pallets, boxes, or shelving."
+    a: "A high cube container is the same length and width as a standard one. But it's about a foot taller inside, roughly 8 feet 10 inches instead of 7 feet 10 inches. That extra height helps when you're stacking pallets, boxes, or shelving."
   - q: "Are all six standard container sizes easy to find used?"
     a: "No. The 20-foot, 40-foot, and 40-foot High Cube show up often in the used market. That's why Steel Box Direct sells those three sizes Wind & Water Tight. The 10-foot, 20-foot High Cube, and 45-foot High Cube are mostly built new, or used just once. They rarely turn up used."
   - q: "How much can a 40-foot shipping container hold?"
@@ -36,7 +36,7 @@ faq:
 
 Shipping containers come in six standard sizes. They run from 10ft to 45ft. A rule book called ISO 668 sets the sizes. The three most common are 20ft, 40ft, and the taller 40ft High Cube. Steel Box Direct sells all three, Wind & Water Tight (used). This chart gives the exact size for each one.
 
-## The full size chart (10ft–45ft)
+## The full size chart (10ft-45ft)
 
 Here is every standard size. You'll see the outside measurements, the inside measurements, the door opening, and how much space each one holds. These figures come from ISO 668:2020. That's the standard that sets container sizes worldwide.
 
@@ -77,27 +77,27 @@ Using the inside measurements above, the floor space works out to roughly:
 
 ### Why High Cube matters for stacking
 
-A High Cube container has the same footprint as its standard twin. A footprint is just the ground the box covers, like the outline of a rug. But a High Cube stands about a foot taller inside — roughly 8'10" instead of 7'10". The floor space doesn't change. The extra headroom does.
+A High Cube container has the same footprint as its standard twin. A footprint is just the ground the box covers, like the outline of a rug. But a High Cube stands about a foot taller inside, roughly 8'10" instead of 7'10". The floor space doesn't change. The extra headroom does.
 
 That extra foot matters most for pallets stacked two-high, hung shelving, or tall equipment. It's also why the 40ft High Cube is easier to find used than the plain 40ft standard.
 
 ![Looking into a used high cube shipping container through its open doors, with shrink-wrapped pallets stacked two-high on the wood floor and clearance still left above them](../../assets/photos/blog/high-cube-container-interior-stacking-headroom.jpg)
 
-*Pallets stacked two-high with room to spare above — the High Cube's extra foot of interior height is what makes the second layer fit.*
+*Pallets stacked two-high with room to spare above. The High Cube's extra foot of interior height is what makes the second layer fit.*
 
 ## What fits in each size
 
 Numbers on a chart are one thing. Here's a plainer way to picture each size.
 
-- **10ft** — about the size of a single-car garage stall, but not as tall. Fits a small vehicle or a modest amount of gear, with little room to spare. Rare used.
-- **20ft** — about the length of two parking spaces, end to end. Fits one tractor and its attachments, a motorcycle collection, seasonal gear, or a compact workshop.
-- **40ft** — about twice the length of a 20ft, roughly four parking spaces. Fits a full equipment lineup, several vehicles, or a season's worth of business inventory.
-- **40ft High Cube** — the same footprint as a 40ft standard, with a foot more headroom. Good for stacked pallets, tall shelving, or equipment with height, like a combine.
-- **20ft High Cube and 45ft High Cube** — reference sizes, not commonly found used. The 45ft is the largest standard size. Moving one usually calls for an oversize permit and a special trailer. Checking on permits is the buyer's job, with the local permitting office.
+- **10ft**: about the size of a single-car garage stall, but not as tall. Fits a small vehicle or a modest amount of gear, with little room to spare. Rare used.
+- **20ft**: about the length of two parking spaces, end to end. Fits one tractor and its attachments, a motorcycle collection, seasonal gear, or a compact workshop.
+- **40ft**: about twice the length of a 20ft, roughly four parking spaces. Fits a full equipment lineup, several vehicles, or a season's worth of business inventory.
+- **40ft High Cube**: the same footprint as a 40ft standard, with a foot more headroom. Good for stacked pallets, tall shelving, or equipment with height, like a combine.
+- **20ft High Cube and 45ft High Cube**: reference sizes, not commonly found used. The 45ft is the largest standard size. Moving one usually calls for an oversize permit and a special trailer. Checking on permits is the buyer's job, with the local permitting office.
 
 ![A shorter 20ft used shipping container and a longer 40ft container sitting side by side on grass in front of a red barn](../../assets/photos/blog/20ft-vs-40ft-container-farm-side-by-side.jpg)
 
-*A 20ft and a 40ft side by side on the same farm — seeing the two lengths together is often the fastest way to judge which one fits your plan.*
+*A 20ft and a 40ft side by side on the same farm. Seeing the two lengths together is often the fastest way to judge which one fits your plan.*
 
 Want a size picked around your own list of items? Our [size guide](/size/) walks through the decision step by step.
 
@@ -121,4 +121,4 @@ You can also cross-check these figures against the compact dimensions table at [
 
 ---
 
-Ready to see one of these sizes in person? [Get a real quote](/quote/) and tell us what you're storing — we'll help you land on the right footprint.
+Ready to see one of these sizes in person? [Get a real quote](/quote/) and tell us what you're storing, and we'll help you land on the right footprint.

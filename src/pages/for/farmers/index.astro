@@ -14,19 +14,19 @@ const crumbs = [{ name: 'Home', path: '/' }, { name: 'Farmers', path: '/for/farm
 const faqs = [
   {
     q: 'Do I need a permit for a shipping container on my farm in Ohio, Indiana, or Kentucky?',
-    a: "It depends on your property and county, and confirming the answer is the buyer's responsibility before purchasing. Many states provide agricultural zoning exemptions for farm storage — for example, Ohio's exemption (ORC §519.21) addresses zoning certificates for buildings used in agriculture, and Indiana and Kentucky have their own provisions (Kentucky's generally applies to tracts of five or more contiguous acres). These rules vary by county and sometimes by township and are not automatic, so contact your county auditor or zoning office to confirm what applies to your property and intended use. We do not determine, advise on, or guarantee permit requirements.",
+    a: "It depends on your property and county, and confirming the answer is the buyer's responsibility before purchasing. Many states provide agricultural zoning exemptions for farm storage. Ohio's exemption (ORC §519.21), for example, addresses zoning certificates for buildings used in agriculture, and Indiana and Kentucky have their own provisions (Kentucky's generally applies to tracts of five or more contiguous acres). These rules vary by county and sometimes by township and are not automatic, so contact your county auditor or zoning office to confirm what applies to your property and intended use. We do not determine, advise on, or guarantee permit requirements.",
   },
   {
     q: 'Can a container be delivered to a field or gravel area, or does the truck need a paved road?',
-    a: "No pavement required. Our trucks handle gravel lanes, packed-dirt drives, and field access roads in most conditions. What we need is a delivery path that's at least 12 feet wide with no overhead obstructions below 14 feet — low branches, power lines, gate arches. Soft ground, mud, or steep grades can create challenges, but our drivers have placed containers on farm properties across Ohio, Indiana, and Kentucky for years and know how to work around difficult terrain. When you request a quote, describe your access path and we'll flag anything that might affect delivery before we schedule.",
+    a: "No pavement required. Our trucks handle gravel lanes, packed-dirt drives, and field access roads in most conditions. What we need is a delivery path that's at least 12 feet wide with no overhead obstructions below 14 feet: low branches, power lines, gate arches. Soft ground, mud, or steep grades can create challenges, but our drivers have placed containers on farm properties across Ohio, Indiana, and Kentucky for years and know how to work around difficult terrain. When you request a quote, describe your access path and we'll flag anything that might affect delivery before we schedule.",
   },
   {
     q: 'What size container do I need for farm equipment storage?',
-    a: "It depends on what you're storing. A 20ft container (roughly 1,170 cubic feet of interior space) fits small equipment like ATVs, implements, and a full complement of hand tools and supplies. A 40ft container (about 2,385 cubic feet) handles larger equipment — round balers, combine headers, grain carts — and still leaves room for feed, chemicals, and parts. Most buyers storing equipment that includes anything with a wide header or large footprint go with the 40ft. If you're unsure, describe your largest piece of equipment in the quote form and we'll confirm fit.",
+    a: "It depends on what you're storing. A 20ft container (roughly 1,170 cubic feet of interior space) fits small equipment like ATVs, implements, and a full complement of hand tools and supplies. A 40ft container (about 2,385 cubic feet) handles larger equipment (round balers, combine headers, grain carts) and still leaves room for feed, chemicals, and parts. Most buyers storing equipment that includes anything with a wide header or large footprint go with the 40ft. If you're unsure, describe your largest piece of equipment in the quote form and we'll confirm fit.",
   },
   {
     q: 'Can a shipping container replace a storage shed or pole barn for equipment?',
-    a: "For most farm storage, yes. A container gives you the same out-of-the-weather, off-the-ground storage a shed or a small pole barn does — but it's lockable steel instead of wood or open sides, so it's more secure and it seals against rain, snow, and rodents. It's delivered ready to use instead of built on site, it needs no foundation, and you can relocate it later. The honest trade-offs are the boxy, industrial look and confirming your county's zoning before placement (the buyer's responsibility). Where a pole barn still wins is a large, open, drive-through workshop — a container is enclosed, lockable storage, not a barn.",
+    a: "For most farm storage, yes. A container gives you the same out-of-the-weather, off-the-ground storage a shed or a small pole barn does, but it's lockable steel instead of wood or open sides, so it's more secure and it seals against rain, snow, and rodents. It's delivered ready to use instead of built on site, it needs no foundation, and you can relocate it later. The honest trade-offs are the boxy, industrial look and confirming your county's zoning before placement (the buyer's responsibility). Where a pole barn still wins is a large, open, drive-through workshop; a container is enclosed, lockable storage, not a barn.",
   },
   {
     q: 'How do I store a tractor, mower, or equipment without a barn?',
@@ -38,19 +38,19 @@ const faqs = [
   },
   {
     q: 'Can I put a container on grass or unpaved ground?',
-    a: "Yes, with light prep. Containers sit on compacted gravel, packed earth, or level grass as long as the ground is firm and level enough that the unit won't shift. For permanent placement, most farm buyers put down a layer of crushed gravel or set concrete blocks under the corner castings — this keeps the floor off wet ground and prevents long-term warping. For temporary or seasonal placement, flat grass works fine. Our drivers can advise on placement when they arrive.",
+    a: "Yes, with light prep. Containers sit on compacted gravel, packed earth, or level grass as long as the ground is firm and level enough that the unit won't shift. For permanent placement, most farm buyers put down a layer of crushed gravel or set concrete blocks under the corner castings; this keeps the floor off wet ground and prevents long-term warping. For temporary or seasonal placement, flat grass works fine. Our drivers can advise on placement when they arrive.",
   },
   {
     q: "What condition are your containers?",
-    a: "Every container we sell is Wind & Water Tight (used) — structurally sound and sealed against rain, wind, snow, and pests. For equipment, feed, and general farm storage the cosmetic wear (surface rust, the odd dent) is irrelevant; the weathering (Cor-Ten) steel keeps its structural and weathertight integrity for decades. Sold as-is for storage and on-site use.",
+    a: "Every container we sell is Wind & Water Tight (used): structurally sound and sealed against rain, wind, snow, and pests. For equipment, feed, and general farm storage the cosmetic wear (surface rust, the odd dent) is irrelevant; the weathering (Cor-Ten) steel keeps its structural and weathertight integrity for decades. Sold as-is for storage and on-site use.",
   },
   {
     q: 'Will a steel container get too hot or cause condensation for stored items?',
-    a: 'Bare steel holds heat and can sweat when warm, humid air meets a cool interior overnight — the same "container rain" that affects any metal building. For most farm storage — equipment, tools, hay, bagged feed — it\'s a non-issue. If you\'re storing anything moisture-sensitive, simple steps handle it: raise items off the floor on pallets, add roof or wall vents for airflow, and run a vapor barrier or spray-foam insulation if you want full climate control. We can point you to local fabricators who do venting and insulation.',
+    a: 'Bare steel holds heat and can sweat when warm, humid air meets a cool interior overnight, the same "container rain" that affects any metal building. For most farm storage (equipment, tools, hay, bagged feed) it\'s a non-issue. If you\'re storing anything moisture-sensitive, simple steps handle it: raise items off the floor on pallets, add roof or wall vents for airflow, and run a vapor barrier or spray-foam insulation if you want full climate control. We can point you to local fabricators who do venting and insulation.',
   },
   {
     q: 'How long does a shipping container last sitting outside on a farm?',
-    a: 'Decades. These containers are engineered for 20-plus years of stacking on open ocean decks in salt spray — sitting on dry ground in the Midwest is an easy retirement. A Wind & Water Tight unit will show some surface rust and cosmetic wear, but the weathering (Cor-Ten) steel keeps its structural and weathertight integrity for the long haul. Keeping it off wet ground on gravel or blocks and touching up any scratches in the paint is all the upkeep most farms ever do.',
+    a: 'Decades. These containers are engineered for 20-plus years of stacking on open ocean decks in salt spray; sitting on dry ground in the Midwest is an easy retirement. A Wind & Water Tight unit will show some surface rust and cosmetic wear, but the weathering (Cor-Ten) steel keeps its structural and weathertight integrity for the long haul. Keeping it off wet ground on gravel or blocks and touching up any scratches in the paint is all the upkeep most farms ever do.',
   },
 ];
 ---
@@ -65,7 +65,7 @@ const faqs = [
   floatingSidebar
   schema={{ kind: 'useCase', audience: 'farmers', title: 'Farm Storage That Holds Up to Ohio Winters',
     specs: [
-      { k: 'Foundation', v: 'None needed — sits on a gravel pad' },
+      { k: 'Foundation', v: 'None needed; sits on a gravel pad' },
       { k: 'Condition', v: 'Wind & Water Tight (used)' },
       { k: 'Warranty', v: 'Lifetime Leak' },
       { k: 'Service area', v: 'OH · IN · KY · W. WV' },
@@ -73,18 +73,18 @@ const faqs = [
     faqs: faqs.map((f) => ({ q: f.q, a: f.a })) }}
 >
 
-  <!-- 1. HERO — full-bleed "field poster" split (copy panel + edge-to-edge photo) -->
+  <!-- 1. HERO: full-bleed "field poster" split (copy panel + edge-to-edge photo) -->
   <section class="uc-hero">
     <div class="uc-hero-copy">
       <Breadcrumbs items={crumbs} />
       <span class="uc-eyebrow">For Farmers &amp; Ag Operations</span>
       <h1 class="uc-h1">Farm Storage That Holds Up to <span class="uc-h1-mark">Ohio Winters.</span></h1>
-      <p class="uc-lede">No foundation required. Delivered to your field — not just your driveway. One purchase, no monthly storage fees.</p>
-      <p class="uc-lede-support">A steel shipping container gives you weather-sealed, lockable storage that sits on the ground where you need it — beside the shop, at the back of a field, or next to the grain bins. Every unit is Wind &amp; Water Tight (used) — structurally sound and weather-tight — and we deliver across Ohio, Indiana, Kentucky, and western West Virginia within 250 miles of Cincinnati.</p>
+      <p class="uc-lede">No foundation required. Delivered to your field, not just your driveway. One purchase, no monthly storage fees.</p>
+      <p class="uc-lede-support">A steel shipping container gives you weather-sealed, lockable storage that sits on the ground where you need it: beside the shop, at the back of a field, or next to the grain bins. Every unit is Wind &amp; Water Tight (used), structurally sound and weather-tight, and we deliver across Ohio, Indiana, Kentucky, and western West Virginia within 250 miles of Cincinnati.</p>
       <p class="uc-trust-strip m">Wind &amp; Water Tight (used) · Delivered to the field, not just the driveway · No foundation or monthly fees · Quote back within 4 business hours</p>
     </div>
 
-    <!-- IMAGE SLOT 1 — hero (full-bleed). filename: farm-yard-shipping-container-storage-overview.jpg -->
+    <!-- IMAGE SLOT 1: hero (full-bleed). filename: farm-yard-shipping-container-storage-overview.jpg -->
     <figure class="uc-hero-media" data-img-slot="hero">
       <Image
         class="uc-img-real"
@@ -97,7 +97,7 @@ const faqs = [
       <div class="uc-hero-scrim" aria-hidden="true"></div>
       <figcaption class="uc-hero-stamp m">
         <span class="uc-hero-stamp-k">OH · IN · KY · Western WV</span>
-        Container storage on a working farm — delivered to the field
+        Container storage on a working farm, delivered to the field
       </figcaption>
     </figure>
   </section>
@@ -109,21 +109,21 @@ const faqs = [
         <span class="m">Why It Works</span>
         <h2 class="uc-h2">Why containers work for farmers</h2>
       </div>
-      <p class="uc-section-intro">Farmers were buying surplus shipping containers long before it became a trend — because the math and the practicality both hold up. Here's what makes them work on a working farm.</p>
+      <p class="uc-section-intro">Farmers were buying surplus shipping containers long before it became a trend, because the math and the practicality both hold up. Here's what makes them work on a working farm.</p>
       <div class="uc-why-grid">
         <div class="uc-block">
           <h3>Understand the zoning rules for your property</h3>
           <p>Many states provide agricultural zoning exemptions that treat farm storage differently from residential or commercial structures. In Ohio, the <a href="https://codes.ohio.gov/ohio-revised-code/section-519.21" target="_blank" rel="noopener">agricultural zoning exemption (ORC §519.21)</a> addresses zoning certificates for buildings used in agriculture; <a href="https://www.extension.purdue.edu/extmedia/ID/ID-233/ID-233.html" target="_blank" rel="noopener">Indiana</a> and <a href="https://laruecountyky.gov/wp-content/uploads/2023/01/krs100_2004_09_16.pdf" target="_blank" rel="noopener">Kentucky (KRS 100.203)</a> have their own provisions. These are general references, not legal advice or a determination for your land.</p>
-          <p>Rules vary by county and sometimes by township and are not automatic — and Kentucky's exemption generally applies to tracts of five or more contiguous acres. Confirming what applies to your property and intended use is the buyer's responsibility: a quick call to your county auditor or zoning office before you commit is the reliable way to find out. We do not determine, advise on, or guarantee permit requirements.</p>
+          <p>Rules vary by county and sometimes by township and are not automatic, and Kentucky's exemption generally applies to tracts of five or more contiguous acres. Confirming what applies to your property and intended use is the buyer's responsibility: a quick call to your county auditor or zoning office before you commit is the reliable way to find out. We do not determine, advise on, or guarantee permit requirements.</p>
           <p>What farmers actually want to know is how the county will treat it. That's a fair question, and it isn't ours to answer. Two offices usually have a say: the zoning office looks at placement and use, and the county auditor looks at what gets assessed. How permanent the setup is tends to drive both. A poured foundation, a roof structure, utilities run out to the box, or tying it into another building can all change who needs to look at it and what they look at.</p>
           <p>We do not make that determination, and we do not guess at it for you. Call your county zoning office and your county auditor, describe the box and how you plan to use it, and get the answer for your own parcel before you buy. Our <a href="/permits/">permits &amp; zoning guide</a> lists the questions worth asking.</p>
         </div>
         <div class="uc-block">
           <h3>Weather-sealed storage with no slab to pour</h3>
-          <p>A Wind &amp; Water Tight ISO container is built from <a href="https://en.wikipedia.org/wiki/Weathering_steel" target="_blank" rel="noopener">weathering (Cor-Ten) steel</a> and seals against rain, wind, snow, and pests with marine-grade door gaskets — the same construction that protects cargo across the ocean. Unlike a pole barn or a lean-to addition, it needs no foundation and no concrete slab.</p>
+          <p>A Wind &amp; Water Tight ISO container is built from <a href="https://en.wikipedia.org/wiki/Weathering_steel" target="_blank" rel="noopener">weathering (Cor-Ten) steel</a> and seals against rain, wind, snow, and pests with marine-grade door gaskets, the same construction that protects cargo across the ocean. Unlike a pole barn or a lean-to addition, it needs no foundation and no concrete slab.</p>
           <p>Nothing gets poured and nothing gets set in concrete, so you can place it, relocate it across the farm, or sell it off later without undoing any construction. That's the practical difference between an asset you control and one you're committed to for good.</p>
 
-          <!-- IMAGE SLOT 2 — weather-sealed doors. Swap data-URI src for the real photo; alt + dimensions stay. -->
+          <!-- IMAGE SLOT 2: weather-sealed doors. Swap data-URI src for the real photo; alt + dimensions stay. -->
           <!-- filename: weather-sealed-container-doors-winter.jpg -->
           <figure class="uc-img uc-img-inline" data-img-slot="weather">
             <Image class="uc-img-real" src={imgWeather} width={1000} format="webp"
@@ -134,37 +134,37 @@ const faqs = [
         <div class="uc-block">
           <h3>One purchase, no monthly bill</h3>
           <p>A container is a one-time purchase, not a recurring expense. There's no monthly fee, no renewal notice, and no contract, and you own it outright the day it's delivered. Compared to renting off-farm storage season after season, or building something on site that you can't relocate later, the numbers tend to favor owning.</p>
-          <p>Steel also holds its value. When the operation changes or you no longer need the space, a sound used container resells well — so it stays on your books as an asset, not a cost that comes due every month.</p>
+          <p>Steel also holds its value. When the operation changes or you no longer need the space, a sound used container resells well, so it stays on your books as an asset, not a cost that comes due every month.</p>
         </div>
         <div class="uc-block">
           <h3>Sized for equipment, feed, and tools</h3>
-          <p>A 20ft container holds roughly <a href="https://www.shippingcontainerdepot.com/20-foot-shipping-container-dimensions/" target="_blank" rel="noopener">1,170 cubic feet</a> — enough for a full set of small equipment, hand tools, fertilizer, and seed bags. A 40ft container roughly doubles that to about <a href="https://www.icontainers.com/help/40-foot-container/" target="_blank" rel="noopener">2,385 cubic feet</a>, with room for a combine header, round bales, seed inventory, and toolboxes while still leaving an aisle to walk through.</p>
-          <p>Condition matters as much as size. Every container we sell is Wind &amp; Water Tight (used) — the workhorse for equipment, hay, and general storage: structurally sound, weather-tight, and sealed against rain, wind, snow, and pests.</p>
+          <p>A 20ft container holds roughly <a href="https://www.shippingcontainerdepot.com/20-foot-shipping-container-dimensions/" target="_blank" rel="noopener">1,170 cubic feet</a>, enough for a full set of small equipment, hand tools, fertilizer, and seed bags. A 40ft container roughly doubles that to about <a href="https://www.icontainers.com/help/40-foot-container/" target="_blank" rel="noopener">2,385 cubic feet</a>, with room for a combine header, round bales, seed inventory, and toolboxes while still leaving an aisle to walk through.</p>
+          <p>Condition matters as much as size. Every container we sell is Wind &amp; Water Tight (used), the workhorse for equipment, hay, and general storage: structurally sound, weather-tight, and sealed against rain, wind, snow, and pests.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- 2.2 SHED / POLE BARN COMPARISON — captures shed & pole-barn intent, reframes to container -->
+  <!-- 2.2 SHED / POLE BARN COMPARISON: captures shed & pole-barn intent, reframes to container -->
   <section class="uc-compare">
     <div class="wrap">
       <div class="uc-sh" style="border-color: var(--c4-cost);">
         <span class="m">Shed or Pole Barn?</span>
         <h2 class="uc-h2">Already pricing out a shed or pole barn?</h2>
       </div>
-      <p class="uc-section-intro">Most farmers who need to get equipment, feed, and tools out of the weather start by looking at a storage shed or a pole barn. Both work — but for secure, lockable, move-it-later storage, a steel shipping container often does the same job with less commitment. Here's the honest comparison.</p>
+      <p class="uc-section-intro">Most farmers who need to get equipment, feed, and tools out of the weather start by looking at a storage shed or a pole barn. Both work, but for secure, lockable, move-it-later storage, a steel shipping container often does the same job with less commitment. Here's the honest comparison.</p>
       <div class="uc-compare-scroll">
         <table class="uc-compare-table">
           <thead>
             <tr><th scope="col">What matters</th><th scope="col">Storage shed</th><th scope="col">Pole barn</th><th scope="col">Steel container</th></tr>
           </thead>
           <tbody>
-            <tr><th scope="row">Security</th><td>Wood or thin metal walls with a basic latch — pried open easily</td><td>Often open or lightly enclosed; not built as a lockbox</td><td>Corrugated steel with a lockbox for a puck lock — genuinely hard to break into</td></tr>
-            <tr><th scope="row">Weather &amp; pests</th><td>Can rot, leak, and let rodents in over time</td><td>Roof protects, but open or vented sides let weather and animals in</td><td>Wind &amp; Water Tight — sealed against rain, snow, and pests</td></tr>
+            <tr><th scope="row">Security</th><td>Wood or thin metal walls with a basic latch, pried open easily</td><td>Often open or lightly enclosed; not built as a lockbox</td><td>Corrugated steel with a lockbox for a puck lock, genuinely hard to break into</td></tr>
+            <tr><th scope="row">Weather &amp; pests</th><td>Can rot, leak, and let rodents in over time</td><td>Roof protects, but open or vented sides let weather and animals in</td><td>Wind &amp; Water Tight: sealed against rain, snow, and pests</td></tr>
             <tr><th scope="row">Setup</th><td>Assembled or dropped as a prefab kit</td><td>Weeks of on-site construction with a crew</td><td>Delivered ready to use, no crew, no build</td></tr>
-            <tr><th scope="row">Foundation</th><td>Usually needs a pad or blocks</td><td>Posts set in concrete — permanent</td><td>Sits on gravel or corner blocks — no foundation</td></tr>
-            <tr><th scope="row">Move it later</th><td>Hard to relocate in one piece</td><td>Permanent — it stays put</td><td>Relocate across the farm or to a new property</td></tr>
-            <tr><th scope="row">Lifespan</th><td>Wood and vinyl degrade; often replaced within years</td><td>Long-lived if maintained</td><td>Decades — engineered for open-ocean decks</td></tr>
+            <tr><th scope="row">Foundation</th><td>Usually needs a pad or blocks</td><td>Posts set in concrete; permanent</td><td>Sits on gravel or corner blocks with no foundation</td></tr>
+            <tr><th scope="row">Move it later</th><td>Hard to relocate in one piece</td><td>Permanent; it stays put</td><td>Relocate across the farm or to a new property</td></tr>
+            <tr><th scope="row">Lifespan</th><td>Wood and vinyl degrade; often replaced within years</td><td>Long-lived if maintained</td><td>Decades; engineered for open-ocean decks</td></tr>
             <tr><th scope="row">Ownership</th><td>One-time buy; tends to depreciate</td><td>Built on site; ask your county how it's assessed</td><td>One-time buy; holds its value and resells</td></tr>
           </tbody>
         </table>
@@ -174,7 +174,7 @@ const faqs = [
     </div>
   </section>
 
-  <!-- 2.5 PLACEMENT & SETUP — NEW -->
+  <!-- 2.5 PLACEMENT & SETUP (NEW) -->
   <section class="uc-setup">
     <div class="wrap">
       <div class="uc-sh" style="border-color: var(--c4-cost);">
@@ -183,18 +183,18 @@ const faqs = [
       </div>
       <div class="uc-setup-grid">
         <div class="uc-setup-copy">
-          <p class="uc-setup-intro">Most farm deliveries are simpler than buyers expect. Our trucks routinely run gravel lanes, packed-dirt drives, and field access roads. What the driver needs is a clear path and firm ground to set the box on — not pavement.</p>
+          <p class="uc-setup-intro">Most farm deliveries are simpler than buyers expect. Our trucks routinely run gravel lanes, packed-dirt drives, and field access roads. What the driver needs is a clear path and firm ground to set the box on, not pavement.</p>
           <ul class="uc-setup-list">
             <li><span class="uc-setup-num m">01</span><span>A delivery path at least <strong>12 feet wide</strong>.</span></li>
-            <li><span class="uc-setup-num m">02</span><span>Overhead clearance of at least <strong>14 feet</strong> the whole way in — watch for low branches, power lines, and gate arches.</span></li>
+            <li><span class="uc-setup-num m">02</span><span>Overhead clearance of at least <strong>14 feet</strong> the whole way in; watch for low branches, power lines, and gate arches.</span></li>
             <li><span class="uc-setup-num m">03</span><span><strong>Reasonably level, firm ground</strong> at the drop point so the container sits square and doesn't shift.</span></li>
             <li><span class="uc-setup-num m">04</span><span>Enough room for the truck to maneuver and tilt or roll the unit off.</span></li>
           </ul>
           <p class="uc-setup-body">For permanent placement, most farm buyers lay a few inches of crushed gravel or set concrete blocks under the four corner castings. That keeps the floor off wet ground, lets water drain, and prevents the long-term warping that comes from sitting a steel box directly on bare soil. For seasonal or temporary placement, level grass or packed earth is usually fine.</p>
-          <p class="uc-setup-pull">Soft ground, mud, and steep grades are the usual challenges — none of them are dealbreakers. Describe your access path when you request a quote and we'll flag anything that affects delivery before we ever schedule a truck.</p>
+          <p class="uc-setup-pull">Soft ground, mud, and steep grades are the usual challenges, and none of them are dealbreakers. Describe your access path when you request a quote and we'll flag anything that affects delivery before we ever schedule a truck.</p>
         </div>
 
-        <!-- IMAGE SLOT 3 — delivery onto gravel pad. Swap data-URI src for the real photo; alt + dimensions stay. -->
+        <!-- IMAGE SLOT 3: delivery onto gravel pad. Swap data-URI src for the real photo; alt + dimensions stay. -->
         <!-- filename: container-delivery-farm-gravel-pad.jpg -->
         <figure class="uc-img uc-img-setup" data-img-slot="delivery">
           <Image class="uc-img-real" src={imgDelivery} width={1000} format="webp"
@@ -205,7 +205,7 @@ const faqs = [
     </div>
   </section>
 
-  <!-- 2.7 SEASONAL USE — NEW -->
+  <!-- 2.7 SEASONAL USE (NEW) -->
   <section class="uc-season">
     <div class="wrap">
       <div class="uc-sh" style="border-color: var(--c4-cost);">
@@ -216,7 +216,7 @@ const faqs = [
       <div class="uc-season-grid">
         <div class="uc-season-card">
           <span class="uc-season-tag m">Planting &amp; Spring</span>
-          <p>Dry, secure storage for seed, fertilizer, and chemicals — sealed against moisture and pests to keep treated seed protected. Know <a href="/blog/12-things-never-store-in-a-shipping-container/">what not to store in a container</a>.</p>
+          <p>Dry, secure storage for seed, fertilizer, and chemicals, sealed against moisture and pests to keep treated seed protected. Know <a href="/blog/12-things-never-store-in-a-shipping-container/">what not to store in a container</a>.</p>
         </div>
         <div class="uc-season-card">
           <span class="uc-season-tag m">Growing Season</span>
@@ -227,9 +227,9 @@ const faqs = [
           <p>Pull the combine header, grain cart accessories, and bagged feed inside before the snow. A 40ft unit swallows the bulky equipment that won't fit in the barn, and steel shrugs off an Ohio winter.</p>
         </div>
       </div>
-      <p class="uc-framing">When the season changes, so does the contents — the box doesn't care.</p>
+      <p class="uc-framing">When the season changes, so does the contents; the box doesn't care.</p>
 
-      <!-- IMAGE SLOT 4 — seasonal interior. Swap data-URI src for the real photo; alt + dimensions stay. -->
+      <!-- IMAGE SLOT 4: seasonal interior. Swap data-URI src for the real photo; alt + dimensions stay. -->
       <!-- filename: farm-container-interior-equipment-feed.jpg -->
       <figure class="uc-img uc-img-wide" data-img-slot="seasonal">
         <Image class="uc-img-real" src={imgSeasonal} width={1600} format="webp"
@@ -248,7 +248,7 @@ const faqs = [
       </div>
       <p class="uc-section-intro">Three options cover almost every farm. Size handles capacity; condition handles cleanliness.</p>
 
-      <!-- IMAGE SLOT 5 — size comparison. Swap data-URI src for the real photo; alt + dimensions stay. -->
+      <!-- IMAGE SLOT 5: size comparison. Swap data-URI src for the real photo; alt + dimensions stay. -->
       <!-- filename: 20ft-vs-40ft-farm-containers-comparison.jpg -->
       <figure class="uc-img uc-img-wide uc-img-recs" data-img-slot="sizes">
         <Image class="uc-img-real" src={imgSizes} width={1600} format="webp"
@@ -264,16 +264,16 @@ const faqs = [
         </a>
         <a href="/shipping-containers-for-sale/40-foot-shipping-container/" class="uc-rec" style="border-top-color: var(--c4-cost);">
           <span class="uc-rec-size">40ft</span>
-          <p class="uc-rec-body"><strong>Best for</strong> combine headers, large tillage equipment, hay and feed, and multi-item storage — about 2,385 cubic feet. Needs a firm delivery path at least 12ft wide with 14ft of overhead clearance.</p>
+          <p class="uc-rec-body"><strong>Best for</strong> combine headers, large tillage equipment, hay and feed, and multi-item storage, at about 2,385 cubic feet. Needs a firm delivery path at least 12ft wide with 14ft of overhead clearance.</p>
           <span class="uc-rec-link">View 40ft container →</span>
         </a>
         <a href="/shipping-containers-for-sale/40-foot-high-cube-container/" class="uc-rec" style="border-top-color: var(--c4-cost);">
           <span class="uc-rec-size">40ft HC</span>
-          <p class="uc-rec-body"><strong>Best for</strong> tall equipment, stacked pallets, and high-volume storage that needs the extra foot of height a standard 40ft doesn't have — about 2,694 cubic feet. Wind &amp; Water Tight (used) — structurally sound, weather-tight steel.</p>
+          <p class="uc-rec-body"><strong>Best for</strong> tall equipment, stacked pallets, and high-volume storage that needs the extra foot of height a standard 40ft doesn't have (about 2,694 cubic feet). Wind &amp; Water Tight (used): structurally sound, weather-tight steel.</p>
           <span class="uc-rec-link">View 40ft High Cube →</span>
         </a>
       </div>
-      <p class="uc-framing">Most farm buyers go with the 40ft Wind &amp; Water Tight unit — it handles the widest range of equipment and feed at the most practical cost per cubic foot.</p>
+      <p class="uc-framing">Most farm buyers go with the 40ft Wind &amp; Water Tight unit; it handles the widest range of equipment and feed at the most practical cost per cubic foot.</p>
     </div>
   </section>
 
@@ -284,7 +284,7 @@ const faqs = [
         <span class="m">Where We Deliver</span>
         <h2 class="uc-h2">Where we deliver</h2>
       </div>
-      <p class="uc-deliver-lede">Our delivery radius covers 250 miles from Cincinnati — and a lot of that radius is farm country. From the grain belt of central Indiana to the horse and cattle land of Kentucky, the row-crop counties across Ohio, and the pasture and hill-farm country of western West Virginia (Huntington, Charleston, Parkersburg), we bring containers straight to the field. These are the metro areas we run through most:</p>
+      <p class="uc-deliver-lede">Our delivery radius covers 250 miles from Cincinnati, and a lot of that radius is farm country. From the grain belt of central Indiana to the horse and cattle land of Kentucky, the row-crop counties across Ohio, and the pasture and hill-farm country of western West Virginia (Huntington, Charleston, Parkersburg), we bring containers straight to the field. These are the metro areas we run through most:</p>
       <div class="uc-city-grid">
         <a href="/locations/ohio/cincinnati-shipping-containers/" class="uc-city"><span class="uc-city-code">CIN</span><span class="uc-city-name">Cincinnati, OH</span><span class="uc-city-arrow">→</span></a>
         <a href="/locations/ohio/dayton-shipping-containers/" class="uc-city"><span class="uc-city-code">DAY</span><span class="uc-city-name">Dayton, OH</span><span class="uc-city-arrow">→</span></a>
@@ -321,13 +321,13 @@ const faqs = [
       <div class="uc-sources">
         <span class="m">Sources</span>
         <ul>
-          <li>Ohio agricultural zoning exemption — <a href="https://codes.ohio.gov/ohio-revised-code/section-519.21" target="_blank" rel="noopener">Ohio Revised Code §519.21</a> · <a href="https://ohioaglaw.wordpress.com/2013/05/22/agricultural-activities-in-ohio-can-be-exempt-from-local-zoning/" target="_blank" rel="noopener">OSU Extension explainer</a></li>
-          <li>Indiana agricultural land-use rules — <a href="https://www.extension.purdue.edu/extmedia/ID/ID-233/ID-233.html" target="_blank" rel="noopener">Purdue Extension ID-233</a></li>
-          <li>Kentucky agricultural zoning exemption — <a href="https://laruecountyky.gov/wp-content/uploads/2023/01/krs100_2004_09_16.pdf" target="_blank" rel="noopener">KRS Chapter 100 (KRS 100.203)</a></li>
-          <li>20ft container dimensions &amp; volume — <a href="https://www.shippingcontainerdepot.com/20-foot-shipping-container-dimensions/" target="_blank" rel="noopener">Shipping Container Depot</a></li>
-          <li>40ft container volume — <a href="https://www.icontainers.com/help/40-foot-container/" target="_blank" rel="noopener">iContainers, 40-foot container spec</a></li>
-          <li>Container steel — <a href="https://en.wikipedia.org/wiki/Weathering_steel" target="_blank" rel="noopener">Weathering (Cor-Ten) steel</a></li>
-          <li>Storage shed vs shipping container comparison — <a href="https://www.conexwest.com/blog/shipping-container-vs-shed-which-better-storage-solution" target="_blank" rel="noopener">Conexwest</a></li>
+          <li>Ohio agricultural zoning exemption: <a href="https://codes.ohio.gov/ohio-revised-code/section-519.21" target="_blank" rel="noopener">Ohio Revised Code §519.21</a> · <a href="https://ohioaglaw.wordpress.com/2013/05/22/agricultural-activities-in-ohio-can-be-exempt-from-local-zoning/" target="_blank" rel="noopener">OSU Extension explainer</a></li>
+          <li>Indiana agricultural land-use rules: <a href="https://www.extension.purdue.edu/extmedia/ID/ID-233/ID-233.html" target="_blank" rel="noopener">Purdue Extension ID-233</a></li>
+          <li>Kentucky agricultural zoning exemption: <a href="https://laruecountyky.gov/wp-content/uploads/2023/01/krs100_2004_09_16.pdf" target="_blank" rel="noopener">KRS Chapter 100 (KRS 100.203)</a></li>
+          <li>20ft container dimensions &amp; volume: <a href="https://www.shippingcontainerdepot.com/20-foot-shipping-container-dimensions/" target="_blank" rel="noopener">Shipping Container Depot</a></li>
+          <li>40ft container volume: <a href="https://www.icontainers.com/help/40-foot-container/" target="_blank" rel="noopener">iContainers, 40-foot container spec</a></li>
+          <li>Container steel: <a href="https://en.wikipedia.org/wiki/Weathering_steel" target="_blank" rel="noopener">Weathering (Cor-Ten) steel</a></li>
+          <li>Storage shed vs shipping container comparison: <a href="https://www.conexwest.com/blog/shipping-container-vs-shed-which-better-storage-solution" target="_blank" rel="noopener">Conexwest</a></li>
         </ul>
       </div>
     </div>
@@ -338,7 +338,7 @@ const faqs = [
     <div class="wrap" style="display: flex; flex-direction: column; align-items: flex-start; gap: 24px; max-width: 680px;">
       <p class="m" style="color: var(--yellow); margin: 0;">Ready when you are</p>
       <h2 style="font-family: var(--narrow); font-size: clamp(28px, 4vw, 44px); font-weight: 700; text-transform: uppercase; margin: 0; line-height: 1.05;">Get a quote for your farm operation.</h2>
-      <p style="font-size: 17px; opacity: .75; margin: 0; line-height: 1.5;">Tell us your largest piece of equipment, the condition you need, and the zip you're delivering to — describe the field access while you're at it and we'll flag anything before scheduling. We respond within 4 business hours.</p>
+      <p style="font-size: 17px; opacity: .75; margin: 0; line-height: 1.5;">Tell us your largest piece of equipment, the condition you need, and the zip you're delivering to. Describe the field access while you're at it and we'll flag anything before scheduling. We respond within 4 business hours.</p>
       <div style="display: flex; gap: 16px; flex-wrap: wrap;">
         <a href="/quote/" class="btn" style="background: var(--yellow); color: var(--ink); border-color: var(--yellow);">Get My Quote →</a>
         <a href="/shipping-containers-for-sale/" class="btn-ghost" style="color: var(--cream);">Browse containers first</a>
@@ -356,7 +356,7 @@ const faqs = [
     background: var(--yellow); border-bottom: 2.5px solid var(--ink);
     min-height: clamp(540px, 72vh, 780px); overflow: hidden;
   }
-  /* left copy panel — text aligns to the site gutter via the wrap math */
+  /* left copy panel: text aligns to the site gutter via the wrap math */
   .uc-hero-copy {
     display: flex; flex-direction: column; align-items: flex-start; justify-content: center;
     padding: 92px 64px 84px max(32px, calc((100vw - var(--max)) / 2 + 32px));

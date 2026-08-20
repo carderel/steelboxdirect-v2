@@ -253,7 +253,7 @@ const cityPrice = showPrice
         <div class="bridge-band">
           <div class="m local_bridge_label">How we serve {c.city}</div>
           <p class="local_bridge_body">
-            Steel Box Direct is a family-run dealer headquartered near Cincinnati — Ohio, Indiana, and Kentucky are our home delivery region. {c.city} is one of the markets we fulfill through our supplier network, from a depot right in the area: same containers, same Lifetime Leak Warranty, same person handling your quote. Sourcing from a local yard instead of hauling steel across the country keeps freight short — and short freight is what keeps our pricing structure low.
+            Steel Box Direct is a family-run dealer headquartered near Cincinnati: Ohio, Indiana, and Kentucky are our home delivery region. {c.city} is one of the markets we fulfill through our supplier network, from a depot right in the area: same containers, same Lifetime Leak Warranty, same person handling your quote. Sourcing from a local yard instead of hauling steel across the country keeps freight short, and short freight is what keeps our pricing structure low.
           </p>
         </div>
       </div>
@@ -336,7 +336,7 @@ const cityPrice = showPrice
       <ul class="zoning-list">
         {c.zoning.map((z) => (
           <li>
-            <a href={z.url} target="_blank" rel="noopener nofollow">{z.county} — {z.office}</a>
+            <a href={z.url} target="_blank" rel="noopener nofollow">{z.county}: {z.office}</a>
           </li>
         ))}
       </ul>

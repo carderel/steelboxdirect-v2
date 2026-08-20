@@ -17,15 +17,15 @@ const crumbs = [{ name: 'Home', path: '/' }, { name: 'Businesses', path: '/for/b
 const faqs = [
   {
     q: 'Can a container be placed at a loading dock or commercial facility?',
-    a: "Containers can be placed adjacent to a loading dock, in a parking lot, or in a designated staging area. They cannot be directly docked to a raised loading platform — the container door sill sits at ground level, not at dock height. For dock-height access, a yard ramp or a dock plate bridges the gap; both are widely available from material-handling suppliers, and a forklift can load at ground level without either. Describe your placement area when requesting a quote and we'll confirm feasibility before scheduling.",
+    a: "Containers can be placed adjacent to a loading dock, in a parking lot, or in a designated staging area. They cannot be directly docked to a raised loading platform, because the container door sill sits at ground level, not at dock height. For dock-height access, a yard ramp or a dock plate bridges the gap; both are widely available from material-handling suppliers, and a forklift can load at ground level without either. Describe your placement area when requesting a quote and we'll confirm feasibility before scheduling.",
   },
   {
     q: 'What are your lead times for commercial delivery?',
-    a: "For standard Wind & Water Tight 20ft and 40ft units, almost all orders are delivered in about two weeks, subject to inventory availability — depot stock is stacked and sequenced and drivers book out several weeks ahead. If you have a project start date or a specific delivery window, include it in the quote request and we'll confirm an honest window before you commit.",
+    a: "For standard Wind & Water Tight 20ft and 40ft units, almost all orders are delivered in about two weeks, subject to inventory availability; depot stock is stacked and sequenced and drivers book out several weeks ahead. If you have a project start date or a specific delivery window, include it in the quote request and we'll confirm an honest window before you commit.",
   },
   {
     q: 'Can we get multiple containers for a single location?',
-    a: "Yes — and most multi-unit commercial setups are about organization, not just capacity. Run separate units by product line, by season, or by department, and you can stage inventory the way your operation actually flows instead of cramming everything into one box. Need to scale up for a peak and back down afterward? Add a unit for Q4 and retrieve it in January. We position multiple containers adjacent with every door accessible, and for recurring needs we'll plan a delivery cadence around your inventory cycle rather than a single drop. Delivery mechanics — trip sequencing, alignment, and site access — are covered in our contractors guide and on each city page.",
+    a: "Yes, and most multi-unit commercial setups are about organization, not just capacity. Run separate units by product line, by season, or by department, and you can stage inventory the way your operation actually flows instead of cramming everything into one box. Need to scale up for a peak and back down afterward? Add a unit for Q4 and retrieve it in January. We position multiple containers adjacent with every door accessible, and for recurring needs we'll plan a delivery cadence around your inventory cycle rather than a single drop. Delivery mechanics (trip sequencing, alignment, and site access) are covered in our contractors guide and on each city page.",
   },
   {
     q: 'How do businesses typically handle container storage for accounting or tax purposes?',
@@ -37,7 +37,7 @@ const faqs = [
   },
   {
     q: 'Can I store inventory in a container year-round, or only seasonally?',
-    a: "Either works. A Wind & Water Tight container holds a positive weathertight seal against rain, wind, and snow, so it's suited to permanent on-site storage as well as seasonal overflow. For year-round use on a fixed footprint, most businesses set the unit on a level surface — compacted gravel, asphalt, or leveling blocks under the corner castings — to keep the floor off standing water and protect against long-term moisture. For seasonal cycles, we drop the unit when your peak begins and retrieve it when it ends. Tell us your timeline in the quote and we'll plan around it.",
+    a: "Either works. A Wind & Water Tight container holds a positive weathertight seal against rain, wind, and snow, so it's suited to permanent on-site storage as well as seasonal overflow. For year-round use on a fixed footprint, most businesses set the unit on a level surface (compacted gravel, asphalt, or leveling blocks under the corner castings) to keep the floor off standing water and protect against long-term moisture. For seasonal cycles, we drop the unit when your peak begins and retrieve it when it ends. Tell us your timeline in the quote and we'll plan around it.",
   },
   {
     q: 'Is a shipping container secure enough for valuable commercial inventory?',
@@ -45,11 +45,11 @@ const faqs = [
   },
   {
     q: 'Is an on-site container cheaper than renting a self-storage unit for a business?',
-    a: "Over any horizon longer than a season or two, owning almost always wins. A self-storage or commercial storage unit bills you every month, usually with annual increases, and caps access to facility hours. A container you buy is a one-time cost — see the per-square-foot breakdown above — that stays on your own site, on your own hours, and holds resale value when you're done. Short, one-off needs can still favor renting; for recurring or long-run storage, the owned container is typically the leaner line item.",
+    a: "Over any horizon longer than a season or two, owning almost always wins. A self-storage or commercial storage unit bills you every month, usually with annual increases, and caps access to facility hours. A container you buy is a one-time cost (see the per-square-foot breakdown above) that stays on your own site, on your own hours, and holds resale value when you're done. Short, one-off needs can still favor renting; for recurring or long-run storage, the owned container is typically the leaner line item.",
   },
   {
     q: 'How can I add storage space without leasing a bigger warehouse?',
-    a: "An on-site container is the fastest way to add square footage without signing a bigger lease. Instead of committing to more warehouse or rack space year-round, you drop a 20ft or 40ft unit in the lot or loading area and use it for overflow, seasonal inventory, or equipment. It's lockable, forklift-accessible at ground level, and you can add or retrieve units as your volume changes rather than being locked into a fixed footprint — add a unit for a peak quarter and send it back afterward.",
+    a: "An on-site container is the fastest way to add square footage without signing a bigger lease. Instead of committing to more warehouse or rack space year-round, you drop a 20ft or 40ft unit in the lot or loading area and use it for overflow, seasonal inventory, or equipment. It's lockable, forklift-accessible at ground level, and you can add or retrieve units as your volume changes rather than being locked into a fixed footprint: add a unit for a peak quarter and send it back afterward.",
   },
   {
     q: 'Can a business store inventory or equipment in a shipping container on site?',
@@ -76,7 +76,7 @@ const faqs = [
     faqs: faqs.map((f) => ({ q: f.q, a: f.a })) }}
 >
 
-  <!-- 1. HERO — full-bleed commercial poster split (copy panel + edge-to-edge photo) -->
+  <!-- 1. HERO: full-bleed commercial poster split (copy panel + edge-to-edge photo) -->
   <section class="uc-hero">
     <div class="uc-hero-copy">
       <Breadcrumbs items={crumbs} />
@@ -87,7 +87,7 @@ const faqs = [
       <p class="uc-trust-strip m">Delivered within 250 mi of Cincinnati · Quote in 4 business hours · Buy outright or arrange recurring delivery</p>
     </div>
 
-    <!-- IMAGE SLOT 1 — hero (full-bleed). filename: 40ft-commercial-overflow-container-loading-area.jpg -->
+    <!-- IMAGE SLOT 1: hero (full-bleed). filename: 40ft-commercial-overflow-container-loading-area.jpg -->
     <figure class="uc-hero-media" data-img-slot="hero">
       <Image
         class="uc-img-real"
@@ -112,22 +112,22 @@ const faqs = [
         <span class="m">Why It Works</span>
         <h2 class="uc-h2">Why containers work for businesses</h2>
       </div>
-      <p class="uc-section-intro">A container puts storage on your own site, on your own hours, for a single price — instead of a recurring invoice from a facility across town. Here's why operations across the Cincinnati region keep choosing owned steel over rented square footage.</p>
+      <p class="uc-section-intro">A container puts storage on your own site, on your own hours, for a single price, instead of a recurring invoice from a facility across town. Here's why operations across the Cincinnati region keep choosing owned steel over rented square footage.</p>
       <div class="uc-why-grid">
         <div class="uc-block">
           <h3>Avoid the cost of off-site commercial storage</h3>
-          <p>Commercial storage facilities bill you the same way every month — by the pallet, the square foot, or the cubic foot — and they cap your access to facility hours. Own a 40ft container outright and the math inverts: your storage works out to about <strong>{perSqFtDisplay} per square foot, one time.</strong> There is no renewal, no annual rate increase, and no line item that grows every quarter.</p>
-          <p>An on-site container also removes costs that never show up on a storage invoice. You stop paying inbound and outbound freight to shuttle inventory to and from a third-party warehouse. You get on-demand access to your own stock instead of scheduling a retrieval. And you take a logistics dependency — someone else's hours, someone else's dock, someone else's lost-pallet policy — off your operation entirely.</p>
-          <p>For businesses with predictable seasonal peaks, the gap widens fast. A container that arrives in spring and leaves in fall is dramatically cheaper than six months of rack storage charged per square foot every single month — and unlike that rented space, the container holds resale value when the season ends.</p>
+          <p>Commercial storage facilities bill you the same way every month (by the pallet, the square foot, or the cubic foot) and they cap your access to facility hours. Own a 40ft container outright and the math inverts: your storage works out to about <strong>{perSqFtDisplay} per square foot, one time.</strong> There is no renewal, no annual rate increase, and no line item that grows every quarter.</p>
+          <p>An on-site container also removes costs that never show up on a storage invoice. You stop paying inbound and outbound freight to shuttle inventory to and from a third-party warehouse. You get on-demand access to your own stock instead of scheduling a retrieval. And you take a logistics dependency (someone else's hours, someone else's dock, someone else's lost-pallet policy) off your operation entirely.</p>
+          <p>For businesses with predictable seasonal peaks, the gap widens fast. A container that arrives in spring and leaves in fall is dramatically cheaper than six months of rack storage charged per square foot every single month, and unlike that rented space, the container holds resale value when the season ends.</p>
           <p class="uc-price-note">Container pricing reflects current market · updated {asOfLabel}.</p>
         </div>
         <div class="uc-block">
           <h3>Ground-level, forklift-compatible access</h3>
           <p>The doors open at ground level onto a plank floor, typically marine-grade hardwood plywood, with steel decking in some units. It is the same deck the unit carried freight on, which is why a pallet jack or a forklift drives straight in through the doors with no dock, no lift gate, and no ramp. What that floor is rated to carry is a number from the unit's manufacturer, not from us, and any load close to a limit is a question for the manufacturer's specification or a licensed engineer. We do not issue load ratings.</p>
           <p>Many 20ft units also have <strong>forklift pockets in the base</strong>, and 40ft units generally do not, so plan on placing a unit where you want it rather than shifting it later. Whether a particular machine can move a particular unit comes down to that machine's rated capacity, which is its manufacturer's figure and its operator's call. Tell us your load type and your stack height in the quote request and we will confirm the size and spec that fit.</p>
-          <p>Interior height is a <a href="https://www.icontainers.com/help/40-foot-container/" target="_blank" rel="noopener">standard 7'10"</a> for standard containers, which clears a standard 48"×40" pallet stacked to typical warehouse height with room to maneuver. If your loads run taller, a high-cube unit adds a foot of interior clearance — tell us your stack height in the quote request and we'll confirm the right spec.</p>
+          <p>Interior height is a <a href="https://www.icontainers.com/help/40-foot-container/" target="_blank" rel="noopener">standard 7'10"</a> for standard containers, which clears a standard 48"×40" pallet stacked to typical warehouse height with room to maneuver. If your loads run taller, a high-cube unit adds a foot of interior clearance; tell us your stack height in the quote request and we'll confirm the right spec.</p>
 
-          <!-- IMAGE SLOT 2 — forklift access. filename: forklift-pallet-ground-level-container-access.jpg -->
+          <!-- IMAGE SLOT 2: forklift access. filename: forklift-pallet-ground-level-container-access.jpg -->
           <figure class="uc-img uc-img-inline" data-img-slot="forklift">
             <Image class="uc-img-real" src={imgForklift} width={1200} format="webp"
               alt="Forklift loading a pallet into a ground-level shipping container through open doors" />
@@ -137,7 +137,7 @@ const faqs = [
         <div class="uc-block">
           <h3>Scales up or down with your inventory cycle</h3>
           <p>Need three containers for Q4 and one for the rest of the year? We drop and retrieve on your schedule, so your storage footprint matches your inventory cycle instead of a fixed lease term. Multiple units can be positioned adjacent with all doors accessible, letting you organize by product line, season, or department.</p>
-          <p>There's also a buy-versus-rent decision baked in here. Businesses that prefer to own rather than manage a recurring delivery contract can purchase outright — and because steel containers hold their value, reselling a unit you no longer need recovers a meaningful share of the original cost. You're not locked into a perpetual monthly bill for capacity you only use part of the year.</p>
+          <p>There's also a buy-versus-rent decision baked in here. Businesses that prefer to own rather than manage a recurring delivery contract can purchase outright, and because steel containers hold their value, reselling a unit you no longer need recovers a meaningful share of the original cost. You're not locked into a perpetual monthly bill for capacity you only use part of the year.</p>
         </div>
         <div class="uc-block">
           <h3>Steel, a lockbox, and the records your insurer asks for</h3>
@@ -149,14 +149,14 @@ const faqs = [
     </div>
   </section>
 
-  <!-- 2b. THE COST OF SPACE — comparison centerpiece -->
+  <!-- 2b. THE COST OF SPACE: comparison centerpiece -->
   <section class="uc-compare">
     <div class="wrap">
       <div class="uc-sh" style="border-color: var(--c5-permits);">
         <span class="m">The Cost of Space</span>
         <h2 class="uc-h2">What your storage actually costs</h2>
       </div>
-      <p class="uc-compare-lead">Rented commercial space is priced to recur. Owned steel is priced once. The cleanest way to compare them is per square foot — so that's how we frame it. A 40ft container gives you roughly <strong>320 square feet of floor space</strong>. Purchased outright, that lands at about <strong>{perSqFtDisplay} per square foot as a one-time cost</strong>. A commercial rack or warehouse bay charges per square foot too — but every month, with annual escalators written into the lease. The longer your storage need runs, the further the two diverge.</p>
+      <p class="uc-compare-lead">Rented commercial space is priced to recur. Owned steel is priced once. The cleanest way to compare them is per square foot, so that's how we frame it. A 40ft container gives you roughly <strong>320 square feet of floor space</strong>. Purchased outright, that lands at about <strong>{perSqFtDisplay} per square foot as a one-time cost</strong>. A commercial rack or warehouse bay charges per square foot too, but every month, with annual escalators written into the lease. The longer your storage need runs, the further the two diverge.</p>
 
       <table class="uc-compare-table">
         <caption class="uc-compare-caption">Owning a 40ft container versus renting off-site commercial storage, compared per square foot of floor space.</caption>
@@ -192,7 +192,7 @@ const faqs = [
           <tr>
             <th scope="row">Freight</th>
             <td>Inbound + outbound to a third-party facility</td>
-            <td class="is-own">None — inventory stays on site</td>
+            <td class="is-own">None; inventory stays on site</td>
           </tr>
           <tr>
             <th scope="row">End of need</th>
@@ -207,15 +207,15 @@ const faqs = [
         </tbody>
       </table>
 
-      <p class="uc-compare-pull">Over any horizon longer than a season or two, the question isn't whether owning is cheaper — it's how much sooner the container pays for itself.</p>
+      <p class="uc-compare-pull">Over any horizon longer than a season or two, the question isn't whether owning is cheaper; it's how much sooner the container pays for itself.</p>
 
       <p class="uc-price-note uc-compare-note">Per-sq-ft figure reflects current market · updated {asOfLabel}. It is a one-time cost for a 40ft Standard unit (gross floor footprint, ~320 sq ft = 8×40), not a Steel Box Direct quote for a specific site.</p>
 
       <p class="uc-compare-lead uc-rto-callout">The comparison above is against leased space by the square foot. If what you are weighing is <a href="/container-rent-vs-buy-calculator/">renting a container rather than leasing space</a>, the rent vs buy calculator puts a monthly rental rate beside a purchase and finds the month the two totals cross.</p>
 
-      <p class="uc-compare-lead uc-rto-callout">Owning doesn't have to mean one payment, either: you can <a href="/rent-to-own/">rent to own</a> over 12, 24, 36, or 48 months — no traditional credit check, subject to third-party approval — and the container is yours at the end of the term.</p>
+      <p class="uc-compare-lead uc-rto-callout">Owning doesn't have to mean one payment, either: you can <a href="/rent-to-own/">rent to own</a> over 12, 24, 36, or 48 months (no traditional credit check, subject to third-party approval) and the container is yours at the end of the term.</p>
 
-      <!-- IMAGE SLOT 3 — cost of space. filename: container-interior-pallet-inventory-storage.jpg -->
+      <!-- IMAGE SLOT 3: cost of space. filename: container-interior-pallet-inventory-storage.jpg -->
       <figure class="uc-img uc-img-wide" data-img-slot="cost">
         <Image class="uc-img-real" src={imgCost} width={1600} format="webp"
           alt="Interior of a 40ft shipping container holding palletized business inventory storage" />
@@ -233,7 +233,7 @@ const faqs = [
       </div>
       <p class="uc-section-intro">Three configurations cover almost every commercial use. Here's the quick way to choose.</p>
 
-      <!-- IMAGE SLOT 4 — size comparison. filename: 20ft-40ft-40ftHC-commercial-container-size-comparison.jpg -->
+      <!-- IMAGE SLOT 4: size comparison. filename: 20ft-40ft-40ftHC-commercial-container-size-comparison.jpg -->
       <figure class="uc-img uc-img-wide uc-img-recs" data-img-slot="sizes">
         <Image class="uc-img-real" src={imgSizes} width={1600} format="webp"
           alt="20ft, 40ft, and 40ft high cube commercial storage containers side by side for size comparison" />
@@ -243,21 +243,21 @@ const faqs = [
       <div class="uc-rec-grid">
         <a href="/shipping-containers-for-sale/20-foot-shipping-container/" class="uc-rec" style="border-top-color: var(--c5-permits);">
           <span class="uc-rec-size">20ft</span>
-          <p class="uc-rec-body"><strong>Best for:</strong> single-product overflow, on-site document archive, small-parts inventory, tool and equipment storage. Its compact footprint fits sites with limited staging area — a back lot, a corner of the parking lot, a tight loading zone — and still gives you ground-level, lockable storage.</p>
+          <p class="uc-rec-body"><strong>Best for:</strong> single-product overflow, on-site document archive, small-parts inventory, tool and equipment storage. Its compact footprint fits sites with limited staging area (a back lot, a corner of the parking lot, a tight loading zone) and still gives you ground-level, lockable storage.</p>
           <span class="uc-rec-link">View 20ft container →</span>
         </a>
         <a href="/shipping-containers-for-sale/40-foot-shipping-container/" class="uc-rec" style="border-top-color: var(--c5-permits);">
           <span class="uc-rec-size">40ft</span>
-          <p class="uc-rec-body"><strong>Best for:</strong> pallet-level inventory, seasonal goods, and multi-product overflow. Handles full pallet entry with a forklift and holds the most volume per dollar — the reason it's the default choice for commercial buyers weighing cost per square foot.</p>
+          <p class="uc-rec-body"><strong>Best for:</strong> pallet-level inventory, seasonal goods, and multi-product overflow. Handles full pallet entry with a forklift and holds the most volume per dollar, the reason it's the default choice for commercial buyers weighing cost per square foot.</p>
           <span class="uc-rec-link">View 40ft container →</span>
         </a>
         <a href="/shipping-containers-for-sale/40-foot-high-cube-container/" class="uc-rec" style="border-top-color: var(--c5-permits);">
           <span class="uc-rec-size">40ft HC</span>
-          <p class="uc-rec-body"><strong>Best for:</strong> tall pallet stacks, racked inventory, and high-volume overflow that needs the extra foot of interior height a standard 40ft can't give — about 2,694 cubic feet on the same footprint. Wind &amp; Water Tight (used) — structurally sound, weather-tight steel.</p>
+          <p class="uc-rec-body"><strong>Best for:</strong> tall pallet stacks, racked inventory, and high-volume overflow that needs the extra foot of interior height a standard 40ft can't give (about 2,694 cubic feet on the same footprint). Wind &amp; Water Tight (used): structurally sound, weather-tight steel.</p>
           <span class="uc-rec-link">View 40ft High Cube →</span>
         </a>
       </div>
-      <p class="uc-framing">Most commercial buyers choose the 40ft Wind &amp; Water Tight unit for inventory overflow — it handles standard pallet configurations and costs significantly less per cubic foot than the 20ft. Every unit is Wind &amp; Water Tight (used); if you need extra height for tall or stacked loads, step up to the High Cube.</p>
+      <p class="uc-framing">Most commercial buyers choose the 40ft Wind &amp; Water Tight unit for inventory overflow; it handles standard pallet configurations and costs significantly less per cubic foot than the 20ft. Every unit is Wind &amp; Water Tight (used); if you need extra height for tall or stacked loads, step up to the High Cube.</p>
     </div>
   </section>
 
@@ -268,7 +268,7 @@ const faqs = [
         <span class="m">Where We Deliver</span>
         <h2 class="uc-h2">Where we deliver</h2>
       </div>
-      <p class="uc-deliver-lede">Commercial demand clusters along the freight corridors, and so do we. We deliver to loading areas, back lots, and staging yards within <strong>250 miles of Cincinnati</strong> — across the manufacturing, distribution, and retail centers of Ohio, Indiana, Kentucky, and western West Virginia (Huntington, Charleston, Parkersburg). If your operation runs multiple sites in the region, each one gets its own delivery. These are the metros we serve most:</p>
+      <p class="uc-deliver-lede">Commercial demand clusters along the freight corridors, and so do we. We deliver to loading areas, back lots, and staging yards within <strong>250 miles of Cincinnati</strong>, across the manufacturing, distribution, and retail centers of Ohio, Indiana, Kentucky, and western West Virginia (Huntington, Charleston, Parkersburg). If your operation runs multiple sites in the region, each one gets its own delivery. These are the metros we serve most:</p>
       <div class="uc-city-grid">
         <a href="/locations/ohio/cincinnati-shipping-containers/" class="uc-city"><span class="uc-city-code">CIN</span><span class="uc-city-name">Cincinnati, OH</span><span class="uc-city-arrow">→</span></a>
         <a href="/locations/ohio/dayton-shipping-containers/" class="uc-city"><span class="uc-city-code">DAY</span><span class="uc-city-name">Dayton, OH</span><span class="uc-city-arrow">→</span></a>
@@ -293,14 +293,14 @@ const faqs = [
           <div class="uc-faq-item" style="border-left-color: var(--c5-permits);">
             <h3>{f.q}</h3>
             {i === 2 ? (
-              <p>Yes — and most multi-unit commercial setups are about organization, not just capacity. Run separate units by product line, by season, or by department, and you can stage inventory the way your operation actually flows instead of cramming everything into one box. Need to scale up for a peak and back down afterward? Add a unit for Q4 and retrieve it in January. We position multiple containers adjacent with every door accessible, and for recurring needs we'll plan a delivery cadence around your inventory cycle rather than a single drop. Delivery mechanics — trip sequencing, alignment, and site access — are covered in our <a href="/for/contractors/">contractors guide</a> and on each city page.</p>
+              <p>Yes, and most multi-unit commercial setups are about organization, not just capacity. Run separate units by product line, by season, or by department, and you can stage inventory the way your operation actually flows instead of cramming everything into one box. Need to scale up for a peak and back down afterward? Add a unit for Q4 and retrieve it in January. We position multiple containers adjacent with every door accessible, and for recurring needs we'll plan a delivery cadence around your inventory cycle rather than a single drop. Delivery mechanics (trip sequencing, alignment, and site access) are covered in our <a href="/for/contractors/">contractors guide</a> and on each city page.</p>
             ) : i === 3 ? (
               <p>We can hand you clean paperwork. We cannot hand you a tax position, and you should not take one from a container dealer. Start with your accountant or CPA. What you tell them matters, because whether you buy or lease, how the unit is set, and what you use it for all feed into the treatment. Depreciation of business property runs through MACRS, the modified accelerated cost recovery system, and <a href="https://www.irs.gov/publications/p946" target="_blank" rel="noopener">IRS Publication 946, How To Depreciate Property</a>, is the document that explains how it works, including how asset class and recovery period get determined. That determination is your accountant's to make, not ours. Whether the container changes anything about how your parcel itself is assessed is a separate question with a different decider: your county auditor or local assessor. Getting both answers is the buyer's responsibility, and before you buy beats at filing time. We provide a standard bill of sale for every purchase for your records. We do not determine, advise on, or guarantee tax treatment or property assessment.</p>
             ) : (
               <p>{f.a}</p>
             )}
             {i === 6 && (
-              /* IMAGE SLOT 5 — security. filename: container-puck-lock-lockbox-security.jpg */
+              /* IMAGE SLOT 5: security. filename: container-puck-lock-lockbox-security.jpg */
               <figure class="uc-img uc-img-inline uc-img-faq" data-img-slot="security">
                 <Image class="uc-img-real" src={imgSecurity} width={1000} format="webp"
                   alt="Puck lock in recessed lockbox hasp on a steel commercial storage container door" />
@@ -316,8 +316,8 @@ const faqs = [
       <div class="uc-sources">
         <span class="m">Sources</span>
         <ul>
-          <li>Container interior height &amp; 40ft dimensions — <a href="https://www.icontainers.com/help/40-foot-container/" target="_blank" rel="noopener">iContainers, 40-foot container spec</a></li>
-          <li>Container steel — <a href="https://en.wikipedia.org/wiki/Weathering_steel" target="_blank" rel="noopener">Weathering (Cor-Ten) steel</a></li>
+          <li>Container interior height &amp; 40ft dimensions: <a href="https://www.icontainers.com/help/40-foot-container/" target="_blank" rel="noopener">iContainers, 40-foot container spec</a></li>
+          <li>Container steel: <a href="https://en.wikipedia.org/wiki/Weathering_steel" target="_blank" rel="noopener">Weathering (Cor-Ten) steel</a></li>
           <li>Depreciation reference for your accountant: <a href="https://www.irs.gov/publications/p946" target="_blank" rel="noopener">IRS Publication 946, How To Depreciate Property</a></li>
         </ul>
       </div>

@@ -5,7 +5,7 @@ export interface QuickFact { k: string; v: string }
 export interface QuickFaq { q: string; a: string }
 
 export interface QuickFacts {
-  entityTitle: string;          // header — the page's main entity
+  entityTitle: string;          // header: the page's main entity
   entitySubtitle?: string;      // e.g. "Wind & Water Tight · used, sold as-is"
   specs: QuickFact[];           // primary grid (≤ 8)
   faqs: QuickFaq[];             // ≤ 3

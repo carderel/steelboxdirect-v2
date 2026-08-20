@@ -57,7 +57,7 @@ const conditionGuideSchema = {
       '@type': 'HowToStep',
       'position': 2,
       'name': 'What to Expect',
-      'text': 'Honest cosmetic wear — surface rust and dents from its working life — over weathering (Cor-Ten) steel that holds up for decades.'
+      'text': 'Honest cosmetic wear (surface rust and dents from its working life) over weathering (Cor-Ten) steel that holds up for decades.'
     },
     {
       '@type': 'HowToStep',

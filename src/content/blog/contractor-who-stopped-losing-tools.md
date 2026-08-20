@@ -26,13 +26,13 @@ faq:
     a: "Almost all deliveries take about two weeks. We give you an honest window before you commit. The exact time depends on where you are."
 ---
 
-> **This is an illustrative scenario** — a common pattern we see across our Ohio, Indiana, and Kentucky service area. It is not an account of one real customer.
+> **This is an illustrative scenario**, a common pattern we see across our Ohio, Indiana, and Kentucky service area. It is not an account of one real customer.
 
 A remodeling contractor near Dayton kept losing tools out of his truck. Twice in one summer, someone broke in overnight and took his gear. He didn't buy cameras or an alarm. Instead, he moved his tools into a locked steel shipping container, parked right at the job. It's one of the simplest fixes we see. It shows why a locked box often beats a pile of extra security gear.
 
 ## The Truck Kept Getting Robbed
 
-The contractor worked alone most days. He moved between two or three houses a week. His truck bed was his shop. Saws, drills, ladders, a compressor — it all rode in the truck. At night, it sat locked in a job-site garage or in the truck itself.
+The contractor worked alone most days. He moved between two or three houses a week. His truck bed was his shop. Saws, drills, ladders, a compressor: it all rode in the truck. At night, it sat locked in a job-site garage or in the truck itself.
 
 That worked fine, until it didn't. One morning, he found his truck's lock box popped open. Half his hand tools were gone. A few weeks later, it happened again at a different house. This time it was a cordless saw and a full case of drill bits.
 
@@ -78,9 +78,9 @@ If your crew keeps losing tools, the fix isn't always more security gear. Someti
 
 ## Facts in This Story
 
-- Every container Steel Box Direct sells is **Wind & Water Tight (WWT)** — used, checked over, and sealed against rain, wind, and pests.
+- Every container Steel Box Direct sells is **Wind & Water Tight (WWT)**: used, checked over, and sealed against rain, wind, and pests.
 - Containers are a **one-time buy**, not a monthly rental. There are no ongoing fees to keep using one.
-- We deliver and service within roughly **250 miles of Cincinnati** — Ohio, Indiana, Kentucky, and western West Virginia.
+- We deliver and service within roughly **250 miles of Cincinnati**: Ohio, Indiana, Kentucky, and western West Virginia.
 - **Almost all deliveries take about two weeks.** We give you an honest window before you commit.
 - **Permit and zoning rules are always the buyer's job** to check locally before placement.
 

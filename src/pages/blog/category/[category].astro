@@ -37,11 +37,11 @@ const breadcrumbs = [
 
 <BaseLayout
   pageType="blog"
-  title={`${category} — Steel Box Direct Blog`}
+  title={`${category} | Steel Box Direct Blog`}
   description={`Browse Steel Box Direct blog posts in ${category}.`}
   breadcrumbs={breadcrumbs}
   noindex={posts.length === 0}
-  schema={{ kind: 'collection', title: `${category} — Steel Box Direct Blog`, items: posts.map(({ post }) => ({ name: post.data.title, url: `https://steelboxdirect.com/blog/${post.slug}/` })), faqs: [] }}
+  schema={{ kind: 'collection', title: `${category} | Steel Box Direct Blog`, items: posts.map(({ post }) => ({ name: post.data.title, url: `https://steelboxdirect.com/blog/${post.slug}/` })), faqs: [] }}
 >
   <!-- BREADCRUMBS -->
   <div class="cat-breadcrumb-wrap">
@@ -80,7 +80,7 @@ const breadcrumbs = [
   <section class="blog-grid-section">
     <div class="wrap">
       {posts.length === 0 ? (
-        <p class="empty-note">No posts in this category yet — check back soon.</p>
+        <p class="empty-note">No posts in this category yet. Check back soon.</p>
       ) : (
         <div class="post-grid">
           {posts.map(({ post, heroImg }) => (
@@ -109,7 +109,7 @@ const breadcrumbs = [
     <div class="wrap">
       <div class="cta-box">
         <h2>Ready to talk specifics?</h2>
-        <p>Tell us your size, zip code, and intended use — we'll get back to you within 4 business hours.</p>
+        <p>Tell us your size, zip code, and intended use, and we'll get back to you within 4 business hours.</p>
         <a href="/quote/" class="btn">Get My Quote <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
       </div>
     </div>

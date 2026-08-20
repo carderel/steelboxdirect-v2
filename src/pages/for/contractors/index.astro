@@ -15,19 +15,19 @@ const crumbs = [{ name: 'Home', path: '/' }, { name: 'Contractors', path: '/for/
 const faqs = [
   {
     q: 'Can a container be delivered directly to an active construction site?',
-    a: "Yes, and it's one of the most common setups we handle. Our delivery truck uses a tilt-bed or boom-off method depending on site conditions. We need enough space to maneuver the truck (typically 50+ feet of clear approach), a stable surface to set the container on, and overhead clearance of at least 14 feet. For tight urban sites, we do a site assessment upfront. Tell us about the site when you request a quote — entry width, surface type, and any overhead obstacles — and we'll confirm feasibility before scheduling.",
+    a: "Yes, and it's one of the most common setups we handle. Our delivery truck uses a tilt-bed or boom-off method depending on site conditions. We need enough space to maneuver the truck (typically 50+ feet of clear approach), a stable surface to set the container on, and overhead clearance of at least 14 feet. For tight urban sites, we do a site assessment upfront. Tell us about the site when you request a quote (entry width, surface type, and any overhead obstacles) and we'll confirm feasibility before scheduling.",
   },
   {
     q: 'What kind of lock works best on a shipping container?',
-    a: 'The door hasp on most shipping containers accepts a standard discus or puck lock — Abloy, Medeco, or Master Lock "puck" series. These fit inside the lockbox recess on the door handle and are virtually impossible to cut without heavy equipment. Avoid standard padlocks with exposed shackles — they\'re vulnerable to bolt cutters. If you need to key multiple containers to the same lock for a large project, let us know and we can coordinate.',
+    a: 'The door hasp on most shipping containers accepts a standard discus or puck lock: Abloy, Medeco, or Master Lock "puck" series. These fit inside the lockbox recess on the door handle and are virtually impossible to cut without heavy equipment. Avoid standard padlocks with exposed shackles; they\'re vulnerable to bolt cutters. If you need to key multiple containers to the same lock for a large project, let us know and we can coordinate.',
   },
   {
     q: 'How much space does the truck need to deliver a container?',
-    a: "For a 20ft container, the truck needs approximately 50 feet of clear approach with at least 12 feet of width. For a 40ft container, plan for 70+ feet of clear approach. Overhead clearance should be at least 14 feet along the entire approach path. The container will be placed roughly 3–5 feet from where the truck stops. If the site is tight, describe the layout in your quote request — our drivers are experienced with constrained job sites.",
+    a: "For a 20ft container, the truck needs approximately 50 feet of clear approach with at least 12 feet of width. For a 40ft container, plan for 70+ feet of clear approach. Overhead clearance should be at least 14 feet along the entire approach path. The container will be placed roughly 3-5 feet from where the truck stops. If the site is tight, describe the layout in your quote request; our drivers are experienced with constrained job sites.",
   },
   {
     q: 'Can you stage containers across the phases of a build?',
-    a: "Yes — phased delivery is one of the main reasons contractors choose us over a rental yard. We can drop multiple units at once for a large early phase, then pull them one at a time as each section closes out, or stagger drops so storage arrives as new trades mobilize. If you need boxes positioned in a specific configuration — side-by-side with doors aligned for a shared staging run, for example — describe the layout in your quote request and we'll sequence the delivery so the footprint works and every door stays accessible. Tie the schedule to your phase plan and we'll match it.",
+    a: "Yes. Phased delivery is one of the main reasons contractors choose us over a rental yard. We can drop multiple units at once for a large early phase, then pull them one at a time as each section closes out, or stagger drops so storage arrives as new trades mobilize. If you need boxes positioned in a specific configuration (side-by-side with doors aligned for a shared staging run, for example), describe the layout in your quote request and we'll sequence the delivery so the footprint works and every door stays accessible. Tie the schedule to your phase plan and we'll match it.",
   },
   {
     q: 'What happens if we need to move the container mid-project?',
@@ -35,15 +35,15 @@ const faqs = [
   },
   {
     q: 'Is a shipping container better than a job-site trailer for tool and material storage?',
-    a: "For securing tools and materials, usually yes. A job-site trailer works as a site office, but it's single-skin with a residential-grade lock and windows — a container is Cor-Ten steel with a puck-lock hasp in a recessed lockbox and no soft panel to cut. Doors open at grade so you walk or forklift straight in, and a 40ft holds storage for several trades at once. A trailer still wins if you mainly need a place to sit, plan, and run paperwork; the container wins when the priority is keeping gear from walking off overnight.",
+    a: "For securing tools and materials, usually yes. A job-site trailer works as a site office, but it's single-skin with a residential-grade lock and windows, while a container is Cor-Ten steel with a puck-lock hasp in a recessed lockbox and no soft panel to cut. Doors open at grade so you walk or forklift straight in, and a 40ft holds storage for several trades at once. A trailer still wins if you mainly need a place to sit, plan, and run paperwork; the container wins when the priority is keeping gear from walking off overnight.",
   },
   {
-    q: 'Gang box or shipping container — which is better for a job site?',
-    a: "It depends on scale. A gang box is unbeatable for one or two crews' hand tools and small power tools — cheap, portable, and lockable. But it fills up fast and offers no room for materials, rolling equipment, or shared gear. A shipping container is the step up: a lockable steel room you can walk into, big enough for a full crew's tools plus materials, and hard enough to break into that it deters the opportunist a gang box can't. Plenty of sites run both — the gang box for daily hand tools, the container for everything bulky and valuable.",
+    q: 'Gang box or shipping container: which is better for a job site?',
+    a: "It depends on scale. A gang box is unbeatable for one or two crews' hand tools and small power tools: cheap, portable, and lockable. But it fills up fast and offers no room for materials, rolling equipment, or shared gear. A shipping container is the step up: a lockable steel room you can walk into, big enough for a full crew's tools plus materials, and hard enough to break into that it deters the opportunist a gang box can't. Plenty of sites run both: the gang box for daily hand tools, the container for everything bulky and valuable.",
   },
   {
     q: 'Can I get a storage container just for the length of a construction project?',
-    a: "Yes. We sell containers outright, and for job sites we deliver when the site is ready and retrieve the unit when the project wraps — so you're not stuck reselling steel or hauling it yourself once the punch list is done. We can also stage multiple units across phases and pull them one at a time as each section closes out. Tell us your schedule and delivery zip in the quote request and we'll plan the drops and the pickup around your phase plan.",
+    a: "Yes. We sell containers outright, and for job sites we deliver when the site is ready and retrieve the unit when the project wraps, so you're not stuck reselling steel or hauling it yourself once the punch list is done. We can also stage multiple units across phases and pull them one at a time as each section closes out. Tell us your schedule and delivery zip in the quote request and we'll plan the drops and the pickup around your phase plan.",
   },
 ];
 ---
@@ -58,7 +58,7 @@ const faqs = [
   floatingSidebar
   schema={{ kind: 'useCase', audience: 'contractors', title: 'Job Site Storage That Locks and Stays',
     specs: [
-      { k: 'Security', v: 'Puck-lock hasp, Cor-Ten steel — no soft spot to defeat' },
+      { k: 'Security', v: 'Puck-lock hasp, Cor-Ten steel, no soft spot to defeat' },
       { k: 'Access', v: 'Ground-level doors, no dock or ramp needed' },
       { k: 'Condition', v: 'Wind & Water Tight (used)' },
       { k: 'Service area', v: 'OH · IN · KY · W. WV' },
@@ -66,18 +66,18 @@ const faqs = [
     faqs: faqs.map((f) => ({ q: f.q, a: f.a })) }}
 >
 
-  <!-- 1. HERO — full-bleed jobsite poster split (copy panel + edge-to-edge photo) -->
+  <!-- 1. HERO: full-bleed jobsite poster split (copy panel + edge-to-edge photo) -->
   <section class="uc-hero">
     <div class="uc-hero-copy">
       <Breadcrumbs items={crumbs} />
       <span class="uc-eyebrow">For Contractors &amp; Construction</span>
       <h1 class="uc-h1">Job Site Storage That <span class="uc-h1-mark">Locks and Stays.</span></h1>
       <p class="uc-lede">A steel box that bolt cutters can't open, doors that meet you at ground level, and a truck that comes back for it when the job wraps.</p>
-      <p class="uc-lede-support">We drop containers on active sites across Ohio, Indiana, Kentucky, and western West Virginia — no rental contract, no CDL on your end, no forklift to load it.</p>
+      <p class="uc-lede-support">We drop containers on active sites across Ohio, Indiana, Kentucky, and western West Virginia. No rental contract, no CDL on your end, no forklift to load it.</p>
       <p class="uc-trust-strip m">Theft-resistant lockbox hasp · Ground-level door access · Delivered &amp; retrieved on your schedule · Quote back within 4 business hours</p>
     </div>
 
-    <!-- IMAGE SLOT 1 — hero (full-bleed). filename: jobsite-container-delivery-hero.jpg -->
+    <!-- IMAGE SLOT 1: hero (full-bleed). filename: jobsite-container-delivery-hero.jpg -->
     <figure class="uc-hero-media" data-img-slot="hero">
       <Image
         class="uc-img-real"
@@ -102,14 +102,14 @@ const faqs = [
         <span class="m">Why It Works</span>
         <h2 class="uc-h2">Why containers work for contractors</h2>
       </div>
-      <p class="uc-section-intro">Four reasons a steel box beats a job-site trailer, a cargo van, or a wood toolshed on an active build — and the specifics that back each one up.</p>
+      <p class="uc-section-intro">Four reasons a steel box beats a job-site trailer, a cargo van, or a wood toolshed on an active build, and the specifics that back each one up.</p>
       <div class="uc-why-grid">
         <div class="uc-block">
           <h3>Harder to break into than a job site trailer</h3>
-          <p>ISO shipping containers are built from <a href="https://en.wikipedia.org/wiki/Weathering_steel" target="_blank" rel="noopener">weathering (Cor-Ten) steel</a> — the same corrosion-resistant alloy used for ocean freight that crosses the Pacific stacked nine high. The cargo doors close onto a steel hasp built to take a discus or puck lock, and there's no soft spot to exploit: no gap at the roofline, no plastic skylight, no aluminum skin a battery grinder chews through in seconds.</p>
-          <p>Compare that to a standard job site trailer — single-skin walls, a residential-grade door lock, windows. For a crew that's lost a generator or a pallet of copper overnight, the difference isn't cosmetic. A container is the closest thing to a vault you can set on dirt.</p>
+          <p>ISO shipping containers are built from <a href="https://en.wikipedia.org/wiki/Weathering_steel" target="_blank" rel="noopener">weathering (Cor-Ten) steel</a>, the same corrosion-resistant alloy used for ocean freight that crosses the Pacific stacked nine high. The cargo doors close onto a steel hasp built to take a discus or puck lock, and there's no soft spot to exploit: no gap at the roofline, no plastic skylight, no aluminum skin a battery grinder chews through in seconds.</p>
+          <p>Compare that to a standard job site trailer: single-skin walls, a residential-grade door lock, windows. For a crew that's lost a generator or a pallet of copper overnight, the difference isn't cosmetic. A container is the closest thing to a vault you can set on dirt.</p>
 
-          <!-- IMAGE SLOT 2 — puck lock closeup. -->
+          <!-- IMAGE SLOT 2: puck lock closeup. -->
           <!-- filename: puck-lock-container-lockbox-closeup.jpg -->
           <figure class="uc-img uc-img-inline" data-img-slot="lock">
             <Image class="uc-img-real" src={imgLock} width={1000} format="webp"
@@ -118,11 +118,11 @@ const faqs = [
           </figure>
         </div>
         <div class="uc-block">
-          <h3>Ground-level access — no dock, no ramp</h3>
+          <h3>Ground-level access, no dock, no ramp</h3>
           <p>Container doors swing open at grade. Tools, materials, scaffold sections, and rolling equipment go straight in and out without a lift gate, dock plate, or pallet hand-off. The floor is a plank deck, typically marine-grade plywood, laid over steel cross-members: the same deck the unit hauled freight on. Whether it takes your loaded pallet jack or your forklift is a capacity question, and the only number that answers it is the one in the manufacturer's specification for that unit. Any load near a limit is a question for the manufacturer or a licensed engineer before your crew drives in. We do not issue load ratings.</p>
           <p>Interior height is a <a href="https://www.mobilemodularcontainers.com/blog/how-much-does-a-shipping-containers-weigh" target="_blank" rel="noopener">standard 7'10"</a> and the door opening is roughly 7'5" wide by 7'5" tall, so a standard pallet jack and most walk-behind equipment clear it without a fight.</p>
 
-          <!-- IMAGE SLOT 2B — ground-level jobsite access. -->
+          <!-- IMAGE SLOT 2B: ground-level jobsite access. -->
           <!-- filename: ground-level-jobsite-container-access.jpg -->
           <figure class="uc-img uc-img-inline" data-img-slot="ground-level">
             <Image class="uc-img-real" src={imgGroundLevel} width={1000} format="webp"
@@ -132,46 +132,46 @@ const faqs = [
         </div>
         <div class="uc-block">
           <h3>Delivered and retrieved on your schedule</h3>
-          <p>We deliver within 250 miles of Cincinnati. You call when the site's ready; we drop the box. When the punch list is done, we come pick it up — you're not stuck reselling steel or hauling it yourself.</p>
+          <p>We deliver within 250 miles of Cincinnati. You call when the site's ready; we drop the box. When the punch list is done, we come pick it up, so you're not stuck reselling steel or hauling it yourself.</p>
           <p>There's no rental center to visit, no trailer to register, no CDL required on your end, and no monthly meter running while the unit sits idle between phases. The container stays exactly as long as the job does, and not a day of paperwork longer.</p>
         </div>
         <div class="uc-block">
           <h3>Flexible for multi-trade and phased projects</h3>
-          <p>One 40ft container holds material and tool storage for several trades at once — electrical, plumbing, framing, finish — without anyone tripping over anyone else's gear. When a new phase opens up and you need a second box, we drop another. When an early phase closes out and you're done with the first, we pull it.</p>
+          <p>One 40ft container holds material and tool storage for several trades at once (electrical, plumbing, framing, finish) without anyone tripping over anyone else's gear. When a new phase opens up and you need a second box, we drop another. When an early phase closes out and you're done with the first, we pull it.</p>
           <p>Availability depends on inventory; we confirm timing when you request a quote, so storage keeps pace with the schedule instead of dictating it.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- 2.2 TRAILER / GANG BOX COMPARISON — captures job-site storage intent, reframes to container -->
+  <!-- 2.2 TRAILER / GANG BOX COMPARISON: captures job-site storage intent, reframes to container -->
   <section class="uc-compare">
     <div class="wrap">
       <div class="uc-sh" style="border-color: var(--c3-deliver);">
         <span class="m">Trailer, Gang Box, or Container?</span>
         <h2 class="uc-h2">Weighing a job-site trailer or a gang box?</h2>
       </div>
-      <p class="uc-section-intro">Most crews get to a container after trying the alternatives — a rented job-site trailer, a gang box in the bed of a truck, or a plywood field shed. Each has its place; none of them is a lockable steel room you own. Here's the honest comparison for securing tools and materials on an active site.</p>
+      <p class="uc-section-intro">Most crews get to a container after trying the alternatives: a rented job-site trailer, a gang box in the bed of a truck, or a plywood field shed. Each has its place; none of them is a lockable steel room you own. Here's the honest comparison for securing tools and materials on an active site.</p>
       <div class="uc-compare-scroll">
         <table class="uc-compare-table">
           <thead>
             <tr><th scope="col">On a job site</th><th scope="col">Job-site trailer (rented)</th><th scope="col">Gang box</th><th scope="col">Steel container</th></tr>
           </thead>
           <tbody>
-            <tr><th scope="row">Security</th><td>Single-skin walls, residential-grade lock, windows</td><td>Solid for hand tools, but small and pryable at the lid</td><td>Cor-Ten steel, puck-lock hasp in a recessed lockbox — no soft spot</td></tr>
-            <tr><th scope="row">Capacity</th><td>Decent, but tapers and wheel wells eat into it</td><td>Hand tools and small power tools only</td><td>Full crews, materials, and rolling equipment — a 40ft holds several trades</td></tr>
-            <tr><th scope="row">Access</th><td>Steps or a small ramp up to the door</td><td>Lift the lid and bend in</td><td>Doors open at grade — walk or forklift straight in</td></tr>
-            <tr><th scope="row">Cost model</th><td>Rented — a monthly meter that runs between phases</td><td>One-time buy, low cost</td><td>Buy once; we can retrieve it when the job wraps</td></tr>
-            <tr><th scope="row">Weather</th><td>Holds up, but seams and windows can leak</td><td>Basic — not fully weather-sealed</td><td>Wind &amp; Water Tight — sealed against rain, snow, and pests</td></tr>
-            <tr><th scope="row">On &amp; off site</th><td>Towed in and out; needs a hitch and a truck</td><td>Craned or forklifted into a truck bed</td><td>We deliver and retrieve on your schedule — no CDL on your end</td></tr>
+            <tr><th scope="row">Security</th><td>Single-skin walls, residential-grade lock, windows</td><td>Solid for hand tools, but small and pryable at the lid</td><td>Cor-Ten steel, puck-lock hasp in a recessed lockbox, no soft spot</td></tr>
+            <tr><th scope="row">Capacity</th><td>Decent, but tapers and wheel wells eat into it</td><td>Hand tools and small power tools only</td><td>Full crews, materials, and rolling equipment; a 40ft holds several trades</td></tr>
+            <tr><th scope="row">Access</th><td>Steps or a small ramp up to the door</td><td>Lift the lid and bend in</td><td>Doors open at grade; walk or forklift straight in</td></tr>
+            <tr><th scope="row">Cost model</th><td>Rented, with a monthly meter that runs between phases</td><td>One-time buy, low cost</td><td>Buy once; we can retrieve it when the job wraps</td></tr>
+            <tr><th scope="row">Weather</th><td>Holds up, but seams and windows can leak</td><td>Basic; not fully weather-sealed</td><td>Wind &amp; Water Tight: sealed against rain, snow, and pests</td></tr>
+            <tr><th scope="row">On &amp; off site</th><td>Towed in and out; needs a hitch and a truck</td><td>Craned or forklifted into a truck bed</td><td>We deliver and retrieve on your schedule, no CDL on your end</td></tr>
           </tbody>
         </table>
       </div>
-      <p class="uc-framing">A trailer earns its keep as a site office, and a gang box is hard to beat for a two-person crew's hand tools. But for locking up materials, power tools, and shared gear across trades — the stuff that walks off overnight — a steel container is the hardest target on the site, and the only one of the three you own outright.</p>
+      <p class="uc-framing">A trailer earns its keep as a site office, and a gang box is hard to beat for a two-person crew's hand tools. But for locking up materials, power tools, and shared gear across trades (the stuff that walks off overnight), a steel container is the hardest target on the site, and the only one of the three you own outright.</p>
     </div>
   </section>
 
-  <!-- 2.5 JOBSITE THEFT — NEW -->
+  <!-- 2.5 JOBSITE THEFT (NEW) -->
   <section class="uc-theft">
     <div class="wrap">
       <div class="uc-sh" style="border-color: var(--c3-deliver);">
@@ -187,10 +187,10 @@ const faqs = [
             <li><span class="uc-theft-num m">03</span><span><strong>Lock the right-hand door first.</strong> The locking bars on the right door cam behind the left, so securing it last means both doors are pinned shut.</span></li>
             <li><span class="uc-theft-num m">04</span><span><strong>Key multiple units alike on big jobs.</strong> Running several containers across a site? We can coordinate matching locks so your super carries one key instead of a ring of them.</span></li>
           </ul>
-          <p class="uc-theft-pull">A puck lock and thirty seconds of habit turn a steel box into the hardest target on the site — usually enough to send an opportunist to the next jobsite over.</p>
+          <p class="uc-theft-pull">A puck lock and thirty seconds of habit turn a steel box into the hardest target on the site, usually enough to send an opportunist to the next jobsite over.</p>
         </div>
 
-        <!-- IMAGE SLOT 3 — lock comparison. -->
+        <!-- IMAGE SLOT 3: lock comparison. -->
         <!-- filename: container-lock-comparison-puck-vs-padlock.jpg -->
         <figure class="uc-img uc-img-theft" data-img-slot="lock-compare">
           <Image class="uc-img-real" src={imgLockCompare} width={900} format="webp"
@@ -210,7 +210,7 @@ const faqs = [
       </div>
       <p class="uc-section-intro">The right size comes down to how many trades share the box and how tight the site is. A single crew on a residential remodel rarely needs more than a 20ft. A commercial build with four trades staging at once almost always wants the 40ft. Here's how contractors typically split it.</p>
 
-      <!-- IMAGE SLOT 4 — size comparison. -->
+      <!-- IMAGE SLOT 4: size comparison. -->
       <!-- filename: 20ft-40ft-jobsite-container-size-comparison.jpg -->
       <figure class="uc-img uc-img-wide uc-img-recs" data-img-slot="sizes">
         <Image class="uc-img-real" src={imgSizes} width={1600} format="webp"
@@ -226,12 +226,12 @@ const faqs = [
         </a>
         <a href="/shipping-containers-for-sale/40-foot-shipping-container/" class="uc-rec" style="border-top-color: var(--c3-deliver);">
           <span class="uc-rec-size">40ft</span>
-          <p class="uc-rec-body"><strong>Best for</strong> multi-trade material storage, full tool sets across crews, and jobs where you want staging and secure storage in one unit. Twice the floor of a 20ft for far less than twice the cost — the workhorse of any active commercial build.</p>
+          <p class="uc-rec-body"><strong>Best for</strong> multi-trade material storage, full tool sets across crews, and jobs where you want staging and secure storage in one unit. Twice the floor of a 20ft for far less than twice the cost, and the workhorse of any active commercial build.</p>
           <span class="uc-rec-link">View 40ft container →</span>
         </a>
         <a href="/shipping-containers-for-sale/40-foot-high-cube-container/" class="uc-rec" style="border-top-color: var(--c3-deliver);">
           <span class="uc-rec-size">40ft HC</span>
-          <p class="uc-rec-body"><strong>Best for</strong> tall material loads, racked storage, and jobs that need the extra foot of interior height a standard 40ft doesn't give — about 2,694 cubic feet on the same footprint. Wind &amp; Water Tight (used) — structurally sound, weather-tight steel.</p>
+          <p class="uc-rec-body"><strong>Best for</strong> tall material loads, racked storage, and jobs that need the extra foot of interior height a standard 40ft doesn't give (about 2,694 cubic feet on the same footprint). Wind &amp; Water Tight (used): structurally sound, weather-tight steel.</p>
           <span class="uc-rec-link">View 40ft High Cube →</span>
         </a>
       </div>
@@ -246,7 +246,7 @@ const faqs = [
         <span class="m">Where We Deliver</span>
         <h2 class="uc-h2">Where we deliver</h2>
       </div>
-      <p class="uc-deliver-lede">We run job sites across a 250-mile radius from Cincinnati — Ohio, Indiana, Kentucky, and western West Virginia (Huntington, Charleston, Parkersburg) — and our drivers know the difference between a wide-open subdivision lot and a downtown infill site with a curb lane and a power drop overhead. These are the metros we deliver to most:</p>
+      <p class="uc-deliver-lede">We run job sites across a 250-mile radius from Cincinnati that covers Ohio, Indiana, Kentucky, and western West Virginia (Huntington, Charleston, Parkersburg), and our drivers know the difference between a wide-open subdivision lot and a downtown infill site with a curb lane and a power drop overhead. These are the metros we deliver to most:</p>
       <div class="uc-city-grid">
         <a href="/locations/ohio/cincinnati-shipping-containers/" class="uc-city"><span class="uc-city-code">CIN</span><span class="uc-city-name">Cincinnati, OH</span><span class="uc-city-arrow">→</span></a>
         <a href="/locations/ohio/dayton-shipping-containers/" class="uc-city"><span class="uc-city-code">DAY</span><span class="uc-city-name">Dayton, OH</span><span class="uc-city-arrow">→</span></a>
@@ -259,7 +259,7 @@ const faqs = [
     </div>
   </section>
 
-  <!-- 4.5 PLANNING DELIVERY — NEW -->
+  <!-- 4.5 PLANNING DELIVERY (NEW) -->
   <section class="uc-plan">
     <div class="wrap">
       <div class="uc-sh" style="border-color: var(--c3-deliver);">
@@ -271,12 +271,12 @@ const faqs = [
         <div class="uc-plan-card">
           <span class="uc-plan-num">01</span>
           <h3>Clear approach</h3>
-          <p>A 20ft unit needs roughly 50 feet of straight, clear approach; a 40ft needs 70+. The container ends up about 3–5 feet from where the truck stops, so plan the drop spot with the truck's path in mind, not just the final footprint.</p>
+          <p>A 20ft unit needs roughly 50 feet of straight, clear approach; a 40ft needs 70+. The container ends up about 3-5 feet from where the truck stops, so plan the drop spot with the truck's path in mind, not just the final footprint.</p>
         </div>
         <div class="uc-plan-card">
           <span class="uc-plan-num">02</span>
           <h3>Overhead clearance</h3>
-          <p>The tilt-bed lifts high during placement — you need at least 14 feet of clearance along the whole approach. Low power lines, sign trusses, and tree limbs are the usual culprits on tight sites.</p>
+          <p>The tilt-bed lifts high during placement, so you need at least 14 feet of clearance along the whole approach. Low power lines, sign trusses, and tree limbs are the usual culprits on tight sites.</p>
         </div>
         <div class="uc-plan-card">
           <span class="uc-plan-num">03</span>
@@ -286,7 +286,7 @@ const faqs = [
       </div>
       <p class="uc-framing">Tell us your entry width, surface, and any overhead obstacles when you request a quote, and we'll confirm the site works before anyone schedules a truck. On constrained downtown sites we'll do a site assessment up front rather than send a driver to a dead end.</p>
 
-      <!-- IMAGE SLOT 5 — tilt-bed delivery. -->
+      <!-- IMAGE SLOT 5: tilt-bed delivery. -->
       <!-- filename: tilt-bed-container-delivery-jobsite.jpg -->
       <figure class="uc-img uc-img-wide" data-img-slot="delivery">
         <Image class="uc-img-real" src={imgDelivery} width={1600} format="webp"
@@ -317,9 +317,9 @@ const faqs = [
       <div class="uc-sources">
         <span class="m">Sources</span>
         <ul>
-          <li>Container steel — <a href="https://en.wikipedia.org/wiki/Weathering_steel" target="_blank" rel="noopener">Weathering (Cor-Ten) steel</a></li>
-          <li>Container specs &amp; tare weights — <a href="https://www.mobilemodularcontainers.com/blog/how-much-does-a-shipping-containers-weigh" target="_blank" rel="noopener">Mobile Modular, shipping container weights</a></li>
-          <li>Container inspection guidelines — <a href="https://www.iicl.org/" target="_blank" rel="noopener">Institute of International Container Lessors (IICL)</a></li>
+          <li>Container steel: <a href="https://en.wikipedia.org/wiki/Weathering_steel" target="_blank" rel="noopener">Weathering (Cor-Ten) steel</a></li>
+          <li>Container specs &amp; tare weights: <a href="https://www.mobilemodularcontainers.com/blog/how-much-does-a-shipping-containers-weigh" target="_blank" rel="noopener">Mobile Modular, shipping container weights</a></li>
+          <li>Container inspection guidelines: <a href="https://www.iicl.org/" target="_blank" rel="noopener">Institute of International Container Lessors (IICL)</a></li>
         </ul>
       </div>
     </div>
@@ -330,7 +330,7 @@ const faqs = [
     <div class="wrap" style="display: flex; flex-direction: column; align-items: flex-start; gap: 24px; max-width: 680px;">
       <p class="m" style="color: var(--yellow); margin: 0;">Ready when you are</p>
       <h2 style="font-family: var(--narrow); font-size: clamp(28px, 4vw, 44px); font-weight: 700; text-transform: uppercase; margin: 0; line-height: 1.05;">Get a quote for your job site.</h2>
-      <p style="font-size: 17px; opacity: .75; margin: 0; line-height: 1.5;">Tell us the site — size, condition, delivery zip, and anything tight about the approach — and we'll confirm feasibility and a delivery window. We respond within 4 business hours.</p>
+      <p style="font-size: 17px; opacity: .75; margin: 0; line-height: 1.5;">Tell us the site (size, condition, delivery zip, and anything tight about the approach) and we'll confirm feasibility and a delivery window. We respond within 4 business hours.</p>
       <div style="display: flex; gap: 16px; flex-wrap: wrap;">
         <a href="/quote/" class="btn" style="background: var(--yellow); color: var(--ink); border-color: var(--yellow);">Get My Quote →</a>
         <a href="/shipping-containers-for-sale/" class="btn-ghost" style="color: var(--cream);">Browse containers first</a>

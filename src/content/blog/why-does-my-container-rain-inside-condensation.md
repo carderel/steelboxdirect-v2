@@ -19,11 +19,11 @@ takeaways:
   - "What \"container rain\" really is, and why it's not a leak"
   - "Why warm, wet air turns into water on cold steel (the \"dew point\")"
   - "Why the problem gets worse in fall and early spring"
-  - "Why \"Wind & Water Tight\" doesn't mean climate-controlled — and what that means for you"
+  - "Why \"Wind & Water Tight\" doesn't mean climate-controlled, and what that means for you"
   - "The fix ladder, from easiest to hardest: vents, desiccants, fans, and insulation"
 faq:
   - q: "Does condensation mean my storage container has a leak?"
-    a: "Usually not. If water shows up on the ceiling or upper walls, especially after the temperature changes, and there's no wet trail from a door or the roof, it's almost always condensation. A real leak usually shows up at seams, corners, or the roof right after rain — not on a clear, cold morning."
+    a: "Usually not. If water shows up on the ceiling or upper walls, especially after the temperature changes, and there's no wet trail from a door or the roof, it's almost always condensation. A real leak usually shows up at seams, corners, or the roof right after rain, not on a clear, cold morning."
   - q: "Will leaving the doors open stop condensation?"
     a: "It can help for a little while by letting wet air out. But it also lets more wet outside air in, and it leaves your container unlocked while the doors are open. Vents or a fan that keep working while the doors stay shut and locked are a better fix."
   - q: "Do I need a dehumidifier in my storage container?"
@@ -50,7 +50,7 @@ You've seen this before. A cold glass of water sweats on a hot day. Your bathroo
 
 ![Interior of a used shipping container with a damp sheen on the steel walls and cardboard boxes and plastic totes sitting dry on the plywood floor](../../assets/photos/blog/condensation-bare-steel-container-interior.jpg)
 
-*Condensation shows up first on the steel overhead — the ceiling and upper wall panels — before it reaches anything stored below.*
+*Condensation shows up first on the steel overhead (the ceiling and upper wall panels) before it reaches anything stored below.*
 
 ## Why it's worse in fall and early spring
 
@@ -86,7 +86,7 @@ The easiest fix lets trapped, wet air trade places with drier outside air. Vents
 
 ### 2. Desiccants
 
-Desiccants are small packs or buckets that soak up water right out of the air. They catch the water before it ever reaches the steel. Calcium chloride buckets and silica gel bags are common kinds. They cost little. They need no wiring. They work well in a small container. They also work well for one area, like a stack of boxes, instead of the whole space. You do need to check them and swap them out now and then. Moisture-sensitive things like paper, cardboard, and bare-metal tools need this protection most — they're near the top of our list of [things you should never store in a shipping container](/blog/12-things-never-store-in-a-shipping-container/) without it.
+Desiccants are small packs or buckets that soak up water right out of the air. They catch the water before it ever reaches the steel. Calcium chloride buckets and silica gel bags are common kinds. They cost little. They need no wiring. They work well in a small container. They also work well for one area, like a stack of boxes, instead of the whole space. You do need to check them and swap them out now and then. Moisture-sensitive things like paper, cardboard, and bare-metal tools need this protection most. They're near the top of our list of [things you should never store in a shipping container](/blog/12-things-never-store-in-a-shipping-container/) without it.
 
 ### 3. Powered or humidistat-controlled vents
 
