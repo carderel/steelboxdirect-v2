@@ -1,6 +1,95 @@
 # HANDOFF: start here for the next context window
 
-> ## CURRENT AS OF 2026-08-19. Everything below this block is older and partly superseded.
+> ## CURRENT AS OF 2026-08-20 ~21:50 UTC. Everything below this block is older and partly superseded.
+>
+> **LIVE AT `2dff5df`. `main == origin`. Site at 57 routes.** Eight commits shipped
+> (`014472f..2dff5df`), every one owner-authorized in-session, all live-verified on production.
+> The session that shipped them opened 2026-08-19 evening and is logged at
+> `sessions/2026-08-20-session.md` (plus the closed morning session at `2026-08-19-session.md`);
+> the transcript is `history/2026-08-19-1855-session-transcript.md`, 25 cycles.
+>
+> ### What shipped, in one pass
+>
+> 1. **/rent-to-own/ rework to the owner's own review** (`549fa61`). My Container Rental is
+>    consolidated to ONE sanctioned FAQ answer ("Who is the third party application
+>    administrator?"). That answer legitimately renders three times in built HTML (visible FAQ,
+>    FAQPage JSON-LD, Quick Facts) with two in-answer mentions each, so grep finds SIX; the owner
+>    ruled keep. Approval framing is visually muted per his spec (14px/10px, no background,
+>    #b1aca3, deliberately low contrast, do not "fix"). "Pick Your Term" replaced the runway
+>    metaphor. T-153, T-063 closed.
+> 2. **Site-wide dash purge** (`9b24a32` and riders). 642 em and en dashes plus entity forms
+>    cleared; source and dist at ZERO. Sole exception: the untracked owner-reserved draft. T-112,
+>    T-077, T-030 closed.
+> 3. **Every 2009 founding claim removed** (`8cd05f6`). The owner could not substantiate the date
+>    ("not sure where Doug came up with 2009"), so schema `foundingDate` is gone and a guard test
+>    asserts it never returns. **No founding year may be stated anywhere, for SBD or for Freedom
+>    Conex.** T-105 closed.
+> 4. **Guards wired into the build** (`e95e693`). `npm run build` now runs the HS003 guard plus a
+>    new dash guard before astro build; a violation fails the Cloudflare deploy naming file:line.
+>    T-036 closed. Known guard limits still open: T-114 (flat-assertion blind spot), T-117
+>    (near-neighbour false positives).
+> 5. **/ai-info/ AI fact sheet** (`1a544cd`). Built from a seven-item owner interview with zero
+>    invented facts and zero skipped items. Prices interpolate from `pricing.ts` (never hardcoded),
+>    WebPage schema only (FAQPage deliberately withheld to avoid duplicate-schema suppression),
+>    footer anchor "Information for AI assistants", llms.txt entry with the UTM citation format.
+>    Interview record: `UDO Project/.outputs/ai-info/` (gitignored, THIS MACHINE ONLY, see T-142).
+> 6. **HS003 guard comment-parity fix** (`61aa149`, T-146): comments stripped string-aware before
+>    literal pairing, six regression tests, header rewritten (T-135).
+>
+> ### The deploy failure worth remembering
+>
+> The FIRST CI build failed: `dash-guard.test.ts` asserted its exclusion entry (the untracked
+> draft) exists on disk. True locally, false in Cloudflare's git checkout, so the guard failed its
+> own staleness test and blocked the deploy. Fixed forward in `2dff5df` (tracked exclusions must
+> exist; untracked-by-design ones may be absent), proven by parking the draft and running the guard
+> both ways. **LESSON: test any build gate against a clean git checkout before shipping it;
+> untracked files are the canonical local-vs-CI difference.**
+>
+> ### Fact rulings from the owner interview, binding on all future copy
+>
+> - GBP: **5.0 stars, 11 reviews** (owner screenshot), veteran-owned, **daily 9 AM to 9 PM
+>   Eastern**, service-area profile with no street address BY DESIGN. Primary category is
+>   currently "Storage facility", which is the T-155 problem, not a fact to repeat.
+> - Doug: **"more than eight years in shipping, packaging, and logistics."** Never nine, no start
+>   year, and 2009 was never his date.
+> - SBD is a **brand name, not an entity**; no entity-type claim anywhere. Sales entity is Freedom
+>   Conex LLC per the terms wording. Supplier portability is deliberate (owner owns domain + work).
+> - Canonical consistency phrase: **"shipping containers for sale in Ohio, Indiana, and
+>   Kentucky."**
+> - Locked review quotes with first-name attribution: William (McCune), Jason (Abdalla), Steve
+>   (Novak). The two friend-of-Doug reviews are deliberately unused.
+> - "My Container Rental" appears ONLY in the one rent-to-own FAQ; every other surface says
+>   "independent third party administrator."
+> - The delivery-service sentence is owner-confirmed verbatim: "Steel Box Direct is a
+>   delivery-based service with no walk-up location or sales yard; containers are delivered to the
+>   buyer's site, or picked up at partner depots by arrangement."
+>
+> ### Awaiting the owner
+>
+> 1. **LinkedIn fix, he committed to it:** the company description says "shipping-inspection
+>    ready", which contradicts the terms' "not certified for ocean shipping."
+> 2. **T-155:** Maps ranks SBD #23 for "shipping container for sale" Cincinnati while the GBP
+>    category is "Storage facility". Switching the primary category to a container-sales category
+>    is likely the biggest local-pack lever available.
+> 3. **Rent-to-own images:** prompts ready at
+>    `UDO Project/.outputs/image-prompts/2026-08-19-rent-to-own-image-prompts.md` (hero first).
+> 4. **T-142 got more expensive:** the AI-info interview record and this session's research live
+>    only in gitignored `.outputs/` on this machine.
+> 5. **Recommended next build:** competitor comparison pages (vs Container One, vs ConexTalk),
+>    set up by /ai-info/'s named-alternatives list.
+> 6. **T-143 new-condition containers** still pinned; when they launch, /ai-info/'s one-grade
+>    lines and its last-updated date need one edit.
+>
+> ### Unchanged landmines
+>
+> Both untracked files stay untracked (blog draft, supabase-keepalive.yml); add `.github/` files by
+> full path only; the 34 legacy deletions stay unstaged; README/START_HERE migration edits stay
+> uncommitted (T-075). This handoff block and the post-release PROJECT_STATE/transcript updates are
+> LOCAL and ride with the next `docs(udo)` commit.
+
+---
+
+> ## SUPERSEDED: CURRENT AS OF 2026-08-19. Everything below this block is older and partly superseded.
 >
 > **LIVE AT `014472f`. `main == origin`. NOTHING UNPUSHED.** First session close in this project's history
 > with a level tree and no deferred deploy. 398 tests across 17 files, build 56 pages, `tsc` exit 0, HS003

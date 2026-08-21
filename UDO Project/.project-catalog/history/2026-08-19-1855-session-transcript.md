@@ -161,3 +161,37 @@ proposed: no entity-type claim on the page, FC LLC as sales entity per terms, Do
 
 ## Cycle 22 (2026-08-20): PUSH AUTHORIZED by owner, gated on the ai-info build finishing.
 Release plan recorded on T-154. Waiting on the implementation agent.
+
+## Cycle 23 (2026-08-20): RELEASE PUSHED
+
+- Seven commits 014472f..a3aec02 pushed to origin/main: 61aa149 guard fix, 549fa61 rto rework,
+  9b24a32 dash sweep (53 files), 8cd05f6 2009 removal, e95e693 guard wiring, 1a544cd ai-info,
+  a3aec02 docs. Exclusions honored (34 deletions, README/START_HERE, blog draft, .github). Secret
+  scan 0. Final gate: build+guards exit 0, 413/18, tsc 0. Live poll for /ai-info/ running.
+- T-153 and T-154 CLOSED as shipped.
+
+## Cycle 24 (2026-08-20): FIRST DEPLOY FAILED IN CI, DIAGNOSED AND FIXED FORWARD
+
+- /ai-info/ 404 after 10 min; remote HEAD confirmed a3aec02 but live site fully pre-release, so the
+  Cloudflare BUILD failed. Root cause found in minutes: dash-guard.test.ts asserted the EXCLUDE_ALL
+  entry (the owner-reserved UNTRACKED draft) exists on disk. True locally, false in a git checkout,
+  so the guard failed CI and the build aborted. The local end-to-end verification could never have
+  caught it: the difference IS the untracked file.
+- Fix 2dff5df: tracked exclusion entries still asserted to exist; untracked-by-design entries may be
+  absent. Verified BOTH ways by parking the draft (guard passes absent AND present), full suite
+  413/18, tsc 0, pushed. Second deploy poll running.
+- LESSON: any build-gate test must be run against a CLEAN GIT CHECKOUT before it ships, not the
+  working tree; untracked files are the canonical local-vs-CI difference.
+
+## Cycle 25 (2026-08-20): RELEASE LIVE, VERIFIED
+
+- Second deploy succeeded (attempt 7 of the poll, ~2.5 min). Live checks: /ai-info/ 200 with correct
+  H1, 0 dashes, review line rendering, llms.txt entry live with UTM format; home title dash-free;
+  /rent-to-own/ runway 0 and MCR exactly 6 (sanctioned answer x 3 renders x 2 mentions).
+- main == origin == 2dff5df. Site now 57 routes. The guards gate every future deploy.
+
+## Cycle 26 (2026-08-20): handoff written
+
+- New CURRENT AS OF 2026-08-20 block prepended to HANDOFF.md (release ledger, CI lesson, binding
+  fact rulings from the interview, owner's desk, landmines). Dash-checked. Local, rides with the
+  next docs(udo) commit.
