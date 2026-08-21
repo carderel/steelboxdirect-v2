@@ -71,8 +71,9 @@ describe('globalNodes', () => {
     expect(lb.address.addressLocality).toBe('Cincinnati');
     // hasMap and sameAs sit on the same node the parent link was removed from, so pin them here
     expect(lb.hasMap).toBe('https://maps.google.com/?cid=16337072236475848136');
-    expect(lb.sameAs).toHaveLength(3);
+    expect(lb.sameAs).toHaveLength(4);
     expect(lb.sameAs).toContain('https://www.linkedin.com/company/steel-box-direct/');
+    expect(lb.sameAs).toContain('https://www.pinterest.com/steelboxdirect/');
     expect(JSON.stringify(nodes)).not.toContain('aggregateRating');
     expect(JSON.stringify(nodes)).not.toContain('AggregateRating');
   });
