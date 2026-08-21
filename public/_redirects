@@ -1,0 +1,12 @@
+# Trailing slash variants of the old flat city URLs. Google indexed the
+# slash forms and the adapter generated rules in astro.config.mjs only
+# cover the no slash forms, so those slash URLs were returning 404.
+/cincinnati-shipping-containers/ /locations/ohio/cincinnati-shipping-containers/ 301
+/dayton-shipping-containers/ /locations/ohio/dayton-shipping-containers/ 301
+/indianapolis-shipping-containers/ /locations/indiana/indianapolis-shipping-containers/ 301
+/louisville-shipping-containers/ /locations/kentucky/louisville-shipping-containers/ 301
+
+# Leftover Partytown asset paths from the removed integration. Google
+# flagged them, so send everything under that prefix home with a 301.
+/~partytown / 301
+/~partytown/* / 301
