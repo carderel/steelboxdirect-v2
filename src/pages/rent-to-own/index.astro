@@ -1,7 +1,14 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { Image } from 'astro:assets';
 import { composeRentalStance } from '../../data/rentalStance';
+import imgHero from '../../assets/photos/rent-to-own/rent-to-own-shipping-container-home-gravel-pad-hero.jpg';
+import imgApplication from '../../assets/photos/rent-to-own/rent-to-own-conex-application-kitchen-table.jpg';
+import imgSeasons from '../../assets/photos/rent-to-own/rent-to-own-shipping-container-through-seasons.jpg';
+import imgPainting from '../../assets/photos/rent-to-own/rent-to-own-container-owner-painting-customizing.jpg';
+import imgLocking from '../../assets/photos/rent-to-own/rent-to-own-shipping-container-owner-locking-doors.jpg';
+import imgComparison from '../../assets/photos/rent-to-own/rent-to-own-container-vs-self-storage-comparison.jpg';
 
 const crumbs = [{ name: 'Home', path: '/' }, { name: 'Rent to Own', path: '/rent-to-own/' }];
 
@@ -87,6 +94,11 @@ const faqs: { q: string; a: string; html?: string }[] = [
         payments, delivery included in your quote, and when the last payment clears the container is
         yours.
       </p>
+      <figure class="rto-fig rto-hero-fig" data-img-slot="hero">
+        <Image class="rto-fig-img" src={imgHero} width={1800} format="webp" loading="eager"
+          alt="Used wind and water tight shipping container settled on a gravel pad beside a rural workshop at evening, kept as the owner's own storage" />
+        <figcaption class="rto-fig-tag m">Photo · A used Wind &amp; Water Tight container on its own gravel pad</figcaption>
+      </figure>
     </div>
   </div>
 
@@ -108,6 +120,11 @@ const faqs: { q: string; a: string; html?: string }[] = [
           <h3>Fill out the rent to own conex application</h3>
           <p class="step-approval-note">There's no traditional credit check, each application is reviewed by an independent program administrator (not by Steel Box Direct) and the final decision is theirs.</p>
           <div class="step-tag step-tag-soft m">Subject to third-party approval</div>
+          <figure class="rto-fig rto-step-fig" data-img-slot="application">
+            <Image class="rto-fig-img" src={imgApplication} width={1000} format="webp"
+              alt="Person filling out a rent to own container application on a phone at a kitchen table, with a used shipping container visible outside the window" />
+            <figcaption class="rto-fig-tag m">Photo · Applying from the kitchen table</figcaption>
+          </figure>
         </div>
         <div class="step-card" style="border-left-color: var(--c4-cost);">
           <span class="step-num m">Step 03</span>
@@ -152,7 +169,17 @@ const faqs: { q: string; a: string; html?: string }[] = [
           <p>The longest term the program offers, with the most room to spread out the payoff.</p>
         </div>
       </div>
+      <figure class="rto-fig rto-fig-wide rto-fig-dark" data-img-slot="seasons">
+        <Image class="rto-fig-img" src={imgSeasons} width={1600} format="webp"
+          alt="Used shipping container on a gravel pad in winter snow, shown in the same spot where it stands year round on a rural property" />
+        <figcaption class="rto-fig-tag m">Photo · The same spot, month after month</figcaption>
+      </figure>
       <p class="rto-term-note m">Every term · no traditional credit check · subject to third-party approval</p>
+      <figure class="rto-fig rto-fig-wide rto-fig-dark" data-img-slot="ownership">
+        <Image class="rto-fig-img" src={imgPainting} width={1600} format="webp"
+          alt="Hands repainting the corrugated side of a used shipping container on a rural property, the kind of change only an owner would make" />
+        <figcaption class="rto-fig-tag m">Photo · Yours to repaint at the end of the term</figcaption>
+      </figure>
     </div>
   </section>
 
@@ -207,6 +234,11 @@ const faqs: { q: string; a: string; html?: string }[] = [
         </tbody>
       </table>
       <p class="rto-compare-note">Deciding between renting and owning at all, rather than between two ways to own? The rent vs buy calculator totals a rental over the months you need it and shows <a href="/container-rent-vs-buy-calculator/">what renting would have cost by then</a>.</p>
+      <figure class="rto-fig rto-fig-wide" data-img-slot="comparison">
+        <Image class="rto-fig-img" src={imgComparison} width={1600} format="webp"
+          alt="Used shipping container on a private gravel pad in the foreground with a row of self-storage unit doors visible in the distance" />
+        <figcaption class="rto-fig-tag m">Photo · A container on your property, self-storage across the road</figcaption>
+      </figure>
     </div>
   </section>
 
@@ -249,6 +281,11 @@ const faqs: { q: string; a: string; html?: string }[] = [
           </div>
         ))}
       </div>
+      <figure class="rto-fig rto-fig-wide" data-img-slot="lockup">
+        <Image class="rto-fig-img" src={imgLocking} width={1600} format="webp"
+          alt="Hands closing the door handles and padlock on a used wind and water tight shipping container at dusk on a gravel drive" />
+        <figcaption class="rto-fig-tag m">Photo · Locking up your own box at the end of the day</figcaption>
+      </figure>
     </div>
   </section>
 
@@ -305,7 +342,7 @@ const faqs: { q: string; a: string; html?: string }[] = [
     }
 
     /* ---- HOW IT WORKS ---- */
-    .rto-how { padding: 96px 0; background: var(--cream); border-bottom: 1.5px solid rgba(11,15,26,.1); }
+    .rto-how { padding: 72px 0; background: var(--cream); border-bottom: 1.5px solid rgba(11,15,26,.1); }
     .rto-step-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
     .step-card {
       background: white; border: 2px solid var(--ink); border-left: 8px solid var(--ink);
@@ -327,7 +364,7 @@ const faqs: { q: string; a: string; html?: string }[] = [
     .step-tag.step-tag-soft { background: none; color: #b1aca3; font-size: 10px; padding: 0; }
 
     /* ---- TERMS ---- */
-    .rto-terms { padding: 96px 0; background: var(--ink); color: var(--cream); }
+    .rto-terms { padding: 72px 0; background: var(--ink); color: var(--cream); }
     .rto-terms .rto-h2 { color: var(--cream); }
     .rto-term-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
     .term-chip {
@@ -341,7 +378,7 @@ const faqs: { q: string; a: string; html?: string }[] = [
     .rto-term-note { margin: 40px 0 0; color: var(--cream); opacity: .6; letter-spacing: .08em; line-height: 1.7; }
 
     /* ---- COMPARISON TABLE ---- */
-    .rto-compare { padding: 96px 0; background: white; border-bottom: 1.5px solid rgba(11,15,26,.1); }
+    .rto-compare { padding: 72px 0; background: white; border-bottom: 1.5px solid rgba(11,15,26,.1); }
     .rto-table {
       width: 100%; border-collapse: collapse; background: var(--cream);
       border: 2.5px solid var(--ink); box-shadow: 12px 12px 0 var(--yellow); table-layout: fixed;
@@ -379,7 +416,7 @@ const faqs: { q: string; a: string; html?: string }[] = [
     .trust-v { font-family: var(--narrow); font-weight: 700; font-size: 18px; line-height: 1.15; text-transform: uppercase; display: block; }
 
     /* ---- FAQ ---- */
-    .rto-faq { padding: 96px 0; background: var(--cream); }
+    .rto-faq { padding: 72px 0; background: var(--cream); }
     .rto-faq-list { display: flex; flex-direction: column; gap: 28px; }
     .rto-faq-item { border-left: 4px solid var(--yellow-d); padding-left: 28px; max-width: 860px; }
     .rto-faq-item h3 {
@@ -400,6 +437,31 @@ const faqs: { q: string; a: string; html?: string }[] = [
     .rto-cta-btns { display: flex; gap: 16px; flex-wrap: wrap; }
     .rto-btn-yellow { background: var(--yellow); color: var(--ink); border-color: var(--yellow); }
     .rto-ghost { color: var(--cream); }
+
+    /* ---- PHOTOS (additive figures, fixed ratio for zero CLS) ---- */
+    .rto-fig {
+      position: relative; margin: 0; overflow: hidden;
+      background: var(--ink); border: 2px solid var(--ink);
+      display: flex; align-items: flex-end;
+    }
+    .rto-fig-img {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover; z-index: 0;
+    }
+    .rto-fig-tag {
+      position: relative; z-index: 1; margin: 0; width: 100%;
+      color: var(--cream); opacity: .75; padding: 12px 16px;
+      border-top: 1px solid rgba(246,241,231,.18);
+      background: linear-gradient(transparent, rgba(11,15,26,.6));
+      letter-spacing: .06em; line-height: 1.4;
+    }
+    .rto-hero-fig {
+      aspect-ratio: 16 / 9; max-width: 980px; margin-top: 40px;
+      border-width: 2.5px; box-shadow: 10px 10px 0 var(--ink);
+    }
+    .rto-step-fig { aspect-ratio: 16 / 9; margin-top: 20px; }
+    .rto-fig-wide { aspect-ratio: 21 / 9; margin-top: 40px; box-shadow: 8px 8px 0 var(--ink); }
+    .rto-fig-dark { box-shadow: 8px 8px 0 var(--yellow); }
 
     /* ---- RESPONSIVE ---- */
     @media (max-width: 960px) {
@@ -429,6 +491,12 @@ const faqs: { q: string; a: string; html?: string }[] = [
       }
       .rto-trust-grid { grid-template-columns: 1fr; }
       .trust-cell:nth-child(2) { border-top: 1.5px solid rgba(11,15,26,.15); }
+    }
+    @media (max-width: 700px) {
+      .rto-fig-wide { aspect-ratio: 16 / 9; margin-top: 28px; box-shadow: 5px 5px 0 var(--ink); }
+      .rto-fig-dark { box-shadow: 5px 5px 0 var(--yellow); }
+      .rto-hero-fig { margin-top: 28px; box-shadow: 6px 6px 0 var(--ink); }
+      .rto-fig-tag { padding: 10px 12px; font-size: 10px; }
     }
   </style>
 </BaseLayout>
