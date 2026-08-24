@@ -25,7 +25,14 @@ export function slugToCategory(slug: string): BlogCategory | undefined {
 }
 
 export function formatBlogDate(date: Date): string {
-  return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+  // Frontmatter dates parse as UTC midnight, so render in UTC too. Formatting in the
+  // build machine's local zone shifted every displayed date one day early (T-164).
+  return date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    timeZone: 'UTC',
+  });
 }
 
 // Map each of the 6 fixed categories to one of the site's Sim-Sim decision-block colors
