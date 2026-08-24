@@ -74,12 +74,14 @@ describe('tools catalogue', () => {
     const guidesSource = readFileSync(join(REPO_ROOT, 'src/data/guides.ts'), 'utf8');
     expect(
       guidesSource.includes('/container-rent-vs-buy-calculator/'),
-      'A ninth guides.ts entry would flip guideTitleCountWord from Eight to Nine and rewrite the '
-      + 'live meta description of the guides hub. The tool belongs in tools.ts.',
+      'A calculator entry in guides.ts would bump guideTitleCountWord and rewrite the live meta '
+      + 'description of the guides hub. The tool belongs in tools.ts.',
     ).toBe(false);
 
-    expect(guides).toHaveLength(8);
-    expect(guideCount).toBe(8);
+    // Nine as of 2026-08-24: the portable storage guide is the ninth GUIDE. The count here exists
+    // to catch a tool leaking in, so a tenth entry still has to be a guide to move this number.
+    expect(guides).toHaveLength(9);
+    expect(guideCount).toBe(9);
 
     const guideUrls = guides.map((g) => g.url);
     const itemListUrls = guideListItems.map((i) => i.url);

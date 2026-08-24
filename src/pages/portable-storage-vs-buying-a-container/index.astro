@@ -1,0 +1,608 @@
+---
+export const prerender = true;
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { composeRentalStance } from '../../data/rentalStance';
+
+// Breadcrumbs run Home > Guides > this page. The Guides crumb carries a path because the hub is a
+// real page, and one array feeds both the JSON-LD BreadcrumbList (via BaseLayout) and the visible
+// trail, so the two can never drift.
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Guides', path: '/shipping-container-guides/' },
+  { name: 'Portable Storage vs Buying a Container' },
+];
+
+// Single source for the page FAQ. These three strings ARE the FAQPage JSON-LD answers and they
+// also render in the QuickFacts card, so each answer stands up quoted alone. The third one
+// composes the canonical non-rental fact from src/data/rentalStance.ts with context that exists
+// only on this page, so this URL never emits a Question/Answer pair identical to
+// /container-rental-guide/, /rent-to-own/, the calculator, or the product hub.
+const faqs = [
+  {
+    q: 'Is PODS-style portable storage the same thing as a shipping container?',
+    a: 'No. They are different products from different industries. A PODS-style portable storage '
+      + 'unit is a purpose-built rented box, most commonly around 7 to 16 feet long, that the '
+      + 'operator trucks to you, can warehouse for you, and picks up when you are done, billed '
+      + 'monthly plus delivery and pickup fees. A shipping container is a corrugated steel conex, '
+      + 'typically 20 or 40 feet long, that you can buy outright and keep permanently on your own '
+      + 'property. A quote for one tells you nothing about the other.',
+  },
+  {
+    q: 'Should I rent portable storage or buy a shipping container?',
+    a: 'It depends on whether your stuff is moving or staying. If you are between homes, '
+      + 'mid-renovation, or need the box warehoused or driven to a new address, rent portable '
+      + 'storage, because that trucking service is the product and an owned container cannot do '
+      + 'it. If the storage will sit on property you control with no end date, price buying before '
+      + 'signing an open-ended rental, because rental payments accumulate for as long as you keep '
+      + 'the unit while a purchase is one number that never recurs.',
+  },
+  {
+    q: 'Does Steel Box Direct rent portable storage units?',
+    a: composeRentalStance({
+      context:
+        'We do not rent portable storage units either. What we sell is used Wind and Water Tight '
+        + 'shipping containers in 20ft, 40ft, and 40ft high cube sizes, delivered with one all-in '
+        + 'quote, and the rent-to-own term runs 12, 24, 36, or 48 months, ending with the buyer '
+        + 'owning the container. Applications are reviewed by an independent third-party '
+        + 'administrator, so approval is not ours to promise.',
+    }).a,
+  },
+];
+---
+
+<BaseLayout
+  pageType="guide"
+  title="Portable Storage vs. Buying a Shipping Container | Steel Box Direct"
+  description="Moving? A rented PODS-style unit fits. Keeping storage on your own property past six months? The math favors owning. An honest guide to which you need."
+  datePublished="2026-08-24"
+  dateModified="2026-08-24"
+  breadcrumbs={crumbs}
+  schema={{
+    kind: 'guide',
+    title: 'PODS-Style Portable Storage vs. Buying a Shipping Container',
+    specs: [
+      { k: 'Steel Box Direct rents', v: 'No' },
+      { k: 'What we do instead', v: 'Sell, and rent-to-own' },
+      { k: 'A rented pod fits', v: 'Moves and end-dated needs' },
+      { k: 'An owned container fits', v: 'Storage that stays put' },
+      { k: 'Sizes we sell', v: '20ft, 40ft, 40ft high cube' },
+      { k: 'Condition', v: 'Wind & Water Tight (used)' },
+    ],
+    faqs,
+  }}
+>
+
+  <!-- 1. HERO + THE HONEST STATEMENT -->
+  <div class="pv-hero">
+    <div class="wrap">
+      <Breadcrumbs items={crumbs} />
+      <div class="pv-eyebrow">
+        <span class="idx">§ STORAGE</span>
+        <span class="nm">Decision: Rented Box or Owned Box</span>
+        <span class="tg">Honest Answer</span>
+      </div>
+      <h1 class="pv-headline">PODS-style portable storage vs. buying a shipping container: <em>which do you actually need?</em></h1>
+
+      <div class="pv-statement">
+        <span class="m pv-statement-k">Read this first</span>
+        <p>Steel Box Direct does not rent portable storage units.</p>
+        <p class="pv-statement-body">
+          We sell used Wind and Water Tight shipping containers, and we offer rent-to-own. We do
+          not operate a fleet of driveway boxes, and we are not going to run down a category we do
+          not sell just because we do not sell it. Portable storage is genuinely the right product
+          for a lot of people, and most of those people are in the middle of a move. This page
+          exists to tell you which product your situation actually calls for, and to point you at
+          the right one either way, including when the right one is not us.
+        </p>
+      </div>
+
+      <ul class="pv-hero-jump">
+        <li><a href="#share">Two products, one word</a></li>
+        <li><a href="#fork">Moving, or keeping?</a></li>
+        <li><a href="#compare">Side by side</a></li>
+        <li><a href="#rent">Who should rent</a></li>
+        <li><a href="#buy">Who should buy</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 2. TWO PRODUCTS THAT SHARE A WORD -->
+  <section class="pv-share" id="share" aria-labelledby="share-h">
+    <div class="wrap">
+      <div class="pv-sh">
+        <span class="m">Start Here</span>
+        <h2 class="pv-h2" id="share-h">Two products that share a word</h2>
+        <p class="pv-sh-sub">
+          Search for "storage container" and two different industries answer.
+        </p>
+      </div>
+
+      <div class="pv-share-grid">
+        <div class="share-card is-pod">
+          <span class="m share-k">The first industry</span>
+          <h3>Portable storage</h3>
+          <p>
+            The PODS-style, U-Pack-style category. A company delivers a purpose-built storage unit
+            to your driveway on its own truck, you load it at your pace, and then one of three
+            things happens. The unit stays where it is while you pay a monthly rate, or the company
+            hauls it to a warehouse and stores it for you, or the company hauls it to your next
+            address.
+          </p>
+          <p>
+            Most units in this category run somewhere between roughly 7 and 16 feet long, they are
+            engineered to be lifted and trucked repeatedly, and the whole product is built around
+            one idea: your stuff needs to move, and someone else should do the driving. You pay a
+            monthly rate for the unit plus separate charges for delivery, pickup, and any move in
+            between.
+          </p>
+        </div>
+
+        <div class="share-card is-box">
+          <span class="m share-k">The second industry</span>
+          <h3>A shipping container</h3>
+          <p>
+            A corrugated steel conex, the box that comes off a ship. The common sizes are 20 feet
+            and 40 feet long, 8 feet 6 inches tall standard, 9 feet 6 inches in the high cube. It
+            sits flat on gravel or on blocks, its doors open at ground level, and it does not
+            expect to travel again.
+          </p>
+          <p>
+            This is the product we sell: used, in one honest condition grade called Wind and Water
+            Tight, which means structurally sound and sealed against weather, sold as-is with
+            cosmetic wear, and not certified for ocean shipping. You buy it once, it stays on your
+            property, and it is yours.
+          </p>
+        </div>
+      </div>
+
+      <p class="pv-share-note">
+        Both are legitimate products. Neither is a knockoff of the other. But they answer two
+        different questions, and a quote for one tells you nothing about the other.
+      </p>
+    </div>
+  </section>
+
+  <!-- 3. THE FORK -->
+  <section class="pv-fork" id="fork" aria-labelledby="fork-h">
+    <div class="wrap">
+      <div class="pv-sh">
+        <span class="m">The Fork</span>
+        <h2 class="pv-h2" id="fork-h">Are you moving, or are you keeping?</h2>
+        <p class="pv-sh-sub">
+          Every bad decision in this comparison comes from answering the wrong question. The
+          question is not "which box is better." It is: is your stuff going somewhere, or is it
+          staying put?
+        </p>
+      </div>
+
+      <div class="pv-fork-grid">
+        <div class="fork-card is-a">
+          <span class="m fork-k">Path A</span>
+          <h3>Your stuff is going somewhere</h3>
+          <p>
+            You are between houses, the closing dates do not line up, the renovation has evicted
+            the living room, or the move is across three states. You need a box that travels, a
+            company that does the trucking, and possibly a warehouse to hold everything in the gap.
+          </p>
+          <p>
+            That is exactly what portable storage was invented for, and nothing we sell does that
+            job. A 20 foot steel container does not follow you to the new house.
+          </p>
+          <p class="fork-verdict">Rent. The portable storage industry exists for you.</p>
+        </div>
+
+        <div class="fork-card is-b">
+          <span class="m fork-k">Path B</span>
+          <h3>Your stuff is staying put</h3>
+          <p>
+            The mower, the tools, the inventory, the equipment, the overflow that has already been
+            "temporary" for two years. It lives on property you control, and it will keep living
+            there. Nothing about that job requires a company to truck a box back and forth.
+          </p>
+          <p>
+            What it requires is dry, lockable, secure space that stands on your own ground, and
+            that is an ownership question, because the alternative is a monthly bill with no end
+            written into it.
+          </p>
+          <p class="fork-verdict">Price owning before signing anything open-ended.</p>
+        </div>
+      </div>
+
+      <p class="pv-fork-note">
+        That is the whole fork. Movers rent. Keepers should at least price owning before signing
+        anything open-ended.
+      </p>
+    </div>
+  </section>
+
+  <!-- 4. SIDE BY SIDE TABLE -->
+  <section class="pv-compare" id="compare" aria-labelledby="compare-h">
+    <div class="wrap">
+      <div class="pv-sh pv-sh-dark">
+        <span class="m">Side by Side</span>
+        <h2 class="pv-h2" id="compare-h">A rented pod vs. an owned container</h2>
+      </div>
+
+      <p class="pv-table-caption" id="pv-tbl-cap">
+        Compared on structure, not on anyone's rates. No dollar figures here, because rates vary by
+        company, market, and month, and your own written quotes are the only numbers that count.
+        <span class="pv-table-hint">Scroll the table sideways on a small screen</span>
+      </p>
+      <div class="tbl-scroll" role="region" aria-labelledby="pv-tbl-cap" tabindex="0">
+        <table class="pv-table">
+          <thead>
+            <tr>
+              <th scope="col" class="pt-rowhead"><span class="m">Compare</span></th>
+              <th scope="col"><span class="pt-kicker m">Open-ended</span><span class="pt-title">Rented portable storage unit</span></th>
+              <th scope="col" class="pt-hi"><span class="pt-kicker m">Yours</span><span class="pt-title">Owned shipping container</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Who trucks it</th>
+              <td>The operator, on their equipment, every time it moves: delivery, warehouse transfer, redelivery, final pickup. That service is the product.</td>
+              <td class="is-hi">Delivered to your site once. After that, nobody moves it, because it is not going anywhere.</td>
+            </tr>
+            <tr>
+              <th scope="row">Typical sizes</th>
+              <td>Purpose-built units, most commonly in the roughly 7 to 16 foot range.</td>
+              <td class="is-hi">20ft standard (about 160 sq ft of floor), 40ft standard (about 320 sq ft), 40ft high cube (9ft 6in tall).</td>
+            </tr>
+            <tr>
+              <th scope="row">How you pay</th>
+              <td>A monthly rate for as long as you have the unit, plus separate one-time charges for delivery, pickup, and each move in between.</td>
+              <td class="is-hi">One purchase price, or a fixed rent-to-own term that ends. Nothing recurs after that.</td>
+            </tr>
+            <tr>
+              <th scope="row">How long it stays</th>
+              <td>As long as you keep paying. The agreement is open-ended by design.</td>
+              <td class="is-hi">As long as you want. It is your property standing on your land.</td>
+            </tr>
+            <tr>
+              <th scope="row">Whose unit it is, and the insurance question</th>
+              <td>The unit belongs to the operator. Whether their agreement asks you to carry any coverage, and what your own policy does about goods in their box or their warehouse, are questions for the rental company and for your insurer, so ask both, in writing.</td>
+              <td class="is-hi">The container is yours. Whether to add it and its contents to your own policy is a question for your insurer, and only your insurer.</td>
+            </tr>
+            <tr>
+              <th scope="row">At month 6</th>
+              <td>Six monthly payments made, plus the fees. The unit is still theirs.</td>
+              <td class="is-hi">The same one number it was on day one. The container is yours.</td>
+            </tr>
+            <tr>
+              <th scope="row">At month 12</th>
+              <td>Twelve monthly payments made, plus the fees. Still theirs, and no last payment is on the calendar.</td>
+              <td class="is-hi">Still the same number. Nothing further was ever scheduled.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- WHY THE MATH FLIPS -->
+      <div class="pv-flip">
+        <span class="m pv-flip-k">Why the math flips, and why we will not tell you the month</span>
+        <h3>A climbing line always crosses a fixed point</h3>
+        <p>
+          Here is the structural fact underneath this whole comparison, and it holds no matter
+          whose rates you plug in. A rental is a line that keeps climbing. Every month adds a
+          payment, the fees stack on top, and there is no point on the calendar where it stops on
+          its own, because an open-ended agreement runs until you end it. A purchase is a single
+          point. It lands once, at the start, and after that the calendar is empty.
+        </p>
+        <p>
+          A climbing line always crosses a fixed point eventually. The only question is which
+          month, and that month is set by two numbers we do not have: the monthly rate on your
+          rental quote and the delivered purchase price for your ZIP. Anyone who quotes you a
+          universal break-even month is averaging strangers' quotes and calling it your answer.
+        </p>
+        <p>
+          What we can say honestly is this: for storage that stays on your own property, the
+          crossing point tends to arrive in months, not years. If you already know the box will
+          still be sitting there six months from now, run the arithmetic before you sign, because
+          past that kind of horizon the open-ended structure is doing exactly what it was designed
+          to do, which is continue. Our
+          <a href="/container-rent-vs-buy-calculator/">rent vs buy calculator</a> does the
+          arithmetic with your own figures, your rental quote against our published average
+          purchase price with its disclaimer, and it will tell you plainly if renting wins over
+          your timeline.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. WHO SHOULD RENT -->
+  <section class="pv-rent" id="rent" aria-labelledby="rent-h">
+    <div class="wrap">
+      <div class="pv-sh">
+        <span class="m">The Honest Half</span>
+        <h2 class="pv-h2" id="rent-h">Who should rent a portable storage unit</h2>
+        <p class="pv-sh-sub">
+          Honestly, plenty of people. Rent a pod, and do not overthink it, if any of these is you:
+        </p>
+      </div>
+
+      <div class="pv-list-grid">
+        <div class="list-card">
+          <h3>You are moving between homes</h3>
+          <p>
+            This is the category's home turf. The box travels, the operator drives, and a warehouse
+            can hold everything while the closing dates sort themselves out. Nothing we sell can do
+            any of that.
+          </p>
+        </div>
+        <div class="list-card">
+          <h3>You are mid-renovation with an end date</h3>
+          <p>
+            Eight weeks of the living room in the driveway is a rental problem, not an ownership
+            problem.
+          </p>
+        </div>
+        <div class="list-card">
+          <h3>Your site cannot take a steel container</h3>
+          <p>
+            A short suburban driveway, a tight lot, an HOA that will not have a 20 foot conex in
+            view: a smaller purpose-built unit that leaves when you are done may be the only box
+            that fits your situation at all.
+          </p>
+        </div>
+        <div class="list-card">
+          <h3>You want the box to disappear without arranging it</h3>
+          <p>
+            With a rental, the pickup is part of the deal. With an owned container, moving it later
+            is your arrangement to make.
+          </p>
+        </div>
+      </div>
+
+      <p class="pv-rent-foot">
+        If that is you, close this tab with our blessing. Our
+        <a href="/container-rental-guide/">container rental guide</a> lists the rental companies we
+        were able to verify across Ohio, Indiana, Kentucky, and western West Virginia, along with
+        nine questions worth asking any of them before you sign. We do not get paid when you call
+        one.
+      </p>
+    </div>
+  </section>
+
+  <!-- 6. WHO SHOULD BUY -->
+  <section class="pv-buy" id="buy" aria-labelledby="buy-h">
+    <div class="wrap">
+      <div class="pv-sh">
+        <span class="m">The Other Half</span>
+        <h2 class="pv-h2" id="buy-h">Who should buy a shipping container</h2>
+        <p class="pv-sh-sub">
+          Buying is the right structure when the need has no end date and the ground is yours.
+        </p>
+      </div>
+
+      <div class="pv-list-grid">
+        <div class="list-card is-buy">
+          <h3>Farmers</h3>
+          <p>Storing equipment, feed, and tools without pouring a pole barn foundation.</p>
+        </div>
+        <div class="list-card is-buy">
+          <h3>Contractors</h3>
+          <p>
+            Who need lockable steel on a yard they control, with forklift-height doors and walls
+            that shrug off weather.
+          </p>
+        </div>
+        <div class="list-card is-buy">
+          <h3>Homeowners with the space</h3>
+          <p>
+            Especially anyone currently feeding a monthly self-storage bill for things that could
+            sit dry and locked fifty feet from the back door.
+          </p>
+        </div>
+        <div class="list-card is-buy">
+          <h3>Small businesses</h3>
+          <p>
+            Whose inventory outgrew the building years ago and whose landlord wants real money for
+            the next size up.
+          </p>
+        </div>
+      </div>
+
+      <p class="pv-buy-note">
+        What you get from us is deliberately simple: one condition grade, used Wind and Water
+        Tight, structurally sound and sealed against weather, sold as-is with cosmetic wear and
+        backed by a Lifetime Leak Warranty. Three sizes. One all-in delivered quote for your ZIP,
+        no broker markup.
+      </p>
+      <p class="pv-buy-note">
+        If the purchase price up front is the obstacle, <a href="/rent-to-own/">rent-to-own</a>
+        exists for exactly that: a fixed term of 12, 24, 36, or 48 months that ends with you owning
+        the container. There is no traditional credit check, applications are reviewed by an
+        independent third-party administrator, and approval is theirs to give, not ours to promise.
+        It is the middle path between an open-ended rental and writing one check.
+      </p>
+      <p class="pv-buy-note">
+        One responsibility stays with you either way: whether a container is permitted on your
+        property is a matter for your local zoning or building authority, and confirming it before
+        anything arrives is the buyer's job. Our
+        <a href="/permits/">permits and zoning guide</a> shows you where to start asking.
+      </p>
+    </div>
+  </section>
+
+  <!-- 7. WHERE TO GO FROM HERE -->
+  <section class="pv-next-steps" aria-labelledby="next-steps-h">
+    <div class="wrap">
+      <div class="pv-sh pv-sh-dark">
+        <span class="m">Where To Go From Here</span>
+        <h2 class="pv-h2" id="next-steps-h">Two tools settle the two questions this page cannot answer for you.</h2>
+      </div>
+
+      <div class="pv-tools-grid">
+        <div class="tool-card">
+          <span class="m tool-k">Question one</span>
+          <h3>Which size fits your stuff?</h3>
+          <p>
+            The <a href="/size/">size guide</a> walks the 20ft, 40ft, and high cube through real
+            loads: what fits, what does not, and when the bigger box is the cheaper mistake to
+            avoid.
+          </p>
+        </div>
+        <div class="tool-card">
+          <span class="m tool-k">Question two</span>
+          <h3>Where is your break-even?</h3>
+          <p>
+            The <a href="/container-rent-vs-buy-calculator/">rent vs buy calculator</a> takes the
+            monthly rate off your own rental quote and finds the month the climbing line crosses
+            the fixed one. And if you want to understand what moves a delivered container price
+            before you request one, the <a href="/cost/">cost guide</a> lays that out with current
+            figures and their dates.
+          </p>
+        </div>
+      </div>
+
+      <p class="pv-next-note">
+        If the arithmetic says rent, go rent, and go with our blessing. If it says own, the quote
+        form is here, quotes are free, and there is no obligation attached to asking.
+      </p>
+      <div class="pv-cta-btns">
+        <a href="/quote/" class="btn pv-btn-yellow">Get My Quote →</a>
+        <a href="/rent-to-own/" class="btn-ghost">How rent-to-own works</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="pv-next" aria-labelledby="next-h">
+    <div class="wrap">
+      <p class="pv-next-label" id="next-h">Continue researching</p>
+      <div class="pv-next-links">
+        <a href="/size/">What size do I need?</a>
+        <a href="/cost/">What does a container cost?</a>
+        <a href="/container-rental-guide/">Who rents near you?</a>
+        <a href="/permits/">Do I need a permit?</a>
+        <a href="/shipping-container-guides/">All container guides</a>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style>
+  /* ---- SHARED SECTION HEADER (pattern from /container-rental-guide/) ---- */
+  .pv-sh{border-top:4px solid var(--ink);padding-top:18px;margin-bottom:40px}
+  .pv-sh .m{display:block;opacity:.55;margin-bottom:10px}
+  .pv-sh-dark{border-top-color:var(--yellow)}
+  .pv-sh-dark .m{color:var(--yellow);opacity:1}
+  .pv-h2{font-family:var(--narrow);font-weight:700;text-transform:uppercase;font-size:clamp(30px,4.5vw,48px);line-height:1;letter-spacing:-.01em;margin:0}
+  .pv-sh-sub{font-size:17px;line-height:1.55;max-width:820px;margin:18px 0 0;opacity:.82}
+
+  /* ---- 1. HERO ---- */
+  .pv-hero{background:var(--c3-deliver);color:var(--cream);padding:44px 0 56px;border-bottom:2.5px solid var(--ink)}
+  .pv-eyebrow{display:inline-flex;align-items:center;gap:14px;flex-wrap:wrap;border:2px solid var(--cream);padding:8px 14px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+  .pv-eyebrow .idx{font-weight:700}
+  .pv-eyebrow .tg{opacity:.7}
+  .pv-headline{font-family:var(--narrow);font-weight:700;text-transform:uppercase;font-size:clamp(30px,4.4vw,58px);line-height:1.04;letter-spacing:-.02em;margin:24px 0 0;max-width:24ch}
+  .pv-headline em{font-style:normal;background:var(--ink);color:var(--cream);padding:0 .1em;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+  .pv-statement{background:var(--ink);color:var(--cream);border:2.5px solid var(--ink);box-shadow:10px 10px 0 rgba(11,15,26,.35);padding:30px 32px;margin:34px 0 0;max-width:880px}
+  .pv-statement .pv-statement-k{display:block;color:var(--yellow);margin-bottom:14px}
+  .pv-statement p{margin:0;font-size:clamp(19px,2.1vw,25px);line-height:1.35;font-family:var(--narrow);font-weight:700;text-transform:uppercase;letter-spacing:-.01em}
+  .pv-statement p.pv-statement-body{font-family:var(--display);font-weight:400;text-transform:none;letter-spacing:0;font-size:17px;line-height:1.6;opacity:.85;margin-top:16px}
+  .pv-hero-jump{display:flex;flex-wrap:wrap;gap:12px;margin:28px 0 0;padding:0;list-style:none}
+  .pv-hero-jump a{display:inline-block;border:2px solid var(--cream);padding:9px 14px;font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase}
+  .pv-hero-jump a:hover{background:var(--cream);color:var(--c3-deliver)}
+
+  /* ---- 2. TWO PRODUCTS ---- */
+  .pv-share{padding:72px 0;background:var(--cream);border-bottom:1.5px solid rgba(11,15,26,.1)}
+  .pv-share-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+  .share-card{background:#fff;border:2px solid var(--ink);border-left:8px solid var(--ink);padding:32px;box-shadow:8px 8px 0 var(--ink)}
+  .share-card.is-pod{border-left-color:var(--c4-cost)}
+  .share-card.is-box{border-left-color:var(--c3-deliver)}
+  .share-k{display:block;opacity:.5;margin-bottom:12px;font-weight:700}
+  .share-card h3{font-family:var(--narrow);font-weight:700;font-size:28px;text-transform:uppercase;line-height:1.05;margin:0 0 14px}
+  .share-card p{font-size:15.5px;line-height:1.6;opacity:.85;margin:0 0 14px}
+  .share-card p:last-child{margin-bottom:0}
+  .pv-share-note{margin:32px 0 0;padding:18px 22px;background:var(--ink);color:var(--cream);font-size:16px;line-height:1.6;max-width:880px}
+
+  /* ---- 3. THE FORK ---- */
+  .pv-fork{padding:72px 0;background:#fff;border-bottom:1.5px solid rgba(11,15,26,.1)}
+  .pv-fork-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+  .fork-card{background:var(--cream);border:2px solid var(--ink);border-left:8px solid var(--ink);padding:32px;box-shadow:8px 8px 0 var(--ink);display:flex;flex-direction:column}
+  .fork-card.is-a{border-left-color:var(--c4-cost)}
+  .fork-card.is-b{border-left-color:var(--c3-deliver)}
+  .fork-k{display:block;opacity:.5;margin-bottom:12px;font-weight:700}
+  .fork-card h3{font-family:var(--narrow);font-weight:700;font-size:26px;text-transform:uppercase;line-height:1.05;margin:0 0 14px}
+  .fork-card p{font-size:15.5px;line-height:1.6;opacity:.85;margin:0 0 14px}
+  .fork-verdict{margin-top:auto;padding:14px 16px;background:var(--ink);color:var(--cream);font-family:var(--narrow);font-weight:700;font-size:17px;text-transform:uppercase;line-height:1.2;opacity:1 !important}
+  .fork-card.is-a .fork-verdict{background:var(--c4-cost)}
+  .fork-card.is-b .fork-verdict{background:var(--c3-deliver)}
+  .pv-fork-note{font-size:16px;line-height:1.6;opacity:.8;max-width:820px;margin:32px 0 0}
+
+  /* ---- 4. SIDE BY SIDE (dark section, pattern from /container-rental-guide/) ---- */
+  .pv-compare{padding:72px 0;background:var(--ink);color:var(--cream)}
+  .pv-compare .pv-h2{color:var(--cream)}
+  .tbl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .pv-table{width:100%;border-collapse:collapse;background:var(--cream);color:var(--ink);border:2.5px solid var(--cream);box-shadow:12px 12px 0 var(--yellow);table-layout:fixed;min-width:760px}
+  .pv-table-caption{text-align:left;font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;opacity:.65;margin:0 0 14px;line-height:1.5;color:var(--cream);max-width:820px}
+  .pv-table-hint{display:none}
+  @media (max-width:820px){.pv-table-hint{display:block;margin-top:6px;color:var(--yellow);opacity:.9}}
+  .pv-table thead th{vertical-align:bottom;padding:20px;border-bottom:2.5px solid var(--ink);text-align:left}
+  .pt-rowhead{width:24%;background:var(--ink);color:var(--cream)}
+  .pt-hi{background:var(--yellow)}
+  .pt-kicker{display:block;opacity:.6;margin-bottom:8px}
+  .pt-title{font-family:var(--narrow);font-weight:700;font-size:20px;line-height:1.05;text-transform:uppercase}
+  .pv-table tbody th{text-align:left;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:500;padding:16px 20px;background:var(--ink);color:var(--cream);border-bottom:1px solid rgba(246,241,231,.12);vertical-align:top}
+  .pv-table tbody td{padding:16px 20px;font-size:15px;line-height:1.45;border-bottom:1px solid rgba(11,15,26,.12);border-left:1px solid rgba(11,15,26,.12);vertical-align:top}
+  .pv-table tbody td.is-hi{background:rgba(255,211,0,.18);font-weight:600}
+  .pv-table tbody tr:last-child th,.pv-table tbody tr:last-child td{border-bottom:none}
+
+  .pv-flip{border:2.5px solid var(--yellow);background:rgba(255,211,0,.07);padding:26px 28px;margin:48px 0 0}
+  .pv-flip-k{display:block;color:var(--yellow);margin-bottom:10px;font-weight:700}
+  .pv-flip h3{font-family:var(--narrow);font-weight:700;font-size:clamp(20px,2.4vw,26px);text-transform:uppercase;line-height:1.1;margin:0 0 12px}
+  .pv-flip p{font-size:15.5px;line-height:1.65;opacity:.85;margin:0 0 14px;max-width:860px}
+  .pv-flip p:last-child{margin-bottom:0}
+  .pv-flip a{border-bottom:1.5px solid var(--yellow);color:var(--yellow)}
+
+  /* ---- 5 + 6. WHO SHOULD RENT / BUY ---- */
+  .pv-rent{padding:72px 0;background:var(--cream);border-bottom:1.5px solid rgba(11,15,26,.1)}
+  .pv-buy{padding:72px 0;background:#fff;border-bottom:1.5px solid rgba(11,15,26,.1)}
+  .pv-list-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+  .list-card{background:#fff;border:2px solid var(--ink);border-left:8px solid var(--c4-cost);padding:24px;box-shadow:6px 6px 0 var(--ink)}
+  .list-card.is-buy{background:var(--cream);border-left-color:var(--c3-deliver)}
+  .list-card h3{font-family:var(--narrow);font-weight:700;font-size:21px;text-transform:uppercase;line-height:1.12;margin:0 0 10px}
+  .list-card p{font-size:15px;line-height:1.6;opacity:.85;margin:0}
+  .pv-rent-foot{margin:32px 0 0;padding:22px 24px;background:var(--ink);color:var(--cream);font-size:15.5px;line-height:1.6;max-width:900px}
+  .pv-rent-foot a{border-bottom:1.5px solid var(--yellow);color:var(--yellow)}
+  .pv-buy-note{font-size:16px;line-height:1.65;opacity:.85;max-width:860px;margin:24px 0 0}
+  .pv-buy-note a{border-bottom:2px solid var(--c3-deliver);font-weight:600}
+  .pv-buy-note a:hover{background:var(--c3-deliver);color:var(--cream)}
+
+  /* ---- 7. WHERE TO GO ---- */
+  .pv-next-steps{padding:72px 0;background:var(--ink);color:var(--cream)}
+  .pv-next-steps .pv-h2{color:var(--cream)}
+  .pv-tools-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  .tool-card{border:2.5px solid var(--cream);padding:26px}
+  .tool-k{display:block;color:var(--yellow);margin-bottom:10px;font-weight:700}
+  .tool-card h3{font-family:var(--narrow);font-weight:700;font-size:24px;text-transform:uppercase;line-height:1.1;margin:0 0 12px}
+  .tool-card p{font-size:15.5px;line-height:1.6;opacity:.85;margin:0}
+  .tool-card a{border-bottom:1.5px solid var(--yellow);color:var(--yellow)}
+  .pv-next-note{font-size:16px;line-height:1.6;opacity:.78;max-width:760px;margin:36px 0 0}
+  .pv-cta-btns{display:flex;gap:16px;flex-wrap:wrap;align-items:center;margin-top:24px}
+  .pv-next-steps .btn-ghost{color:var(--cream)}
+  .pv-next-steps .btn-ghost:hover{color:var(--yellow)}
+  .pv-btn-yellow{background:var(--yellow);color:var(--ink);border-color:var(--yellow)}
+  .pv-btn-yellow:hover{background:transparent;color:var(--yellow)}
+  .pv-next{padding:48px 0;background:var(--ink);color:var(--cream);border-top:2px solid rgba(255,255,255,.08)}
+  .pv-next-label{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--yellow);margin:0 0 16px}
+  .pv-next-links{display:flex;flex-wrap:wrap;gap:20px}
+  .pv-next-links a{font-family:var(--narrow);font-size:17px;font-weight:600;color:var(--cream);border-bottom:2px solid rgba(255,255,255,.2);padding-bottom:2px}
+  .pv-next-links a:hover{color:var(--yellow);border-color:var(--yellow)}
+
+  /* ---- RESPONSIVE ---- */
+  @media (max-width:960px){
+    .pv-hero{padding:44px 0 52px}
+    .pv-share,.pv-fork,.pv-compare,.pv-rent,.pv-buy,.pv-next-steps{padding:64px 0}
+    .pv-share-grid,.pv-fork-grid,.pv-list-grid,.pv-tools-grid{grid-template-columns:1fr}
+  }
+  @media (max-width:700px){
+    .pv-statement{padding:24px;box-shadow:6px 6px 0 rgba(11,15,26,.35)}
+    .share-card,.fork-card{padding:22px}
+    .pv-table{box-shadow:6px 6px 0 var(--yellow)}
+    .pv-flip{padding:20px}
+  }
+</style>

@@ -163,6 +163,12 @@ const cityPrice = showPrice
     { q: `Do you deliver shipping containers to ${c.city}, ${c.state}?`, a: `Yes. We deliver to ${c.delivery.counties.join(', ')} and surrounding areas. ${c.delivery.body}` },
     { q: `What areas near ${c.city} do you serve?`, a: deliveryFaqAnswer },
     { q: `How quickly can I get a container quote in ${c.city}?`, a: c.cta.body },
+    // The portable-storage question, added 2026-08-24 as the FOURTH entry on purpose: QuickFacts
+    // renders faqs.slice(0, 3), so the three existing answers keep their visible slots and this one
+    // reaches the FAQPage JSON-LD plus its own visible section below (.local-faq), where the same
+    // sentence carries the anchor to the portable storage guide. The JSON-LD copy here is plain
+    // text and stands alone without the link.
+    { q: `Do you rent portable storage containers in ${c.city}?`, a: `No. Steel Box Direct does not rent portable storage. We sell used Wind and Water Tight shipping containers, delivered to your property in ${c.city}, and we offer rent-to-own on fixed terms that end in ownership. A rented pod fits a move; an owned container fits storage that stays on your property. Our portable storage guide compares the two honestly.` },
   ], ...(cityPrice ? { price: cityPrice } : {}) }}
 >
 
@@ -336,6 +342,21 @@ const cityPrice = showPrice
     </div>
   </section>
 
+  <section class="local-faq">
+    <div class="wrap">
+      <div class="m local_faq_label">Renting vs owning</div>
+      <h2 class="local_faq_question">Do you rent portable storage containers in {c.city}?</h2>
+      <p class="local_faq_answer">
+        No. Steel Box Direct does not rent portable storage. We sell used Wind and Water Tight
+        shipping containers, delivered to your property in {c.city}, and we offer rent-to-own on
+        fixed terms that end in ownership. A rented pod fits a move; an owned container fits
+        storage that stays on your property. Our
+        <a href="/portable-storage-vs-buying-a-container/">portable storage guide</a> compares the
+        two honestly.
+      </p>
+    </div>
+  </section>
+
   <section class="local-zoning">
     <div class="wrap">
       <div class="m local_zoning_label">Permits &amp; zoning</div>
@@ -480,6 +501,13 @@ const cityPrice = showPrice
   .use-card:hover { transform: translate(-2px,-2px); box-shadow: 8px 8px 0 var(--yellow); }
   .use-label { font-family: var(--narrow); font-weight: 700; font-size: 18px; text-transform: uppercase; line-height: 1.05; }
   .use-persona { font-family: var(--mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; opacity: .6; }
+  .local-faq { padding: 64px 0; background: white; border-top: 1.5px solid rgba(11,15,26,.1); }
+  .local_faq_label { margin-bottom: 12px; opacity: .6; }
+  .local_faq_question { font-family: var(--narrow); font-weight: 700; font-size: clamp(26px, 4.4vw, 40px); text-transform: uppercase; letter-spacing: -.01em; line-height: .98; margin: 0 0 16px; max-width: 820px; }
+  .local_faq_answer { font-size: 17px; line-height: 1.6; max-width: 780px; margin: 0; opacity: .88; }
+  .local_faq_answer a { border-bottom: 2px solid var(--yellow); font-weight: 600; }
+  .local_faq_answer a:hover { background: var(--yellow); }
+
   .local-zoning { padding: 64px 0; background: white; border-top: 1.5px solid rgba(11,15,26,.1); }
   .zoning-list { list-style: none; padding: 0; margin: 16px 0 24px; display: grid; gap: 10px; }
   .zoning-list a { font-family: var(--mono); font-size: 13px; border-bottom: 1.5px solid currentColor; padding-bottom: 2px; }

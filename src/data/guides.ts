@@ -128,6 +128,22 @@ export const guides: Guide[] = [
     accent: 'c-rtl',
   },
   {
+    id: 'portable',
+    code: 'POD',
+    kind: 'Portable Storage Guide',
+    url: '/portable-storage-vs-buying-a-container/',
+    group: 'getting',
+    question: 'Do I rent a PODS-style unit or buy the box?',
+    body:
+      'Portable storage and shipping containers get sold under the same words and answer two '
+      + 'different needs. This one separates them honestly: a rented pod fits a move or an '
+      + 'end-dated project, an owned container fits storage that stays on your property, and the '
+      + 'fork between the two is whether your stuff is going somewhere or staying put.',
+    covers: 'Rented pod vs owned box · Who should rent · Who should buy · Break-even',
+    cta: 'Read the portable storage guide',
+    accent: 'c-rtl',
+  },
+  {
     id: 'permits',
     code: 'PRM',
     kind: 'Permits & Zoning',
