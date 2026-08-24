@@ -81,6 +81,22 @@ export const guides: Guide[] = [
     accent: 'c-ref',
   },
   {
+    id: 'certification',
+    code: 'CSC',
+    kind: 'Certification Guide',
+    url: '/container-certification-guide/',
+    group: 'box',
+    question: 'Does my container need to be certified?',
+    body:
+      'Every container carries a CSC plate that once cleared it for the open ocean. This one '
+      + 'explains what that plate certifies, why the rules apply to international shipping rather '
+      + 'than storage, and what a recertification survey involves if a box ever needs to sail '
+      + 'again.',
+    covers: 'CSC plates · PES vs ACEP · Survey basics · Storage vs shipping',
+    cta: 'Read the certification guide',
+    accent: 'c-ref',
+  },
+  {
     id: 'delivery',
     code: 'DLV',
     kind: 'Delivery Guide',

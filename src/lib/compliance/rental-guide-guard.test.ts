@@ -246,8 +246,8 @@ describe('cannibalization controls: link direction between the rental pages', ()
     expect((rentVsBuy.match(/\/container-rental-guide\/#shape/g) ?? []).length).toBe(1);
   });
 
-  it('the hub Tools strip leaves the hub a collection of exactly nine guides', () => {
-    expect(guideListItems).toHaveLength(9);
+  it('the hub Tools strip leaves the hub a collection of exactly ten guides', () => {
+    expect(guideListItems).toHaveLength(10);
     expect(hub).toContain("from '../../data/tools'");
     expect(hub).toContain('tools.map(');
     expect(hub).toContain('items: guideListItems');
