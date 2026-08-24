@@ -7,10 +7,16 @@ const nodeId = (url: string, frag: string) => `${url}#${frag}`;
 
 function breadcrumbNode(url: string, crumbs?: { name: string; path?: string }[]) {
   const items = crumbs && crumbs.length ? crumbs : [{ name: 'Home', path: '/' }];
+  // Google requires `item` on every ListItem except the last, so a pathless crumb anywhere but the
+  // end of the trail is not optional metadata, it is a GSC "Missing field item" error (which is how
+  // the seven city pages got flagged in August 2026). A call site that passes one has already made
+  // a mistake; the question is only what the mistake degrades to. Dropping the crumb and renumbering
+  // loses one level of an otherwise valid trail, which beats publishing an invalid node site-wide.
+  const emittable = items.filter((b, i) => b.path || i === items.length - 1);
   return {
     '@type': 'BreadcrumbList',
     '@id': nodeId(url, 'breadcrumb'),
-    itemListElement: items.map((b, i) => ({
+    itemListElement: emittable.map((b, i) => ({
       '@type': 'ListItem',
       position: i + 1,
       name: b.name,

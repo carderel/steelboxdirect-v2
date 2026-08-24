@@ -1,6 +1,9 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import { cities } from '../../data/cities';
+
+const crumbs = [{ name: 'Home', path: '/' }, { name: 'Locations' }];
 
 const faqs = [
   {
@@ -57,12 +60,13 @@ const cityUrl = (c: (typeof cities)[number]) => `/locations/${c.stateSlug}/${c.s
   title="Shipping Containers Near You | Steel Box Direct Delivery Locations"
   description="Shipping containers delivered across our Ohio, Indiana, Kentucky, and West Virginia home region, plus Cleveland, Savannah, Charleston, Norfolk, Houston, New York, Detroit, and Kansas City from regional depots. Find your market."
   pageType="guide"
-  breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'Locations' }]}
+  breadcrumbs={crumbs}
   schema={{ kind: 'collection', title: 'Delivery Locations', items, faqs }}
 >
   <!-- ============ HERO ============ -->
   <section class="loc-hero">
     <div class="wrap">
+      <Breadcrumbs items={crumbs} />
       <div class="sh">
         <span class="idx">Locations</span>
         <span class="nm">Shipping Container Delivery</span>

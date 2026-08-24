@@ -2,6 +2,7 @@
 export const prerender = true;
 
 import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import { cities } from '../../../data/cities';
 import type { City } from '../../../data/cities';
 import { centroidBySlug } from '../../../data/geoCentroids';
@@ -14,6 +15,16 @@ export function getStaticPaths() {
 
 interface Props { city: City }
 const { city: c } = Astro.props;
+
+// One array feeds both the JSON-LD BreadcrumbList (via BaseLayout) and the visible trail, so the
+// two can never drift. There is deliberately no state-level crumb: /locations/{state}/ has no page
+// to link to, and Google requires an `item` URL on every ListItem except the last, so an unlinked
+// middle crumb is a GSC error rather than a nicety. The state lives inside the final crumb instead.
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Locations', path: '/locations/' },
+  { name: `${c.city}, ${c.state}` },
+];
 
 const deliveryFaqAnswer =
   c.region === 'home'
@@ -146,12 +157,7 @@ const cityPrice = showPrice
   title={c.seo.title}
   description={c.seo.description}
   pageType="guide"
-  breadcrumbs={[
-    { name: 'Home', path: '/' },
-    { name: 'Locations', path: '/locations/' },
-    { name: c.state },
-    { name: c.city },
-  ]}
+  breadcrumbs={crumbs}
   dateModified={priceEffectiveSince || undefined}
   schema={{ kind: 'city', city: c, faqs: [
     { q: `Do you deliver shipping containers to ${c.city}, ${c.state}?`, a: `Yes. We deliver to ${c.delivery.counties.join(', ')} and surrounding areas. ${c.delivery.body}` },
@@ -162,6 +168,7 @@ const cityPrice = showPrice
 
   <section class="local-hero">
     <div class="wrap">
+      <Breadcrumbs items={crumbs} />
       <div class="sh local_hero_eyebrow">
         <span class="idx">Region</span>
         <span class="nm">{c.eyebrow}</span>

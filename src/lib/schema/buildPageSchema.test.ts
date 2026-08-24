@@ -85,6 +85,32 @@ describe('buildPageSchema core', () => {
     expect(bc.itemListElement[1].name).toBe('Size');
   });
 
+  /**
+   * Google requires `item` on every ListItem except the last, so a pathless middle crumb is a GSC
+   * error the moment it ships (the August 2026 city-page flag). The builder's defence is to drop
+   * that crumb and renumber rather than emit it, so a future call-site mistake degrades to a valid
+   * three-level trail instead of an invalid four-level one. The last crumb stays exempt: it names
+   * the page being viewed and legitimately carries no item.
+   */
+  it('drops a non-last crumb without a path and keeps positions sequential', () => {
+    const { graph } = buildPageSchema({
+      ...base,
+      breadcrumbs: [
+        { name: 'Home', path: '/' },
+        { name: 'Locations', path: '/locations/' },
+        { name: 'Ohio' },
+        { name: 'Cincinnati' },
+      ],
+      page: { kind: 'excluded' },
+    });
+    const bc = graph.find((n) => n['@type'] === 'BreadcrumbList') as any;
+    expect(bc.itemListElement.map((li: any) => li.name)).toEqual(['Home', 'Locations', 'Cincinnati']);
+    expect(bc.itemListElement.map((li: any) => li.position)).toEqual([1, 2, 3]);
+    expect(bc.itemListElement[0].item).toBe('https://steelboxdirect.com/');
+    expect(bc.itemListElement[1].item).toBe('https://steelboxdirect.com/locations/');
+    expect(bc.itemListElement[2].item).toBeUndefined();
+  });
+
   it('product branch emits a Product with UsedCondition + price and price-disclaimer quickFacts', () => {
     const container: any = { slug: '40-foot-high-cube-container', name: '40ft High Cube', seo: { description: 'HC.' } };
     const { graph, quickFacts } = buildPageSchema({
