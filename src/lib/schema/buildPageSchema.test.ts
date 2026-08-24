@@ -246,7 +246,15 @@ describe('buildPageSchema core', () => {
       ...args,
       page: {
         kind: 'city', city, faqs: [{ q: 'Deliver?', a: 'Yes.' }],
-        price: { zip: '45404', delivered: 2040, sizeLabel: '20ft', effectiveSince: '2026-08-12' },
+        price: {
+          zip: '45404',
+          lines: [
+            { sizeLabel: '20ft', delivered: 2040 },
+            { sizeLabel: '40ft standard', delivered: 2400 },
+            { sizeLabel: '40ft high cube', delivered: 2300 },
+          ],
+          effectiveSince: '2026-08-12',
+        },
       },
     });
     const baseline = buildPageSchema({ ...args, page: { kind: 'excluded' } }).graph;
@@ -259,11 +267,13 @@ describe('buildPageSchema core', () => {
       return 0;
     };
 
-    // visible half: the figure is scoped to its ZIP and its size, and the date is split off into its
-    // own cell so each one stands up alone when a scraper reads one row and not the other
-    expect(quickFacts!.specs[0]).toEqual({ k: 'Delivered price', v: `${formatPrice(2040)} for a 20ft to 45404` });
-    expect(quickFacts!.specs[1]).toEqual({ k: 'Price in effect since', v: 'August 12' });
-    expect(quickFacts!.specs[1].v).not.toMatch(/\d{4}-\d{2}-\d{2}/);
+    // visible half: one cell per size, each scoped to its ZIP and its size, and the date split off
+    // into its own cell so each one stands up alone when a scraper reads one row and not the others
+    expect(quickFacts!.specs[0]).toEqual({ k: 'Delivered price, 20ft', v: `${formatPrice(2040)} for a 20ft to 45404` });
+    expect(quickFacts!.specs[1]).toEqual({ k: 'Delivered price, 40ft standard', v: `${formatPrice(2400)} for a 40ft standard to 45404` });
+    expect(quickFacts!.specs[2]).toEqual({ k: 'Delivered price, 40ft high cube', v: `${formatPrice(2300)} for a 40ft high cube to 45404` });
+    expect(quickFacts!.specs[3]).toEqual({ k: 'Price in effect since', v: 'August 12' });
+    expect(quickFacts!.specs[3].v).not.toMatch(/\d{4}-\d{2}-\d{2}/);
     expect(quickFacts!.specs.length).toBeLessThanOrEqual(8);
     expect(quickFacts!.showPriceDisclaimer).toBe(true);
     // the Serves cell is untouched by the price payload
@@ -275,7 +285,9 @@ describe('buildPageSchema core', () => {
     const json = JSON.stringify(graph);
     expect(json).not.toContain('$');
     expect(json).not.toContain('45404');
-    expect(json).not.toContain('2040');
+    for (const figure of ['2040', '2400', '2300']) {
+      expect(json, `the city graph must not carry the figure ${figure}`).not.toContain(figure);
+    }
     for (const key of ['"price"', '"offers"', '"priceSpecification"', '"priceValidUntil"', '"validFrom"']) {
       expect(json, `the city graph must not carry ${key}`).not.toContain(key);
     }
@@ -287,7 +299,9 @@ describe('buildPageSchema core', () => {
       url: 'https://steelboxdirect.com/locations/virginia/norfolk-shipping-containers/', title: 'Norfolk', description: 'n',
       page: { kind: 'city', city, faqs: [] },
     });
-    expect(quickFacts!.specs.map((s) => s.k)).not.toContain('Delivered price');
+    // startsWith rather than exact match: the priced keys carry the size after the comma now, so an
+    // exact-match absence check would stay green even if a priced row leaked onto an unpriced page
+    expect(quickFacts!.specs.some((s) => s.k.startsWith('Delivered price'))).toBe(false);
     expect(quickFacts!.specs.map((s) => s.k)).not.toContain('Price in effect since');
     expect(quickFacts!.showPriceDisclaimer).toBe(false);
     expect(JSON.stringify(quickFacts)).not.toContain('$');

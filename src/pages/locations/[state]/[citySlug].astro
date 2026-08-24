@@ -141,13 +141,13 @@ const pickupLines = priceLines.filter(
 
 // The QuickFacts payload, handed over only when there is a figure to hand over. Absence is the
 // signal: it is what tells the builder to print no price cells and to leave the price disclaimer
-// off, so no second condition is written there. The headline figure is the first line on display,
-// which is the smallest size the metro can supply.
+// off, so no second condition is written there. Every line on display travels, in display order,
+// so the Quick Facts block states the same sizes as the price band above it rather than only the
+// smallest, and both surfaces share the one ZIP and the one latest-change date resolved above.
 const cityPrice = showPrice
   ? {
       zip: priceZip,
-      delivered: priceLines[0].delivered,
-      sizeLabel: priceLines[0].label,
+      lines: priceLines.map((line) => ({ sizeLabel: line.label, delivered: line.delivered })),
       effectiveSince: priceEffectiveSince,
     }
   : undefined;

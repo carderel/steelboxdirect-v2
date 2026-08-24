@@ -21,14 +21,24 @@ export interface QuickFacts {
  * of this object is the signal that the page prints no price. Numbers and ISO dates only. Nothing
  * from the feed that names a place of business travels in here.
  */
-export interface CityPriceFacts {
-  /** The centroid ZIP the figures were priced from. Scopes the figure to a named place. */
-  zip: string;
-  /** Delivered figure for the headline size, whole dollars: the container and the delivery together. */
-  delivered: number;
-  /** Size label for the headline figure, for example 20ft. */
+export interface CityPriceLine {
+  /** Size label for this figure, for example 20ft. */
   sizeLabel: string;
-  /** ISO date the headline figure last changed. Labelled for display, never rendered raw. */
+  /** Delivered figure for this size, whole dollars: the container and the delivery together. */
+  delivered: number;
+}
+
+export interface CityPriceFacts {
+  /** The centroid ZIP the figures were priced from. Scopes every figure to a named place. */
+  zip: string;
+  /**
+   * One line per size the metro can supply, in the render order the page already uses, and never
+   * empty: a metro with nothing to state passes no object at all rather than an empty list. All
+   * lines share the one ZIP above and the one date below, so both are stated once rather than per
+   * line, and the page owns keeping that true (its date is the latest change among the lines).
+   */
+  lines: CityPriceLine[];
+  /** ISO date the newest figure last changed. Labelled for display, never rendered raw. */
   effectiveSince: string;
 }
 

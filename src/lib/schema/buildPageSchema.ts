@@ -134,15 +134,17 @@ export function buildPageSchema(args: BuildSchemaArgs): BuiltSchema {
         entityTitle: `Containers in ${p.city.city}, ${p.city.state}`,
         entitySubtitle: 'Wind & Water Tight (used) · delivered on-site',
         specs: [
-          // The figure and its date are two cells on purpose. Each cell is read alone by a scraper,
-          // so a scoped figure and a bare date each stand up by themselves, where one merged cell
-          // would have to carry both scopes or quietly drop one.
+          // One cell per size, then the date, each cell readable alone by a scraper. The size sits
+          // in the key AND in the value on purpose: the key tells the rows apart in the grid, and
+          // the value restates size and ZIP so a scraper that lifts only values still gets a fully
+          // scoped figure, the same property the old single cell had. The date stays its own cell,
+          // stated once, because the page already collapses the lines to their latest change date.
           ...(cityPrice
             ? [
-                {
-                  k: 'Delivered price',
-                  v: `${formatPrice(cityPrice.delivered)} for a ${cityPrice.sizeLabel} to ${cityPrice.zip}`,
-                },
+                ...cityPrice.lines.map((line) => ({
+                  k: `Delivered price, ${line.sizeLabel}`,
+                  v: `${formatPrice(line.delivered)} for a ${line.sizeLabel} to ${cityPrice.zip}`,
+                })),
                 { k: 'Price in effect since', v: effectiveSinceLabel(cityPrice.effectiveSince) },
               ]
             : []),
