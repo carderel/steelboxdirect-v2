@@ -44,7 +44,11 @@ Here is every common size. You'll see the outside measurements, the inside measu
 <style>
   .dim-key { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; font-family: var(--mono); font-size: 11.5px; letter-spacing: .05em; text-transform: uppercase; margin: 0 0 14px; }
   .dim-key-sold { background: var(--yellow); border: 1.5px solid var(--ink); padding: 3px 9px; font-weight: 700; }
-  .dim-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; border: 2.5px solid var(--ink); box-shadow: 8px 8px 0 var(--ink); background: #fff; width: min(calc(100vw - 48px), 1080px); margin-left: calc((100% - min(calc(100vw - 48px), 1080px)) / 2); }
+  /* Breakout: widen past the 760px text column, capped at 1080px, centered on the
+     column. margin-bottom reserves room for the 8px hard shadow so it never sits on
+     the attribution text below. overflow clips both axes so nothing inside the table
+     can ever paint outside the frame. */
+  .dim-scroll { overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; border: 2.5px solid var(--ink); box-shadow: 8px 8px 0 var(--ink); background: #fff; width: min(calc(100vw - 48px), 1080px); margin: 0 0 22px calc((100% - min(calc(100vw - 48px), 1080px)) / 2); }
   .dim-table { width: 100%; border-collapse: collapse; min-width: 840px; }
   .dim-table thead th { background: var(--ink); color: var(--cream); font-family: var(--narrow); font-weight: 700; text-transform: uppercase; letter-spacing: .02em; font-size: 15px; text-align: left; padding: 12px 16px; white-space: nowrap; }
   .dim-table tbody th, .dim-table tbody td { padding: 12px 16px; border-bottom: 1.5px solid rgba(11,15,26,.12); text-align: left; vertical-align: top; }
@@ -54,14 +58,19 @@ Here is every common size. You'll see the outside measurements, the inside measu
   .dim-table tbody th { font-family: var(--narrow); font-weight: 700; text-transform: uppercase; font-size: 16px; line-height: 1.2; white-space: nowrap; }
   .dim-table tbody td { font-family: var(--mono); font-size: 13px; line-height: 1.5; white-space: nowrap; }
   .dim-check { display: inline-block; background: var(--ink); color: var(--yellow); font-family: var(--mono); font-size: 11px; line-height: 1; padding: 3px 6px; margin-left: 8px; vertical-align: 2px; }
-  .dim-tag { display: inline-block; font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: .08em; line-height: 1; padding: 3px 7px; margin-top: 7px; border: 1.5px solid var(--ink); }
+  /* Row tags live in normal flow inside their Size cell. position/float/margin are
+     pinned explicitly so no inherited or user-agent rule can pull them out of the cell. */
+  .dim-tag { display: inline-block; position: static; float: none; font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: .08em; line-height: 1; padding: 3px 7px; margin: 7px 0 0; border: 1.5px solid var(--ink); vertical-align: top; }
   .dim-tag-iso { background: var(--ink); color: var(--cream); }
   .dim-tag-dom { background: #fff; }
   .dim-tag-trade { background: transparent; border-style: dashed; }
   .dim-fn { font-family: var(--mono); font-size: 10px; font-weight: 700; }
-  .dim-note-lead { font-size: 13px; line-height: 1.55; opacity: .78; margin: 16px 0 6px; }
-  .dim-notes { list-style: none; margin: 0 0 8px; padding: 0; font-size: 13px; line-height: 1.55; opacity: .78; }
-  .dim-notes li { margin: 0 0 5px; padding-left: 22px; position: relative; }
+  /* Doubled class selectors (0,2,0) outrank the blog layout's scoped element rules
+     (.post-body p / ol / li at 0,1,1), which were zeroing the top margin here and
+     letting the table shadow clip this text. */
+  .dim-note-lead.dim-note-lead { font-size: 13px; line-height: 1.55; opacity: .78; margin: 22px 0 6px; }
+  .dim-notes.dim-notes { list-style: none; margin: 0 0 22px; padding: 0; font-size: 13px; line-height: 1.55; opacity: .78; }
+  .dim-notes.dim-notes li { margin: 0 0 5px; padding-left: 22px; position: relative; }
   .dim-notes .dim-fnmark { position: absolute; left: 0; font-family: var(--mono); font-weight: 700; font-size: 11px; }
   .dim-fig { margin: 32px 0; border: 2.5px solid var(--ink); box-shadow: 6px 6px 0 var(--yellow); background: #fff; padding: 18px 18px 12px; }
   .dim-fig svg { display: block; width: 100%; max-width: 620px; height: auto; margin: 0 auto; }
