@@ -8,6 +8,7 @@ const SAME_AS = [
   'https://www.linkedin.com/company/steel-box-direct/',
   'https://www.facebook.com/SteelBoxDirect/',
   'https://www.pinterest.com/steelboxdirect/',
+  'https://www.youtube.com/@steelboxdirect',
 ];
 
 const WARRANTY = {
