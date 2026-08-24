@@ -1,6 +1,5 @@
 ---
 import { Image } from 'astro:assets';
-import heroImage from '../../assets/photos/container-blue-weathered.jpg';
 import rigDiagram from '../../assets/photos/delivery-rig-diagram.png';
 ---
 <!-- ============ §04 THE RIG (Embece slab) ============ -->
@@ -10,10 +9,15 @@ import rigDiagram from '../../assets/photos/delivery-rig-diagram.png';
   </div>
   <div class="rig-inner rig_inner">
     <div class="photo rig_photo">
-      <div class="photo-frame rig_photo_frame">
-        <Image src={heroImage} alt="40-ft Wind & Water Tight used container on a rural property" width={1100} height={550} format="webp" />
-        <span class="fig">FIG. 003: Site placement</span>
-        <span class="cap">40 × 8 × 8'6" · placed Brown County, IN · March 2020</span>
+      <div class="photo-frame rig_photo_frame rig_video_frame">
+        <iframe
+          src="https://www.youtube.com/embed/_C01r_TVUO8?si=KeI6H32C5XBc5dBs"
+          title="Steel Box Direct video: CAD blueprint of a standard shipping container"
+          loading="lazy"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen
+        ></iframe>
       </div>
     </div>
     <div class="grid-below rig_specs_grid">
@@ -50,10 +54,8 @@ import rigDiagram from '../../assets/photos/delivery-rig-diagram.png';
 
   .rig-inner{padding:0 0 96px;margin-top:-60px;position:relative;z-index:2}
   .rig .photo{margin:0 auto;max-width:1100px;padding:0 32px}
-  .rig .photo-frame{aspect-ratio:16/8;background:var(--ink);border:2.5px solid var(--ink);overflow:hidden;position:relative}
-  .rig .photo-frame img{width:100%;height:100%;object-fit:cover;display:block}
-  .rig .photo-frame .cap{position:absolute;left:16px;bottom:16px;background:var(--cream);color:var(--ink);padding:6px 12px;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
-  .rig .photo-frame .fig{position:absolute;top:16px;right:16px;background:var(--yellow);color:var(--ink);padding:6px 12px;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+  .rig .photo-frame{width:100%;aspect-ratio:16/9;background:var(--ink);border:2.5px solid var(--ink);overflow:hidden;position:relative}
+  .rig .photo-frame iframe{width:100%;height:100%;border:0;display:block}
 
   .rig .grid-below{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;max-width:1100px;margin:48px auto 0;padding:0 32px}
   .rig .spec{padding:20px 24px 20px 0;border-right:1.5px solid rgba(246,241,231,.3);display:flex;flex-direction:column;gap:6px}
