@@ -57,7 +57,7 @@ The regulation is looser than you would expect. 49 CFR 452.3 requires examinatio
 Practical routes, in order:
 
 1. **Ask a container depot.** Depots coordinate most surveys, since the box, the forklift, and the inspector meet there anyway.
-2. **Search the IICL directory** for an inspector in your region and contact them directly.
+2. **Search the IICL directory** for an inspector in your region and contact them directly. Our [container inspector finder](/find-a-container-inspector/) lists that directory's full US roster, grouped by state.
 3. **Ask your freight forwarder or carrier** who they accept. The carrier is the final judge of any report, so their answer outranks everything.
 
 Questions worth asking before you book: Are you IICL certified? Will I get a written report and an NED decal on a pass? Have your reports been accepted by the carrier I am booking with?

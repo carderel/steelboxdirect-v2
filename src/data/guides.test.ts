@@ -16,17 +16,17 @@ const REPO_ROOT = import.meta.dirname
   : process.cwd();
 
 describe('guides catalogue', () => {
-  it('holds ten guides with unique ids, codes and urls', () => {
-    expect(guides).toHaveLength(10);
-    expect(new Set(guides.map((g) => g.id)).size).toBe(10);
-    expect(new Set(guides.map((g) => g.code)).size).toBe(10);
-    expect(new Set(guides.map((g) => g.url)).size).toBe(10);
+  it('holds eleven guides with unique ids, codes and urls', () => {
+    expect(guides).toHaveLength(11);
+    expect(new Set(guides.map((g) => g.id)).size).toBe(11);
+    expect(new Set(guides.map((g) => g.code)).size).toBe(11);
+    expect(new Set(guides.map((g) => g.url)).size).toBe(11);
   });
 
   it('derives the count and the count word', () => {
     expect(guideCount).toBe(guides.length);
     expect(guideCountWord).toBe(countWord(guides.length));
-    expect(guideTitleCountWord).toBe('Ten');
+    expect(guideTitleCountWord).toBe('Eleven');
   });
 
   it('NO ITEMLIST 404s: every guide url resolves to a real page file on disk', () => {
@@ -59,7 +59,7 @@ describe('guides catalogue', () => {
   });
 
   it('splits into the three router groups the hub renders', () => {
-    expect(guidesByGroup('box')).toHaveLength(4);
+    expect(guidesByGroup('box')).toHaveLength(5);
     expect(guidesByGroup('getting')).toHaveLength(4);
     expect(guidesByGroup('commit')).toHaveLength(2);
     expect(
@@ -79,7 +79,7 @@ describe('guides catalogue', () => {
   });
 
   it('builds absolute ItemList entries named by guide kind', () => {
-    expect(guideListItems).toHaveLength(10);
+    expect(guideListItems).toHaveLength(11);
     for (const item of guideListItems) {
       expect(item.url).toMatch(/^https:\/\/steelboxdirect\.com\/[a-z-]+\/$/);
       expect(item.name.length).toBeGreaterThan(3);

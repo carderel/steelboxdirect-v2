@@ -78,10 +78,11 @@ describe('tools catalogue', () => {
       + 'description of the guides hub. The tool belongs in tools.ts.',
     ).toBe(false);
 
-    // Ten as of 2026-08-24: the certification guide is the tenth GUIDE. The count here exists
-    // to catch a tool leaking in, so an eleventh entry still has to be a guide to move this number.
-    expect(guides).toHaveLength(10);
-    expect(guideCount).toBe(10);
+    // Eleven as of 2026-08-25: the inspector finder is the eleventh GUIDE (it is a directory
+    // with booking guidance, on the rental-guide precedent, not a calculator). The count here
+    // exists to catch a tool leaking in, so a twelfth entry still has to be a guide to move it.
+    expect(guides).toHaveLength(11);
+    expect(guideCount).toBe(11);
 
     const guideUrls = guides.map((g) => g.url);
     const itemListUrls = guideListItems.map((i) => i.url);

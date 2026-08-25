@@ -97,6 +97,22 @@ export const guides: Guide[] = [
     accent: 'c-ref',
   },
   {
+    id: 'inspector-finder',
+    code: 'FND',
+    kind: 'Container Inspector Finder',
+    url: '/find-a-container-inspector/',
+    group: 'box',
+    question: 'Who can inspect a container for shipping?',
+    body:
+      'Every IICL-certified container inspector in the US directory, grouped by state, with each '
+      + 'one\'s credentials and the year they run through. For anyone whose box needs a '
+      + 'recertification survey before it can ship: who exists, where they are, and how a survey '
+      + 'actually gets booked.',
+    covers: 'Every US inspector · State by state · Credential badges · How to book a survey',
+    cta: 'Open the inspector finder',
+    accent: 'c-ref',
+  },
+  {
     id: 'delivery',
     code: 'DLV',
     kind: 'Delivery Guide',

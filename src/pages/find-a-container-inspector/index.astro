@@ -1,0 +1,459 @@
+---
+export const prerender = true;
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import {
+  inspectorsByState,
+  inspectorCount,
+  credentialCount,
+  dryVanInspectorCount,
+  chassisInspectorCount,
+  reeferInspectorCount,
+  stateCount,
+  homeRegionInspectorCount,
+  HOME_REGION_STATES,
+  RETRIEVED_LABEL,
+  SOURCE_NAME,
+  IICL_DIRECTORY_URLS,
+  credentialLabel,
+} from '../../data/inspectors';
+
+// EVERY count on this page derives from src/data/inspectors.ts. None is hand-typed, so the
+// quarterly re-verification pass updates the data file and every sentence follows. The integrity
+// guard in src/data/inspectors.test.ts asserts this file contains no literal spelling of any
+// derived count.
+const statesWithoutCount = 50 - stateCount;
+
+// Breadcrumbs run Home > Guides > this page, matching /container-certification-guide/.
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Guides', path: '/shipping-container-guides/' },
+  { name: 'Container Inspector Finder' },
+];
+
+const isHomeState = (s: string): boolean => (HOME_REGION_STATES as readonly string[]).includes(s);
+
+const metaDescription =
+  `Every IICL-certified container inspector in the US, grouped by state: ${inspectorCount} `
+  + `inspectors holding ${credentialCount} credentials across ${stateCount} states, from the IICL `
+  + `directory, re-verified quarterly.`;
+
+// Single source for the page FAQ. These strings ARE the FAQPage JSON-LD answers, so each stands
+// alone when quoted, and none names an individual inspector: aggregate counts only.
+const faqs = [
+  {
+    q: 'How many IICL-certified container inspectors are there in the US?',
+    a: `The IICL directory listed ${inspectorCount} certified inspectors in the United States `
+      + `when we retrieved it on ${RETRIEVED_LABEL}, holding ${credentialCount} active `
+      + `credentials between them: ${dryVanInspectorCount} for dry van containers, `
+      + `${chassisInspectorCount} for chassis, and ${reeferInspectorCount} for refrigerated `
+      + 'containers. Worldwide, the IICL itself reports more than 8,600 certified inspectors '
+      + 'across 72 countries, so the US roster is a small slice of the global one.',
+  },
+  {
+    q: 'What does IICL-certified mean?',
+    a: 'IICL certification comes from the Institute of International Container Lessors, the '
+      + 'trade body for the major container leasing companies. Candidates pass a proctored exam '
+      + 'and renew on a five-year cycle. There is no US government license for container '
+      + 'inspectors: 49 CFR 452.3 requires only qualified, trained, and experienced personnel, '
+      + 'and in practice the IICL credential is the one ocean carriers recognize when a '
+      + 'container needs a recertification survey.',
+  },
+  {
+    q: 'What if my state has no IICL-certified inspector?',
+    a: `That is the common case: the US directory covers ${stateCount} states, so `
+      + `${statesWithoutCount} states have no resident IICL-certified inspector at all. `
+      + 'Inspectors travel, and most surveys are coordinated through container depots, where the '
+      + 'box, the forklift, and the inspector meet anyway. Contact the nearest listed company '
+      + 'and ask whether they cover your area, and ask the ocean carrier you plan to book with '
+      + 'whose reports they accept, because the carrier is the final judge of any survey.',
+  },
+];
+---
+
+<BaseLayout
+  pageType="guide"
+  title="Find a Container Inspector: The US IICL Directory | Steel Box Direct"
+  description={metaDescription}
+  datePublished="2026-08-25"
+  dateModified="2026-08-25"
+  breadcrumbs={crumbs}
+  schema={{
+    kind: 'guide',
+    title: 'Find a Container Inspector: Every IICL-Certified Inspector in the US, by State',
+    specs: [
+      { k: 'Inspectors listed', v: `${inspectorCount} people, ${credentialCount} credentials` },
+      { k: 'Dry van credentials', v: `${dryVanInspectorCount}` },
+      { k: 'Chassis credentials', v: `${chassisInspectorCount}` },
+      { k: 'Refrigerated credentials', v: `${reeferInspectorCount}` },
+      { k: 'States with an inspector', v: `${stateCount} of 50` },
+      { k: 'Source', v: `${SOURCE_NAME}, retrieved ${RETRIEVED_LABEL}` },
+    ],
+    faqs,
+  }}
+>
+
+  <!-- 1. HERO -->
+  <div class="fi-hero">
+    <div class="wrap">
+      <Breadcrumbs items={crumbs} />
+      <div class="fi-eyebrow">
+        <span class="idx">§ FINDER</span>
+        <span class="nm">IICL-Certified Container Inspectors, USA</span>
+        <span class="tg">Verified quarterly</span>
+      </div>
+      <h1 class="fi-headline">Find a container inspector: every IICL-certified inspector in the US, <em>by state</em></h1>
+
+      <div class="fi-statement">
+        <span class="m fi-statement-k">What this list is</span>
+        <p>The full US roster, in one place</p>
+        <p class="fi-statement-body">
+          This page lists every container inspector in the IICL's US directory: {inspectorCount}
+          people holding {credentialCount} active credentials, grouped by state. If a container
+          ever needs a CSC recertification survey to ship internationally, one of these
+          inspectors, or a company employing one, is who performs it; what that survey is and
+          whether you need one at all is the subject of our
+          <a href="/container-certification-guide/">container certification guide</a>. We could
+          find no other neutral place where this list exists whole, so we publish it and
+          re-verify it quarterly.
+        </p>
+      </div>
+
+      <div class="fi-facts" aria-label="Directory totals">
+        <span class="fi-fact"><strong>{dryVanInspectorCount}</strong> dry van</span>
+        <span class="fi-fact"><strong>{chassisInspectorCount}</strong> chassis</span>
+        <span class="fi-fact"><strong>{reeferInspectorCount}</strong> refrigerated</span>
+        <span class="fi-fact"><strong>{stateCount}</strong> states with at least one</span>
+      </div>
+
+      <ul class="fi-hero-jump">
+        <li><a href="#source">Source & corrections</a></li>
+        <li><a href="#directory">The directory</a></li>
+        <li><a href="#how-to-use">How to use this list</a></li>
+        <li><a href="#faq">Common questions</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 2. ATTRIBUTION -->
+  <section class="fi-source" id="source" aria-labelledby="source-h">
+    <div class="wrap">
+      <div class="fi-attrib">
+        <span class="m fi-attrib-k" id="source-h">Source</span>
+        <p class="fi-attrib-line">
+          {SOURCE_NAME}, retrieved {RETRIEVED_LABEL}. Verified quarterly.
+        </p>
+        <p class="fi-attrib-body">
+          Rows are transcribed as the IICL publishes them, spellings included. Our additions are
+          the state grouping and the merging of inspectors who hold more than one credential into
+          a single entry. The live searches this list came from:
+        </p>
+        <ul class="fi-attrib-links">
+          <li><a href={IICL_DIRECTORY_URLS.dryVan} rel="noopener" target="_blank">IICL dry van container inspector search</a></li>
+          <li><a href={IICL_DIRECTORY_URLS.chassis} rel="noopener" target="_blank">IICL chassis inspector search</a></li>
+          <li><a href={IICL_DIRECTORY_URLS.reefer} rel="noopener" target="_blank">IICL refrigerated container inspector search</a></li>
+        </ul>
+        <p class="fi-attrib-correct">
+          Inspectors: to correct or remove your listing, contact us at
+          <a href="mailto:support@steelboxdirect.com">support@steelboxdirect.com</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. THE DIRECTORY -->
+  <section class="fi-dir" id="directory" aria-labelledby="dir-h">
+    <div class="wrap">
+      <div class="fi-sh">
+        <span class="m">The Directory</span>
+        <h2 class="fi-h2" id="dir-h">{inspectorCount} inspectors, {stateCount} states, A to Z</h2>
+        <p class="fi-sh-sub">
+          Each entry shows the inspector, the company the directory lists for them (some list
+          none), their city, and a badge per credential with the year that certification runs
+          through. Certifications are five-year; the year on each badge comes from the
+          directory's own expiry date.
+        </p>
+      </div>
+
+      <div class="fi-home-callout">
+        <span class="m fi-home-k">Our home region</span>
+        <p>
+          {homeRegionInspectorCount} of the {inspectorCount} listed inspectors are based in Ohio,
+          Indiana, or Kentucky, the region we deliver containers in. Their state sections are
+          marked below.
+        </p>
+      </div>
+
+      <div class="fi-states">
+        {inspectorsByState.map((group) => (
+          <section class={`fi-state ${isHomeState(group.state) ? 'is-home' : ''}`} aria-label={`${group.state} inspectors`}>
+            <header class="fi-state-hd">
+              <h3>{group.state}</h3>
+              <span class="fi-state-n">
+                {group.inspectors.length} listed
+                {isHomeState(group.state) && <span class="fi-home-tag">Home region</span>}
+              </span>
+            </header>
+            <ul class="fi-rows">
+              {group.inspectors.map((ins) => (
+                <li class="fi-row">
+                  <div class="fi-row-who">
+                    <span class="fi-row-name">{ins.name}</span>
+                    {ins.company !== '' && <span class="fi-row-co">{ins.company}</span>}
+                  </div>
+                  <span class="fi-row-city">{ins.city}</span>
+                  <div class="fi-row-creds">
+                    {ins.credentials.map((c) => (
+                      <span class={`fi-badge is-${c.credential === 'dry van' ? 'dryvan' : c.credential}`}>
+                        {credentialLabel(c.credential)} · {c.validThroughYear}
+                      </span>
+                    ))}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))}
+      </div>
+
+      <p class="fi-dir-note">
+        No inspector in your state? That is the common case: {statesWithoutCount} states have no
+        resident listing. Inspectors travel and depots coordinate; the next section covers how
+        that works in practice.
+      </p>
+    </div>
+  </section>
+
+  <!-- 4. HOW TO USE THIS LIST -->
+  <section class="fi-how" id="how-to-use" aria-labelledby="how-h">
+    <div class="wrap">
+      <div class="fi-sh">
+        <span class="m">Using It</span>
+        <h2 class="fi-h2" id="how-h">How to use this list</h2>
+      </div>
+
+      <div class="fi-how-grid">
+        <div class="fi-how-card">
+          <span class="fi-how-n">01</span>
+          <h3>Contact the company, not just the name</h3>
+          <p>
+            Most inspectors here work for a leasing company, a depot operator, or a surveying
+            firm, and the booking goes through the employer. Where the directory lists no
+            company, the inspector works independently; searching the name plus the city usually
+            finds them.
+          </p>
+        </div>
+        <div class="fi-how-card">
+          <span class="fi-how-n">02</span>
+          <h3>Ask for an IICL-certified survey, in writing</h3>
+          <p>
+            Say what the survey is for: restoring a CSC examination status so the box can ship.
+            A pass should get you a written examination report and a new NED decal on the plate.
+            Ask up front whether the carrier you plan to book with has accepted their reports
+            before.
+          </p>
+        </div>
+        <div class="fi-how-card">
+          <span class="fi-how-n">03</span>
+          <h3>Expect the depot to be part of the answer</h3>
+          <p>
+            A survey works over the underside as well as the walls and roof, which means the box
+            usually goes up on a forklift. That is why depots coordinate most surveys: the box,
+            the forklift, and the inspector are in one place. A container sitting on grass at
+            your property is a harder, costlier visit than the same box at a depot.
+          </p>
+        </div>
+        <div class="fi-how-card">
+          <span class="fi-how-n">04</span>
+          <h3>Know what the survey covers before you book</h3>
+          <p>
+            Corner castings and posts, rails, cross members and the underside, floor, doors and
+            gaskets, panels, roof bows, and weathertightness overall. Our
+            <a href="/container-certification-guide/">certification guide</a> walks through the
+            whole system, and our
+            <a href="/blog/get-a-used-shipping-container-certified/">step-by-step recertification post</a>
+            covers what happens on survey day.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. WHERE STEEL BOX DIRECT FITS -->
+  <section class="fi-sbd" aria-labelledby="sbd-h">
+    <div class="wrap">
+      <div class="fi-sh fi-sh-dark">
+        <span class="m">Where We Fit</span>
+        <h2 class="fi-h2" id="sbd-h">We sell storage containers. We do not inspect them.</h2>
+      </div>
+      <p class="fi-sbd-note">
+        Steel Box Direct sells used wind and water tight containers for storage and on-site use,
+        not certified for ocean shipping. We do not perform inspections, nobody on this list
+        works for us, and a listing here is not an endorsement in either direction: the list is
+        the IICL's, reproduced with attribution because buyers kept asking where to find it. If
+        your plan is storage rather than shipping, no survey is needed at all, which our
+        <a href="/container-certification-guide/">certification guide</a> explains, and our
+        <a href="/shipping-containers-for-sale/">containers for sale</a> page covers the three
+        sizes we stock.
+      </p>
+      <div class="fi-cta-btns">
+        <a href="/quote/" class="btn fi-btn-yellow">Get My Quote →</a>
+        <a href="/container-certification-guide/" class="btn-ghost">Read the certification guide</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. FAQ -->
+  <section class="fi-faq" id="faq" aria-labelledby="faq-h">
+    <div class="wrap">
+      <div class="fi-sh">
+        <span class="m">Common Questions</span>
+        <h2 class="fi-h2" id="faq-h">Asked about container inspectors</h2>
+      </div>
+      <div class="fi-faq-list">
+        {faqs.map((f, i) => (
+          <div class="fi-faq-item">
+            <span class="fi-faq-n">Q · 0{i + 1}</span>
+            <h3>{f.q}</h3>
+            <p class="fi-faq-a">{f.a}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="fi-next" aria-labelledby="next-h">
+    <div class="wrap">
+      <p class="fi-next-label" id="next-h">Continue researching</p>
+      <div class="fi-next-links">
+        <a href="/container-certification-guide/">The certification guide</a>
+        <a href="/blog/get-a-used-shipping-container-certified/">How recertification works</a>
+        <a href="/condition/">What WWT means</a>
+        <a href="/shipping-container-guides/">All container guides</a>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style>
+  /* ---- SHARED SECTION HEADER (pattern from /container-certification-guide/) ---- */
+  .fi-sh{border-top:4px solid var(--ink);padding-top:18px;margin-bottom:40px}
+  .fi-sh .m{display:block;opacity:.55;margin-bottom:10px}
+  .fi-sh-dark{border-top-color:var(--yellow)}
+  .fi-sh-dark .m{color:var(--yellow);opacity:1}
+  .fi-h2{font-family:var(--narrow);font-weight:700;text-transform:uppercase;font-size:clamp(28px,4.2vw,46px);line-height:1;letter-spacing:-.01em;margin:0}
+  .fi-sh-sub{font-size:17px;line-height:1.55;max-width:820px;margin:18px 0 0;opacity:.82}
+
+  /* ---- 1. HERO ---- */
+  .fi-hero{background:var(--ink);color:var(--cream);padding:44px 0 56px;border-bottom:2.5px solid var(--ink)}
+  .fi-eyebrow{display:inline-flex;align-items:center;gap:14px;flex-wrap:wrap;border:2px solid var(--cream);padding:8px 14px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+  .fi-eyebrow .idx{font-weight:700}
+  .fi-eyebrow .tg{opacity:.7}
+  .fi-headline{font-family:var(--narrow);font-weight:700;text-transform:uppercase;font-size:clamp(30px,4.4vw,58px);line-height:1.04;letter-spacing:-.02em;margin:24px 0 0;max-width:26ch}
+  .fi-headline em{font-style:normal;background:var(--yellow);color:var(--ink);padding:0 .1em;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+  .fi-statement{background:var(--cream);color:var(--ink);border:2.5px solid var(--cream);box-shadow:10px 10px 0 rgba(255,211,0,.35);padding:30px 32px;margin:34px 0 0;max-width:880px}
+  .fi-statement .fi-statement-k{display:block;color:var(--c3-deliver);margin-bottom:14px;font-weight:700}
+  .fi-statement p{margin:0;font-size:clamp(19px,2.1vw,25px);line-height:1.35;font-family:var(--narrow);font-weight:700;text-transform:uppercase;letter-spacing:-.01em}
+  .fi-statement p.fi-statement-body{font-family:var(--display);font-weight:400;text-transform:none;letter-spacing:0;font-size:17px;line-height:1.6;opacity:.85;margin-top:16px}
+  .fi-statement-body a{border-bottom:1.5px solid var(--ink);font-weight:600}
+  .fi-facts{display:flex;flex-wrap:wrap;gap:12px;margin:28px 0 0}
+  .fi-fact{border:2px solid var(--cream);padding:10px 16px;font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase}
+  .fi-fact strong{font-family:var(--narrow);font-size:20px;letter-spacing:0;margin-right:8px;color:var(--yellow)}
+  .fi-hero-jump{display:flex;flex-wrap:wrap;gap:12px;margin:28px 0 0;padding:0;list-style:none}
+  .fi-hero-jump a{display:inline-block;border:2px solid var(--cream);padding:9px 14px;font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase}
+  .fi-hero-jump a:hover{background:var(--cream);color:var(--ink)}
+
+  /* ---- 2. ATTRIBUTION ---- */
+  .fi-source{padding:56px 0;background:var(--cream);border-bottom:1.5px solid rgba(11,15,26,.1)}
+  .fi-attrib{background:#fff;border:2.5px solid var(--ink);border-left:10px solid var(--yellow);box-shadow:8px 8px 0 var(--ink);padding:30px 32px;max-width:880px}
+  .fi-attrib-k{display:block;opacity:.55;margin-bottom:10px;font-weight:700}
+  .fi-attrib-line{font-family:var(--narrow);font-weight:700;text-transform:uppercase;font-size:clamp(19px,2.2vw,26px);line-height:1.15;margin:0 0 14px}
+  .fi-attrib-body{font-size:15.5px;line-height:1.62;opacity:.85;margin:0 0 14px}
+  .fi-attrib-links{margin:0 0 16px;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+  .fi-attrib-links a{font-family:var(--mono);font-size:12.5px;letter-spacing:.04em;border-bottom:1.5px solid var(--ink);width:fit-content}
+  .fi-attrib-links a:hover{background:var(--yellow)}
+  .fi-attrib-correct{font-size:15.5px;line-height:1.6;margin:0;border-top:1.5px solid rgba(11,15,26,.14);padding-top:14px}
+  .fi-attrib-correct a{border-bottom:1.5px solid var(--ink);font-weight:600}
+
+  /* ---- 3. DIRECTORY ---- */
+  .fi-dir{padding:72px 0;background:#fff;border-bottom:1.5px solid rgba(11,15,26,.1)}
+  .fi-home-callout{border:2.5px solid var(--ink);border-left:10px solid var(--c3-deliver);background:var(--cream);padding:20px 24px;margin:0 0 40px;max-width:880px}
+  .fi-home-k{display:block;opacity:.55;margin-bottom:8px;font-weight:700}
+  .fi-home-callout p{margin:0;font-size:16px;line-height:1.6}
+  .fi-states{display:flex;flex-direction:column;gap:34px}
+  .fi-state{border:2px solid var(--ink);box-shadow:8px 8px 0 var(--ink);background:#fff}
+  .fi-state.is-home{box-shadow:8px 8px 0 var(--c3-deliver);border-color:var(--ink)}
+  .fi-state-hd{display:flex;align-items:baseline;justify-content:space-between;gap:16px;background:var(--ink);color:var(--cream);padding:14px 20px}
+  .fi-state.is-home .fi-state-hd{background:var(--c3-deliver)}
+  .fi-state-hd h3{font-family:var(--narrow);font-weight:700;font-size:26px;line-height:1;text-transform:uppercase;letter-spacing:.02em;margin:0}
+  .fi-state-n{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;opacity:.85;display:inline-flex;align-items:center;gap:10px}
+  .fi-home-tag{background:var(--cream);color:var(--ink);padding:3px 8px;font-weight:700;opacity:1}
+  .fi-rows{margin:0;padding:0;list-style:none}
+  .fi-row{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,.8fr) minmax(0,1fr);gap:8px 20px;align-items:start;padding:14px 20px;border-top:1px solid rgba(11,15,26,.12)}
+  .fi-rows .fi-row:first-child{border-top:none}
+  .fi-row-who{display:flex;flex-direction:column;gap:2px}
+  .fi-row-name{font-family:var(--narrow);font-weight:700;font-size:18px;line-height:1.15;text-transform:uppercase;letter-spacing:-.005em}
+  .fi-row-co{font-size:13.5px;line-height:1.4;opacity:.7}
+  .fi-row-city{font-family:var(--mono);font-size:12px;letter-spacing:.04em;text-transform:uppercase;opacity:.75;padding-top:3px}
+  .fi-row-creds{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
+  .fi-badge{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;border:1.5px solid var(--ink);padding:4px 9px;white-space:nowrap}
+  .fi-badge.is-dryvan{background:var(--yellow)}
+  .fi-badge.is-chassis{background:transparent}
+  .fi-badge.is-reefer{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+  .fi-dir-note{margin:36px 0 0;padding:18px 22px;background:var(--ink);color:var(--cream);font-size:16px;line-height:1.6;max-width:860px}
+
+  /* ---- 4. HOW TO USE ---- */
+  .fi-how{padding:72px 0;background:var(--cream);border-bottom:1.5px solid rgba(11,15,26,.1)}
+  .fi-how-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+  .fi-how-card{background:#fff;border:2px solid var(--ink);border-left:8px solid var(--c1-size);padding:28px;box-shadow:8px 8px 0 var(--ink)}
+  .fi-how-n{font-family:var(--narrow);font-weight:700;font-size:40px;line-height:.9;letter-spacing:-.02em;display:block;margin-bottom:12px;color:var(--c1-size);-webkit-text-stroke:1.25px var(--ink)}
+  .fi-how-card h3{font-family:var(--narrow);font-weight:700;font-size:22px;text-transform:uppercase;line-height:1.08;margin:0 0 12px}
+  .fi-how-card p{font-size:15.5px;line-height:1.62;opacity:.86;margin:0}
+  .fi-how-card a{border-bottom:1.5px solid var(--ink);font-weight:600}
+
+  /* ---- 5. SBD ---- */
+  .fi-sbd{padding:72px 0;background:var(--ink);color:var(--cream)}
+  .fi-sbd .fi-h2{color:var(--cream)}
+  .fi-sbd-note{font-size:16.5px;line-height:1.7;opacity:.88;max-width:860px;margin:0}
+  .fi-sbd-note a{border-bottom:1.5px solid var(--yellow);color:var(--yellow)}
+  .fi-cta-btns{display:flex;gap:16px;flex-wrap:wrap;align-items:center;margin-top:30px}
+  .fi-sbd .btn-ghost{color:var(--cream)}
+  .fi-sbd .btn-ghost:hover{color:var(--yellow)}
+  .fi-btn-yellow{background:var(--yellow);color:var(--ink);border-color:var(--yellow)}
+  .fi-btn-yellow:hover{background:transparent;color:var(--yellow)}
+
+  /* ---- 6. FAQ ---- */
+  .fi-faq{padding:72px 0;background:var(--cream)}
+  .fi-faq-list{border-top:2px solid var(--ink)}
+  .fi-faq-item{border-bottom:2px solid var(--ink);padding:28px 0;display:grid;grid-template-columns:64px 1fr;column-gap:32px;row-gap:12px;align-items:start}
+  .fi-faq-n{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;opacity:.8;padding-top:6px}
+  .fi-faq-item h3{font-family:var(--narrow);font-weight:700;font-size:clamp(21px,2.6vw,32px);line-height:1.05;text-transform:uppercase;letter-spacing:-.01em;grid-column:2;margin:0}
+  .fi-faq-a{font-size:16px;line-height:1.6;grid-column:2;max-width:820px;opacity:.88;margin:0}
+
+  /* ---- NEXT ---- */
+  .fi-next{padding:48px 0;background:var(--ink);color:var(--cream);border-top:2px solid rgba(255,255,255,.08)}
+  .fi-next-label{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--yellow);margin:0 0 16px}
+  .fi-next-links{display:flex;flex-wrap:wrap;gap:20px}
+  .fi-next-links a{font-family:var(--narrow);font-size:17px;font-weight:600;color:var(--cream);border-bottom:2px solid rgba(255,255,255,.2);padding-bottom:2px}
+  .fi-next-links a:hover{color:var(--yellow);border-color:var(--yellow)}
+
+  /* ---- RESPONSIVE ---- */
+  @media (max-width:960px){
+    .fi-hero{padding:44px 0 52px}
+    .fi-source{padding:48px 0}
+    .fi-dir,.fi-how,.fi-sbd,.fi-faq{padding:64px 0}
+    .fi-how-grid{grid-template-columns:1fr}
+  }
+  @media (max-width:700px){
+    .fi-statement{padding:24px;box-shadow:6px 6px 0 rgba(255,211,0,.35)}
+    .fi-attrib{padding:22px;border-left-width:8px}
+    .fi-row{grid-template-columns:1fr;gap:6px}
+    .fi-row-creds{justify-content:flex-start}
+    .fi-row-city{padding-top:0}
+    .fi-how-card{padding:22px}
+    .fi-faq-item{grid-template-columns:1fr;row-gap:8px}
+    .fi-faq-item h3,.fi-faq-a{grid-column:1}
+  }
+</style>
