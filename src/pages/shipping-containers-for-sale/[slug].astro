@@ -3,6 +3,7 @@ export const prerender = true;
 
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CallbackForm from '../../components/CallbackForm.astro';
+import { Image } from 'astro:assets';
 import { containers } from '../../data/containers';
 import type { Container } from '../../data/containers';
 import { priceBySlug, formatPrice, asOfLabel, nationalPriceLabel } from '../../data/pricing';
@@ -73,7 +74,49 @@ const sizeParam = sizeParamFor(c.slug);
         {c.keySpecs.map((s) => <span class="spec-chip">{s}</span>)}
       </div>
       <p class="lede">{c.tagline}</p>
+      {c.heroPhoto && (
+        <figure class="prod-photo">
+          <Image src={c.heroPhoto.src} alt={c.heroPhoto.alt} width={1400} format="webp" />
+        </figure>
+      )}
+      <!-- Confidence strip: five sourced claims, nothing invented. The price line renders
+           entirely from src/data/pricing.ts. The /condition/ link swaps to the T-170 wear
+           guide when that page ships. -->
+      <ul class="conf-strip" aria-label="Why buyers trust this container">
+        {price && (
+          <li><strong>{formatPrice(price.price)}</strong> {nationalPriceLabel.toLowerCase()}. Not a quote; yours may be more or less. ({asOfLabel})</li>
+        )}
+        <li><strong>Wind &amp; Water Tight (used).</strong> Honest cosmetic wear. <a href="/condition/">What that means</a></li>
+        <li><strong>Lifetime Leak Warranty</strong> on every container</li>
+        <li>Delivered across <strong>Ohio, Indiana, Kentucky + western West Virginia</strong></li>
+        <li>Quotes answered within <strong>4 business hours</strong></li>
+      </ul>
       <a href={'/quote/?size=' + sizeParam} class="btn prod-cta">Get a Quote <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="prod-pricing">
+    <div class="wrap">
+      <h2 class="section-title">Used {c.shortName} Shipping Container for Sale</h2>
+      <div class="pricing-card">
+        <h3 class="m" style="margin-top: 0;">{c.shortName} Shipping Container Price</h3>
+        <div class="price-figure">{formatPrice(price.price)}<span>{nationalPriceLabel} · {c.shortName}</span></div>
+        <p class="price-disclaimer-text"><strong>This is an average starting price, not a quote.</strong> What you pay can land above or below; it depends mostly on how far we deliver and current market supply. We'll give you a real, all-in number when you request a quote. <em>(Average as of {asOfLabel}.)</em></p>
+        {c.slug === '40-foot-high-cube-container' && (
+          <p class="hc-supply-note">Supply runs deep right now, so the High Cube average can land below the standard 40ft.</p>
+        )}
+        <p class="price-bridge">Prices vary by metro, and we publish a dated delivered figure for each one we serve: <a href="/locations/">see the delivered price in your city</a>.</p>
+        <a href="/quote/" class="btn">Get a Current Quote <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+        <p class="response-note">Most requests answered within 4 business hours.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ACTION BLOCK: Doug callback or preselected full quote -->
+  <section class="prod-action">
+    <div class="wrap">
+      <CallbackForm sizeLabel={c.shortName} sizePreference={sizeParam} />
     </div>
   </section>
 
@@ -157,31 +200,6 @@ const sizeParam = sizeParamFor(c.slug);
     </div>
   </section>
 
-  <!-- PRICING -->
-  <section class="prod-pricing">
-    <div class="wrap">
-      <h2 class="section-title">Used {c.shortName} Shipping Container for Sale</h2>
-      <div class="pricing-card">
-        <h3 class="m" style="margin-top: 0;">{c.shortName} Shipping Container Price</h3>
-        <div class="price-figure">{formatPrice(price.price)}<span>{nationalPriceLabel} · {c.shortName}</span></div>
-        <p class="price-disclaimer-text"><strong>This is an average starting price, not a quote.</strong> What you pay can land above or below; it depends mostly on how far we deliver and current market supply. We'll give you a real, all-in number when you request a quote. <em>(Average as of {asOfLabel}.)</em></p>
-        {c.slug === '40-foot-high-cube-container' && (
-          <p class="hc-supply-note">Supply runs deep right now, so the High Cube average can land below the standard 40ft.</p>
-        )}
-        <p class="price-bridge">Prices vary by metro, and we publish a dated delivered figure for each one we serve: <a href="/locations/">see the delivered price in your city</a>.</p>
-        <a href="/quote/" class="btn">Get a Current Quote <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
-        <p class="response-note">Most requests answered within 4 business hours.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ACTION BLOCK: Doug callback or preselected full quote -->
-  <section class="prod-action">
-    <div class="wrap">
-      <CallbackForm sizeLabel={c.shortName} sizePreference={sizeParam} />
-    </div>
-  </section>
-
   <!-- GUIDE LINKS -->
   <section class="prod-guides">
     <div class="wrap">
@@ -220,6 +238,22 @@ const sizeParam = sizeParamFor(c.slug);
   .spec-chip { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; background: var(--ink); color: var(--yellow); padding: 6px 14px; }
   .lede { font-size: 22px; line-height: 1.4; max-width: 680px; font-weight: 500; margin-bottom: 32px; }
   .prod-cta { margin-top: 8px; }
+
+  /* REAL PHOTO SLOT (renders only when c.heroPhoto is set; no placeholders) */
+  .prod-photo { margin: 0 0 28px; max-width: 720px; border: 2.5px solid var(--ink); box-shadow: 8px 8px 0 var(--ink); background: white; }
+  .prod-photo img { display: block; width: 100%; height: auto; }
+
+  /* CONFIDENCE STRIP: mono chips on desktop, stacked list on mobile, ink check markers */
+  .conf-strip { list-style: none; margin: 0 0 32px; padding: 0; display: flex; flex-wrap: wrap; gap: 10px 12px; max-width: 920px; }
+  .conf-strip li { position: relative; font-family: var(--mono); font-size: 12px; line-height: 1.55; letter-spacing: .02em; background: var(--cream); border: 1.5px solid var(--ink); padding: 8px 14px 8px 32px; }
+  .conf-strip li::before { content: '✓'; position: absolute; left: 12px; top: 8px; color: var(--ink); font-weight: 700; }
+  .conf-strip li strong { font-weight: 700; }
+  .conf-strip li a { color: inherit; border-bottom: 1.5px solid var(--ink); font-weight: 600; text-decoration: none; }
+  @media (max-width: 720px) {
+    .conf-strip { display: block; }
+    .conf-strip li { margin-bottom: 8px; }
+    .conf-strip li:last-child { margin-bottom: 0; }
+  }
 
   /* SPECS TABLE */
   .prod-specs { padding: 72px 0; background: var(--cream); border-bottom: 1.5px solid rgba(11,15,26,.1); }

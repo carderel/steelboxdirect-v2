@@ -1,4 +1,5 @@
 // src/data/containers.ts
+import type { ImageMetadata } from 'astro';
 import { CONDITION } from './condition';
 
 export interface ContainerSpecs {
@@ -20,6 +21,13 @@ export interface Container {
   useCases: Array<{ title: string; body: string }>;
   compareNote: string;
   seo: { title: string; description: string };
+  /**
+   * Real photo only, never AI-generated (see the product overhaul spec, section 7).
+   * Typed as ImageMetadata because photos ship as imported src/assets files rendered
+   * through astro:assets Image (the farmers-page pattern), not public-path strings.
+   * Unset on every container until real photos land; the hero slot renders nothing.
+   */
+  heroPhoto?: { src: ImageMetadata; alt: string };
 }
 
 export const containers: Container[] = [
