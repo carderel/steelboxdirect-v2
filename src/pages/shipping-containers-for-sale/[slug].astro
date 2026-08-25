@@ -2,6 +2,7 @@
 export const prerender = true;
 
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import CallbackForm from '../../components/CallbackForm.astro';
 import { containers } from '../../data/containers';
 import type { Container } from '../../data/containers';
 import { priceBySlug, formatPrice, asOfLabel, nationalPriceLabel } from '../../data/pricing';
@@ -31,6 +32,19 @@ interface Props { container: Container }
 const { container: c } = Astro.props;
 const others = containers.filter((x) => x.slug !== c.slug);
 const price = priceBySlug[c.slug];
+
+// Maps each product slug to the quote form's size_preference select value, which the
+// quote page already reads from /quote/?size= (see the sizeMap in src/pages/quote/index.astro).
+// Keep in sync with the <option> values there and SIZE_LABELS in src/pages/api/submit-quote.ts.
+function sizeParamFor(slug: string): string {
+  const map: Record<string, string> = {
+    '20-foot-shipping-container': '20ft',
+    '40-foot-shipping-container': '40ft',
+    '40-foot-high-cube-container': '40ft_hc',
+  };
+  return map[slug] ?? '';
+}
+const sizeParam = sizeParamFor(c.slug);
 ---
 
 <BaseLayout title={c.seo.title} description={c.seo.description} pageType="product"
@@ -59,7 +73,7 @@ const price = priceBySlug[c.slug];
         {c.keySpecs.map((s) => <span class="spec-chip">{s}</span>)}
       </div>
       <p class="lede">{c.tagline}</p>
-      <a href="/quote/" class="btn prod-cta">Get a Quote <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+      <a href={'/quote/?size=' + sizeParam} class="btn prod-cta">Get a Quote <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
     </div>
   </section>
 
@@ -161,6 +175,13 @@ const price = priceBySlug[c.slug];
     </div>
   </section>
 
+  <!-- ACTION BLOCK: Doug callback or preselected full quote -->
+  <section class="prod-action">
+    <div class="wrap">
+      <CallbackForm sizeLabel={c.shortName} sizePreference={sizeParam} />
+    </div>
+  </section>
+
   <!-- GUIDE LINKS -->
   <section class="prod-guides">
     <div class="wrap">
@@ -245,6 +266,9 @@ const price = priceBySlug[c.slug];
   .price-bridge { font-family: var(--mono); font-size: 11px !important; line-height: 1.55; letter-spacing: .02em; opacity: .7 !important; margin-bottom: 24px !important; }
   .price-bridge a { color: var(--yellow); border-bottom: 1.5px solid currentColor; font-weight: 600; }
   .response-note { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; opacity: .45; margin-top: 16px; margin-bottom: 0; }
+
+  /* ACTION BLOCK */
+  .prod-action { padding: 64px 0 72px; background: var(--cream); border-top: 1.5px solid rgba(11,15,26,.1); }
 
   /* GUIDE LINKS */
   .prod-guides { padding: 48px 0; background: var(--ink); border-bottom: 1.5px solid rgba(255,255,255,.1); }

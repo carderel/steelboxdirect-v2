@@ -1,0 +1,103 @@
+---
+// Two-door action block for the product template (T-171).
+// Door 1 posts a three-field callback lead to /api/submit-quote with
+// leadType 'callback' (email-only pipeline, no DB write, the payment-intent
+// precedent). Door 2 links the full quote form with this page's size
+// preselected via the form's existing ?size= param.
+interface Props {
+  /** Human label for this size, e.g. "20ft Standard" (c.shortName). */
+  sizeLabel: string;
+  /** Quote-form size_preference select value: 20ft | 40ft | 40ft_hc. */
+  sizePreference: string;
+}
+const { sizeLabel, sizePreference } = Astro.props;
+---
+
+<div class="two-door">
+  <h2 class="section-title">Get Your {sizeLabel} Price</h2>
+  <div class="doors">
+    <div class="door door-call">
+      <h3 class="door-title">Skip the forms. Talk to Doug.</h3>
+      <form id="cb-form" data-size={sizePreference}>
+        <label class="cb-field">
+          <span>Name</span>
+          <input type="text" name="cb_name" autocomplete="name" required />
+        </label>
+        <label class="cb-field">
+          <span>Phone</span>
+          <input type="tel" name="cb_phone" autocomplete="tel" required />
+        </label>
+        <label class="cb-field">
+          <span>Email</span>
+          <input type="email" name="cb_email" autocomplete="email" required />
+        </label>
+        <button type="submit" class="btn cb-btn">Have Doug call me <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
+      </form>
+      <div id="cb-success" class="cb-success" hidden>Got it. Expect a call between 9am and 9pm Eastern.</div>
+      <div id="cb-error" class="cb-error" hidden>That did not go through. Call us at <a href="tel:+15135462543">(513) 546-2543</a> or use the full quote form.</div>
+      <p class="door-sub">We answer calls 9am to 9pm ET, every day.</p>
+    </div>
+    <div class="door door-quote">
+      <h3 class="door-title">Want it all in writing?</h3>
+      <a class="btn" href={'/quote/?size=' + sizePreference}>Build my full quote <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+      <p class="door-sub">Every detail, one form, quote back within 4 business hours.</p>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  const form = document.getElementById('cb-form');
+  const ok = document.getElementById('cb-success');
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = form.querySelector('button');
+    const btnLabel = btn.textContent;
+    btn.disabled = true; btn.textContent = 'Sending...';
+    const fd = new FormData(form);
+    const payload = {
+      leadType: 'callback',
+      name: fd.get('cb_name'),
+      phone: fd.get('cb_phone'),
+      email: fd.get('cb_email'),
+      size_preference: form.dataset.size,
+    };
+    try {
+      const res = await fetch('/api/submit-quote', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) throw new Error('bad status');
+      form.hidden = true; ok.hidden = false;
+    } catch {
+      btn.disabled = false; btn.textContent = btnLabel;
+      document.getElementById('cb-error').hidden = false;
+    }
+  });
+</script>
+
+<style>
+  .section-title { font-family: var(--narrow); font-size: 36px; text-transform: uppercase; margin-bottom: 32px; }
+  .doors { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: stretch; }
+  .door { background: white; border: 2.5px solid var(--ink); padding: 36px 32px; display: flex; flex-direction: column; }
+  .door-call { box-shadow: 8px 8px 0 var(--yellow); }
+  .door-title { font-family: var(--narrow); font-size: 24px; text-transform: uppercase; margin-bottom: 20px; }
+  .cb-field { display: block; margin-bottom: 16px; }
+  .cb-field span { display: block; font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; opacity: .55; margin-bottom: 6px; }
+  .cb-field input { width: 100%; border: 2px solid var(--ink); background: var(--cream); padding: 12px 14px; font-family: var(--sans, inherit); font-size: 16px; color: var(--ink); }
+  .cb-field input:focus { outline: 3px solid var(--yellow); outline-offset: 0; }
+  .cb-btn { background: var(--yellow); color: var(--ink); margin-top: 4px; }
+  .cb-btn:hover { background: var(--ink); color: var(--yellow); }
+  .cb-btn:disabled { opacity: .6; cursor: wait; }
+  .cb-success { border-left: 4px solid var(--yellow); padding: 14px 16px; background: var(--cream); font-weight: 600; font-size: 16px; line-height: 1.5; margin-top: 8px; }
+  .cb-error { border-left: 4px solid var(--ink); padding: 14px 16px; background: var(--cream); font-size: 15px; line-height: 1.5; margin-top: 16px; }
+  .cb-error a { font-weight: 700; border-bottom: 2px solid var(--yellow); color: inherit; white-space: nowrap; }
+  .door-sub { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; opacity: .55; margin-top: auto; padding-top: 20px; }
+  .door-quote .btn { align-self: flex-start; }
+  .door-quote .door-sub { padding-top: 24px; }
+
+  @media (max-width: 720px) {
+    .doors { grid-template-columns: 1fr; gap: 24px; }
+    .door { padding: 28px 20px; }
+    .section-title { font-size: 30px; }
+  }
+</style>
