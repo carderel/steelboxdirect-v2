@@ -6,6 +6,7 @@ import CallbackForm from '../../components/CallbackForm.astro';
 import { Image } from 'astro:assets';
 import { containers } from '../../data/containers';
 import type { Container } from '../../data/containers';
+import { CONDITION } from '../../data/condition';
 import { priceBySlug, formatPrice, asOfLabel, nationalPriceLabel } from '../../data/pricing';
 
 // THE VISIBLE DATE STAYS AT MONTH PRECISION, and it is a decision rather than an oversight.
@@ -46,6 +47,24 @@ function sizeParamFor(slug: string): string {
   return map[slug] ?? '';
 }
 const sizeParam = sizeParamFor(c.slug);
+
+// ONE comparison data source: the desktop table and the mobile cards both map over
+// compareRows, so the two presentations cannot diverge. Best-for cells drop the shared
+// CONDITION.blurb tail that containers.ts appends to every compareNote; the condition
+// is stated once in the line above the comparison instead of repeating per column.
+function comparisonColumn(pick: (x: Container) => string): Record<string, string> {
+  const values: Record<string, string> = {};
+  for (const x of containers) values[x.slug] = pick(x);
+  return values;
+}
+const compareRows: { label: string; values: Record<string, string> }[] = [
+  { label: 'External', values: comparisonColumn((x) => x.specs.externalDims) },
+  { label: 'Internal', values: comparisonColumn((x) => x.specs.internalDims) },
+  { label: 'Capacity', values: comparisonColumn((x) => x.specs.cubicCap) },
+  { label: 'Best for', values: comparisonColumn((x) => x.compareNote.replace(CONDITION.blurb, '').trim()) },
+];
+// Mobile cards lead with the container this page sells.
+const compareOrder = [c, ...others];
 ---
 
 <BaseLayout title={c.seo.title} description={c.seo.description} pageType="product"
@@ -147,40 +166,54 @@ const sizeParam = sizeParamFor(c.slug);
   <section class="prod-compare">
     <div class="wrap">
       <h2 class="section-title">How It Compares</h2>
-      <div class="compare-card">
-        <table class="compare-table">
-          <thead>
-            <tr>
-              <th></th>
-              {containers.map((x) => (
-                <th class={x.slug === c.slug ? 'current-col' : ''}>
-                  {x.slug === c.slug
-                    ? <span>{x.shortName}</span>
-                    : <a href={`/shipping-containers-for-sale/${x.slug}/`}>{x.shortName}</a>
-                  }
-                </th>
+      <p class="compare-condition">All three sizes are {CONDITION.blurb}</p>
+      <div class="compare-desktop">
+        <div class="compare-card">
+          <table class="compare-table">
+            <thead>
+              <tr>
+                <th></th>
+                {containers.map((x) => (
+                  <th class={x.slug === c.slug ? 'current-col' : ''}>
+                    {x.slug === c.slug
+                      ? <span>{x.shortName}</span>
+                      : <a href={`/shipping-containers-for-sale/${x.slug}/`}>{x.shortName}</a>
+                    }
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {compareRows.map((row) => (
+                <tr>
+                  <th>{row.label}</th>
+                  {containers.map((x) => <td class={x.slug === c.slug ? 'current-col' : ''}>{row.values[x.slug]}</td>)}
+                </tr>
               ))}
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th>External</th>
-              {containers.map((x) => <td class={x.slug === c.slug ? 'current-col' : ''}>{x.specs.externalDims}</td>)}
-            </tr>
-            <tr>
-              <th>Internal</th>
-              {containers.map((x) => <td class={x.slug === c.slug ? 'current-col' : ''}>{x.specs.internalDims}</td>)}
-            </tr>
-            <tr>
-              <th>Capacity</th>
-              {containers.map((x) => <td class={x.slug === c.slug ? 'current-col' : ''}>{x.specs.cubicCap}</td>)}
-            </tr>
-            <tr>
-              <th>Best for</th>
-              {containers.map((x) => <td class={x.slug === c.slug ? 'current-col' : ''}>{x.compareNote}</td>)}
-            </tr>
-          </tbody>
-        </table>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="compare-cards">
+        {compareOrder.map((x) => (
+          <article class={'compare-mcard' + (x.slug === c.slug ? ' is-current' : '')}>
+            <header class="compare-mcard-head">
+              {x.slug === c.slug
+                ? <span class="compare-mcard-name">{x.shortName}</span>
+                : <a class="compare-mcard-name" href={`/shipping-containers-for-sale/${x.slug}/`}>{x.shortName}</a>
+              }
+              {x.slug === c.slug && <span class="compare-mcard-badge">This page</span>}
+            </header>
+            <dl class="compare-mcard-list">
+              {compareRows.map((row) => (
+                <div class="compare-mcard-row">
+                  <dt>{row.label}</dt>
+                  <dd>{row.values[x.slug]}</dd>
+                </div>
+              ))}
+            </dl>
+          </article>
+        ))}
       </div>
     </div>
   </section>
@@ -267,8 +300,10 @@ const sizeParam = sizeParamFor(c.slug);
   .spec-ref-link { margin-top: 20px; font-size: 15px; opacity: .85; }
   .spec-ref-link a { border-bottom: 2px solid var(--yellow-d); font-weight: 600; }
 
-  /* COMPARE */
+  /* COMPARE: one compareRows array renders twice. Desktop (>960px) shows the table,
+     960px and below shows the cards; the current page's card leads, badged This page. */
   .prod-compare { padding: 72px 0; background: white; border-bottom: 1.5px solid rgba(11,15,26,.1); }
+  .compare-condition { font-family: var(--mono); font-size: 12px; line-height: 1.6; letter-spacing: .02em; opacity: .75; max-width: 680px; margin: -12px 0 28px; }
   .compare-card { background: var(--cream); border: 2.5px solid var(--ink); overflow-x: auto; }
   .compare-table { width: 100%; border-collapse: collapse; min-width: 520px; }
   .compare-table th, .compare-table td { padding: 16px 20px; text-align: left; border-bottom: 1.5px solid rgba(11,15,26,.1); font-size: 14px; }
@@ -278,6 +313,25 @@ const sizeParam = sizeParamFor(c.slug);
   .current-col { background: var(--ink); color: var(--yellow); }
   .current-col a { color: var(--yellow); }
   .compare-table a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+
+  /* Mobile comparison cards (hidden above 960px) */
+  .compare-cards { display: none; }
+  .compare-mcard { background: var(--cream); border: 2.5px solid var(--ink); padding: 20px; }
+  .compare-mcard.is-current { background: var(--ink); color: var(--yellow); }
+  .compare-mcard-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+  .compare-mcard-name { font-family: var(--narrow); font-size: 20px; font-weight: 700; text-transform: uppercase; color: inherit; }
+  a.compare-mcard-name { text-decoration: underline; text-underline-offset: 3px; }
+  .compare-mcard-badge { font-family: var(--mono); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; background: var(--yellow); color: var(--ink); padding: 4px 10px; white-space: nowrap; }
+  .compare-mcard-list { margin: 0; }
+  .compare-mcard-row { padding: 10px 0; border-bottom: 1.5px solid rgba(11,15,26,.1); }
+  .compare-mcard.is-current .compare-mcard-row { border-bottom-color: rgba(255,255,255,.15); }
+  .compare-mcard-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .compare-mcard-row dt { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; opacity: .55; margin-bottom: 4px; }
+  .compare-mcard-row dd { margin: 0; font-size: 15px; line-height: 1.5; font-weight: 600; }
+  @media (max-width: 960px) {
+    .compare-desktop { display: none; }
+    .compare-cards { display: grid; gap: 20px; }
+  }
 
   /* USE CASES */
   .prod-uses { padding: 72px 0; background: var(--cream); border-bottom: 1.5px solid rgba(11,15,26,.1); }
