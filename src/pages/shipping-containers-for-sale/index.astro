@@ -59,7 +59,7 @@ const faqs: { q: string; a: string; html?: string }[] = [
 ---
 
 <BaseLayout
-  title="Shipping & Storage Containers for Sale | Steel Box Direct"
+  title="Used Shipping & Storage Containers for Sale | Steel Box Direct"
   description={`Buy a 20ft, 40ft, or 40ft High Cube shipping container delivered within 250 miles of Cincinnati. ${CONDITION.label} steel. No broker markup. Get a quote within 4 business hours.`}
   pageType="product"
   schema={{ kind: 'productHub', faqs: faqs.map((f) => ({ q: f.q, a: f.a })) }}
@@ -73,8 +73,8 @@ const faqs: { q: string; a: string; html?: string }[] = [
         <span class="nm">Steel Box Direct</span>
         <span class="tg">No broker · Local delivery</span>
       </div>
-      <h1 class="big">Shipping &amp; Storage Containers<br>for <em>Sale.</em></h1>
-      <p class="lede">Three sizes of shipping container (also called a conex box or sea can), all {CONDITION.label}: structurally sound, weather-tight steel. Delivered within 250 miles of Cincinnati, to your driveway, job site, or farm.</p>
+      <h1 class="big">Used Shipping &amp; Storage<br>Containers for <em>Sale.</em></h1>
+      <p class="lede">Three sizes of used shipping container (also called a <a href="/conex-boxes-for-sale/">conex box</a>, sea container, sea can, cargo container, freight container, or metal storage container), all {CONDITION.label}: structurally sound, weather-tight steel. Delivered within 250 miles of Cincinnati, to your driveway, job site, or farm.</p>
     </div>
   </section>
 
@@ -229,6 +229,7 @@ const faqs: { q: string; a: string; html?: string }[] = [
   /* HERO */
   .hub-hero { padding: 80px 0 64px; background: var(--yellow); border-bottom: 2.5px solid var(--ink); }
   .lede { font-size: 22px; line-height: 1.4; max-width: 720px; font-weight: 500; margin-top: 28px; }
+  .lede a { border-bottom: 2px solid var(--ink); font-weight: 600; }
 
   /* PRODUCT CARDS */
   .hub-products { padding: 72px 0; background: var(--cream); border-bottom: 1.5px solid rgba(11,15,26,.1); }

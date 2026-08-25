@@ -44,7 +44,7 @@ export const containers: Container[] = [
     ],
     compareNote: `Half the length of a 40ft, so it fits tighter spaces and costs less to deliver. ${CONDITION.blurb}`,
     seo: {
-      title:       '20-Foot Shipping & Storage Container for Sale | Steel Box Direct',
+      title:       'Used 20ft Shipping Container for Sale | Steel Box Direct',
       description: `Buy a 20ft shipping container delivered within 250 miles of Cincinnati. ${CONDITION.seoTail} Get a quote within 4 business hours.`,
     },
   },
@@ -69,7 +69,7 @@ export const containers: Container[] = [
     ],
     compareNote: `Twice the storage of a 20ft, but it needs more clearance for delivery and placement. ${CONDITION.blurb}`,
     seo: {
-      title:       '40-Foot Shipping & Storage Container for Sale | Steel Box Direct',
+      title:       'Used 40ft Shipping Container for Sale | Steel Box Direct',
       description: `Buy a 40ft shipping container delivered within 250 miles of Cincinnati. ${CONDITION.seoTail} Flat-fee local delivery. Get a quote in 4 hours.`,
     },
   },

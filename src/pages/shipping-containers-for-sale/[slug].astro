@@ -146,8 +146,9 @@ const price = priceBySlug[c.slug];
   <!-- PRICING -->
   <section class="prod-pricing">
     <div class="wrap">
+      <h2 class="section-title">Used {c.shortName} Shipping Container for Sale</h2>
       <div class="pricing-card">
-        <div class="m">Average Price</div>
+        <h3 class="m" style="margin-top: 0;">{c.shortName} Shipping Container Price</h3>
         <div class="price-figure">{formatPrice(price.price)}<span>{nationalPriceLabel} · {c.shortName}</span></div>
         <p class="price-disclaimer-text"><strong>This is an average starting price, not a quote.</strong> What you pay can land above or below; it depends mostly on how far we deliver and current market supply. We'll give you a real, all-in number when you request a quote. <em>(Average as of {asOfLabel}.)</em></p>
         {c.slug === '40-foot-high-cube-container' && (

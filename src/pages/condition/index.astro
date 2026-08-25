@@ -10,7 +10,7 @@ import { lifecycleFacts } from '../../data/containerReference';
   title="Shipping Container Condition Guide: Wind & Water Tight | Steel Box Direct"
   description="What container condition means. Every container we sell is Wind & Water Tight (used): structurally sound, weather-tight, and storage-ready at the best value."
   datePublished="2026-05-19"
-  dateModified="2026-08-24"
+  dateModified="2026-08-25"
   schema={{ kind: 'guide', topic: 'condition', title: 'Shipping Container Condition Guide: Wind & Water Tight', specs: [], faqs: [] }}
 >
   <div class="guide-header guide_header" style="background: var(--c2-cond); color: var(--cream);">
@@ -67,8 +67,14 @@ import { lifecycleFacts } from '../../data/containerReference';
         </aside>
       </div>
 
+      <div class="cond-onetrip">
+        <h2>One-Trip ("New") vs Wind &amp; Water Tight</h2>
+        <p>When people shop for new shipping containers, what the market actually sells is a one-trip unit: a container built overseas, loaded once for its single ocean crossing, and sold on arrival. It is the closest thing to new steel you can buy. Expect uniform paint, clean floors, minimal wear, and a premium price to match. For image-sensitive placements, a branded lot or a customer-facing site, one-trip can be worth it.</p>
+        <p>We do not sell one-trip containers today. Everything we sell is used Wind &amp; Water Tight: working steel retired from cargo service that still seals out rain, wind, snow, and pests and stays structurally sound on the ground. For storage, that seal is the entire job, and a WWT unit does it at a fraction of the cost of one-trip. The wear you accept is cosmetic (surface rust, scratches, dents), not structural, and our Lifetime Leak Warranty stands behind the seal. If pristine steel matters to your project, buy one-trip from a dealer who carries it. If keeping things dry, secure, and owned is the goal, WWT is the value pick.</p>
+      </div>
+
       <div class="cond-lifecycle">
-        <h2>Why used steel holds up</h2>
+        <h2>Why used shipping containers hold up</h2>
         <div class="cond-life-grid">
           {lifecycleFacts.map((f) => (
             <div class="cond-life-card">
@@ -163,6 +169,9 @@ import { lifecycleFacts } from '../../data/containerReference';
       .guide-header { padding: 48px 0; }
       .big { font-size: clamp(48px, 10vw, 80px); }
     }
+    .cond-onetrip { margin-top: 48px; padding-top: 40px; border-top: 2.5px solid var(--ink); }
+    .cond-onetrip h2 { font-family: var(--narrow); font-size: 30px; text-transform: uppercase; margin-bottom: 24px; }
+    .cond-onetrip p { font-size: 16px; line-height: 1.65; max-width: 780px; margin-bottom: 18px; }
     .cond-lifecycle { margin-top: 48px; padding-top: 40px; border-top: 2.5px solid var(--ink); }
     .cond-lifecycle h2 { font-family: var(--narrow); font-size: 30px; text-transform: uppercase; margin-bottom: 24px; }
     .cond-life-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }

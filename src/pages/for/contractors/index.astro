@@ -53,7 +53,7 @@ const faqs = [
   description="Job site storage containers delivered across OH/IN/KY and western WV. Ground-level access, theft-resistant lockbox hasp, dropped and picked up when the job's done."
   pageType="guide"
   datePublished="2026-06-04"
-  dateModified="2026-06-04"
+  dateModified="2026-08-25"
   breadcrumbs={crumbs}
   floatingSidebar
   schema={{ kind: 'useCase', audience: 'contractors', title: 'Job Site Storage That Locks and Stays',
@@ -168,6 +168,13 @@ const faqs = [
         </table>
       </div>
       <p class="uc-framing">A trailer earns its keep as a site office, and a gang box is hard to beat for a two-person crew's hand tools. But for locking up materials, power tools, and shared gear across trades (the stuff that walks off overnight), a steel container is the hardest target on the site, and the only one of the three you own outright.</p>
+
+      <!-- 2.3 CONTAINER OFFICE SHELL: the follow-up the trailer row invites -->
+      <div class="uc-office-card">
+        <span class="m uc-office-label">Container Office</span>
+        <h3>A Container Office Starts as a Steel Shell</h3>
+        <p>Plenty of the container offices you see on job sites started life as a plain used box, and that shell is what we sell: a sealed, lockable Cor-Ten steel room, Wind &amp; Water Tight, delivered to the site. The outfitting is your project. Power, insulation, lighting, windows, a man door, and climate are the buyer's builds, handled by your crew or your electrician; we do not sell modified or turnkey container office units. Two honest cautions. We make no claims about habitability or building-code compliance, and an outfitted container is not automatically an occupiable office. Whether your site can host one is a permits and zoning question, and confirming it with your local authority is the buyer's responsibility. What the shell gives you is the hard part done: a weather-tight steel envelope that locks, sitting exactly where the work is. Crews converting a box to a container office usually favor the 40ft High Cube for the extra foot of headroom; a 20ft fits a foreman's office on a tight site.</p>
+      </div>
     </div>
   </section>
 
@@ -452,6 +459,12 @@ const faqs = [
   .uc-compare-table tbody th { font-family: var(--narrow); font-weight: 700; text-transform: uppercase; width: 120px; background: var(--cream); }
   .uc-compare-table tbody tr:last-child th, .uc-compare-table tbody tr:last-child td { border-bottom: none; }
   .uc-compare-table td:last-child { background: rgba(30,136,229,.08); font-weight: 500; }
+
+  /* ---- CONTAINER OFFICE SHELL ---- */
+  .uc-office-card { margin-top: 40px; max-width: 860px; background: var(--cream); border: 2px solid var(--ink); border-left: 8px solid var(--c3-deliver); padding: 32px; box-shadow: 8px 8px 0 var(--ink); }
+  .uc-office-label { display: block; opacity: .55; margin-bottom: 10px; }
+  .uc-office-card h3 { font-family: var(--narrow); font-weight: 700; font-size: 24px; text-transform: uppercase; line-height: 1.05; margin: 0 0 14px; }
+  .uc-office-card p { font-size: 16px; line-height: 1.6; opacity: .85; margin: 0; }
 
   /* ---- JOBSITE THEFT ---- */
   .uc-theft { padding: 72px 0; background: var(--ink); color: var(--cream); border-bottom: 1.5px solid rgba(11,15,26,.1); }

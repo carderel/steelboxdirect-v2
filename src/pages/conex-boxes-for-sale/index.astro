@@ -1,0 +1,220 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+
+const crumbs = [{ name: 'Home', path: '/' }, { name: 'Conex Boxes for Sale', path: '/conex-boxes-for-sale/' }];
+
+// Single source for the page FAQ: this array drives BOTH the visible list and the FAQPage
+// JSON-LD, the same single-source-of-truth pattern as /shipping-containers-for-sale/.
+const faqs: { q: string; a: string }[] = [
+  {
+    q: 'Is a conex box the same as a shipping container?',
+    a: 'Yes. "Conex box" and "shipping container" are two names for the same corrugated steel ISO box. The word conex is commonly traced to the military\'s Container Express system of the Korean War era, and it stuck as the everyday name in the trades, while the freight industry standardized the same design worldwide. Sea can and cargo container refer to the same product too. Sizes, specs, and condition grades are identical no matter which name a seller uses.',
+  },
+  {
+    q: 'Can I buy a used conex box instead of a new one?',
+    a: 'Yes, and used is all we sell. Every used conex in our inventory is graded Wind & Water Tight: structurally sound, sealed against rain, wind, snow, and pests, with honest cosmetic wear from cargo service. A used conex does the same storage job as newer steel at far less cost. Units are sold as-is for storage and on-site use and are not certified for ocean shipping.',
+  },
+  {
+    q: 'Where can I find a conex box for sale near me?',
+    a: 'If you are in Ohio, Indiana, Kentucky, or western West Virginia, we deliver conex boxes within 250 miles of Cincinnati, including the Cincinnati, Dayton, Columbus, Indianapolis, Louisville, Lexington, and Huntington metros and their surrounding counties. You do not need a local sales yard: the box comes to your driveway, farm, or job site on a tilt-bed truck, and we quote a delivered price for your exact ZIP.',
+  },
+];
+
+// The three sizes this page routes to, for the CollectionPage ItemList.
+const items = [
+  { name: '20-Foot Shipping Container', url: 'https://steelboxdirect.com/shipping-containers-for-sale/20-foot-shipping-container/' },
+  { name: '40-Foot Shipping Container', url: 'https://steelboxdirect.com/shipping-containers-for-sale/40-foot-shipping-container/' },
+  { name: '40-Foot High Cube Container', url: 'https://steelboxdirect.com/shipping-containers-for-sale/40-foot-high-cube-container/' },
+];
+---
+
+<BaseLayout
+  title="Conex Boxes for Sale in Ohio, Indiana & Kentucky | Steel Box Direct"
+  description="A conex box is a shipping container by another name. Buy used 20ft and 40ft conex boxes, Wind and Water Tight, delivered across Ohio, Indiana, and Kentucky."
+  pageType="product"
+  breadcrumbs={crumbs}
+  schema={{ kind: 'collection', title: 'Conex Boxes for Sale', items, faqs }}
+>
+
+  <!-- HERO -->
+  <section class="cx-hero">
+    <div class="wrap">
+      <Breadcrumbs items={crumbs} />
+      <div class="sh">
+        <span class="idx">Conex</span>
+        <span class="nm">Shipping Container</span>
+        <span class="tg">Sea Can</span>
+      </div>
+      <h1 class="big">Conex Boxes for Sale.<br><em>Same Steel, Different Name.</em></h1>
+      <p class="lede">A conex box is a shipping container: same corrugated steel, same double cargo doors, same box the freight industry stacks nine high at sea. We sell used conex boxes in three sizes, all Wind &amp; Water Tight, delivered within 250 miles of Cincinnati, covering Ohio, Indiana, Kentucky, and western West Virginia.</p>
+    </div>
+  </section>
+
+  <!-- WHAT A CONEX BOX IS -->
+  <section class="cx-what">
+    <div class="wrap">
+      <h2 class="section-title">What a Conex Box Is</h2>
+      <div class="cx-prose">
+        <p>"Conex" is the name the box wore before global freight standardized it. The term is commonly traced to the U.S. military's Container Express system, shortened to CONEX: a rigid, reusable steel shipping crate fielded around the Korean War era so supplies could move from depot to unit as one sealed, stackable load instead of a pile of loose crates. The idea worked so well that commercial shipping ran with it. The boxes grew into the standardized ISO containers that now carry most of the world's cargo, and the old military name never let go.</p>
+        <p>Veterans still say conex. So do contractors, farmers, riggers, and most people who learned the box on a job site rather than at a port. When you search for a conex box for sale, you are searching for the same product listed everywhere else as a shipping container. Same steel, same doors, same dimensions. The only thing the name changes is who you learned it from.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONEX VS SHIPPING CONTAINER -->
+  <section class="cx-vs">
+    <div class="wrap">
+      <h2 class="section-title">Conex Box vs Shipping Container: The Honest Answer</h2>
+      <div class="cx-prose">
+        <p>They are the same thing, and we would rather say that plainly than pretend "conex" is a special product line. The steel box on the ground goes by at least five names, depending on which industry is talking:</p>
+        <ul class="cx-names">
+          <li><strong>Conex box:</strong> military and trades vocabulary</li>
+          <li><strong>Shipping container:</strong> the freight industry's standard term</li>
+          <li><strong>Sea can:</strong> common around ports and across Canada</li>
+          <li><strong>Cargo container:</strong> the generic logistics term</li>
+          <li><strong>Storage container:</strong> what it becomes once it stops traveling and starts working on your property</li>
+        </ul>
+        <p>Every one of those names points at the same ISO-standard corrugated steel box with double cargo doors and reinforced corner castings. There is no spec difference and no reason to shop differently based on the word. If a seller implies a conex is something other than a shipping container, that is a sales angle, not a fact.</p>
+        <p>Want to decode the markings, CSC plate, and exact ISO dimensions on any unit? Our <a href="/container-reference/">Container Reference</a> covers all of it.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SIZES -->
+  <section class="cx-sizes">
+    <div class="wrap">
+      <h2 class="section-title">The Conex Sizes We Sell</h2>
+      <p class="cx-sizes-intro">We carry the three sizes that cover nearly every storage and project need in this region.</p>
+      <div class="cx-size-grid">
+        <div class="cx-size-card">
+          <h3>20ft Conex Box</h3>
+          <p>20' x 8' x 8'6" externally, about 160 sq ft of floor. Fits a standard driveway or a tight job site with the doors still able to swing, and it is the size most homeowners and single crews land on. <a href="/shipping-containers-for-sale/20-foot-shipping-container/">See the 20ft container</a>.</p>
+        </div>
+        <div class="cx-size-card">
+          <h3>40ft Conex Box</h3>
+          <p>Double the floor at about 320 sq ft. The workhorse for farms, commercial properties, and multi-trade job sites where staging room is not the constraint. <a href="/shipping-containers-for-sale/40-foot-shipping-container/">See the 40ft container</a>.</p>
+        </div>
+        <div class="cx-size-card">
+          <h3>40ft High Cube Conex</h3>
+          <p>Same footprint as the standard 40ft with a 9'6" exterior height, adding a full foot of headroom for tall loads, racking, and conversion projects. <a href="/shipping-containers-for-sale/40-foot-high-cube-container/">See the 40ft High Cube</a>.</p>
+        </div>
+      </div>
+      <p class="cx-sizes-outro">All three are listed with full specs, side by side, on our page of <a href="/shipping-containers-for-sale/">shipping containers for sale in Ohio, Indiana, and Kentucky</a>.</p>
+    </div>
+  </section>
+
+  <!-- CONDITION -->
+  <section class="cx-cond">
+    <div class="wrap">
+      <h2 class="section-title">Condition: Used, Wind &amp; Water Tight</h2>
+      <div class="cx-prose">
+        <p>Every conex we sell is used and graded Wind &amp; Water Tight (WWT). That means the box is structurally sound and seals out rain, wind, snow, and pests, with honest cosmetic wear from its cargo years: surface rust, scratches, dents, and floors that may show staining, all over weathering (Cor-Ten) steel built to last decades on the ground.</p>
+        <p>Two things to know before you buy. These units are sold as-is for storage and on-site use; they are not certified for ocean shipping, and for a box that will sit on your property, that certification simply is not needed. And the seal is not a shrug: our Lifetime Leak Warranty stands behind it.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW BUYING WORKS -->
+  <section class="cx-how">
+    <div class="wrap">
+      <h2 class="section-title">How Buying a Conex Works</h2>
+      <div class="cx-prose">
+        <p>There is no online checkout and no sales yard to visit. Tell us the size you want, your ZIP code, and what the box is for, and we come back with one all-in delivered number for your address: the conex plus delivery, no broker markup, no line items appearing later. Most quote requests are answered within 4 business hours. Delivery distance is most of what moves the number, which is why we quote by ZIP instead of publishing one price and surprising you at the invoice. Prefer to haul it yourself? Self-pickup at a partner depot can be arranged instead.</p>
+        <p><a href="/quote/">Request your quote</a> and we will take it from there.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="cx-faq">
+    <div class="wrap">
+      <h2 class="section-title">Conex Box Questions</h2>
+      <div class="faq-list">
+        {faqs.map((f) => (
+          <div class="faq-item">
+            <h3>{f.q}</h3>
+            <p>{f.a}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="wrap">
+      <div class="cta-box">
+        <h2>Ready to Price a Conex?</h2>
+        <p>Tell us the size, your ZIP code, and what you are storing, and we will send back a real, all-in delivered number.</p>
+        <a href="/quote/" class="btn">Get My Quote <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style>
+  /* HERO */
+  .cx-hero { padding: 64px 0 64px; background: var(--yellow); border-bottom: 2.5px solid var(--ink); }
+  /* Shared section header + headline: matches the homepage/locations .sh and .big pattern */
+  .sh { display: grid; grid-template-columns: auto 1fr auto; gap: 20px; align-items: center; padding: 18px 0; border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink); margin-bottom: 40px; }
+  .sh .idx { font-family: var(--mono); font-size: var(--t-meta); letter-spacing: .08em; text-transform: uppercase; }
+  .sh .nm { font-family: var(--narrow); font-weight: 700; font-size: 22px; text-transform: uppercase; letter-spacing: -.01em; }
+  .sh .tg { font-family: var(--mono); font-size: var(--t-meta); letter-spacing: .08em; text-transform: uppercase; opacity: .55; text-align: right; }
+  .big { font-family: var(--narrow); font-weight: 700; font-size: var(--t-big); line-height: .9; letter-spacing: -.02em; text-transform: uppercase; margin: 0; }
+  .big em { font-style: italic; font-weight: 700; }
+  .lede { font-size: 22px; line-height: 1.4; max-width: 760px; font-weight: 500; margin-top: 28px; }
+  @media (max-width: 960px) {
+    .big { font-size: clamp(40px, 9vw, 72px); }
+    .sh { grid-template-columns: auto 1fr; row-gap: 6px; }
+    .sh .tg { text-align: left; }
+  }
+
+  /* PROSE SECTIONS */
+  .section-title { font-family: var(--narrow); font-size: 36px; text-transform: uppercase; margin-bottom: 28px; }
+  .cx-prose p { font-size: 17px; line-height: 1.65; max-width: 780px; margin: 0 0 18px; }
+  .cx-prose p:last-child { margin-bottom: 0; }
+  .cx-prose a, .cx-sizes-outro a, .cx-size-card a { border-bottom: 2px solid var(--yellow-d); font-weight: 600; }
+
+  .cx-what { padding: 72px 0; background: var(--cream); border-bottom: 1.5px solid rgba(11,15,26,.1); }
+  .cx-vs { padding: 72px 0; background: white; border-bottom: 1.5px solid rgba(11,15,26,.1); }
+  .cx-names { list-style: none; margin: 24px 0; padding: 0; max-width: 780px; border: 2px solid var(--ink); border-left: 8px solid var(--yellow); background: var(--cream); }
+  .cx-names li { padding: 14px 20px; font-size: 16px; line-height: 1.5; border-bottom: 1.5px solid rgba(11,15,26,.1); }
+  .cx-names li:last-child { border-bottom: none; }
+
+  /* SIZES */
+  .cx-sizes { padding: 72px 0; background: var(--cream); border-bottom: 1.5px solid rgba(11,15,26,.1); }
+  .cx-sizes-intro { font-size: 17px; line-height: 1.6; max-width: 780px; margin: 0 0 32px; }
+  .cx-size-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .cx-size-card { background: white; border: 2.5px solid var(--ink); padding: 32px; box-shadow: 8px 8px 0 var(--ink); }
+  .cx-size-card h3 { font-family: var(--narrow); font-size: 24px; text-transform: uppercase; font-weight: 700; margin: 0 0 12px; line-height: 1.1; }
+  .cx-size-card p { font-size: 15px; line-height: 1.6; opacity: .85; margin: 0; }
+  .cx-sizes-outro { font-size: 16px; line-height: 1.6; max-width: 780px; margin: 32px 0 0; }
+
+  .cx-cond { padding: 72px 0; background: white; border-bottom: 1.5px solid rgba(11,15,26,.1); }
+  .cx-how { padding: 72px 0; background: var(--cream); border-bottom: 1.5px solid rgba(11,15,26,.1); }
+
+  /* FAQ (matches the hub) */
+  .cx-faq { padding: 72px 0; background: white; border-bottom: 1.5px solid rgba(11,15,26,.1); }
+  .faq-list { display: flex; flex-direction: column; gap: 0; border: 2.5px solid var(--ink); }
+  .faq-item { padding: 32px 40px; border-bottom: 1.5px solid rgba(11,15,26,.1); }
+  .faq-item:last-child { border-bottom: none; }
+  .faq-item h3 { font-family: var(--narrow); font-size: 22px; text-transform: uppercase; margin-bottom: 12px; }
+  .faq-item p { opacity: .75; line-height: 1.6; max-width: 740px; margin: 0; }
+
+  /* CTA */
+  .cta-section { padding: 64px 0 80px; background: var(--cream); }
+  .cta-box { background: var(--ink); color: var(--cream); padding: 64px; text-align: center; border: 2.5px solid var(--ink); box-shadow: 12px 12px 0 var(--yellow); }
+  .cta-box h2 { font-family: var(--narrow); font-size: 48px; text-transform: uppercase; margin-bottom: 16px; }
+  .cta-box p { font-size: 18px; opacity: .8; margin-bottom: 40px; max-width: 640px; margin-left: auto; margin-right: auto; }
+
+  @media (max-width: 960px) {
+    .cx-size-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 768px) {
+    .cta-box { padding: 40px 24px; }
+    .cta-box h2 { font-size: 32px; }
+    .faq-item { padding: 24px; }
+  }
+</style>
