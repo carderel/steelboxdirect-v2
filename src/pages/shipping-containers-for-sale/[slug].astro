@@ -65,6 +65,30 @@ const compareRows: { label: string; values: Record<string, string> }[] = [
 ];
 // Mobile cards lead with the container this page sells.
 const compareOrder = [c, ...others];
+
+// FIG. D1 delivery clearance plate. Every number on the plate traces to a published
+// source and NOTHING is estimated (spec: omit rather than estimate):
+//   - 65 ft truck combination, 100+ ft straight approach (tilt bed), 14 ft overhead,
+//     12 ft wide path, 30,000 lb ground: all published on src/pages/delivery/index.astro.
+//   - Container length and height: c.specs.externalDims (containers.ts).
+// The delivery page's "60 feet average truck length" sidebar stat is deliberately NOT
+// drawn: the 65 ft combination is the maneuvering requirement, and two rig figures on
+// one plate would read as a contradiction. Truck/deck shapes are illustration only;
+// no dimension is attached to anything unpublished.
+// Geometry: 5.2 px per foot inside the 460 viewBox, ground at y=122, deck at y=100.
+const PX_PER_FT = 5.2;
+const lengthFt = parseInt(c.specs.externalDims, 10); // "20' L × ..." -> 20
+const contLenPx = lengthFt * PX_PER_FT;
+const contX1 = 372; // container rear sits near the rig rear
+const contX0 = contX1 - contLenPx;
+const contH = c.specs.externalDims.includes("9'6") ? 49 : 44; // 9'6" HC vs 8'6" std, to scale
+const contTop = 100 - contH;
+const contMidY = contTop + contH / 2;
+const lenChipW = 56;
+const lenChipX = (contX0 + contX1) / 2 - lenChipW / 2;
+const lenChipMidX = (contX0 + contX1) / 2;
+const plateTitle = `Delivery clearance for the ${c.shortName}: the rig and the room it needs`;
+const plateAria = `Side profile of a tilt bed truck carrying a ${c.shortName} container: a 65 foot truck combination, a ${lengthFt} foot container, 14 feet of overhead clearance, 100 or more feet of straight approach, a 12 foot wide path, and ground that holds a 30,000 pound truck`;
 ---
 
 <BaseLayout title={c.seo.title} description={c.seo.description} pageType="product"
@@ -218,6 +242,78 @@ const compareOrder = [c, ...others];
     </div>
   </section>
 
+  <!-- DELIVERY CLEARANCE PLATE: FIG. D1, drawn only from published figures (see frontmatter note) -->
+  <section class="prod-clearance">
+    <div class="wrap">
+      <h2 class="section-title">Will It Fit Down Your Driveway?</h2>
+      <figure class="clr-fig">
+        <div class="clr-fig-head" aria-hidden="true"><span class="clr-fig-no">FIG. D1</span><span class="clr-fig-title">Delivery clearance · {c.shortName}</span></div>
+        <svg viewBox="0 0 460 240" role="img" aria-label={plateAria}>
+          <title>{plateTitle}</title>
+          <defs>
+            <pattern id="clrfig-corr" width="11" height="10" patternUnits="userSpaceOnUse">
+              <path d="M3.5 0 V10 M7 0 V10" stroke="#0B0F1A" stroke-width="1" opacity=".22" fill="none"></path>
+            </pattern>
+          </defs>
+          <!-- 14 ft overhead limit: dashed line, right side vertical dimension -->
+          <text x="18" y="41" font-size="13" opacity=".65">OVERHEAD · WIRES + BRANCHES</text>
+          <line x1="18" y1="49" x2="388" y2="49" stroke="currentColor" stroke-width="1" stroke-dasharray="6 4" opacity=".7"></line>
+          <line x1="390" y1="49" x2="432" y2="49" stroke="currentColor" stroke-width="1" opacity=".7"></line>
+          <line x1="420" y1="49" x2="420" y2="122" stroke="currentColor" stroke-width="1"></line>
+          <line x1="416" y1="53" x2="424" y2="45" stroke="currentColor" stroke-width="1.25"></line>
+          <line x1="416" y1="126" x2="424" y2="118" stroke="currentColor" stroke-width="1.25"></line>
+          <!-- Ground -->
+          <line x1="18" y1="122" x2="442" y2="122" stroke="currentColor" stroke-width="1.5"></line>
+          <!-- Tilt bed frame + cab (illustration only; no dimension attached) -->
+          <rect x="96" y="100" width="282" height="8" fill="var(--cream)" stroke="currentColor" stroke-width="2.5"></rect>
+          <path d="M44 108 V72 L58 62 H96 V108 Z" fill="var(--cream)" stroke="currentColor" stroke-width="2.5"></path>
+          <path d="M50 78 L62 68 H76 V78 Z" fill="currentColor"></path>
+          <circle cx="60" cy="115" r="7" fill="currentColor"></circle>
+          <circle cx="84" cy="115" r="7" fill="currentColor"></circle>
+          <circle cx="300" cy="115" r="7" fill="currentColor"></circle>
+          <circle cx="322" cy="115" r="7" fill="currentColor"></circle>
+          <circle cx="352" cy="115" r="7" fill="currentColor"></circle>
+          <!-- The container, to scale, with corrugation and corner castings -->
+          <rect x={contX0} y={contTop} width={contLenPx} height={contH} fill="var(--yellow)" stroke="currentColor" stroke-width="2.5"></rect>
+          <rect x={contX0 + 2} y={contTop + 2} width={contLenPx - 4} height={contH - 4} fill="url(#clrfig-corr)"></rect>
+          <rect x={contX0 + 2} y={contTop + 2} width="6" height="6" fill="currentColor"></rect>
+          <rect x={contX1 - 8} y={contTop + 2} width="6" height="6" fill="currentColor"></rect>
+          <rect x={contX0 + 2} y={contTop + contH - 8} width="6" height="6" fill="currentColor"></rect>
+          <rect x={contX1 - 8} y={contTop + contH - 8} width="6" height="6" fill="currentColor"></rect>
+          <!-- Container length dimension (from c.specs.externalDims) -->
+          <line x1={contX0 + 2} y1={contMidY} x2={contX1 - 2} y2={contMidY} stroke="currentColor" stroke-width="1"></line>
+          <line x1={contX0 - 4} y1={contMidY + 4} x2={contX0 + 4} y2={contMidY - 4} stroke="currentColor" stroke-width="1.25"></line>
+          <line x1={contX1 - 4} y1={contMidY + 4} x2={contX1 + 4} y2={contMidY - 4} stroke="currentColor" stroke-width="1.25"></line>
+          <rect x={lenChipX} y={contMidY - 11} width={lenChipW} height="22" fill="var(--cream)" stroke="currentColor" stroke-width="1"></rect>
+          <text x={lenChipMidX} y={contMidY + 4.5} font-size="13" font-weight="700" text-anchor="middle">{lengthFt} FT</text>
+          <!-- 14 ft chip drawn after the container so it stays on top at 40 ft lengths -->
+          <rect x="395" y="74.5" width="50" height="22" fill="var(--cream)" stroke="currentColor" stroke-width="1"></rect>
+          <text x="420" y="90" font-size="13" font-weight="700" text-anchor="middle">14 FT</text>
+          <!-- 65 ft truck combination -->
+          <line x1="40" y1="128" x2="40" y2="146" stroke="currentColor" stroke-width="1" opacity=".7"></line>
+          <line x1="378" y1="128" x2="378" y2="146" stroke="currentColor" stroke-width="1" opacity=".7"></line>
+          <line x1="40" y1="140" x2="378" y2="140" stroke="currentColor" stroke-width="1"></line>
+          <line x1="36" y1="144" x2="44" y2="136" stroke="currentColor" stroke-width="1.25"></line>
+          <line x1="374" y1="144" x2="382" y2="136" stroke="currentColor" stroke-width="1.25"></line>
+          <rect x="183" y="129" width="52" height="22" fill="var(--cream)" stroke="currentColor" stroke-width="1"></rect>
+          <text x="209" y="144.5" font-size="13" font-weight="700" text-anchor="middle">65 FT</text>
+          <text x="209" y="163" font-size="13" text-anchor="middle" opacity=".65">TRUCK + TILT BED COMBINATION</text>
+          <!-- 100+ ft straight approach, break symbol shows it runs past the drawing -->
+          <line x1="18" y1="186" x2="442" y2="186" stroke="currentColor" stroke-width="1"></line>
+          <line x1="14" y1="190" x2="22" y2="182" stroke="currentColor" stroke-width="1.25"></line>
+          <line x1="438" y1="190" x2="446" y2="182" stroke="currentColor" stroke-width="1.25"></line>
+          <rect x="393" y="179" width="16" height="14" fill="#fff"></rect>
+          <path d="M394 191 l5 -6 l5 12 l5 -6" fill="none" stroke="currentColor" stroke-width="1.25"></path>
+          <rect x="196" y="175" width="68" height="22" fill="var(--cream)" stroke="currentColor" stroke-width="1"></rect>
+          <text x="230" y="190.5" font-size="13" font-weight="700" text-anchor="middle">100+ FT</text>
+          <text x="230" y="209" font-size="13" text-anchor="middle" opacity=".65">STRAIGHT APPROACH FOR TILT BED DELIVERY</text>
+          <text x="230" y="230" font-size="13" text-anchor="middle">12 FT WIDE PATH · GROUND HOLDS A 30,000 LB TRUCK</text>
+        </svg>
+        <figcaption>The rig and the room it needs, drawn with the figures our <a href="/delivery/">delivery guide</a> publishes. Tight access? A crane-set delivery solves most of it; the guide covers both.</figcaption>
+      </figure>
+    </div>
+  </section>
+
   <!-- USE CASES -->
   <section class="prod-uses">
     <div class="wrap">
@@ -331,6 +427,26 @@ const compareOrder = [c, ...others];
   @media (max-width: 960px) {
     .compare-desktop { display: none; }
     .compare-cards { display: grid; gap: 20px; }
+  }
+
+  /* DELIVERY CLEARANCE PLATE: the blog's .dim-fig technical-manual grammar (see the FIG.
+     plates in src/content/blog/shipping-container-dimensions-size-chart.md). Stroke scale:
+     1px construction/dimension lines, 2.5px object lines. */
+  .prod-clearance { padding: 72px 0; background: var(--cream); border-bottom: 1.5px solid rgba(11,15,26,.1); }
+  .clr-fig { margin: 0; max-width: 760px; border: 2.5px solid var(--ink); box-shadow: 8px 8px 0 var(--yellow); background: #fff; padding: 0; }
+  .clr-fig-head { display: flex; align-items: center; gap: 10px; padding: 9px 14px 8px; border-bottom: 1.5px solid var(--ink); font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+  .clr-fig-no { background: var(--ink); color: var(--yellow); padding: 3px 7px; letter-spacing: .08em; flex: none; }
+  .clr-fig-title { opacity: .72; }
+  .clr-fig-head::after { content: ""; flex: 1 1 24px; height: 2px; background: repeating-linear-gradient(90deg, var(--ink) 0 6px, transparent 6px 12px); opacity: .35; }
+  .clr-fig svg { display: block; width: 100%; max-width: 640px; height: auto; margin: 0 auto; padding: 18px 16px 6px; box-sizing: border-box; }
+  .clr-fig text { font-family: var(--mono); letter-spacing: .04em; fill: currentColor; }
+  .clr-fig figcaption { font-family: var(--mono); font-size: 12px; letter-spacing: .02em; opacity: .65; margin: 6px 14px 12px; padding-top: 10px; border-top: 1px dashed rgba(11,15,26,.35); }
+  .clr-fig figcaption a { color: inherit; font-weight: 700; border-bottom: 1.5px solid var(--ink); text-decoration: none; }
+  @media (max-width: 768px) {
+    .clr-fig { box-shadow: 4px 4px 0 var(--yellow); }
+    .clr-fig-head { padding: 8px 10px 7px; }
+    .clr-fig svg { padding: 12px 10px 2px; }
+    .clr-fig figcaption { margin: 4px 10px 10px; }
   }
 
   /* USE CASES */
