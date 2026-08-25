@@ -35,11 +35,9 @@
     const sbf = document.getElementById('sbf');
     const handle = document.getElementById('sbf-open');
     const closeBtn = document.getElementById('sbf-close');
-    const hero = document.querySelector('.hero, .uc-hero');
-    if (!sbf || !handle || !closeBtn || !hero) return;
+    if (!sbf || !handle || !closeBtn) return;
 
     let dismissed = false;
-
     closeBtn.addEventListener('click', () => {
       dismissed = true;
       sbf.classList.add('is-hidden');
@@ -51,22 +49,25 @@
       handle.classList.remove('is-visible');
     });
 
-    // Use IntersectionObserver for better performance than scroll listeners
-    const observer = new IntersectionObserver((entries) => {
-      if (dismissed) return;
-      entries.forEach(entry => {
-        // If hero is NOT intersecting (scrolled past 65%), show the sidebar
-        if (!entry.isIntersecting) {
-          sbf.classList.remove('is-hidden');
-        } else {
-          sbf.classList.add('is-hidden');
-        }
-      });
-    }, {
-      threshold: 0.35 // Trigger when only 35% of hero is visible
-    });
-
-    observer.observe(hero);
     sbf.classList.add('is-hidden');
+    const hero = document.querySelector('.hero, .uc-hero');
+    if (hero) {
+      const observer = new IntersectionObserver((entries) => {
+        if (dismissed) return;
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) sbf.classList.remove('is-hidden');
+          else sbf.classList.add('is-hidden');
+        });
+      }, { threshold: 0.35 });
+      observer.observe(hero);
+    } else {
+      // No hero on this page: reveal after the reader scrolls one viewport.
+      const onScroll = () => {
+        if (dismissed) return;
+        if (window.scrollY > window.innerHeight) sbf.classList.remove('is-hidden');
+        else sbf.classList.add('is-hidden');
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+    }
   })();
 </script>

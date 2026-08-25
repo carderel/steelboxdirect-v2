@@ -46,7 +46,8 @@ const {
 } = Astro.props;
 const resolvedOgImage = ogImage ?? 'https://steelboxdirect.com/og-image.png';
 
-const showFloatingSidebar = floatingSidebar ?? (pageType === 'home');
+const noSidebarPageTypes = ['quote', 'tool', 'legal'];
+const showFloatingSidebar = floatingSidebar ?? !noSidebarPageTypes.includes(pageType);
 
 const built = buildPageSchema({
   page: schema,
