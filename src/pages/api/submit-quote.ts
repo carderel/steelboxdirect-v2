@@ -8,6 +8,9 @@ const CINCINNATI_LNG = -84.5120;
 const SERVICE_RADIUS_MILES = 250;
 
 interface QuoteFormData {
+  // 'callback' = the product-page mini-form (name/phone/email only): email-only handling,
+  // no DB insert, no scoring (the payment-intent precedent). Anything else = full quote.
+  leadType?: string;
   name: string;
   email: string;
   phone: string;
@@ -137,6 +140,21 @@ function getOptionLabel(labels: Record<string, string>, value: string | undefine
 async function sendBuyerConfirmation(data: QuoteFormData): Promise<string | null> {
   try {
     const { resend } = getClients();
+    // Callback leads get their own short confirmation: no quote summary (there is no
+    // quote), no delivery promises, no pricing. The full-quote email below is untouched.
+    if (data.leadType === 'callback') {
+      const { data: emailData, error } = await resend.emails.send({
+        from: 'Steel Box Direct <noreply@steelboxdirect.com>',
+        to: data.email,
+        subject: 'We got your callback request',
+        text: `Hi ${data.name},\n\nWe received your callback request.\n\nWe answer calls 9am to 9pm Eastern, every day. If a call is missed, we follow up by email.\n\nNo action needed from you. If you have questions, reply to this email.\n\n---\nSteel Box Direct`,
+      });
+      if (error) {
+        console.error('Email send error:', error);
+        return null;
+      }
+      return emailData?.id || null;
+    }
     // RTO-only additions; non-RTO buyer emails stay byte-for-byte unchanged.
     const rtoSummaryLine = isRentToOwn(data) ? `\n- Payment: ${getPaymentIntentLabel(data)}` : '';
     // A self-pickup RTO lead is not being scheduled a delivery, and this line sits directly
@@ -189,6 +207,23 @@ async function sendSellerNotification(
     }
     // SELLER_EMAIL can be a comma-separated list to alert multiple recipients.
     const sellerRecipients = sellerEmail.split(',').map((e) => e.trim()).filter(Boolean);
+
+    // Callback leads: email-only pipeline, so this notification IS the record. Phone leads
+    // the subject and the first body line so Doug can dial without opening the email.
+    if (data.leadType === 'callback') {
+      const { error } = await resend.emails.send({
+        from: 'Steel Box Direct <noreply@steelboxdirect.com>',
+        to: sellerRecipients,
+        subject: `CALLBACK REQUESTED - ${data.name} - ${data.phone}${data.size_preference ? ' - ' + data.size_preference : ''}`,
+        text: `${data.phone} Wants a phone call. Answers 9am-9pm ET daily was promised.\n\nName: ${data.name}\nEmail: ${data.email}${data.size_preference ? `\nSize: ${data.size_preference}` : ''}\n\nNOT in the seller dashboard (callback leads are email-only by design).\n`,
+      });
+      if (error) {
+        console.error('Seller notification error:', error);
+        return false;
+      }
+      return true;
+    }
+
     const dbWarning = dbSaved
       ? ''
       : '\n⚠️ DATABASE SAVE FAILED: this lead is NOT in the seller dashboard. Capture these details manually and follow up directly.\n';
@@ -227,7 +262,8 @@ export const POST: APIRoute = async ({ request }) => {
       return new Response(JSON.stringify({ error: 'Empty request body' }), { status: 400 });
     }
     data = JSON.parse(bodyText);
-    console.log('API: Processing lead submission'); // no PII in logs (HS-DATA-001)
+    // no PII in logs (HS-DATA-001)
+    console.log(data.leadType === 'callback' ? 'API: callback lead received' : 'API: Processing lead submission');
   } catch (err: any) {
     console.error('API: Request parsing error:', err.message);
     return new Response(JSON.stringify({ error: 'Invalid request body', details: err.message }), { status: 400 });
@@ -236,10 +272,11 @@ export const POST: APIRoute = async ({ request }) => {
   try {
     const { supabase } = getClients();
 
-    const required = [
-      'name', 'email', 'phone', 'size_preference', 'condition_preference',
-      'primary_use', 'delivery_zip', 'site_access', 'timeline',
-    ];
+    const isCallback = data.leadType === 'callback';
+    const required = isCallback
+      ? ['name', 'email', 'phone']
+      : ['name', 'email', 'phone', 'size_preference', 'condition_preference',
+         'primary_use', 'delivery_zip', 'site_access', 'timeline'];
 
     for (const field of required) {
       if (!data[field as keyof QuoteFormData]) {
@@ -248,15 +285,19 @@ export const POST: APIRoute = async ({ request }) => {
       }
     }
 
-    const leadScore = calculateLeadScore(data);
-    const distance = getZipDistance(data.delivery_zip);
+    // Callback leads carry no ZIP, use, or timeline, so scoring and distance are guarded
+    // here: calculateLeadScore/getZipDistance never touch the missing fields.
+    const leadScore = isCallback ? 0 : calculateLeadScore(data);
+    const distance = isCallback ? null : getZipDistance(data.delivery_zip);
     const inServiceArea = distance === null || distance <= SERVICE_RADIUS_MILES;
 
     // 1) Try to save to the database, but DO NOT abort if it fails (e.g. Supabase paused/down).
     //    The seller email below is the safety net so a DB outage never silently loses a lead.
+    //    Callback leads skip the insert entirely (no schema change; the email IS the record,
+    //    the payment-intent precedent), so dbSaved stays false for them.
     let leadId: string | null = null;
     let dbSaved = false;
-    try {
+    if (!isCallback) try {
       const { data: lead, error: dbError } = await supabase
         .from('leads')
         .insert({
