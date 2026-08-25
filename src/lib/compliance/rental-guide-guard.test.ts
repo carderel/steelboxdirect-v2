@@ -40,7 +40,7 @@ describe('/container-rental-guide/ page guards', () => {
     expect((crumbs.match(/name:/g) ?? []).length).toBe(2);
   });
 
-  it('passes datePublished and dateModified explicitly (buildPageSchema defaults to 2026-03-10)', () => {
+  it('passes datePublished and dateModified explicitly (buildPageSchema emits no dates when none are passed)', () => {
     expect(src).toMatch(/datePublished="2026-08-14"/);
     expect(src).toMatch(/dateModified="2026-08-14"/);
   });

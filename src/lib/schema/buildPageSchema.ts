@@ -204,8 +204,14 @@ export function buildPageSchema(args: BuildSchemaArgs): BuiltSchema {
         headline: p.title,
         description: args.description,
         image: args.image ?? `${SITE_URL}/og-image.png`,
-        datePublished: args.datePublished ?? '2026-03-10',
-        dateModified: args.dateModified ?? args.datePublished ?? '2026-03-10',
+        // Dates are emitted only when the caller actually knows them. There is no invented
+        // fallback date: omission is honest, invention is not (integrity fix, 2026-08-24).
+        // dateModified may still fall back to datePublished, because a page modified never
+        // is a page last modified when it was published.
+        ...(args.datePublished ? { datePublished: args.datePublished } : {}),
+        ...(args.dateModified ?? args.datePublished
+          ? { dateModified: args.dateModified ?? args.datePublished }
+          : {}),
         author: { '@id': ORG_ID },
         publisher: { '@id': ORG_ID },
         mainEntityOfPage: { '@id': nodeId(args.url, 'webpage') },

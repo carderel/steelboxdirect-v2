@@ -52,7 +52,7 @@ describe('/container-rent-vs-buy-calculator/ page guards', () => {
     expect((crumbs.match(/name:/g) ?? []).length).toBe(2);
   });
 
-  it('passes explicit dates, so the Article node never falls back to the 2026-03-10 default', () => {
+  it('passes explicit dates; buildPageSchema now emits no dates when none are passed, so dropping these silently strips them', () => {
     expect(src).toContain('datePublished="2026-08-17"');
     expect(src).toContain('dateModified="2026-08-17"');
   });
