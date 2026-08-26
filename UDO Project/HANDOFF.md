@@ -1,3 +1,70 @@
+> ## CURRENT AS OF 2026-08-26. Everything below this block is older and partly superseded.
+>
+> **LIVE AT `03ec219`. `main == origin`. Site at 62 routes, 435 tests, guards green.**
+> The working session ran 2026-08-21 through 2026-08-26 (~24 production deploys, all
+> owner-authorized and live-verified). Read the session logs `sessions/2026-08-21` through
+> `2026-08-26-session.md` and transcripts in order; `PROJECT_STATE.json` todos carry the
+> full per-item record (T-155 through T-171).
+>
+> ### What is LIVE now that was not on 2026-08-20
+>
+> 1. **Product pages rebuilt (T-171, the big one).** Amazon-style listing hero (photo left,
+>    buy box right; mobile order title-image-info), feed price + expanded disclaimer (ZIP
+>    drives delivered price, talk to Doug), TWO-DOOR action block: "Have Doug call me"
+>    3-field callback form POSTing leadType 'callback' to /api/submit-quote (EMAIL-ONLY, no
+>    DB write, subject CALLBACK REQUESTED) + full-quote door with ?size= preselection.
+>    Comparison = table desktop / cards mobile from ONE compareRows source. The clearance
+>    plate section is HIDDEN (SHOW_CLEARANCE_PLATE=false) after two rejected drawings;
+>    owner is generating textless Gemini illustrations (prompts in
+>    .outputs/image-prompts/2026-08-26-clearance-plate-*.md); dimensions overlay in code on
+>    return. Interim hero photo = the real 40ft HC on a trailer, honestly captioned.
+>    **PENDING: the owner-visible live callback E2E test with Doug. Requested, not yet run.**
+> 2. **"Two ways to start" popup on 52 of 62 pages** (was 5): exclusion-list default
+>    (quote/tool/legal pageTypes + size/index), stuck-open-on-hero-less-pages script fix.
+> 3. **The inspector finder** `/find-a-container-inspector/` (guide #11): all 98 US IICL
+>    inspectors from the owner's manual directory pass, state-grouped, attributed, 16-test
+>    integrity guard. Canonical data: .outputs/research/2026-08-25-iicl-inspectors-clean.csv.
+>    QUARTERLY re-verification due ~2026-11-25 (runbook: 2026-08-25-iicl-enumeration.md).
+> 4. **Certification authority cluster (T-163):** /container-certification-guide/ (guide #10)
+>    + blog post, 49 CFR / COA TG03 / Hapag-Lloyd primary-sourced. Owner wants 3-4 more
+>    posts (next: BIC self-check walkthrough; the 98/4 scarcity story is now first-party).
+> 5. **GKP coverage fix (T-169):** hub + product titles carry "Used", six-synonym lede,
+>    NEW /conex-boxes-for-sale/, one-trip section on /condition/, job-site office section
+>    on /for/contractors/, ~36k/mo serviceable vocabulary closed.
+> 6. **Portable-storage package (T-161):** guide #9 + /cost/ math-flips module + 4th FAQ on
+>    all 15 city pages. **Dimensions post rebuilt (T-162)** on a primary-source audit +
+>    approved FIG plates. **City Quick Facts show all 3 sizes** with ZIP per cell.
+> 7. **Integrity:** fabricated 2026-03-10 publish dates replaced with git-true dates +
+>    permanent guard (T-166); blog date UTC display fix; breadcrumbs GSC fix live.
+> 8. **Social/entity:** Pinterest + YouTube in sameAs + footer; p:domain_verify live;
+>    homepage hero = the YouTube blueprint video; 6 rto images integrated (slot 3 tilt-bed
+>    still owner-owed).
+>
+> ### Standing rulings made this stretch (do not relitigate)
+>
+> - **strongconex.com: PARKED.** Not aged (born 2024-05, dropped, re-registered fresh),
+>   backlinks are pure spam (both SEMrush exports analyzed). NEVER 301 it into SBD, never
+>   in schema/NAP. Brainstorm open at the capital-appetite question.
+> - **Ads play: SHELVED by owner.** Demand validated (~320k/mo national buy-intent) but
+>   dead on the $30/sale take ($63-667 ad cost/sale). Do not re-raise; he brings the number.
+> - **Email channel split:** directories use info@, site publishes support@. Deliberate.
+> - **AI images may NEVER serve as photos of reality** (honest-wear gallery, customer
+>   photos). The owner's 15 Gemini wear images were refused on C2PA evidence; the shot
+>   list (.outputs/content/2026-08-25-wear-photo-shot-list.md) needs a phone at the yard.
+> - **SBD's own 35 SEMrush backlinks = scraper/template noise.** Benign, no disavow.
+>
+> ### Owner's desk (the entire critical path is his)
+>
+> 1. LIVE CALLBACK E2E TEST (his phone number, Doug watching the inbox) - closes T-171.
+> 2. Yard photo shoot (one session covers the wear gallery + per-size product heroes;
+>    the FC condition-card raw originals from Doug include a real 20ft).
+> 3. Three Gemini clearance illustrations (prompt files ready, save-as names inside).
+> 4. VRTO guest post live date from Ryan -> starts the 10-day clock for the SBD-side post
+>    (draft ready: .outputs/content/2026-08-21-vrto-guest-post-shed-vs-container.md).
+> 5. Maps rank recheck ~2026-09-04 (Cincinnati money keyword vs the #23 baseline, GBP
+>    category changed 2026-08-21). Also standing: tilt-bed rto image, info@ routing test,
+>    GSC Validate Fix click, Pinterest claim + Facebook About checks.
+>
 # HANDOFF: start here for the next context window
 
 > ## CURRENT AS OF 2026-08-20 ~21:50 UTC. Everything below this block is older and partly superseded.

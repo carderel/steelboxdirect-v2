@@ -75,6 +75,78 @@ transcript holds cycles 1-24. This file continues the numbering.
 - OWNER: "Hold up. I messed up." FULL HOLD on the IICL data thread pending his
   explanation. Nothing from the manual pass has shipped or been published anywhere.
 
+## Cycles 48-50 (T-171 tasks 5+6 done; final verify + owner review set running)
+
+- OWNER GATE: show him the update BEFORE pushing (recorded on T-171; Task 7 amended).
+- TASK 5 DONE local 7213cbc: one compareRows source drives table + cards; condition blurb
+  stripped from Best-for cells via CONDITION.blurb single-source and stated once above;
+  builder correctly overrode the plan's arithmetically-impossible twice-per-page label
+  check (3 cards = 4 occurrences) and proved byte-identical renderings instead.
+- TASK 6 DONE local 52c2327: FIG. D1 clearance plate per size from ONLY the delivery
+  page's published numbers (65ft rig, 100+ft approach, 14ft overhead, 12ft/30,000lb fact
+  line); OMITTED the sidebar's conflicting 60ft average with reasoning in a comment;
+  house plate grammar; XML parses; 9/9 viewport checks.
+- 12-criterion independent verifier dispatched over all six commits + the owner
+  screenshot review set to .outputs/design/2026-08-25-product-template-review/.
+  Push waits for the owner's go after his review; then the live E2E callback test.
+
+## Cycles 45-47 (T-171 tasks 2-4 done; task 5 running)
+
+- TASK 2 DONE local 944e8b3 (one-file endpoint commit; isCallback branch with safe
+  scoring/ZIP guards; safety-net + HS-DATA-001 preserved; E2E deferred to Task 7 by plan).
+- TASK 3 DONE local f7736e2 (CallbackForm + action block; slug-to-param map matches the
+  quote form and endpoint; $ counts unchanged 2/2/2; doors side-by-side 1280, stacked 390;
+  builder caught + fixed a plan self-contradiction, btnLabel capture, behavior identical).
+- TASK 4 DONE local 200a180 (confidence strip: the 20ft line renders "$2,080 avg. starting
+  price, seven home metros. Not a quote; yours may be more or less. (August 2026)";
+  JSON-LD graphs byte-identical through the reorder on all 3 pages; empty photo slot
+  renders nothing; heroPhoto typed ImageMetadata per house pattern; 435/435).
+- TASK 5 (comparison cards) dispatched.
+
+## Cycles 41-44 (T-171: design approved, spec + plan committed, execution running)
+
+- Doug confirmed (answers all calls, instant emails): callback option A locked, 9am-9pm
+  ET promise. Owner approved the full 8-section design ("proceed"), then "Build it!".
+- Spec committed 1dd1ec6 (self-reviewed); plan committed 1360c7a (writing-plans skill,
+  7 tasks, exact code; discovery: quote form already supports ?size= preselection).
+- Execution subagent-driven: Tasks 1+2 parallel (disjoint files, add-only-your-files
+  commit discipline).
+- TASK 1 DONE, local commit 10087d3: popup on 52 of 62 pages (was 5); pageType inventory
+  confirmed the exclusion list covers everything (404/ai-info/admin are all pageType
+  legal); size/index explicit opt-out; stuck-open fix proven by 6 Playwright checks on
+  /cost/ (no hero: hidden on load, scroll reveal, dismissal sticks) + /quote/ has no
+  panel; 435/435.
+
+## Cycles 39-40 (T-171 workshop opened; popup gap diagnosed)
+
+- OWNER: product template overhaul workshop (ChatGPT + Gemini audits matching his notes).
+  Brainstorming skill, architectural. Synthesis delivered (usable / needs-correction /
+  rejected; ChatGPT's "250 miles of Cincinnati" flagged invented; Gemini's customer-photo
+  idea rejected as unfabricatable). Owner decided the mini-form: call-me capture (name,
+  phone, email) OR marketing-labeled full-quote click-through. Open Q: Doug's callback
+  commitment (A/B/C posed).
+- OWNER BUG: "Two ways to start" missing on most pages. Explore diagnosed: FloatingSidebar
+  renders on 5 of 62 (BaseLayout default pageType==home + 4 opt-ins); second latent gate =
+  the script bails without a .hero/.uc-hero and would leave the panel STUCK OPEN on
+  condition/cost/delivery/permits if naively enabled. Fix plan: exclusion-list default +
+  script fallback; folded into T-171.
+
+## Cycles 36-38 (ships live + audit trail; T-170 honest-wear copy delivered)
+
+- Combined verifier PASS all 9; shipped 907fc0f (coverage) + d41ab34 (finder), one push,
+  live-verified ~90s (finder 98 rows/retrieval date/zero dollars; conex 200 + canonical
+  phrase; hub + 20ft titles carry Used). T-169 CLOSED; T-168 finder leg done (remainder:
+  3-4 posts + quarterly re-verify ~2026-11-25). Audit trail committed e7a213c.
+- T-170 OPENED (owner idea from a Gemini audit): honest-wear visual expectations. Real
+  photos MANDATORY for the gallery (AI wear images would invert the page). Discovery: the
+  supplier's condition cards are built on real photos; raw originals obtainable via Doug.
+- content-writer delivered all 4 pieces (.outputs/content/2026-08-25-honest-wear-copy.md):
+  guide ~1,690w, blog ~1,180w, 74w product block, 15-shot list (+1 optional roof,
+  skip-if-unsafe). Terms-mirroring verified against terms.astro (inspect before accepting,
+  discretionary exchange, fees referenced without numbers). Shot list extracted standalone
+  to .outputs/content/2026-08-25-wear-photo-shot-list.md for the owner. PAGE BUILD GATED
+  ON REAL PHOTOS (owner/Doug).
+
 ## Cycles 33-35 (owner triple ruling; both builds complete; combined verify)
 
 - OWNER RULINGS: finder GO, coverage fix GO, per-sale/ads SHELVED (do not re-raise).
