@@ -34,6 +34,8 @@ interface Props { container: Container }
 const { container: c } = Astro.props;
 const others = containers.filter((x) => x.slug !== c.slug);
 const price = priceBySlug[c.slug];
+// Clearance plate hidden pending the owner-approved illustration; flip to re-enable.
+const SHOW_CLEARANCE_PLATE = false;
 
 // Maps each product slug to the quote form's size_preference select value, which the
 // quote page already reads from /quote/?size= (see the sizeMap in src/pages/quote/index.astro).
@@ -73,22 +75,27 @@ const compareOrder = [c, ...others];
 //   - Container length and height: c.specs.externalDims (containers.ts).
 // The delivery page's "60 feet average truck length" sidebar stat is deliberately NOT
 // drawn: the 65 ft combination is the maneuvering requirement, and two rig figures on
-// one plate would read as a contradiction. Truck/deck shapes are illustration only;
-// no dimension is attached to anything unpublished.
-// Geometry: 5.2 px per foot inside the 460 viewBox, ground at y=122, deck at y=100.
-const PX_PER_FT = 5.2;
+// one plate would read as a contradiction. The tractor, tilt deck, wheels, driveway
+// shading, and destination garage are illustration only; no dimension line touches
+// any of them.
+// Geometry: 9 px per foot inside the 960-wide viewBox. Ground datum at y=184, so the
+// 14 ft overhead limit sits at y=58 (184 minus 14*9) and the tilt deck carries the
+// container at y=150. The rig spans x=64..649 (585 px = 65 ft to scale). Container
+// length and height are the only per-page variables; both scale off c.specs.externalDims.
+const PX_PER_FT = 9;
+const DECK_TOP = 150; // tilt deck surface the container rides on (illustration height)
 const lengthFt = parseInt(c.specs.externalDims, 10); // "20' L × ..." -> 20
 const contLenPx = lengthFt * PX_PER_FT;
-const contX1 = 372; // container rear sits near the rig rear
+const contX1 = 645; // container rear sits at the rear of the tilt deck
 const contX0 = contX1 - contLenPx;
-const contH = c.specs.externalDims.includes("9'6") ? 49 : 44; // 9'6" HC vs 8'6" std, to scale
-const contTop = 100 - contH;
+const contH = Math.round((c.specs.externalDims.includes("9'6") ? 9.5 : 8.5) * PX_PER_FT); // 9'6" HC vs 8'6" std, to scale
+const contTop = DECK_TOP - contH;
 const contMidY = contTop + contH / 2;
-const lenChipW = 56;
+const lenChipW = 62;
 const lenChipX = (contX0 + contX1) / 2 - lenChipW / 2;
 const lenChipMidX = (contX0 + contX1) / 2;
 const plateTitle = `Delivery clearance for the ${c.shortName}: the rig and the room it needs`;
-const plateAria = `Side profile of a tilt bed truck carrying a ${c.shortName} container: a 65 foot truck combination, a ${lengthFt} foot container, 14 feet of overhead clearance, 100 or more feet of straight approach, a 12 foot wide path, and ground that holds a 30,000 pound truck`;
+const plateAria = `Side profile of a tilt bed delivery truck carrying a ${c.shortName} container toward a garage: a 65 foot truck and tilt bed combination, a ${lengthFt} foot container riding on the deck, 14 feet of overhead clearance under wires and branches, 100 or more feet of straight approach, a 12 foot wide path, and ground that holds a 30,000 pound truck`;
 ---
 
 <BaseLayout title={c.seo.title} description={c.seo.description} pageType="product"
@@ -104,7 +111,14 @@ const plateAria = `Side profile of a tilt bed truck carrying a ${c.shortName} co
       ...(price ? [{ k: nationalPriceLabel, v: formatPrice(price.price) }] : []),
     ] }}>
 
-  <!-- HERO -->
+  <!-- LISTING HERO (owner brief 2026-08-25): one dense Amazon-style module instead of a
+       scattered stack. Desktop is photo left, decision column right. Mobile keeps the
+       owner's exact order via DOM order alone: H1 + chips, photo, bullets, buy box.
+       The four bullets are the old confidence strip minus its price line; the price
+       moved into the buy box so it is stated once, disclaimer adjacent, all from
+       src/data/pricing.ts. The /condition/ link swaps to the T-170 wear guide when
+       that page ships. The interim photo is a real 40ft, captioned as such in
+       containers.ts, shared by all three pages until per-size yard photos land. -->
   <section class="prod-hero">
     <div class="wrap">
       <div class="breadcrumb-nav">
@@ -112,52 +126,66 @@ const plateAria = `Side profile of a tilt bed truck carrying a ${c.shortName} co
         <span>›</span>
         <span>{c.name}</span>
       </div>
-      <h1 class="big prod-h1">{c.name}</h1>
-      <div class="key-specs">
-        {c.keySpecs.map((s) => <span class="spec-chip">{s}</span>)}
-      </div>
-      <p class="lede">{c.tagline}</p>
-      {c.heroPhoto && (
-        <figure class="prod-photo">
-          <Image src={c.heroPhoto.src} alt={c.heroPhoto.alt} width={1400} format="webp" />
-        </figure>
-      )}
-      <!-- Confidence strip: five sourced claims, nothing invented. The price line renders
-           entirely from src/data/pricing.ts. The /condition/ link swaps to the T-170 wear
-           guide when that page ships. -->
-      <ul class="conf-strip" aria-label="Why buyers trust this container">
-        {price && (
-          <li><strong>{formatPrice(price.price)}</strong> {nationalPriceLabel.toLowerCase()}. Not a quote; yours may be more or less. ({asOfLabel})</li>
+      <div class="listing">
+        <h1 class="listing-h1">{c.name}</h1>
+        <div class="key-specs">
+          {c.keySpecs.map((s) => <span class="spec-chip">{s}</span>)}
+        </div>
+        {c.heroPhoto && (
+          <figure class="listing-media">
+            <div class="listing-frame">
+              <Image src={c.heroPhoto.src} alt={c.heroPhoto.alt} width={960} format="webp" loading="eager" fetchpriority="high" />
+            </div>
+            {c.heroPhoto.caption && <figcaption class="listing-caption">{c.heroPhoto.caption}</figcaption>}
+          </figure>
         )}
-        <li><strong>Wind &amp; Water Tight (used).</strong> Honest cosmetic wear. <a href="/condition/">What that means</a></li>
-        <li><strong>Lifetime Leak Warranty</strong> on every container</li>
-        <li>Delivered across <strong>Ohio, Indiana, Kentucky + western West Virginia</strong></li>
-        <li>Quotes answered within <strong>4 business hours</strong></li>
-      </ul>
-      <a href={'/quote/?size=' + sizeParam} class="btn prod-cta">Get a Quote <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+        <div class="listing-body">
+          <p class="listing-lede">{c.tagline}</p>
+          <ul class="listing-bullets" aria-label="Why buyers trust this container">
+            <li><strong>Wind &amp; Water Tight (used).</strong> Honest cosmetic wear. <a href="/condition/">What that means</a></li>
+            <li><strong>Lifetime Leak Warranty</strong> on every container</li>
+            <li>Delivered across <strong>Ohio, Indiana, Kentucky + western West Virginia</strong> <em class="buy-bullet-note">Outside the home region? We deliver nationwide from depot hubs.</em></li>
+            <li>Quotes answered within <strong>4 business hours</strong></li>
+          </ul>
+          {price && (
+            <div class="buy-box">
+              <p class="buy-box-label">{nationalPriceLabel}</p>
+              <p class="buy-box-price">{formatPrice(price.price)}</p>
+              <p class="buy-box-disclaimer">Average starting price, not a quote; yours may be more or less. Your ZIP code is a big factor in the delivered price, so for the most accurate number, talk directly to Doug. ({asOfLabel})</p>
+              {c.slug === '40-foot-high-cube-container' && (
+                <p class="buy-box-note">Supply runs deep right now, so the High Cube average can land below the standard 40ft.</p>
+              )}
+              <div class="buy-box-ctas">
+                <a href="#talk-to-doug" class="btn buy-btn-primary">Have Doug call me <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+                <a href={'/quote/?size=' + sizeParam} class="btn buy-btn-secondary">Build my full quote <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- PRICING -->
+  <!-- PRICING: slimmed 2026-08-25. The big average figure moved into the hero buy box,
+       so repeating it here was noise; this section keeps the one job the buy box cannot
+       do, the delivered-price-by-ZIP pitch and its /locations/ bridge. No dollar figure
+       renders here, so no disclaimer is needed here; the JSON-LD Product offer and the
+       QuickFacts price bind through the schema prop above and are unchanged. -->
   <section class="prod-pricing">
     <div class="wrap">
       <h2 class="section-title">Used {c.shortName} Shipping Container for Sale</h2>
       <div class="pricing-card">
-        <h3 class="m" style="margin-top: 0;">{c.shortName} Shipping Container Price</h3>
-        <div class="price-figure">{formatPrice(price.price)}<span>{nationalPriceLabel} · {c.shortName}</span></div>
-        <p class="price-disclaimer-text"><strong>This is an average starting price, not a quote.</strong> What you pay can land above or below; it depends mostly on how far we deliver and current market supply. We'll give you a real, all-in number when you request a quote. <em>(Average as of {asOfLabel}.)</em></p>
-        {c.slug === '40-foot-high-cube-container' && (
-          <p class="hc-supply-note">Supply runs deep right now, so the High Cube average can land below the standard 40ft.</p>
-        )}
-        <p class="price-bridge">Prices vary by metro, and we publish a dated delivered figure for each one we serve: <a href="/locations/">see the delivered price in your city</a>.</p>
+        <h3 class="m" style="margin-top: 0;">What a {c.shortName} actually costs you</h3>
+        <p class="price-pitch">The average above is a national figure, not your number. What you pay rides mostly on how far we deliver and current market supply, so prices vary by metro, and we publish a dated delivered figure for each one we serve: <a href="/locations/">see the delivered price in your city</a>.</p>
         <a href="/quote/" class="btn">Get a Current Quote <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
         <p class="response-note">Most requests answered within 4 business hours.</p>
       </div>
     </div>
   </section>
 
-  <!-- ACTION BLOCK: Doug callback or preselected full quote -->
-  <section class="prod-action">
+  <!-- ACTION BLOCK: Doug callback or preselected full quote. The id is the hero
+       buy box's "Have Doug call me" anchor target. -->
+  <section class="prod-action" id="talk-to-doug">
     <div class="wrap">
       <CallbackForm sizeLabel={c.shortName} sizePreference={sizeParam} />
     </div>
@@ -242,77 +270,111 @@ const plateAria = `Side profile of a tilt bed truck carrying a ${c.shortName} co
     </div>
   </section>
 
-  <!-- DELIVERY CLEARANCE PLATE: FIG. D1, drawn only from published figures (see frontmatter note) -->
+  <!-- CLEARANCE SECTION HIDDEN 2026-08-26 per owner: plate v1 and v2 rejected. It returns
+       when the owner's Gemini illustration lands with code-overlaid dimensions. Prompts:
+       UDO Project/.outputs/image-prompts/2026-08-26-clearance-plate-prompts.md -->
+  {SHOW_CLEARANCE_PLATE && (
   <section class="prod-clearance">
     <div class="wrap">
       <h2 class="section-title">Will It Fit Down Your Driveway?</h2>
       <figure class="clr-fig">
         <div class="clr-fig-head" aria-hidden="true"><span class="clr-fig-no">FIG. D1</span><span class="clr-fig-title">Delivery clearance · {c.shortName}</span></div>
-        <svg viewBox="0 0 460 240" role="img" aria-label={plateAria}>
+        <div class="clr-fig-scroll" role="region" aria-label={`Delivery clearance drawing for the ${c.shortName}, scrolls sideways on small screens`} tabindex="0">
+        <svg viewBox="0 0 960 284" role="img" aria-label={plateAria}>
           <title>{plateTitle}</title>
           <defs>
             <pattern id="clrfig-corr" width="11" height="10" patternUnits="userSpaceOnUse">
               <path d="M3.5 0 V10 M7 0 V10" stroke="#0B0F1A" stroke-width="1" opacity=".22" fill="none"></path>
             </pattern>
+            <pattern id="clrfig-hatch" width="7" height="7" patternUnits="userSpaceOnUse">
+              <path d="M-1 8 L8 -1" stroke="#0B0F1A" stroke-width="1" opacity=".3" fill="none"></path>
+            </pattern>
           </defs>
-          <!-- 14 ft overhead limit: dashed line, right side vertical dimension -->
-          <text x="18" y="41" font-size="13" opacity=".65">OVERHEAD · WIRES + BRANCHES</text>
-          <line x1="18" y1="49" x2="388" y2="49" stroke="currentColor" stroke-width="1" stroke-dasharray="6 4" opacity=".7"></line>
-          <line x1="390" y1="49" x2="432" y2="49" stroke="currentColor" stroke-width="1" opacity=".7"></line>
-          <line x1="420" y1="49" x2="420" y2="122" stroke="currentColor" stroke-width="1"></line>
-          <line x1="416" y1="53" x2="424" y2="45" stroke="currentColor" stroke-width="1.25"></line>
-          <line x1="416" y1="126" x2="424" y2="118" stroke="currentColor" stroke-width="1.25"></line>
-          <!-- Ground -->
-          <line x1="18" y1="122" x2="442" y2="122" stroke="currentColor" stroke-width="1.5"></line>
-          <!-- Tilt bed frame + cab (illustration only; no dimension attached) -->
-          <rect x="96" y="100" width="282" height="8" fill="var(--cream)" stroke="currentColor" stroke-width="2.5"></rect>
-          <path d="M44 108 V72 L58 62 H96 V108 Z" fill="var(--cream)" stroke="currentColor" stroke-width="2.5"></path>
-          <path d="M50 78 L62 68 H76 V78 Z" fill="currentColor"></path>
-          <circle cx="60" cy="115" r="7" fill="currentColor"></circle>
-          <circle cx="84" cy="115" r="7" fill="currentColor"></circle>
-          <circle cx="300" cy="115" r="7" fill="currentColor"></circle>
-          <circle cx="322" cy="115" r="7" fill="currentColor"></circle>
-          <circle cx="352" cy="115" r="7" fill="currentColor"></circle>
+          <!-- 14 ft overhead limit: dashed ceiling, dimensioned at the right edge with
+               extension lines off the ceiling and the ground datum -->
+          <text x="28" y="46" font-size="13" opacity=".65">OVERHEAD LIMIT · WIRES + BRANCHES</text>
+          <line x1="28" y1="58" x2="876" y2="58" stroke="currentColor" stroke-width="1.25" stroke-dasharray="7 5" opacity=".8"></line>
+          <line x1="888" y1="58" x2="944" y2="58" stroke="currentColor" stroke-width="1" opacity=".7"></line>
+          <line x1="888" y1="184" x2="944" y2="184" stroke="currentColor" stroke-width="1" opacity=".7"></line>
+          <line x1="930" y1="58" x2="930" y2="184" stroke="currentColor" stroke-width="1"></line>
+          <line x1="926" y1="62" x2="934" y2="54" stroke="currentColor" stroke-width="1.25"></line>
+          <line x1="926" y1="188" x2="934" y2="180" stroke="currentColor" stroke-width="1.25"></line>
+          <rect x="904" y="109" width="52" height="24" fill="var(--cream)" stroke="currentColor" stroke-width="1"></rect>
+          <text x="930" y="126" font-size="15" font-weight="700" text-anchor="middle">14 FT</text>
+          <!-- Ground: solid datum with driveway shading band -->
+          <rect x="28" y="184" width="856" height="12" fill="url(#clrfig-hatch)"></rect>
+          <line x1="28" y1="196" x2="884" y2="196" stroke="currentColor" stroke-width="1" opacity=".35"></line>
+          <line x1="28" y1="184" x2="884" y2="184" stroke="currentColor" stroke-width="2"></line>
+          <!-- Destination garage at the right edge: outline only, no dimension attached -->
+          <path d="M700 184 V116 L758 76 L816 116 V184" fill="#fff" stroke="currentColor" stroke-width="2.5"></path>
+          <rect x="722" y="122" width="72" height="62" fill="none" stroke="currentColor" stroke-width="1.25"></rect>
+          <line x1="722" y1="137.5" x2="794" y2="137.5" stroke="currentColor" stroke-width="1" opacity=".5"></line>
+          <line x1="722" y1="153" x2="794" y2="153" stroke="currentColor" stroke-width="1" opacity=".5"></line>
+          <line x1="722" y1="168.5" x2="794" y2="168.5" stroke="currentColor" stroke-width="1" opacity=".5"></line>
+          <!-- The rig, illustration only: wheels first so the frame, cab, and deck tuck
+               over them; steer axle + drive tandem on the tractor, tandem on the tilt bed -->
+          <circle cx="94" cy="169" r="15" fill="#fff" stroke="currentColor" stroke-width="2.5"></circle>
+          <circle cx="94" cy="169" r="4.5" fill="currentColor"></circle>
+          <circle cx="170" cy="169" r="15" fill="#fff" stroke="currentColor" stroke-width="2.5"></circle>
+          <circle cx="170" cy="169" r="4.5" fill="currentColor"></circle>
+          <circle cx="204" cy="169" r="15" fill="#fff" stroke="currentColor" stroke-width="2.5"></circle>
+          <circle cx="204" cy="169" r="4.5" fill="currentColor"></circle>
+          <circle cx="584" cy="169" r="15" fill="#fff" stroke="currentColor" stroke-width="2.5"></circle>
+          <circle cx="584" cy="169" r="4.5" fill="currentColor"></circle>
+          <circle cx="618" cy="169" r="15" fill="#fff" stroke="currentColor" stroke-width="2.5"></circle>
+          <circle cx="618" cy="169" r="4.5" fill="currentColor"></circle>
+          <rect x="64" y="156" width="172" height="6" fill="currentColor"></rect>
+          <path d="M64 156 V131 L72 123 H104 L118 97 H154 V156 Z" fill="var(--cream)" stroke="currentColor" stroke-width="2.5"></path>
+          <path d="M119 101 L108 121 H130 V101 Z" fill="currentColor"></path>
+          <rect x="135" y="101" width="14" height="19" fill="currentColor"></rect>
+          <line x1="131" y1="100" x2="131" y2="152" stroke="currentColor" stroke-width="1" opacity=".55"></line>
+          <rect x="157" y="108" width="5" height="48" fill="currentColor"></rect>
+          <rect x="196" y={DECK_TOP} width="453" height="11" fill="var(--cream)" stroke="currentColor" stroke-width="2.5"></rect>
+          <line x1="200" y1={DECK_TOP + 5.5} x2="645" y2={DECK_TOP + 5.5} stroke="currentColor" stroke-width="1" opacity=".3"></line>
+          <circle cx="641" cy="164" r="3.5" fill="currentColor"></circle>
           <!-- The container, to scale, with corrugation and corner castings -->
           <rect x={contX0} y={contTop} width={contLenPx} height={contH} fill="var(--yellow)" stroke="currentColor" stroke-width="2.5"></rect>
           <rect x={contX0 + 2} y={contTop + 2} width={contLenPx - 4} height={contH - 4} fill="url(#clrfig-corr)"></rect>
-          <rect x={contX0 + 2} y={contTop + 2} width="6" height="6" fill="currentColor"></rect>
-          <rect x={contX1 - 8} y={contTop + 2} width="6" height="6" fill="currentColor"></rect>
-          <rect x={contX0 + 2} y={contTop + contH - 8} width="6" height="6" fill="currentColor"></rect>
-          <rect x={contX1 - 8} y={contTop + contH - 8} width="6" height="6" fill="currentColor"></rect>
+          <rect x={contX0 + 2} y={contTop + 2} width="7" height="7" fill="currentColor"></rect>
+          <rect x={contX1 - 9} y={contTop + 2} width="7" height="7" fill="currentColor"></rect>
+          <rect x={contX0 + 2} y={contTop + contH - 9} width="7" height="7" fill="currentColor"></rect>
+          <rect x={contX1 - 9} y={contTop + contH - 9} width="7" height="7" fill="currentColor"></rect>
           <!-- Container length dimension (from c.specs.externalDims) -->
           <line x1={contX0 + 2} y1={contMidY} x2={contX1 - 2} y2={contMidY} stroke="currentColor" stroke-width="1"></line>
           <line x1={contX0 - 4} y1={contMidY + 4} x2={contX0 + 4} y2={contMidY - 4} stroke="currentColor" stroke-width="1.25"></line>
           <line x1={contX1 - 4} y1={contMidY + 4} x2={contX1 + 4} y2={contMidY - 4} stroke="currentColor" stroke-width="1.25"></line>
-          <rect x={lenChipX} y={contMidY - 11} width={lenChipW} height="22" fill="var(--cream)" stroke="currentColor" stroke-width="1"></rect>
-          <text x={lenChipMidX} y={contMidY + 4.5} font-size="13" font-weight="700" text-anchor="middle">{lengthFt} FT</text>
-          <!-- 14 ft chip drawn after the container so it stays on top at 40 ft lengths -->
-          <rect x="395" y="74.5" width="50" height="22" fill="var(--cream)" stroke="currentColor" stroke-width="1"></rect>
-          <text x="420" y="90" font-size="13" font-weight="700" text-anchor="middle">14 FT</text>
-          <!-- 65 ft truck combination -->
-          <line x1="40" y1="128" x2="40" y2="146" stroke="currentColor" stroke-width="1" opacity=".7"></line>
-          <line x1="378" y1="128" x2="378" y2="146" stroke="currentColor" stroke-width="1" opacity=".7"></line>
-          <line x1="40" y1="140" x2="378" y2="140" stroke="currentColor" stroke-width="1"></line>
-          <line x1="36" y1="144" x2="44" y2="136" stroke="currentColor" stroke-width="1.25"></line>
-          <line x1="374" y1="144" x2="382" y2="136" stroke="currentColor" stroke-width="1.25"></line>
-          <rect x="183" y="129" width="52" height="22" fill="var(--cream)" stroke="currentColor" stroke-width="1"></rect>
-          <text x="209" y="144.5" font-size="13" font-weight="700" text-anchor="middle">65 FT</text>
-          <text x="209" y="163" font-size="13" text-anchor="middle" opacity=".65">TRUCK + TILT BED COMBINATION</text>
-          <!-- 100+ ft straight approach, break symbol shows it runs past the drawing -->
-          <line x1="18" y1="186" x2="442" y2="186" stroke="currentColor" stroke-width="1"></line>
-          <line x1="14" y1="190" x2="22" y2="182" stroke="currentColor" stroke-width="1.25"></line>
-          <line x1="438" y1="190" x2="446" y2="182" stroke="currentColor" stroke-width="1.25"></line>
-          <rect x="393" y="179" width="16" height="14" fill="#fff"></rect>
-          <path d="M394 191 l5 -6 l5 12 l5 -6" fill="none" stroke="currentColor" stroke-width="1.25"></path>
-          <rect x="196" y="175" width="68" height="22" fill="var(--cream)" stroke="currentColor" stroke-width="1"></rect>
-          <text x="230" y="190.5" font-size="13" font-weight="700" text-anchor="middle">100+ FT</text>
-          <text x="230" y="209" font-size="13" text-anchor="middle" opacity=".65">STRAIGHT APPROACH FOR TILT BED DELIVERY</text>
-          <text x="230" y="230" font-size="13" text-anchor="middle">12 FT WIDE PATH · GROUND HOLDS A 30,000 LB TRUCK</text>
+          <rect x={lenChipX} y={contMidY - 12} width={lenChipW} height="24" fill="var(--cream)" stroke="currentColor" stroke-width="1"></rect>
+          <text x={lenChipMidX} y={contMidY + 5} font-size="15" font-weight="700" text-anchor="middle">{lengthFt} FT</text>
+          <!-- 65 ft truck combination: extension lines drop from the rig extremes -->
+          <line x1="64" y1="200" x2="64" y2="228" stroke="currentColor" stroke-width="1" opacity=".7"></line>
+          <line x1="649" y1="200" x2="649" y2="228" stroke="currentColor" stroke-width="1" opacity=".7"></line>
+          <line x1="64" y1="222" x2="649" y2="222" stroke="currentColor" stroke-width="1"></line>
+          <line x1="60" y1="226" x2="68" y2="218" stroke="currentColor" stroke-width="1.25"></line>
+          <line x1="645" y1="226" x2="653" y2="218" stroke="currentColor" stroke-width="1.25"></line>
+          <rect x="198" y="210" width="317" height="24" fill="var(--cream)" stroke="currentColor" stroke-width="1"></rect>
+          <text x="356.5" y="227" text-anchor="middle"><tspan font-size="15" font-weight="700">65 FT</tspan><tspan dx="10" font-size="13" opacity=".65">TRUCK + TILT BED COMBINATION</tspan></text>
+          <!-- 100+ ft straight approach on its own datum; the break symbol shows it
+               running past the drawing -->
+          <line x1="28" y1="266" x2="944" y2="266" stroke="currentColor" stroke-width="1"></line>
+          <line x1="24" y1="270" x2="32" y2="262" stroke="currentColor" stroke-width="1.25"></line>
+          <line x1="940" y1="270" x2="948" y2="262" stroke="currentColor" stroke-width="1.25"></line>
+          <rect x="848" y="257" width="18" height="18" fill="#fff"></rect>
+          <path d="M849 271 l6 -7 l6 14 l6 -7" fill="none" stroke="currentColor" stroke-width="1.25"></path>
+          <rect x="232" y="254" width="336" height="24" fill="var(--cream)" stroke="currentColor" stroke-width="1"></rect>
+          <text x="400" y="271" text-anchor="middle"><tspan font-size="15" font-weight="700">100+ FT</tspan><tspan dx="10" font-size="13" opacity=".65">STRAIGHT APPROACH FOR TILT BED</tspan></text>
         </svg>
+        </div>
+        <div class="clr-fig-foot">
+          <span class="clr-fig-foot-tag">SITE CHECK</span>
+          <span>12 FT WIDE PATH MINIMUM</span>
+          <span class="clr-fig-foot-sep" aria-hidden="true">·</span>
+          <span>GROUND MUST HOLD A 30,000 LB TRUCK</span>
+        </div>
         <figcaption>The rig and the room it needs, drawn with the figures our <a href="/delivery/">delivery guide</a> publishes. Tight access? A crane-set delivery solves most of it; the guide covers both.</figcaption>
       </figure>
     </div>
   </section>
+  )}
 
   <!-- USE CASES -->
   <section class="prod-uses">
@@ -357,32 +419,55 @@ const plateAria = `Side profile of a tilt bed truck carrying a ${c.shortName} co
 </BaseLayout>
 
 <style>
-  /* HERO */
-  .prod-hero { padding: 80px 0 64px; background: var(--yellow); border-bottom: 2.5px solid var(--ink); }
-  .breadcrumb-nav { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; opacity: .6; margin-bottom: 24px; display: flex; align-items: center; gap: 8px; }
+  /* LISTING HERO: one dense module. The base styles ARE the mobile layout, because the
+     DOM order (H1 + chips, photo, description, buy box) is the owner's exact mobile
+     order; the >=961px query regrids the same children into photo-left, decision-right. */
+  .prod-hero { padding: 36px 0 56px; background: var(--yellow); border-bottom: 2.5px solid var(--ink); }
+  .breadcrumb-nav { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; opacity: .6; margin-bottom: 22px; display: flex; align-items: center; gap: 8px; }
   .breadcrumb-nav a { color: inherit; text-decoration: none; }
   .breadcrumb-nav a:hover { opacity: 1; }
-  .prod-h1 { margin-bottom: 24px; }
-  .key-specs { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 24px; }
+  .listing { display: grid; grid-template-columns: minmax(0, 1fr); }
+  .listing-h1 { font-family: var(--narrow); font-size: clamp(30px, 4vw, 44px); font-weight: 800; line-height: 1.02; text-transform: uppercase; letter-spacing: -.01em; margin: 0 0 14px; }
+  .key-specs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; }
   .spec-chip { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; background: var(--ink); color: var(--yellow); padding: 6px 14px; }
-  .lede { font-size: 22px; line-height: 1.4; max-width: 680px; font-weight: 500; margin-bottom: 32px; }
-  .prod-cta { margin-top: 8px; }
+  .listing-media { margin: 0 0 26px; }
+  .listing-frame { border: 2.5px solid var(--ink); box-shadow: 8px 8px 0 var(--ink); background: white; }
+  .listing-frame img { display: block; width: 100%; height: auto; }
+  .listing-caption { font-family: var(--mono); font-size: 11px; letter-spacing: .05em; text-transform: uppercase; opacity: .65; margin-top: 16px; }
+  .listing-lede { font-size: 19px; line-height: 1.4; font-weight: 600; margin: 0 0 16px; }
+  .listing-bullets { list-style: none; margin: 0 0 26px; padding: 0; }
+  .listing-bullets li { position: relative; padding-left: 24px; margin-bottom: 10px; font-size: 15.5px; line-height: 1.5; }
+  .listing-bullets li:last-child { margin-bottom: 0; }
+  .listing-bullets li::before { content: ''; position: absolute; left: 2px; top: 8px; width: 8px; height: 8px; background: var(--ink); }
+  .listing-bullets li a { color: inherit; border-bottom: 1.5px solid var(--ink); font-weight: 600; text-decoration: none; }
 
-  /* REAL PHOTO SLOT (renders only when c.heroPhoto is set; no placeholders) */
-  .prod-photo { margin: 0 0 28px; max-width: 720px; border: 2.5px solid var(--ink); box-shadow: 8px 8px 0 var(--ink); background: white; }
-  .prod-photo img { display: block; width: 100%; height: auto; }
+  /* BUY BOX: the only place in the visible body a dollar figure renders; the disclaimer
+     is its adjacent sibling per the standing pricing policy. Figures flow from
+     src/data/pricing.ts only. */
+  .buy-box { background: white; border: 2.5px solid var(--ink); box-shadow: 8px 8px 0 var(--ink); padding: 24px 24px 22px; max-width: 480px; }
+  .buy-box-label { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; opacity: .6; margin: 0 0 8px; }
+  .buy-box-price { font-family: var(--narrow); font-size: 54px; font-weight: 800; line-height: .95; letter-spacing: -.02em; margin: 0 0 10px; }
+  .buy-box-disclaimer { font-size: 13px; line-height: 1.5; opacity: .8; margin: 0 0 18px; }
+  .buy-bullet-note { display: block; font-style: italic; font-size: 13px; opacity: .75; margin-top: 2px; }
+  .buy-box-note { font-family: var(--mono); font-size: 11px; line-height: 1.55; letter-spacing: .02em; opacity: .6; margin: -8px 0 18px; }
+  .buy-box-ctas { display: grid; gap: 10px; }
+  .buy-box-ctas .btn { justify-content: center; padding: 15px 22px; }
+  .buy-btn-primary { background: var(--yellow); color: var(--ink); }
+  .buy-btn-primary:hover { background: var(--ink); color: var(--yellow); }
+  .buy-btn-secondary { background: white; color: var(--ink); }
+  .buy-btn-secondary:hover { background: var(--ink); color: var(--yellow); }
 
-  /* CONFIDENCE STRIP: mono chips on desktop, stacked list on mobile, ink check markers */
-  .conf-strip { list-style: none; margin: 0 0 32px; padding: 0; display: flex; flex-wrap: wrap; gap: 10px 12px; max-width: 920px; }
-  .conf-strip li { position: relative; font-family: var(--mono); font-size: 12px; line-height: 1.55; letter-spacing: .02em; background: var(--cream); border: 1.5px solid var(--ink); padding: 8px 14px 8px 32px; }
-  .conf-strip li::before { content: '✓'; position: absolute; left: 12px; top: 8px; color: var(--ink); font-weight: 700; }
-  .conf-strip li strong { font-weight: 700; }
-  .conf-strip li a { color: inherit; border-bottom: 1.5px solid var(--ink); font-weight: 600; text-decoration: none; }
-  @media (max-width: 720px) {
-    .conf-strip { display: block; }
-    .conf-strip li { margin-bottom: 8px; }
-    .conf-strip li:last-child { margin-bottom: 0; }
+  @media (min-width: 961px) {
+    .listing { grid-template-columns: minmax(0, 45fr) minmax(0, 55fr); grid-template-rows: auto auto 1fr; grid-template-areas: "media h1" "media chips" "media body"; column-gap: 56px; }
+    .listing-h1 { grid-area: h1; }
+    .key-specs { grid-area: chips; }
+    .listing-media { grid-area: media; align-self: start; margin: 6px 0 0; }
+    .listing-body { grid-area: body; align-self: start; }
   }
+
+  /* Smooth travel for the buy box's Have Doug call me anchor; page-scoped stylesheet,
+     so the rule ships only with this template. */
+  :global(html) { scroll-behavior: smooth; }
 
   /* SPECS TABLE */
   .prod-specs { padding: 72px 0; background: var(--cream); border-bottom: 1.5px solid rgba(11,15,26,.1); }
@@ -433,20 +518,27 @@ const plateAria = `Side profile of a tilt bed truck carrying a ${c.shortName} co
      plates in src/content/blog/shipping-container-dimensions-size-chart.md). Stroke scale:
      1px construction/dimension lines, 2.5px object lines. */
   .prod-clearance { padding: 72px 0; background: var(--cream); border-bottom: 1.5px solid rgba(11,15,26,.1); }
-  .clr-fig { margin: 0; max-width: 760px; border: 2.5px solid var(--ink); box-shadow: 8px 8px 0 var(--yellow); background: #fff; padding: 0; }
+  .clr-fig { margin: 0; border: 2.5px solid var(--ink); box-shadow: 8px 8px 0 var(--yellow); background: #fff; padding: 0; }
   .clr-fig-head { display: flex; align-items: center; gap: 10px; padding: 9px 14px 8px; border-bottom: 1.5px solid var(--ink); font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
   .clr-fig-no { background: var(--ink); color: var(--yellow); padding: 3px 7px; letter-spacing: .08em; flex: none; }
   .clr-fig-title { opacity: .72; }
   .clr-fig-head::after { content: ""; flex: 1 1 24px; height: 2px; background: repeating-linear-gradient(90deg, var(--ink) 0 6px, transparent 6px 12px); opacity: .35; }
-  .clr-fig svg { display: block; width: 100%; max-width: 640px; height: auto; margin: 0 auto; padding: 18px 16px 6px; box-sizing: border-box; }
+  /* The drawing fills the section's content width; on small screens the same dim-scroll
+     pattern the blog's wide tables use keeps the plate legible (pan, no page overflow). */
+  .clr-fig-scroll { overflow-x: auto; }
+  .clr-fig svg { display: block; width: 100%; height: auto; padding: 22px 20px 14px; box-sizing: border-box; }
   .clr-fig text { font-family: var(--mono); letter-spacing: .04em; fill: currentColor; }
-  .clr-fig figcaption { font-family: var(--mono); font-size: 12px; letter-spacing: .02em; opacity: .65; margin: 6px 14px 12px; padding-top: 10px; border-top: 1px dashed rgba(11,15,26,.35); }
+  .clr-fig-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; padding: 9px 14px; border-top: 1.5px solid var(--ink); background: var(--cream); font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+  .clr-fig-foot-tag { background: var(--ink); color: var(--cream); padding: 3px 7px; font-size: 11px; letter-spacing: .08em; flex: none; }
+  .clr-fig-foot-sep { opacity: .4; }
+  .clr-fig figcaption { font-family: var(--mono); font-size: 12px; letter-spacing: .02em; opacity: .65; margin: 10px 14px 12px; }
   .clr-fig figcaption a { color: inherit; font-weight: 700; border-bottom: 1.5px solid var(--ink); text-decoration: none; }
   @media (max-width: 768px) {
     .clr-fig { box-shadow: 4px 4px 0 var(--yellow); }
     .clr-fig-head { padding: 8px 10px 7px; }
-    .clr-fig svg { padding: 12px 10px 2px; }
-    .clr-fig figcaption { margin: 4px 10px 10px; }
+    .clr-fig-scroll svg { min-width: 680px; padding: 14px 12px 8px; }
+    .clr-fig-foot { padding: 8px 10px; }
+    .clr-fig figcaption { margin: 8px 10px 10px; }
   }
 
   /* USE CASES */
@@ -461,18 +553,12 @@ const plateAria = `Side profile of a tilt bed truck carrying a ${c.shortName} co
   .pricing-card { background: var(--ink); color: var(--cream); padding: 48px; border: 2.5px solid var(--ink); max-width: 600px; }
   .pricing-card .m { color: var(--yellow); font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .1em; margin-bottom: 16px; }
   .pricing-card p { font-size: 17px; line-height: 1.6; opacity: .8; margin-bottom: 28px; }
-  .price-figure { font-family: var(--narrow); font-size: 72px; font-weight: 800; line-height: .9; letter-spacing: -.03em; margin-bottom: 24px; }
-  .price-figure span { display: block; font-family: var(--mono); font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .08em; opacity: .6; margin-top: 14px; }
-  .price-disclaimer-text { font-size: 15px !important; line-height: 1.6; opacity: .92 !important; border-left: 4px solid var(--yellow); padding-left: 16px; margin-bottom: 24px !important; }
-  .price-disclaimer-text strong { color: var(--yellow); }
-  .price-disclaimer-text em { font-style: italic; opacity: .7; font-size: 13px; }
-  .hc-supply-note { font-family: var(--mono); font-size: 11px !important; line-height: 1.55; letter-spacing: .02em; opacity: .55 !important; margin-bottom: 24px !important; }
-  .price-bridge { font-family: var(--mono); font-size: 11px !important; line-height: 1.55; letter-spacing: .02em; opacity: .7 !important; margin-bottom: 24px !important; }
-  .price-bridge a { color: var(--yellow); border-bottom: 1.5px solid currentColor; font-weight: 600; }
+  .price-pitch a { color: var(--yellow); border-bottom: 1.5px solid currentColor; font-weight: 600; }
   .response-note { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; opacity: .45; margin-top: 16px; margin-bottom: 0; }
 
-  /* ACTION BLOCK */
-  .prod-action { padding: 64px 0 72px; background: var(--cream); border-top: 1.5px solid rgba(11,15,26,.1); }
+  /* ACTION BLOCK: scroll-margin keeps the section title clear of the sticky header
+     when the buy box anchor lands here. */
+  .prod-action { padding: 64px 0 72px; background: var(--cream); border-top: 1.5px solid rgba(11,15,26,.1); scroll-margin-top: 76px; }
 
   /* GUIDE LINKS */
   .prod-guides { padding: 48px 0; background: var(--ink); border-bottom: 1.5px solid rgba(255,255,255,.1); }

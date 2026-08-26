@@ -1,6 +1,7 @@
 // src/data/containers.ts
 import type { ImageMetadata } from 'astro';
 import { CONDITION } from './condition';
+import interimHeroPhoto from '../assets/photos/container-blue-weathered.jpg';
 
 export interface ContainerSpecs {
   externalDims: string;
@@ -25,10 +26,24 @@ export interface Container {
    * Real photo only, never AI-generated (see the product overhaul spec, section 7).
    * Typed as ImageMetadata because photos ship as imported src/assets files rendered
    * through astro:assets Image (the farmers-page pattern), not public-path strings.
-   * Unset on every container until real photos land; the hero slot renders nothing.
+   * All three containers currently share INTERIM_HERO_PHOTO below, a real 40ft
+   * photograph, honestly captioned as such until per-size yard photos replace it.
    */
-  heroPhoto?: { src: ImageMetadata; alt: string };
+  heroPhoto?: { src: ImageMetadata; alt: string; caption?: string };
 }
+
+/**
+ * Interim listing photo, one real photograph for all three sizes. This is the blue
+ * weathered 40ft that served as the live homepage photo for months, so it is a real
+ * unit, not a render. The alt and caption both say a 40ft is shown so the 20ft and
+ * High Cube pages never imply the photo is their own size. Swap per size when the
+ * yard photos land, then delete this constant.
+ */
+const INTERIM_HERO_PHOTO: NonNullable<Container['heroPhoto']> = {
+  src: interimHeroPhoto,
+  alt: 'Used Wind and Water Tight shipping container on a delivery trailer (40ft High Cube shown)',
+  caption: '40ft High Cube shown. Yard photos of each size are coming.',
+};
 
 export const containers: Container[] = [
   {
@@ -55,6 +70,7 @@ export const containers: Container[] = [
       title:       'Used 20ft Shipping Container for Sale | Steel Box Direct',
       description: `Buy a 20ft shipping container delivered within 250 miles of Cincinnati. ${CONDITION.seoTail} Get a quote within 4 business hours.`,
     },
+    heroPhoto: INTERIM_HERO_PHOTO,
   },
   {
     slug: '40-foot-shipping-container',
@@ -80,6 +96,7 @@ export const containers: Container[] = [
       title:       'Used 40ft Shipping Container for Sale | Steel Box Direct',
       description: `Buy a 40ft shipping container delivered within 250 miles of Cincinnati. ${CONDITION.seoTail} Flat-fee local delivery. Get a quote in 4 hours.`,
     },
+    heroPhoto: INTERIM_HERO_PHOTO,
   },
   {
     slug: '40-foot-high-cube-container',
@@ -105,5 +122,6 @@ export const containers: Container[] = [
       title:       '40-Foot High Cube Shipping & Storage Container for Sale | Steel Box Direct',
       description: `Buy a 40ft High Cube container delivered within 250 miles of Cincinnati. A full foot of extra headroom and ~2,694 cu ft. ${CONDITION.seoTail} Get a quote in 4 hours.`,
     },
+    heroPhoto: INTERIM_HERO_PHOTO,
   },
 ];
