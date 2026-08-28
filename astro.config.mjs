@@ -2,6 +2,7 @@ import { defineConfig } from 'astro/config';
 import cloudflare from '@astrojs/cloudflare';
 import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
+import { serializeWithLastmod } from './src/lib/seo/sitemapLastmod.mjs';
 
 export default defineConfig({
   output: 'hybrid',
@@ -35,6 +36,24 @@ export default defineConfig({
     // additionally get noindex in blog/category/[category].astro; this keeps
     // them out of the sitemap across the board so Google isn't fed empty/thin
     // URLs while the section is young. Revisit once categories fill out.
-    sitemap({ filter: (page) => !page.includes('/admin/') && !page.includes('/blog/category/') }),
+    //
+    // serialize adds <lastmod>, which until 2026-08-28 no entry carried. lastmod is the field
+    // Google's scheduler reads to decide a recrawl is worth doing, and /delivery/ plus
+    // /container-buying-guide/ were both sitting at "Discovered, currently not indexed" with last
+    // crawled = never. The dates are derived, never generated: blog posts use their own
+    // frontmatter, other routes use the last commit that touched the page module, and any URL
+    // whose date cannot be established truthfully ships bare exactly as it did before. Stamping
+    // every URL with the build time would have been one line and would have been a lie about 51
+    // of 52 pages, which is the failure the fabricated-dates guard exists to prevent. The full
+    // reasoning, including why imported layouts and data modules are deliberately excluded and
+    // what happens in a shallow clone, is in the header of src/lib/seo/sitemapLastmod.mjs, and
+    // src/lib/compliance/sitemap-lastmod-guard.test.ts holds both halves in place.
+    //
+    // changefreq and priority stay off. Google has said publicly it ignores both, and unlike
+    // lastmod neither can be derived from anything this repository actually knows.
+    sitemap({
+      filter: (page) => !page.includes('/admin/') && !page.includes('/blog/category/'),
+      serialize: serializeWithLastmod,
+    }),
   ],
 });
