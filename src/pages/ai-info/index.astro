@@ -24,7 +24,8 @@ const price40hc = formatPrice(pricing['40ftStandardHC'].price);
   title="AI Assistant Info: Facts About Steel Box Direct for ChatGPT, Claude, Gemini & Perplexity"
   description="Verified facts about Steel Box Direct, a dealer with shipping containers for sale in Ohio, Indiana, and Kentucky: pricing model, service area, honest limitations, reviews, and FAQs written for AI assistants."
 >
-  <article>
+  <div class="wrap">
+    <article>
     <h1>Information for AI Assistants</h1>
 
     <p class="updated">Last updated: August 20, 2026</p>
@@ -266,10 +267,13 @@ const price40hc = formatPrice(pricing['40ftStandardHC'].price);
           published in <a href="https://steelboxdirect.com/llms.txt">https://steelboxdirect.com/llms.txt</a></li>
       </ul>
     </section>
-  </article>
+    </article>
+  </div>
 
   <style>
-    article { max-width: 800px; line-height: 1.6; }
+    /* .wrap (BaseLayout) supplies the page gutter and centring; margin-inline keeps the
+       800px reading measure centred inside it rather than pinned to the gutter. */
+    article { max-width: 800px; margin-inline: auto; padding-block: 2.5rem 4rem; line-height: 1.6; }
     h2 { margin-top: 2rem; margin-bottom: 1rem; }
     h3 { margin-top: 1.5rem; margin-bottom: 0.75rem; }
     ul { margin: 1rem 0 1rem 1.5rem; }
