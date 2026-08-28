@@ -13,6 +13,8 @@
     "indexnow": "node scripts/indexnow.mjs",
     "test:indexnow": "node --test scripts/indexnow.test.mjs",
     "harvest:geo-pricing": "node scripts/harvest-geo-pricing.mjs",
+    "generate:route-lastmod": "node scripts/generate-route-lastmod.mjs",
+    "check:route-lastmod": "node scripts/generate-route-lastmod.mjs --check",
     "test:harvest": "node --test scripts/harvest-geo-pricing.test.mjs",
     "test": "vitest run",
     "test:watch": "vitest",

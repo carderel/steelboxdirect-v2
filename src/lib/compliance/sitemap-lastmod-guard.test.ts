@@ -33,6 +33,21 @@
  *      (both noindex and excluded). Adding a serialize option meant editing that same integration
  *      call, which is precisely when a filter gets dropped by accident.
  *
+ * WHAT CHANGED ON 2026-08-28, AND WHY THE SCAN LIST GREW TO FOUR FILES. The first version derived
+ * the dates by running git during the build. That worked on a developer machine and failed in
+ * production, where Cloudflare Pages clones shallow: the derivation module correctly refused to
+ * trust a shallow clone, so 46 of 54 URLs shipped bare on every deploy while the same build dated
+ * 52 of 52 locally. The derivation moved to scripts/generate-route-lastmod.mjs, which runs where the
+ * history exists and writes the committed table src/data/routeLastmod.mjs, and the build now reads
+ * that table. Both new files join the clock scan, because either one could put a fabricated date
+ * into the sitemap: the generator by writing one, the table by carrying one.
+ *
+ * THE STALENESS THIS FILE DELIBERATELY DOES NOT COVER lives one file over, in
+ * route-lastmod-freshness-guard.test.ts: a committed table can go quietly out of date in a way a
+ * computed one could not. Assertion 2 below, which compares the delivery page against an
+ * independent git log, is a real freshness check in itself, but it is a check of one file and the
+ * other guard checks all of them.
+ *
  * If assertion 2 or 3 fails in a checkout with no git history, the answer is never to fill the gap
  * with a generated date. Omission is the supported outcome: the module returns undefined and the
  * entry ships bare.
@@ -42,18 +57,23 @@ import { describe, it, expect } from 'vitest';
 import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import {
-  gitHistoryIsUsable,
-  lastmodFor,
-  serializeWithLastmod,
-} from '../seo/sitemapLastmod.mjs';
+import { lastmodFor, serializeWithLastmod } from '../seo/sitemapLastmod.mjs';
+// gitHistoryIsUsable now lives with the derivation, in the generator, because the build no longer
+// asks git anything. One implementation of the shallow clone test, imported by every guard that
+// needs it, is the only way the answer stays consistent across them.
+import { gitHistoryIsUsable } from '../../../scripts/generate-route-lastmod.mjs';
 
 const REPO_ROOT = import.meta.dirname
   ? join(import.meta.dirname, '..', '..', '..')
   : process.cwd();
 
-/** The only two files that can put a lastmod into the sitemap. */
-const SITEMAP_SOURCES = ['astro.config.mjs', 'src/lib/seo/sitemapLastmod.mjs'];
+/** Every file that can put a lastmod into the sitemap: the wiring, the reader, the writer, the data. */
+const SITEMAP_SOURCES = [
+  'astro.config.mjs',
+  'src/lib/seo/sitemapLastmod.mjs',
+  'scripts/generate-route-lastmod.mjs',
+  'src/data/routeLastmod.mjs',
+];
 
 const read = (rel: string) => readFileSync(join(REPO_ROOT, rel), 'utf8');
 
@@ -75,7 +95,7 @@ const SAMPLE_URLS = [
 ];
 
 describe('sitemap lastmod guard: no build clock in the sitemap path', () => {
-  it('reads both sitemap source files, and neither is empty', () => {
+  it('reads every sitemap source file, and none is empty', () => {
     for (const rel of SITEMAP_SOURCES) {
       expect(existsSync(join(REPO_ROOT, rel)), `${rel} should exist`).toBe(true);
       expect(read(rel).length).toBeGreaterThan(200);
