@@ -96,7 +96,13 @@ const deliveryGuideSchema = {
       '@type': 'HowToStep',
       'position': 4,
       'name': 'Schedule Delivery',
-      'text': 'Coordinate timing. Delivery takes 30-45 minutes. Be present to direct placement.'
+      // The "delivery takes thirty to forty five minutes" clause was removed on 2026-08-28. No
+      // source for the figure existed anywhere in this repository, and PROJECT_HS_003 strips the
+      // attribution that would surround a number in body copy, so an unsourced duration reads as a
+      // flat factual claim by the business. Omission is honest; invention is not
+      // (src/lib/compliance/fabricated-dates-guard.test.ts). The instruction survives intact,
+      // because "be present" is the part of this step that actually changes what a buyer does.
+      'text': 'Coordinate timing with the driver. Be present to direct placement.'
     }
   ]
 };

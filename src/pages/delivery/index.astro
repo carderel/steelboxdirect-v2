@@ -1,5 +1,63 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+
+/**
+ * Single source for this page's FAQ. These five pairs ARE the visible FAQ section AND the FAQPage
+ * JSON-LD, mapped into the schema prop below, so the two can never drift apart. Same pattern as
+ * src/pages/container-buying-guide/index.astro and src/pages/locations/index.astro.
+ *
+ * Every answer is written to stand alone with no pronoun pointing back at the page, because an
+ * answer engine lifts these one at a time and the surrounding context does not travel with them.
+ * Every figure in them is a figure already published in the body copy above: 12 ft of width, 14 ft
+ * overhead, 30,000 lb of ground, 100+ ft of straight approach, and the 65 ft truck combination.
+ * Nothing here introduces a number this page cannot support.
+ */
+/**
+ * SIDEBAR CARD PROVENANCE, 2026-08-28.
+ *
+ * The sidebar card in this page was headed "Logistics Data" and carried three lines: a percentage
+ * of rural properties said to be able to receive tilt-bed delivery, an average truck length of 60
+ * feet, and a percentage of access issues said to be solved by crane-set. Neither percentage had a
+ * source anywhere in this repository, and a card headed "Data" is the worst place a site can put a
+ * number nobody can trace: the heading does the asserting even when the copy does not. Omission is
+ * honest; invention is not (src/lib/compliance/fabricated-dates-guard.test.ts). The 60 feet line
+ * was wrong in a second way as well, because it contradicted the 65-foot truck combination stated
+ * in the body copy of this same page.
+ *
+ * All three lines were removed and NOTHING was invented to replace them. The card now restates
+ * five requirements already published in the main column: 12 ft of width, 14 ft overhead, 30,000 lb
+ * of ground, 100+ ft of straight approach, and the 65 ft combination. That is also why the label
+ * changed to "Clearance At A Glance". These are clearances a site has to provide, not measurements
+ * of anything, so calling them data was never true.
+ *
+ * The note lives here, in the frontmatter, rather than in an HTML comment beside the card, because
+ * an HTML comment ships: it would have published the retired figures into dist/delivery/index.html
+ * and defeated the point of removing them.
+ */
+
+interface Faq { q: string; a: string }
+const faqs: Faq[] = [
+  {
+    q: 'How much room does a shipping container delivery truck need?',
+    a: 'A loaded container delivery rig is roughly a sixty-five foot truck combination. For a tilt-bed delivery it needs at least 100 feet of straight approach, 12 feet of width clearance at the narrowest point of the route, and 14 feet of overhead clearance for branches and wires. The ground along the route and at the drop point has to support a 30,000 lb truck. When a site cannot provide that, a crane-set delivery places the container instead.',
+  },
+  {
+    q: 'What is the difference between tilt-bed and crane-set container delivery?',
+    a: "A tilt-bed truck raises the front of its bed and slides the container off the back while the truck pulls forward, so the container lands in a straight line along the truck's path. It is the standard method and it needs a long, straight, firm approach. A crane-set delivery uses a separate crane to lift the container into position, which solves sharp turns, fencelines, restricted lots, and ground too soft for a loaded truck.",
+  },
+  {
+    q: 'Does a shipping container need to be on level ground?',
+    a: 'Yes. A shipping container carries its load at its four corner castings, and when one corner sits low the frame twists slightly. That twist shows up at the door end, because the door opening has no wall across it, which causes doors that bind or will not latch fully. Level side to side matters most for door operation, and keeping the container up out of standing water lets the underside dry between rains.',
+  },
+  {
+    q: 'Can a shipping container be delivered onto grass?',
+    a: 'Sometimes, but grass is the least predictable surface for container delivery. Turf is a thin mat over topsoil, and topsoil holds water, so a lawn that feels solid underfoot can rut badly under a loaded truck after rain. Gravel is the most reliable surface because it drains and spreads load. Packed dirt is dependable when dry and much less so when wet. Anyone unsure about their ground should send photos of the route and the placement spot with the quote request.',
+  },
+  {
+    q: 'How long does shipping container delivery take?',
+    a: 'Almost all deliveries take about two weeks from order. Depot inventory is stacked and sequenced rather than staged for quick pull, and drivers book out several weeks in advance, so exact timing depends on current availability and location. Steel Box Direct gives an honest delivery window before the buyer commits. On delivery day itself, positioning the truck takes longer than unloading the container.',
+  },
+];
 ---
 
 <BaseLayout
@@ -8,8 +66,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   title="Shipping Container Delivery Requirements | Steel Box Direct"
   description="Learn how shipping container delivery works, site requirements, access needs, and how to prepare your property."
   datePublished="2026-05-19"
-  dateModified="2026-08-24"
-  schema={{ kind: 'guide', topic: 'delivery', title: 'Shipping Container Delivery Requirements', specs: [], faqs: [] }}
+  dateModified="2026-08-28"
+  schema={{ kind: 'guide', topic: 'delivery', title: 'Shipping Container Delivery Requirements', specs: [], faqs: faqs.map((f) => ({ q: f.q, a: f.a })) }}
 >
   <div class="guide-header guide_header" style="background: var(--c3-deliver); color: var(--cream);">
     <div class="wrap">
@@ -32,6 +90,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
         <div class="main-col guide_main_col">
           <h2>How Containers Are Delivered</h2>
           <p>The delivery method depends on your property access. A 65-foot truck combination needs room to maneuver.</p>
+          <p>Everything about container delivery follows from one fact: the box does not get carried in, it gets driven in. A loaded rig is roughly sixty-five feet of truck and trailer, and it has to reach the exact spot you want the container, then get back out again. Almost every delivery problem we see traces back to somebody measuring the driveway and forgetting the truck also has to leave.</p>
+          <p>There are two ways the container comes off. Which one your site needs is a question worth settling before you order, not on delivery day, because the answer changes what the driver needs from your property and what the trip costs.</p>
 
           <div class="method-card guide_comparison_item" style="border-left-color: var(--c3-deliver);">
             <h3>Tilt-Bed Truck</h3>
@@ -55,21 +115,97 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
               <li><strong>Ground:</strong> Must support a 30,000 lb truck.</li>
             </ul>
           </div>
+
+          <div class="guide_section">
+            <h2>Reading your site the way a driver reads it</h2>
+            <p>The checklist above is the short version. Here is what each line actually means when a sixty-five foot combination is sitting at the end of your lane.</p>
+
+            <h3>The approach, and why straight matters more than long</h3>
+            <p>A tilt-bed does not lower the container down. It raises the front of the bed and lets the box slide off the back while the truck creeps forward out from under it. The container lands in a straight line along the truck's path. That is the whole reason for the 100+ feet of straight approach: the truck needs room for its own length plus the container's, all in a line, with the box ending up where you want it and not where the geometry puts it.</p>
+            <p>It also means placement is directional. A tilt-bed sets a container along the line the truck was traveling. If you want the doors facing the house, that has to be planned before the truck backs in.</p>
+            <p>Measure the narrowest point of your route, not the average. Gate posts, a mailbox, a parked truck, a landscape boulder, the corner of the garage. Twelve feet of clearance means twelve feet at the tightest pinch on the whole run.</p>
+
+            <h3>Overhead, in both places</h3>
+            <p>Fourteen feet of overhead clearance is not just for the lane. When the bed tilts, the raised end reaches higher than the truck stood driving in. So the drop point needs the clearance too. Look up at the spot itself, not only at the branches over the driveway. Service drops to the house, low limbs, a barn overhang, and a basketball hoop are the usual offenders.</p>
+
+            <h3>Ground: what holds a truck and what only looks like it does</h3>
+            <p>The ground has to support a 30,000 lb truck, and different surfaces fail differently.</p>
+            <p>Gravel is the friendliest surface we deal with. It drains, it spreads load across the tires, and it recovers if it does get rutted. Packed dirt is firm and fine when it is dry, and it is a different material entirely after two days of rain, when the top few inches turn greasy over ground that is still solid underneath. Grass is the one that fools people. Turf looks like a surface, but it is a thin mat over topsoil, and topsoil holds water. A lawn that felt solid under your boots in the morning can cut into ruts under loaded tires by afternoon.</p>
+            <p>If any part of the route crosses a septic tank or leach field, tell us before delivery. Know where yours is. Loaded trucks and septic systems are not a good combination, and the driver has no way to see it.</p>
+          </div>
+
+          <div class="guide_section">
+            <h2>What "level" actually means</h2>
+            <p>A shipping container is not a solid block. It is a steel frame that carries its load at the four corner castings, with the walls and roof stiffening the box between them. When all four corners sit in the same plane, the frame stays square and the doors swing and latch the way they were built to.</p>
+            <p>Set that same box down with one corner low and the frame twists slightly. It is a small amount of movement, and it lands almost entirely in the door end, because the door opening is the one side of the box with no wall across it. The result is doors that bind, doors that need a shoulder, or doors that will not throw their locking bars all the way home. This is the single most common complaint about a container that is otherwise perfectly sound, and it is a ground problem, not a container problem.</p>
+            <p>Level side to side is what matters most for the doors. It also helps to keep the box up out of standing water so the underside can dry between rains. If you want the container set on blocking, say so in your quote request. Blocking changes how the box comes off the truck, and it has to be planned before the driver is on your property rather than decided in your driveway.</p>
+          </div>
+
+          <div class="guide_section">
+            <h2>The week before delivery</h2>
+            <p>Almost all deliveries take about two weeks, and we will give you an honest window before you commit. Use that time. Everything below takes an hour and prevents the expensive version of the problem.</p>
+            <ul class="check-list guide_section_body">
+              <li><strong>Walk the route with the pinch points in mind.</strong> Trim the branches, move the trailer, ask the neighbor about the truck that parks on the corner.</li>
+              <li><strong>Mark the exact spot.</strong> Stakes, spray paint, or cones at the four corners. "Over there by the fence" is not a placement.</li>
+              <li><strong>Decide which way the doors face</strong> and mark that too. Changing it later means moving the container again.</li>
+              <li><strong>Look at the ground honestly.</strong> If the last rain left standing water where the box is going, that is your answer about the surface.</li>
+              <li><strong>Confirm anything you owe your local building office.</strong> Permit and zoning requirements vary by county, municipality, and intended use, and confirming them is the buyer's responsibility. Start at our <a href="/permits/">permit overview</a>, then call your local zoning or building department.</li>
+              <li><strong>Send photos with your quote request.</strong> The driveway, the pinch point, and the spot itself. This is the cheapest insurance in the whole transaction.</li>
+            </ul>
+          </div>
+
+          <div class="guide_section">
+            <h2>Delivery day, start to finish</h2>
+            <p>Somebody should be on site who can point at the spot and make a decision. That is the whole job, and it matters more than it sounds like it does.</p>
+            <ol class="step-list guide_section_body">
+              <li><strong>The driver calls ahead.</strong> This is your chance to flag anything that changed since you booked, like a washed-out lane or a new fence.</li>
+              <li><strong>The driver walks or eyeballs the approach.</strong> Drivers are good at this. If something looks wrong to them, listen to it.</li>
+              <li><strong>You confirm the spot and the door direction.</strong> In person, standing on it. Not by text.</li>
+              <li><strong>The truck backs in and sets up.</strong> This is the slow part and it is supposed to be slow.</li>
+              <li><strong>The container comes off.</strong> On a tilt-bed the bed raises and the box slides off as the truck pulls forward. On a crane-set, a separate crane lifts it into place.</li>
+              <li><strong>You look at it before the truck leaves.</strong> Walk the outside, open the doors, close the doors. If something is wrong, the moment to say so is while the rig is still in the driveway.</li>
+            </ol>
+            <p>The unloading itself is a short part of the visit. Getting the truck into position is the part that takes the time, and how long it takes is decided by your site, not by the driver.</p>
+          </div>
+
+          <div class="guide_section">
+            <h2>What stops a delivery</h2>
+            <p>A delivery that cannot be completed is the outcome everyone is trying to avoid, and the causes are boringly consistent:</p>
+            <ul class="check-list guide_section_body">
+              <li>Ground that will not hold the truck, usually soft ground the buyer had not thought of as soft.</li>
+              <li>A pinch point nobody measured, which is almost always the tightest ten feet of a lane that is otherwise wide open.</li>
+              <li>Overhead the buyer looked at from the ground instead of from the truck's height.</li>
+              <li>Nobody on site with the authority to say where the box goes.</li>
+              <li>A spot that turns out to be somewhere the container is not allowed to be.</li>
+            </ul>
+            <p style="margin-top: 28px;">When a truck cannot unload, it leaves with your container. The trip still happened, the fuel was still burned, and the delivery still has to be scheduled again. That is why we would rather over-ask about your site before you commit than surprise you in your own driveway. If your access is genuinely tight, that is not a dead end. Crane-set exists precisely for sharp turns, fencelines, and soft ground.</p>
+          </div>
+
+          <div class="guide_section">
+            <h2>Why delivery is a real cost, not a fee</h2>
+            <p>Everything above is work, and work has a price. A special truck, a driver trained to place a heavy steel box in a spot he has never seen before, fuel, and the time it takes to get in and back out. Delivery is not a surcharge bolted onto the container. It is a second, separate job that has to happen before the container is worth anything to you.</p>
+            <p>This is why a sticker price with no delivery in it is only half a price, and why the honest comparison between two sellers is delivered total against delivered total. We wrote up how that plays out for a buyer in <a href="/blog/the-cheap-container-that-wasnt/">The Cheap Container That Wasn't</a>. Steel Box Direct quotes all-in on purpose: container, delivery to your ZIP, and placement on flat ground, in one number. For what actually moves that number, see <a href="/cost/">what a container costs</a>.</p>
+          </div>
+
+          <p class="deliv-closer">We deliver across Ohio, Indiana, Kentucky, and western West Virginia. Most properties in this region can take a tilt-bed delivery with no drama at all. The ones that cannot usually have one specific problem, and that problem almost always has a solution if we find it before the truck is booked instead of after.</p>
         </div>
 
         <aside class="sidebar-col guide_sidebar_col">
+          {/* Repopulated 2026-08-28. Provenance and the retired claims are in the frontmatter. */}
           <div class="authority-card guide_callout">
-            <div class="m guide_callout_label">Logistics Data</div>
+            <div class="m guide_callout_label">Clearance At A Glance</div>
             <ul>
-              <li><strong>92%</strong> of rural properties can receive tilt-bed delivery.</li>
-              <li><strong>60 feet</strong> is the average truck length.</li>
-              <li><strong>95%</strong> of access issues are solved by crane-set.</li>
+              <li><strong>12 feet</strong> of width, measured at the narrowest pinch on the route.</li>
+              <li><strong>14 feet</strong> overhead, over the lane and over the drop spot.</li>
+              <li><strong>30,000 lb</strong> is what the ground has to hold.</li>
+              <li><strong>100+ feet</strong> of straight approach for a tilt-bed.</li>
+              <li><strong>65 feet</strong> of truck and trailer has to get in and back out.</li>
             </ul>
           </div>
 
           <div class="cta-card guide_cta">
             <h4 class="guide_cta_headline">Not sure?</h4>
-            <p>Send us a photo of your driveway with your quote request.</p>
+            <p>Send us a photo of your driveway and the spot itself with your quote request.</p>
             <a href="/quote/" class="btn guide_cta_btn">Check My Access <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
           </div>
         </aside>
@@ -169,8 +305,61 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     .cta-card h4 { font-family: var(--narrow); font-size: 24px; text-transform: uppercase; margin-bottom: 8px; }
     .cta-card p { font-size: 15px; margin-bottom: 20px; }
 
+    /* Numbered sequence for the delivery-day walkthrough. Same rhythm and rule weight as
+       .check-list above, with a mono counter in place of the arrow, so the two lists read as one
+       family rather than two designs. Counter rather than a native marker because the native ol
+       marker cannot be typeset in the mono face. */
+    .step-list {
+      list-style: none;
+      padding: 0;
+      margin: 32px 0 0;
+      counter-reset: step;
+    }
+    .step-list li {
+      counter-increment: step;
+      padding: 16px 0 16px 44px;
+      border-bottom: 1.5px solid rgba(11,15,26,.1);
+      font-size: 17px;
+      line-height: 1.5;
+      position: relative;
+    }
+    .step-list li::before {
+      content: "0" counter(step);
+      position: absolute;
+      left: 0;
+      top: 16px;
+      color: var(--c3-deliver);
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    /* Closing beat of the main column. Heavier than body copy and rule-marked, so the page ends
+       on a statement rather than trailing off into the next section. */
+    .deliv-closer {
+      margin: 48px 0 0;
+      padding-left: 20px;
+      border-left: 4px solid var(--c3-deliver);
+      font-size: 18px;
+      line-height: 1.55;
+      font-weight: 600;
+    }
+
+    /* FAQ. Markup and styling follow src/pages/container-buying-guide/index.astro so the two
+       guide-page FAQs are visually identical; the pairs themselves come from the single `faqs`
+       array in the frontmatter, which also feeds the FAQPage JSON-LD. */
+    .deliv-faq { padding: 72px 0; background: white; border-top: 2.5px solid var(--ink); }
+    .deliv-faq h2 { font-family: var(--narrow); font-weight: 700; font-size: clamp(28px, 4vw, 44px); text-transform: uppercase; line-height: 1.05; margin: 0 0 32px; }
+    .faq-list { border: 2.5px solid var(--ink); }
+    .faq-item { padding: 28px 32px; border-bottom: 1.5px solid rgba(11,15,26,.1); background: var(--cream); }
+    .faq-item:last-child { border-bottom: none; }
+    .faq-item h3 { font-family: var(--narrow); font-size: 20px; text-transform: uppercase; margin-bottom: 10px; }
+    .faq-item p { opacity: .8; line-height: 1.6; max-width: 780px; margin: 0; }
+
     @media (max-width: 960px) {
       .row { grid-template-columns: 1fr; gap: 48px; }
+      .deliv-faq { padding: 48px 0; }
+      .faq-item { padding: 22px 20px; }
       .guide-header { padding: 48px 0; }
       .big { font-size: clamp(48px, 10vw, 80px); }
     }
@@ -181,6 +370,20 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     .guide-next-links a:hover { color: var(--yellow); border-color: var(--yellow); }
   </style>
 
+  <section class="deliv-faq" id="faq">
+    <div class="wrap">
+      <h2>Delivery questions, answered</h2>
+      <div class="faq-list">
+        {faqs.map((f) => (
+          <div class="faq-item">
+            <h3>{f.q}</h3>
+            <p>{f.a}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
   <section class="guide-next">
     <div class="wrap">
       <p class="guide-next-label">Continue researching</p>
@@ -189,6 +392,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
         <a href="/permits/">Do I need a permit?</a>
         <a href="/size/">What size do I need?</a>
         <a href="/shipping-containers-for-sale/">Browse container specs</a>
+        <a href="/blog/the-cheap-container-that-wasnt/">The cheap container that wasn't</a>
       </div>
     </div>
   </section>
