@@ -1,7 +1,7 @@
 ---
 title: "The Contractor Who Stopped Losing Tools"
 description: "A Field Story: a Dayton-area contractor lost tools to theft twice in one summer. He fixed it with one locked steel container, right on the job."
-pubDate: 2026-07-06
+pubDate: 2026-08-28
 category: "Field Stories"
 pillar: "jobsite-tool-security"
 persona: "Contractor"
@@ -10,7 +10,7 @@ keywords: ["jobsite tool theft", "job site storage container", "contractor tool 
 heroImage: "blog/jobsite-locked-storage-container-end-of-day-hero.jpg"
 heroImageAlt: "A used green shipping container standing closed and locked at the edge of a quiet construction site at day's end, with stacked lumber and a wheelbarrow nearby"
 author: "Steel Box Direct"
-draft: true
+draft: false
 takeaways:
   - "Why tools go missing on a jobsite: it's about easy access, not a mastermind thief"
   - "How stolen tools cost more than just the price of new ones"

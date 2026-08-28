@@ -20,11 +20,7 @@
  *     available.
  *
  * EXCLUSIONS (exact relative path, POSIX separators):
- *   1. src/content/blog/the-cheap-container-that-wasnt.md, ALL checks. Owner-reserved draft,
- *      deliberately kept with em dashes, UNTRACKED so it never reaches CI. Excluded so LOCAL
- *      builds do not fail on a file that never ships. If it is ever tracked or published, remove
- *      the exclusion and fix the copy.
- *   2. src/lib/compliance/hs003-content-guard.test.ts, ENTITY checks only. Its entity-decoding
+ *   1. src/lib/compliance/hs003-content-guard.test.ts, ENTITY checks only. Its entity-decoding
  *      machinery contains the mdash entity as a literal needle (around line 540). It is still
  *      scanned for literal dash characters, which it does not contain (its fixtures use \u
  *      escapes, per its own "NOTE ON DASHES" header comment).
@@ -47,10 +43,18 @@ const SCAN_ROOTS = ['src', 'public'];
 /** Text extensions scanned. Anything else (images, fonts, ico, pdf) is skipped as binary. */
 const TEXT_EXT = /\.(astro|ts|tsx|js|mjs|md|mdx|json|txt|xml|css|svg)$/;
 
-/** Excluded from ALL checks, by exact repo-relative path. */
-const EXCLUDE_ALL = new Set<string>([
-  'src/content/blog/the-cheap-container-that-wasnt.md',
-]);
+/**
+ * Excluded from ALL checks, by exact repo-relative path. EMPTY, and it should stay that way.
+ *
+ * It held exactly one entry until 2026-08-28: src/content/blog/the-cheap-container-that-wasnt.md,
+ * an owner-reserved draft that was untracked and therefore never reached CI. The exclusion carried
+ * its own retirement condition ("if it is ever tracked or published, remove the exclusion and fix
+ * the copy"). The post was published that day, so both halves were done: the four em dashes in it
+ * were reworded to commas and colons, and the entry was deleted rather than carried forward. The
+ * set itself is kept so the scan below has a documented place for a future owner ruling, not so
+ * that a failure has somewhere convenient to hide.
+ */
+const EXCLUDE_ALL = new Set<string>([]);
 
 /** Excluded from ENTITY checks only; still scanned for literal dash characters. */
 const EXCLUDE_ENTITIES = new Set<string>([
@@ -139,13 +143,14 @@ describe('HS-OUT-001 dash guard: scan wiring', () => {
     expect(rels).toContain('src/lib/compliance/hs003-content-guard.test.ts');
   });
 
-  it('tracked exclusion entries exist (stale exclusions fail); untracked-by-design entries may be absent in CI', () => {
-    // EXCLUDE_ALL holds exactly the owner-reserved UNTRACKED draft. It exists on the owner's
-    // machine and is legitimately ABSENT in CI checkouts (Cloudflare builds from git), so its
-    // existence must not be asserted: doing so failed the first CI build on 2026-08-20.
-    // When such a file IS present, the walker still skips it, which the live scan exercises.
-    for (const e of EXCLUDE_ENTITIES) {
-      expect(existsSync(join(REPO_ROOT, e)), `stale EXCLUDE_ENTITIES entry: ${e}`).toBe(true);
+  it('every exclusion entry names a file that exists, so stale exclusions fail', () => {
+    // EXCLUDE_ALL is empty since 2026-08-28 (see its comment), so this loop is a no-op for it
+    // today and arms itself automatically if an entry is ever added back. EXCLUDE_ENTITIES is the
+    // live case. Both are asserted the same way now that neither names an untracked file: the
+    // earlier carve-out existed only because the excluded draft was legitimately absent from CI
+    // checkouts, which failed the first CI build on 2026-08-20.
+    for (const e of [...EXCLUDE_ALL, ...EXCLUDE_ENTITIES]) {
+      expect(existsSync(join(REPO_ROOT, e)), `stale exclusion entry: ${e}`).toBe(true);
     }
   });
 });
