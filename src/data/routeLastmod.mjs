@@ -66,7 +66,7 @@ export const routeLastmod = {
   'src/pages/for/farmers/index.astro': '2026-08-24T15:22:53-04:00',
   'src/pages/for/homeowners/index.astro': '2026-08-24T15:22:53-04:00',
   'src/pages/index.astro': '2026-08-20T15:56:43-04:00',
-  'src/pages/locations/[state]/[citySlug].astro': '2026-08-24T17:42:28-04:00',
+  'src/pages/locations/[state]/[citySlug].astro': '2026-08-31T13:36:49-04:00',
   'src/pages/locations/index.astro': '2026-08-24T15:22:53-04:00',
   'src/pages/permits/index.astro': '2026-08-24T23:25:37-04:00',
   'src/pages/portable-storage-vs-buying-a-container/index.astro': '2026-08-24T17:42:28-04:00',

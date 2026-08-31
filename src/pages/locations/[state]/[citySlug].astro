@@ -8,6 +8,7 @@ import type { City } from '../../../data/cities';
 import { centroidBySlug } from '../../../data/geoCentroids';
 import { geoPricing, geoSkuKeys, type GeoSkuKey } from '../../../data/geoPricing';
 import { pricing, formatPrice, effectiveSinceLabel } from '../../../data/pricing';
+import RtoDownPaymentCta from '../../../components/RtoDownPaymentCta.astro';
 
 export function getStaticPaths() {
   return cities.map((c) => ({ params: { state: c.stateSlug, citySlug: c.slug }, props: { city: c } }));
@@ -188,56 +189,59 @@ const cityPrice = showPrice
   {showPrice && (
     <section class="local-price">
       <div class="wrap">
-        <div class="price-band">
-          <div class="m local_price_label">Delivered price</div>
-          <h2 class="local_price_headline">What a container costs in {c.city}.</h2>
+        <div class="price-row">
+          <div class="price-band">
+            <div class="m local_price_label">Delivered price</div>
+            <h2 class="local_price_headline">What a container costs in {c.city}.</h2>
 
-          <ul class="price-lines">
-            {priceLines.map((line) => (
-              <li class="local_price_line">
-                <span class="local_price_figure">{formatPrice(line.delivered)}</span>
-                <span class="local_price_scope">delivered to {priceZip} for a {line.label}</span>
-              </li>
-            ))}
-          </ul>
+            <ul class="price-lines">
+              {priceLines.map((line) => (
+                <li class="local_price_line">
+                  <span class="local_price_figure">{formatPrice(line.delivered)}</span>
+                  <span class="local_price_scope">delivered to {priceZip} for a {line.label}</span>
+                </li>
+              ))}
+            </ul>
 
-          <p class="local_price_allin">
-            That is the container and the delivery together, with nothing added later.
-            {priceLines.length > 1 ? ' These prices have' : ' This price has'} been in effect since {effectiveSinceLabel(priceEffectiveSince)}.
-          </p>
-          <p class="local_price_hedge">
-            Your ZIP will be different from the one we price from, and delivery distance is most of
-            what moves the number, so call and we will run yours.
-          </p>
+            <p class="local_price_allin">
+              That is the container and the delivery together, with nothing added later.
+              {priceLines.length > 1 ? ' These prices have' : ' This price has'} been in effect since {effectiveSinceLabel(priceEffectiveSince)}.
+            </p>
+            <p class="local_price_hedge">
+              Your ZIP will be different from the one we price from, and delivery distance is most of
+              what moves the number, so call and we will run yours.
+            </p>
 
-          {pickupLines.length > 0 && (
-            <details class="local-pickup">
-              <summary>Would you rather pick it up yourself?</summary>
-              <div class="local_pickup_body">
-                <p>
-                  If you would rather collect it yourself, we can do that. Pickup is priced
-                  differently from delivery and it is not the delivery fee taken back off, so here
-                  are both numbers side by side.
-                </p>
-                <ul class="pickup-lines">
-                  {pickupLines.map((line) => (
-                    <li class="local_pickup_line">
-                      <span class="local_pickup_size">{line.label}</span>
-                      <span class="local_pickup_figures">
-                        {formatPrice(line.delivered)} delivered, or {formatPrice(line.pickup)} collected
-                        {line.pickupMiles !== null && <> from a yard about {line.pickupMiles} miles out</>}.
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-                <p>
-                  Which sizes are sitting at a nearby yard changes week to week, and the closest yard
-                  for one size is not always the closest yard for another. Call and we will check what
-                  is there and tell you where it is before you commit to the drive.
-                </p>
-              </div>
-            </details>
-          )}
+            {pickupLines.length > 0 && (
+              <details class="local-pickup">
+                <summary>Would you rather pick it up yourself?</summary>
+                <div class="local_pickup_body">
+                  <p>
+                    If you would rather collect it yourself, we can do that. Pickup is priced
+                    differently from delivery and it is not the delivery fee taken back off, so here
+                    are both numbers side by side.
+                  </p>
+                  <ul class="pickup-lines">
+                    {pickupLines.map((line) => (
+                      <li class="local_pickup_line">
+                        <span class="local_pickup_size">{line.label}</span>
+                        <span class="local_pickup_figures">
+                          {formatPrice(line.delivered)} delivered, or {formatPrice(line.pickup)} collected
+                          {line.pickupMiles !== null && <> from a yard about {line.pickupMiles} miles out</>}.
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                  <p>
+                    Which sizes are sitting at a nearby yard changes week to week, and the closest yard
+                    for one size is not always the closest yard for another. Call and we will check what
+                    is there and tell you where it is before you commit to the drive.
+                  </p>
+                </div>
+              </details>
+            )}
+          </div>
+          <RtoDownPaymentCta />
         </div>
       </div>
 
@@ -399,7 +403,14 @@ const cityPrice = showPrice
   .lede { font-size: 24px; line-height: 1.4; max-width: 800px; margin-top: 32px; font-weight: 500; }
 
   .local-price { padding: 72px 0 0; background: white; }
+  /* The delivered price reads as a column, so the plate that used to sit in dead space to its
+     right now has a column of its own. The price band keeps its 880px measure exactly; the
+     second track is the width the plate needs and no more. Collapsing at 1080px rather than at
+     the usual breakpoint is deliberate: below that the two tracks together are narrower than
+     the price figures want, and the plate would squeeze the prices before it wrapped. */
+  .price-row { display: grid; grid-template-columns: minmax(0, 880px) minmax(260px, 380px); gap: 48px; align-items: start; }
   .price-band { max-width: 880px; }
+  @media (max-width: 1080px) { .price-row { grid-template-columns: 1fr; gap: 32px; } }
   .local_price_label { margin-bottom: 12px; }
   .local_price_headline { font-family: var(--narrow); font-weight: 700; font-size: clamp(30px, 5vw, 44px); text-transform: uppercase; letter-spacing: -.01em; line-height: .95; margin: 0 0 28px; }
   .price-lines { list-style: none; padding: 0; margin: 0 0 28px; border-top: 2.5px solid var(--ink); }
