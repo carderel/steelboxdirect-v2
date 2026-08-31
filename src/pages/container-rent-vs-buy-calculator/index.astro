@@ -7,6 +7,7 @@ import jobsitePhoto from '../../assets/photos/contractors/jobsite-container-deli
 import padPhoto from '../../assets/photos/homeowners/container-corner-block-gravel-pad.jpg';
 import { composeRentalStance } from '../../data/rentalStance';
 import { pricing, formatPrice, asOfLabel, type Pricing } from '../../data/pricing';
+import { RTO_TERMS, RTO_DOWN_CONDITION, rtoEffectiveDateLabel } from '../../data/rtoTerms';
 
 // Static page. There is deliberately NO prerender directive here: output is 'hybrid', which
 // prerenders plain pages by default, exactly like src/pages/cost/index.astro and src/pages/permits/.
@@ -381,6 +382,32 @@ const specs = [
                 </p>
               </div>
             </div>
+          </div>
+
+          <!-- THE BUY COLUMN'S UNSTATED ASSUMPTION, named 2026-08-31.
+               The arithmetic above sets a climbing rental line against a fixed purchase point, and
+               a fixed point is only fixed because the whole price is assumed paid in month one.
+               That assumption was never written down anywhere on this page, so a reader who cannot
+               reach the purchase price in month one reads the result as "renting, then", which is
+               not what the arithmetic said. This block states the assumption and the third path out
+               of it. It sits directly under the result, unhidden, because it qualifies every
+               outcome rather than one of them.
+               NOT class="price-disc": rent-vs-buy-guard.test.ts requires every price-disc paragraph
+               to carry the average-price wording and the as-of label, and none of the figures below
+               are average prices. Every one is interpolated from src/data/rtoTerms.ts, and the
+               condition renders in the same block as the figure, per decision 2026-08-28. -->
+          <div class="calc-rto">
+            <p class="calc-rto-offer">
+              <strong>The purchase side above assumes the whole price is paid in month one.</strong>
+              Rent-to-own is the version where it is not. From {rtoEffectiveDateLabel()},
+              {RTO_TERMS.provider}, the independent third party that administers the program, asks
+              {RTO_TERMS.downPayment} at signing, then a fixed monthly payment over 12, 24, 36, or 48
+              months, and the container is yours once the term is finished.
+            </p>
+            <p class="calc-rto-cond">
+              {RTO_DOWN_CONDITION} Approval belongs to them rather than to us.
+              <a href="/rent-to-own/#down-payment">See the rent-to-own down payment terms</a>
+            </p>
           </div>
 
           <div class="calc-rentwins" id="calc-rentwins" hidden>
@@ -1061,6 +1088,14 @@ const specs = [
   .calc-after{margin:0;font-size:15.5px;line-height:1.62}
   .calc-out .price-disc{border-left-color:var(--ink);opacity:.85}
   .calc-out .price-disc b{color:var(--ink)}
+  /* Third-path note under the result. Cream plate, ink border, deliberately quieter than the
+     yellow .calc-out above it and the .calc-rentwins alert below it: it qualifies the result, it
+     does not compete with it. */
+  .calc-rto{margin:24px 0 0;padding:20px 22px;background:var(--cream);color:var(--ink);border:2.5px solid var(--ink)}
+  .calc-rto-offer{margin:0 0 10px;font-size:15px;line-height:1.55}
+  .calc-rto-offer strong{font-weight:700}
+  .calc-rto-cond{margin:0;font-size:12.5px;line-height:1.6;opacity:.85}
+  .calc-rto-cond a{border-bottom:2px solid var(--ink);font-weight:700}
   .calc-rentwins{margin:24px 0 0;padding:20px 22px;background:var(--c5-permits);color:var(--ink);border:2.5px solid var(--ink);box-shadow:8px 8px 0 var(--ink)}
   .calc-rentwins strong{font-family:var(--narrow);font-weight:700;font-size:clamp(18px,2.2vw,24px);text-transform:uppercase;line-height:1.15;display:block;margin-bottom:8px}
   .calc-rentwins p{margin:0;font-size:15px;line-height:1.55}

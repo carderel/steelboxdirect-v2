@@ -3,6 +3,7 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import { Image } from 'astro:assets';
 import { pricing, monthlyOver5yr, asOfLabel } from '../../../data/pricing';
+import { RTO_TERMS, RTO_DOWN_CONDITION, rtoEffectiveDateLabel } from '../../../data/rtoTerms';
 import imgHero from '../../../assets/photos/homeowners/homeowner-acreage-container-woodline-storage.jpg';
 import imgDriveway from '../../../assets/photos/homeowners/homeowner-20ft-container-suburban-driveway.jpg';
 import imgSecurity from '../../../assets/photos/homeowners/container-door-puck-lock-residential.jpg';
@@ -214,7 +215,7 @@ const faqs = [
 
       <p class="uc-compare-lead uc-rto-callout">The table above compares a container against a self-storage unit. If the comparison you are actually weighing is renting a container against buying one, <a href="/container-rent-vs-buy-calculator/">the rent vs buy calculator</a> runs both columns on your own timeline and finds the month the two totals cross.</p>
 
-      <p class="uc-compare-lead uc-rto-callout">There's a third path: <a href="/rent-to-own/">rent to own</a> a container over 12, 24, 36, or 48 months (no traditional credit check, subject to third-party approval) and own it outright at the end of the term.</p>
+      <p class="uc-compare-lead uc-rto-callout">There's a third path: <a href="/rent-to-own/">rent to own</a> a container over 12, 24, 36, or 48 months (no traditional credit check, subject to third-party approval) and own it outright at the end of the term. From {rtoEffectiveDateLabel()}, {RTO_TERMS.provider} sets what you put down to start that term: {RTO_DOWN_CONDITION} <a href="/rent-to-own/#down-payment">The down payment terms in full</a>.</p>
 
       <!-- IMAGE SLOT 3: cost comparison. filename: storage-unit-vs-container-comparison.jpg -->
       <figure class="uc-img uc-img-wide" data-img-slot="cost">

@@ -4,6 +4,7 @@ import { cities } from '../../data/cities';
 import { publishingCentroids } from '../../data/geoCentroids';
 import { geoPricing, geoSkuKeys, type GeoSkuKey } from '../../data/geoPricing';
 import { pricing, formatPrice, effectiveSinceLabel } from '../../data/pricing';
+import { RTO_TERMS, RTO_DOWN_CONDITION, rtoEffectiveDateLabel } from '../../data/rtoTerms';
 
 // THE METRO PRICE TABLE, and why not one figure on this page is typed.
 //
@@ -343,6 +344,25 @@ const pageDateModified =
           finds your break-even with your own figures, and our
           <a href="/portable-storage-vs-buying-a-container/">portable storage guide</a> explains
           when renting genuinely wins.
+        </p>
+        <!-- THE THIRD SHAPE, added 2026-08-31. This page argues a one-time number against a
+             recurring one, and a reader who cannot reach the one-time number today has been left
+             with only the shape this section just criticised. Rent-to-own is the third shape and it
+             belongs here rather than nowhere.
+             Every figure below is interpolated from src/data/rtoTerms.ts. It has to be:
+             cost-page-guard.test.ts forbids a literal dollar figure anywhere in this file, comments
+             included, which is why this comment names the fields and not the numbers. The
+             condition renders in the same paragraph as the figure, which is the rule from decision
+             2026-08-28: the offer never travels without what makes it true. -->
+        <p class="cost_flip_body">
+          There is a third shape, worth knowing before anyone decides the one-time number is out of
+          reach. Rent-to-own asks for a small amount at the start, then runs a fixed number of
+          monthly payments with a last one already on the calendar, and the container belongs to you
+          when the term finishes. From {rtoEffectiveDateLabel()}, {RTO_TERMS.provider}, the
+          independent third party that administers that program, sets the amount due at signing at
+          {RTO_TERMS.downPayment}. {RTO_DOWN_CONDITION} Approval is theirs to give rather than ours,
+          and the full terms sit on our
+          <a href="/rent-to-own/#down-payment">rent-to-own page</a>.
         </p>
         <div class="cost-flip-scroll" role="region" aria-labelledby="cost-flip-caption" tabindex="0">
           <table class="cost-flip-table">

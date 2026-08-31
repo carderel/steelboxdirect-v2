@@ -11,6 +11,7 @@
 // than a price, kept literal to match terms.astro exactly.
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { pricing, formatPrice, asOfLabel } from '../../data/pricing';
+import { RTO_TERMS, RTO_DOWN_CONDITION, rtoEffectiveDateLabel } from '../../data/rtoTerms';
 
 export const prerender = true;
 
@@ -95,6 +96,16 @@ const price40hc = formatPrice(pricing['40ftStandardHC'].price);
           an independent third party. There is no traditional credit check, but every application is
           reviewed and the approval decision belongs to the administrator, not to Steel Box
           Direct.</li>
+        <li>Rent-to-own down payment: {RTO_TERMS.downPayment} on a standard container, effective
+          {rtoEffectiveDateLabel()}, set by {RTO_TERMS.provider}, the independent third party that
+          administers the program. It replaces the percentage-of-price down payment the program used
+          before that date, so a quote issued earlier may state the older figure.</li>
+        <li>Rent-to-own down payment condition: {RTO_DOWN_CONDITION} The distance is measured from
+          the depot the container ships from, and not from any Steel Box Direct location, so a buyer
+          a long way from the home region is not thereby in the higher tier.</li>
+        <li>Rent-to-own down payment on modified and specialty units:
+          {RTO_TERMS.remoteDownPayment} whatever the delivery distance. Steel Box Direct sells only
+          standard containers, so no item in its catalog sits in that tier.</li>
       </ul>
     </section>
 
