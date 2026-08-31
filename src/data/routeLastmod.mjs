@@ -47,7 +47,7 @@ export const routeLastmod = {
   'src/pages/admin/dashboard.astro': '2026-06-02T14:19:34-04:00',
   'src/pages/admin/login.astro': '2026-08-24T15:22:53-04:00',
   'src/pages/admin/reset.astro': '2026-08-24T15:22:53-04:00',
-  'src/pages/ai-info/index.astro': '2026-08-20T15:57:19-04:00',
+  'src/pages/ai-info/index.astro': '2026-08-28T15:53:06-04:00',
   'src/pages/blog/[...slug].astro': '2026-08-20T15:56:43-04:00',
   'src/pages/blog/category/[category].astro': '2026-08-20T15:56:43-04:00',
   'src/pages/blog/index.astro': '2026-08-20T15:56:43-04:00',
@@ -70,7 +70,7 @@ export const routeLastmod = {
   'src/pages/locations/index.astro': '2026-08-24T15:22:53-04:00',
   'src/pages/permits/index.astro': '2026-08-24T23:25:37-04:00',
   'src/pages/portable-storage-vs-buying-a-container/index.astro': '2026-08-24T17:42:28-04:00',
-  'src/pages/privacy.astro': '2026-08-20T15:56:43-04:00',
+  'src/pages/privacy.astro': '2026-08-28T15:53:06-04:00',
   'src/pages/quote/index.astro': '2026-08-24T15:22:53-04:00',
   'src/pages/rent-to-own/index.astro': '2026-08-24T15:23:03-04:00',
   'src/pages/shipping-container-guides/index.astro': '2026-08-25T13:21:46-04:00',
@@ -78,7 +78,7 @@ export const routeLastmod = {
   'src/pages/shipping-containers-for-sale/index.astro': '2026-08-25T13:21:46-04:00',
   'src/pages/size/calculator.astro': '2026-08-24T15:22:53-04:00',
   'src/pages/size/index.astro': '2026-08-25T15:52:34-04:00',
-  'src/pages/terms.astro': '2026-08-20T15:56:43-04:00',
+  'src/pages/terms.astro': '2026-08-28T15:53:06-04:00',
 };
 
 export default routeLastmod;
