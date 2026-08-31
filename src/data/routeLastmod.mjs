@@ -34,6 +34,7 @@ export const SCHEMA_VERSION = 1;
 /** Repo relative source module path to ISO date of its last commit. Sorted by path. */
 export const routeLastmod = {
   'src/content/blog/12-things-never-store-in-a-shipping-container.md': '2026-08-20T15:56:43-04:00',
+  'src/content/blog/99-dollar-down-rent-to-own.md': '2026-08-31T13:48:55-04:00',
   'src/content/blog/contractor-who-stopped-losing-tools.md': '2026-08-28T14:41:04-04:00',
   'src/content/blog/get-a-used-shipping-container-certified.md': '2026-08-25T13:21:46-04:00',
   'src/content/blog/how-to-read-container-id-number-iso-6346.md': '2026-08-20T15:56:43-04:00',
