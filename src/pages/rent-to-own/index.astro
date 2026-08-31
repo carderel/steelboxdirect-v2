@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import { Image } from 'astro:assets';
 import { composeRentalStance } from '../../data/rentalStance';
+import { RTO_TERMS, RTO_DOWN_CONDITION, rtoEffectiveDateLabel } from '../../data/rtoTerms';
 import imgHero from '../../assets/photos/rent-to-own/rent-to-own-shipping-container-home-gravel-pad-hero.jpg';
 import imgApplication from '../../assets/photos/rent-to-own/rent-to-own-conex-application-kitchen-table.jpg';
 import imgSeasons from '../../assets/photos/rent-to-own/rent-to-own-shipping-container-through-seasons.jpg';
@@ -55,6 +56,19 @@ const faqs: { q: string; a: string; html?: string }[] = [
   {
     q: 'How fast is delivery on a rent-to-own container?',
     a: "For rent-to-own, delivery is scheduled after your application is approved by the independent third party that administers the program. From there it works like any other order: almost all deliveries take about two weeks, and we'll give you an honest window before you commit. Then you'll hear from us at every step until it's on your property.",
+  },
+  // Composed from src/data/rtoTerms.ts, never typed, because this answer carries a dollar figure.
+  // Written to stand on its own with no pronoun pointing back at the page: it feeds the FAQPage
+  // JSON-LD, and an answer engine lifts it out of the page and shows it with no page around it.
+  {
+    q: 'How much is the down payment on a rent-to-own shipping container?',
+    a: `As of ${rtoEffectiveDateLabel()}, ${RTO_TERMS.provider} sets the rent-to-own down payment `
+      + `at ${RTO_TERMS.downPayment} on standard containers delivered within `
+      + `${RTO_TERMS.distanceLimitMiles} miles of the depot the container ships from. Beyond that `
+      + `distance the down payment is ${RTO_TERMS.remoteDownPayment}. Modified and specialty units `
+      + `also require ${RTO_TERMS.remoteDownPayment}, though Steel Box Direct sells only standard `
+      + 'containers. Rent-to-own is administered by an independent third party and remains subject '
+      + 'to their approval.',
   },
 ];
 ---
@@ -180,6 +194,51 @@ const faqs: { q: string; a: string; html?: string }[] = [
           alt="Hands repainting the corrugated side of a used shipping container on a rural property, the kind of change only an owner would make" />
         <figcaption class="rto-fig-tag m">Photo · Yours to repaint at the end of the term</figcaption>
       </figure>
+    </div>
+  </section>
+
+  <!-- 3b. DOWN PAYMENT
+       The anchor every RtoDownPaymentCta on the site points at, so this block has to answer the
+       question the CTA raises: what the down payment is, and what has to be true to get it. Every
+       figure is interpolated from src/data/rtoTerms.ts; nothing here is typed.
+
+       It says nothing about applications, and that is deliberate. Doug's 2026-08-28 memo says no
+       application or special approval is needed, the owner checked and found that everything
+       observable still requires one, and he ruled that this page keeps the wording it has. So the
+       approval copy in step 02, the term note, and the comparison row all stand untouched, and this
+       block adds no claim that contradicts them. -->
+  <section class="rto-down" id="down-payment">
+    <div class="wrap">
+      <div class="rto-sh">
+        <span class="m">Down Payment</span>
+        <h2 class="rto-h2">What you put down to start</h2>
+      </div>
+      <div class="down-grid">
+        <div class="down-plate">
+          <span class="down-figure">{RTO_TERMS.downPayment}</span>
+          <span class="down-figure-note m">Down on a standard container</span>
+        </div>
+        <div class="down-body">
+          <p class="down-lede">{RTO_DOWN_CONDITION}</p>
+          <p>
+            {RTO_TERMS.provider}, the independent third party that administers the program, sets that
+            down payment on rent-to-own agreements from {rtoEffectiveDateLabel()} forward. It replaces
+            the percentage down payment the program asked for before that date, so a quote you were
+            given earlier may show the old figure.
+          </p>
+          <p>
+            The {RTO_TERMS.distanceLimitMiles} miles is measured from the depot your container ships
+            from, not from our office. Containers move out of depots all over the country, so being a
+            long way from Ohio does not by itself put you in the higher tier. Give us your delivery ZIP
+            and we will tell you which depot serves it.
+          </p>
+          <p class="down-carveout">
+            Modified and specialty units, the side openers and the container offices, stay at
+            {RTO_TERMS.remoteDownPayment} down whatever the distance. Steel Box Direct sells one thing,
+            standard Wind &amp; Water Tight containers, so nothing in our catalog sits in that tier.
+          </p>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -377,6 +436,24 @@ const faqs: { q: string; a: string; html?: string }[] = [
     .term-chip p { font-size: 14.5px; line-height: 1.5; opacity: .82; margin: 16px 0 0; }
     .rto-term-note { margin: 40px 0 0; color: var(--cream); opacity: .6; letter-spacing: .08em; line-height: 1.7; }
 
+    /* ---- DOWN PAYMENT ----
+       Cream between the dark terms section and the white comparison table, so the page keeps its
+       alternation. scroll-margin-top matches .prod-action: this id is jumped to from other pages
+       and the sticky header would otherwise sit on the heading. */
+    .rto-down { padding: 72px 0; background: var(--cream); border-bottom: 1.5px solid rgba(11,15,26,.1); scroll-margin-top: 76px; }
+    .down-grid { display: grid; grid-template-columns: minmax(0, 280px) minmax(0, 1fr); gap: 40px; align-items: start; }
+    .down-plate {
+      background: white; border: 2.5px solid var(--ink); box-shadow: 8px 8px 0 var(--yellow);
+      padding: 28px 24px; display: flex; flex-direction: column;
+    }
+    .down-figure { font-family: var(--narrow); font-weight: 700; font-size: 72px; line-height: .9; letter-spacing: -.02em; }
+    .down-figure-note { display: block; margin-top: 10px; opacity: .55; font-weight: 700; line-height: 1.5; }
+    .down-body p { font-size: 16px; line-height: 1.6; opacity: .85; margin: 0 0 16px; max-width: 720px; }
+    .down-body p:last-child { margin-bottom: 0; }
+    .down-lede { font-size: 19px !important; line-height: 1.5 !important; font-weight: 500; opacity: 1 !important; }
+    /* The specialty tier affects nothing we sell, so it is recorded rather than advertised. */
+    .down-carveout { font-size: 15px !important; opacity: .72 !important; border-left: 4px solid var(--yellow); padding-left: 18px; }
+
     /* ---- COMPARISON TABLE ---- */
     .rto-compare { padding: 72px 0; background: white; border-bottom: 1.5px solid rgba(11,15,26,.1); }
     .rto-table {
@@ -470,6 +547,7 @@ const faqs: { q: string; a: string; html?: string }[] = [
       .rto-step-grid { grid-template-columns: 1fr; gap: 22px; }
       .rto-term-grid { grid-template-columns: 1fr 1fr; }
       .rto-trust-grid { grid-template-columns: 1fr 1fr; }
+      .down-grid { grid-template-columns: 1fr; gap: 28px; }
       .trust-cell { border-left: none; border-top: 1.5px solid rgba(11,15,26,.15); padding-left: 0; }
       .trust-cell:nth-child(-n+2) { border-top: none; }
     }
@@ -478,6 +556,8 @@ const faqs: { q: string; a: string; html?: string }[] = [
       .rto-term-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
       .term-chip { padding: 20px 16px; box-shadow: 5px 5px 0 var(--yellow); }
       .term-num { font-size: 48px; }
+      .down-plate { padding: 22px 18px; box-shadow: 5px 5px 0 var(--yellow); }
+      .down-figure { font-size: 56px; }
       /* Comparison table → stacked cards so nothing scrolls sideways */
       .rto-table, .rto-table tbody, .rto-table tr, .rto-table th, .rto-table td { display: block; width: 100% !important; }
       .rto-table thead { display: none; }
