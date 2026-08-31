@@ -591,3 +591,75 @@ describe('city page pricing: the call to action beside the figure', () => {
     }
   });
 });
+
+/**
+ * FLAT PROGRAM TERMS, added 2026-08-28. See
+ * UDO Project/.project-catalog/decisions/2026-08-28-rto-program-terms-display.md.
+ *
+ * WHY THIS BLOCK EXISTS AT ALL. The header of this file says a hardcoded or hand-typed dollar
+ * amount on a city page remains forbidden, and it means it. A rent-to-own CTA is about to put the
+ * figure $99 on all fifteen city pages. Read quickly, that is the violation this file was written
+ * to catch, and the correct next move for a future session would be to revert it. So the rule is
+ * restated here, at the point where the new figure enters, rather than left to be inferred from a
+ * decision record nobody opens.
+ *
+ * WHAT THE DECISION ACTUALLY DID, because the distinction is the whole point. It did NOT relax the
+ * rule above. The 2026-08-17 rule is a provenance and freshness rule for a number the daily feed
+ * computes per ZIP: the feed clause pins where the number came from, the named ZIP pins what it is
+ * a price of, the centroid pins which point in the metro was measured, the effective date pins how
+ * long it has held. A down payment has none of those properties. It has no ZIP, no feed, and no
+ * centroid, because it is not a measurement of anything. It is a term in a third party contract,
+ * identical in Cincinnati and in Norfolk.
+ *
+ * Pushing it through the delivered-price rule would have forced one of two bad outcomes: loosen the
+ * ZIP and feed and centroid clauses so the term could satisfy them, which dissolves the protection
+ * that made a price on a city page defensible in the first place; or dress the term up with a named
+ * ZIP and a centroid basis it does not have, which is a lie about provenance told in the one place
+ * on the page where provenance is the entire subject. So the decision defined a SECOND class beside
+ * the first, with its own rules: sourced from src/data/rtoTerms.ts, never typed; rendered with its
+ * condition, never alone; attributed to My Container Rental; carrying its effective date.
+ *
+ * THE FIRST ASSERTION IS DELIBERATELY REDUNDANT with the prohibition block above, which already
+ * scans every file under src/pages/locations for a dollar literal. That is not an oversight. The
+ * pressure this file will actually come under is somebody deciding that the new class needs an
+ * allowlisted literal, in the way the phone number got one. Restating the digit rule inside the
+ * flat-program-term block means that argument has to be lost twice, in two places, by somebody who
+ * has read both. A figure arriving through an import and an interpolation is the only shape the
+ * class permits, on a city page as everywhere else.
+ *
+ * HOW IT ARMS ITSELF, the same way the rest of this file does and for the same reason. The second
+ * assertion returns early while the CTA is absent, because no decision requires a city page to
+ * carry the offer at all. The moment the component is wired in, the early return stops firing and
+ * the assertion demands that the component arrive as an import rather than as inlined markup, which
+ * is what keeps the figure inside the module that owns it. No describe.skip, and no TODO for
+ * somebody to remember.
+ *
+ * ARMING VERIFIED, 2026-08-28, by exercise rather than by argument, on a scratch copy of the
+ * template restored byte identical afterwards and checked by sha256. Appending a bare
+ * <RtoDownPaymentCta /> with no import turned the second assertion red. Adding the import as well
+ * turned it green. Appending a literal dollar-nine-nine turned the first assertion red. So neither
+ * assertion is dormant decoration, and the second one is waiting rather than sleeping.
+ *
+ * The template is read from the module-level citySrc rather than re-read here, so this block cannot
+ * end up scanning a different path than CITY_TEMPLATE after a rename.
+ */
+describe('flat program terms on city pages (decision 2026-08-28)', () => {
+  const template = citySrc;
+
+  it('renders no hand-typed dollar figure, program term or otherwise', () => {
+    // Interpolations like {formatPrice(...)} and {RTO_TERMS.downPayment} are fine, and are the only
+    // permitted shape. A literal dollar sign followed by a digit is not, and no value is exempt.
+    expect(
+      template,
+      'a flat program term on a city page is interpolated from src/data/rtoTerms.ts, never typed',
+    ).not.toMatch(/\$\d/);
+  });
+
+  it('takes any rent-to-own program term from the rtoTerms module', () => {
+    if (!/RtoDownPaymentCta/.test(template)) return;
+    expect(
+      template,
+      'the CTA must arrive as an imported component, so its figure and its condition stay welded together in one place',
+    ).toMatch(/from\s+['"][^'"]*RtoDownPaymentCta[^'"]*['"]/);
+  });
+});
