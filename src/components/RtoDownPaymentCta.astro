@@ -1,0 +1,52 @@
+---
+/**
+ * RtoDownPaymentCta
+ * A rent-to-own call to action for pages that publish a delivered price. Owner-designed
+ * 2026-08-28, effective with My Container Rental's 2026-09-01 down payment change.
+ *
+ * TAKES NO PROPS ON PURPOSE. The headline states an offer; the small print states the condition
+ * that makes the offer true. A prop is how the second one eventually gets suppressed on some page
+ * by someone in a hurry, so there is no prop and no variant. If a surface needs different framing,
+ * it brings its own framing AROUND this plate; the plate itself does not fork.
+ * src/lib/compliance/rto-terms-guard.test.ts asserts both strings live here and that this file
+ * never reads a props object. That guard scans bytes, so it trips on the token even inside a
+ * comment, which is why the token is not spelled out here.
+ *
+ * Both strings are composed in src/data/rtoTerms.ts. Nothing is typed here: no figure, no
+ * distance, no condition wording. Copy changes happen in that module.
+ */
+import { RTO_CTA_HEADLINE, RTO_CTA_SMALLPRINT } from '../data/rtoTerms';
+---
+
+<aside class="rto-cta">
+  <p class="m rto-cta-label">Rent to own</p>
+  <p class="rto-cta-headline">{RTO_CTA_HEADLINE}</p>
+  <a class="rto-cta-link" href="/rent-to-own/#down-payment">
+    <span>See how rent to own works</span>
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+  </a>
+  <p class="rto-cta-smallprint">{RTO_CTA_SMALLPRINT}</p>
+</aside>
+
+<style>
+  /* Technical-plate language, matching .buy-box in
+     src/pages/shipping-containers-for-sale/[slug].astro: white ground, hard 2.5px ink border,
+     8px offset ink shadow, mono uppercase label. No new tokens; every value below is either an
+     existing custom property or a measurement already used by the plates. */
+  .rto-cta { background: white; border: 2.5px solid var(--ink); box-shadow: 8px 8px 0 var(--ink); padding: 24px 24px 22px; }
+
+  .rto-cta-label { opacity: .6; margin: 0 0 10px; }
+
+  /* Narrow uppercase, as every headline in the system is. Held at 22px so the full sentence keeps
+     two or three tight lines in a sidebar column instead of becoming a wall of capitals. */
+  .rto-cta-headline { font-family: var(--narrow); font-size: 22px; font-weight: 800; line-height: 1.08; letter-spacing: -.01em; text-transform: uppercase; margin: 0 0 18px; }
+
+  /* Reads as an action without competing with the page's primary yellow .btn, which on a city page
+     is the quote CTA. Underline is a border so it survives the global a{text-decoration:none}. */
+  .rto-cta-link { display: inline-flex; align-items: center; gap: 8px; font-family: var(--narrow); font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: .02em; border-bottom: 2px solid var(--ink); padding-bottom: 2px; }
+  .rto-cta-link svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: square; flex: none; }
+  .rto-cta-link:hover { background: var(--yellow); }
+
+  /* The condition. Small, never absent, never below the fold of its own plate. */
+  .rto-cta-smallprint { font-size: 13px; line-height: 1.5; opacity: .8; margin: 18px 0 0; }
+</style>
