@@ -8,6 +8,7 @@ import { containers } from '../../data/containers';
 import type { Container } from '../../data/containers';
 import { CONDITION } from '../../data/condition';
 import { priceBySlug, formatPrice, asOfLabel, nationalPriceLabel } from '../../data/pricing';
+import { RTO_TERMS, RTO_DOWN_CONDITION } from '../../data/rtoTerms';
 
 // THE VISIBLE DATE STAYS AT MONTH PRECISION, and it is a decision rather than an oversight.
 //
@@ -158,6 +159,27 @@ const plateAria = `Side profile of a tilt bed delivery truck carrying a ${c.shor
               <div class="buy-box-ctas">
                 <a href="#talk-to-doug" class="btn buy-btn-primary">Have Doug call me <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
                 <a href={'/quote/?size=' + sizeParam} class="btn buy-btn-secondary">Build my full quote <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+              </div>
+              <!-- RENT TO OWN. Placed BELOW the two primary CTAs rather than directly under
+                   .buy-box-disclaimer, for two reasons. The .buy-box-note negative top margin is
+                   coupled to the disclaimer and only the High Cube renders it, so an insert between
+                   the two breaks that page's spacing alone, which is the kind of regression nobody
+                   sees. And the monthly path is the secondary route: it belongs after the buyer has
+                   been offered the call and the quote, not in front of them.
+                   The figure and its condition render in ONE block. That is the whole rule: the
+                   headline states an offer, the line under it states what makes the offer true, and
+                   neither may ship without the other. Both come from src/data/rtoTerms.ts, so
+                   nothing here is typed, and src/lib/compliance/rto-terms-guard.test.ts fails the
+                   suite if a later edit types the figure in. -->
+              <div class="buy-box-rto">
+                <p class="buy-box-rto-offer">
+                  Not ready to pay it all at once? Rent to own from <strong>{RTO_TERMS.downPayment} down</strong>.
+                </p>
+                <p class="buy-box-rto-cond">
+                  {RTO_DOWN_CONDITION} Administered by {RTO_TERMS.provider}, an independent third
+                  party, and subject to their approval.
+                  <a href="/rent-to-own/#down-payment">How rent to own works</a>
+                </p>
               </div>
             </div>
           )}
@@ -452,6 +474,14 @@ const plateAria = `Side profile of a tilt bed delivery truck carrying a ${c.shor
   .buy-box-note { font-family: var(--mono); font-size: 11px; line-height: 1.55; letter-spacing: .02em; opacity: .6; margin: -8px 0 18px; }
   .buy-box-ctas { display: grid; gap: 10px; }
   .buy-box-ctas .btn { justify-content: center; padding: 15px 22px; }
+
+  /* Rent-to-own footer of the plate. A hairline rule separates it from the CTAs so it reads as a
+     second path rather than a third button, and the condition sits immediately under the offer at
+     the same small size as .buy-box-disclaimer, inside the same bordered block. */
+  .buy-box-rto { border-top: 1.5px solid rgba(0, 0, 0, .14); margin: 18px 0 0; padding: 16px 0 0; }
+  .buy-box-rto-offer { font-size: 14px; line-height: 1.5; margin: 0 0 6px; }
+  .buy-box-rto-cond { font-size: 12px; line-height: 1.55; opacity: .75; margin: 0; }
+  .buy-box-rto-cond a { border-bottom: 1.5px solid var(--ink); white-space: nowrap; }
   .buy-btn-primary { background: var(--yellow); color: var(--ink); }
   .buy-btn-primary:hover { background: var(--ink); color: var(--yellow); }
   .buy-btn-secondary { background: white; color: var(--ink); }
