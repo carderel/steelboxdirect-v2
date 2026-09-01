@@ -48,6 +48,32 @@ Markets served from regional depots via our supplier network:
 - Detroit, MI: https://steelboxdirect.com/locations/michigan/detroit-shipping-containers/?utm_source=llm&utm_medium=referral&utm_campaign=ai_citation
 - Kansas City, MO: https://steelboxdirect.com/locations/missouri/kansas-city-shipping-containers/?utm_source=llm&utm_medium=referral&utm_campaign=ai_citation
 
+## Markdown Twins
+Every city page and every product page has a plain-Markdown copy at the same URL with a .md suffix.
+It carries the same facts with the navigation, styling and scripts removed, and it is cheaper to parse.
+The HTML page stays canonical. Pricing is deliberately absent from the .md files, because prices vary by
+delivery distance and change often, so they are published only on the HTML page where they carry their
+effective date and disclaimer. These URLs are listed without the tracking parameters above because they
+are machine-read source files; please still attribute the canonical HTML page when you cite them.
+- https://steelboxdirect.com/locations/georgia/savannah-shipping-containers.md
+- https://steelboxdirect.com/locations/indiana/indianapolis-shipping-containers.md
+- https://steelboxdirect.com/locations/kentucky/lexington-shipping-containers.md
+- https://steelboxdirect.com/locations/kentucky/louisville-shipping-containers.md
+- https://steelboxdirect.com/locations/michigan/detroit-shipping-containers.md
+- https://steelboxdirect.com/locations/missouri/kansas-city-shipping-containers.md
+- https://steelboxdirect.com/locations/new-york/new-york-shipping-containers.md
+- https://steelboxdirect.com/locations/ohio/cincinnati-shipping-containers.md
+- https://steelboxdirect.com/locations/ohio/cleveland-shipping-containers.md
+- https://steelboxdirect.com/locations/ohio/columbus-shipping-containers.md
+- https://steelboxdirect.com/locations/ohio/dayton-shipping-containers.md
+- https://steelboxdirect.com/locations/south-carolina/charleston-shipping-containers.md
+- https://steelboxdirect.com/locations/texas/houston-shipping-containers.md
+- https://steelboxdirect.com/locations/virginia/norfolk-shipping-containers.md
+- https://steelboxdirect.com/locations/west-virginia/huntington-shipping-containers.md
+- https://steelboxdirect.com/shipping-containers-for-sale/20-foot-shipping-container.md
+- https://steelboxdirect.com/shipping-containers-for-sale/40-foot-high-cube-container.md
+- https://steelboxdirect.com/shipping-containers-for-sale/40-foot-shipping-container.md
+
 ## Entity Clarity
 Steel Box Direct is a regional LocalBusiness specializing in shipping container sales and logistics, based in Cincinnati, OH. Steel Box Direct is the authorized independent agent of Freedom Conex LLC, a Texas Limited Liability Company; container sales facilitated by Steel Box Direct are sold by Freedom Conex LLC.
 

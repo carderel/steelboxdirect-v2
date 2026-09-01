@@ -18,7 +18,8 @@
     "test:harvest": "node --test scripts/harvest-geo-pricing.test.mjs",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:hs003": "vitest run src/lib/compliance/hs003-content-guard.test.ts"
+    "test:hs003": "vitest run src/lib/compliance/hs003-content-guard.test.ts",
+    "generate:headers": "vite-node scripts/generate-headers.ts"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^11.2.0",

@@ -1,0 +1,41 @@
+# GENERATED FILE. Do not edit by hand.
+# Source: renderHeadersFile() in src/lib/aeo/markdownTwin.ts, from src/data/cities.ts and
+# src/data/containers.ts. Held in sync by src/lib/compliance/markdown-twin-guard.test.ts.
+# Purpose: advertise the Markdown twin of every commercial page to AI crawlers.
+
+/locations/ohio/cincinnati-shipping-containers/
+  Link: </locations/ohio/cincinnati-shipping-containers.md>; rel="alternate"; type="text/markdown"
+/locations/ohio/dayton-shipping-containers/
+  Link: </locations/ohio/dayton-shipping-containers.md>; rel="alternate"; type="text/markdown"
+/locations/ohio/columbus-shipping-containers/
+  Link: </locations/ohio/columbus-shipping-containers.md>; rel="alternate"; type="text/markdown"
+/locations/indiana/indianapolis-shipping-containers/
+  Link: </locations/indiana/indianapolis-shipping-containers.md>; rel="alternate"; type="text/markdown"
+/locations/kentucky/louisville-shipping-containers/
+  Link: </locations/kentucky/louisville-shipping-containers.md>; rel="alternate"; type="text/markdown"
+/locations/kentucky/lexington-shipping-containers/
+  Link: </locations/kentucky/lexington-shipping-containers.md>; rel="alternate"; type="text/markdown"
+/locations/west-virginia/huntington-shipping-containers/
+  Link: </locations/west-virginia/huntington-shipping-containers.md>; rel="alternate"; type="text/markdown"
+/locations/ohio/cleveland-shipping-containers/
+  Link: </locations/ohio/cleveland-shipping-containers.md>; rel="alternate"; type="text/markdown"
+/locations/georgia/savannah-shipping-containers/
+  Link: </locations/georgia/savannah-shipping-containers.md>; rel="alternate"; type="text/markdown"
+/locations/south-carolina/charleston-shipping-containers/
+  Link: </locations/south-carolina/charleston-shipping-containers.md>; rel="alternate"; type="text/markdown"
+/locations/virginia/norfolk-shipping-containers/
+  Link: </locations/virginia/norfolk-shipping-containers.md>; rel="alternate"; type="text/markdown"
+/locations/texas/houston-shipping-containers/
+  Link: </locations/texas/houston-shipping-containers.md>; rel="alternate"; type="text/markdown"
+/locations/new-york/new-york-shipping-containers/
+  Link: </locations/new-york/new-york-shipping-containers.md>; rel="alternate"; type="text/markdown"
+/locations/michigan/detroit-shipping-containers/
+  Link: </locations/michigan/detroit-shipping-containers.md>; rel="alternate"; type="text/markdown"
+/locations/missouri/kansas-city-shipping-containers/
+  Link: </locations/missouri/kansas-city-shipping-containers.md>; rel="alternate"; type="text/markdown"
+/shipping-containers-for-sale/20-foot-shipping-container/
+  Link: </shipping-containers-for-sale/20-foot-shipping-container.md>; rel="alternate"; type="text/markdown"
+/shipping-containers-for-sale/40-foot-shipping-container/
+  Link: </shipping-containers-for-sale/40-foot-shipping-container.md>; rel="alternate"; type="text/markdown"
+/shipping-containers-for-sale/40-foot-high-cube-container/
+  Link: </shipping-containers-for-sale/40-foot-high-cube-container.md>; rel="alternate"; type="text/markdown"
