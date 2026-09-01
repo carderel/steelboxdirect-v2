@@ -50,7 +50,7 @@ export const routeLastmod = {
   'src/pages/admin/reset.astro': '2026-08-24T15:22:53-04:00',
   'src/pages/ai-info/index.astro': '2026-08-31T13:45:44-04:00',
   'src/pages/blog/[...slug].astro': '2026-08-20T15:56:43-04:00',
-  'src/pages/blog/category/[category].astro': '2026-08-20T15:56:43-04:00',
+  'src/pages/blog/category/[category].astro': '2026-09-01T16:34:38-04:00',
   'src/pages/blog/index.astro': '2026-08-20T15:56:43-04:00',
   'src/pages/condition/index.astro': '2026-08-25T13:21:46-04:00',
   'src/pages/conex-boxes-for-sale/index.astro': '2026-08-25T13:21:46-04:00',
