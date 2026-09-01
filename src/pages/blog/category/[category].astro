@@ -8,6 +8,7 @@ import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import { BLOG_CATEGORIES } from '../../../content/config';
 import { categoryToSlug, categoryColor, categoryTextColor, formatBlogDate } from '../../../lib/blog';
 import { resolveHeroImage } from '../../../lib/blogImages';
+import { shouldIndexCategory } from '../../../lib/seo/blogCategoryIndexRule.mjs';
 
 export async function getStaticPaths() {
   // One route per fixed category, regardless of how many posts currently exist in it,
@@ -40,7 +41,7 @@ const breadcrumbs = [
   title={`${category} | Steel Box Direct Blog`}
   description={`Browse Steel Box Direct blog posts in ${category}.`}
   breadcrumbs={breadcrumbs}
-  noindex={posts.length === 0}
+  noindex={!shouldIndexCategory(posts.length)}
   schema={{ kind: 'collection', title: `${category} | Steel Box Direct Blog`, items: posts.map(({ post }) => ({ name: post.data.title, url: `https://steelboxdirect.com/blog/${post.slug}/` })), faqs: [] }}
 >
   <!-- BREADCRUMBS -->

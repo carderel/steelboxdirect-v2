@@ -28,10 +28,16 @@
  *   3. The dates differ across URLs. One shared value across the site is the exact fingerprint of
  *      failure mode 1 even if it arrived by some other route, such as a data file's date being
  *      attributed to every page that imports it.
- *   4. The pre-existing sitemap exclusions survive. /admin/ is disallowed in robots.txt and must
- *      not be advertised in a sitemap, and /blog/category/ is held back while the section is thin
- *      (both noindex and excluded). Adding a serialize option meant editing that same integration
- *      call, which is precisely when a filter gets dropped by accident.
+ *   4. The sitemap exclusions survive. /admin/ is disallowed in robots.txt and must never be
+ *      advertised in a sitemap, so its exclusion is unconditional and is asserted here against
+ *      both the config source and the built XML. /blog/category/ is no longer excluded wholesale:
+ *      since 2026-09-01 a category URL is offered only when it clears the published post threshold
+ *      in src/lib/seo/blogCategoryIndexing.mjs, the same function the category page consults for
+ *      noindex. This guard checks only that the config still delegates that decision to the shared
+ *      module rather than deciding it inline; whether the two surfaces actually AGREE in the built
+ *      output is the subject of src/lib/compliance/blog-category-indexing-guard.test.ts. The reason
+ *      any of this is asserted at all is that adding a serialize option meant editing this same
+ *      integration call, which is precisely when a filter gets dropped by accident.
  *
  * WHAT CHANGED ON 2026-08-28, AND WHY THE SCAN LIST GREW TO FOUR FILES. The first version derived
  * the dates by running git during the build. That worked on a developer machine and failed in
@@ -58,6 +64,7 @@ import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { lastmodFor, serializeWithLastmod } from '../seo/sitemapLastmod.mjs';
+import { indexableCategorySlugs } from '../seo/blogCategoryIndexing.mjs';
 // gitHistoryIsUsable now lives with the derivation, in the generator, because the build no longer
 // asks git anything. One implementation of the shallow clone test, imported by every guard that
 // needs it, is the only way the answer stays consistent across them.
@@ -196,18 +203,30 @@ describe('sitemap lastmod guard: the dates are derived from real history', () =>
 });
 
 describe('sitemap lastmod guard: the exclusions that predate lastmod still hold', () => {
-  it('still filters /admin/ and /blog/category/ out of the sitemap', () => {
+  it('still filters /admin/ out of the sitemap unconditionally', () => {
     expect(CONFIG).toMatch(/filter:\s*\(page\)\s*=>/);
-    expect(CONFIG).toMatch(/!page\.includes\('\/admin\/'\)/);
-    expect(CONFIG).toMatch(/!page\.includes\('\/blog\/category\/'\)/);
+    expect(CONFIG).toMatch(/page\.includes\('\/admin\/'\)/);
+  });
+
+  it('delegates the /blog/category/ decision to the shared module, never deciding it inline', () => {
+    expect(CONFIG).toMatch(/page\.includes\('\/blog\/category\/'\)/);
+    expect(CONFIG).toMatch(/sitemapAllowsCategoryUrl\(page\)/);
+    expect(CONFIG).toMatch(/from '\.\/src\/lib\/seo\/blogCategoryIndexing\.mjs'/);
   });
 
   const built = join(REPO_ROOT, 'dist/sitemap-0.xml');
 
-  it.skipIf(!existsSync(built))('a built sitemap lists no /admin/ or /blog/category/ URL', () => {
+  it.skipIf(!existsSync(built))('a built sitemap lists no /admin/ URL', () => {
     const xml = readFileSync(built, 'utf8');
     expect(xml).not.toContain('/admin/');
-    expect(xml).not.toContain('/blog/category/');
     expect(xml.match(/<loc>/g)?.length ?? 0).toBeGreaterThan(40);
+  });
+
+  it.skipIf(!existsSync(built))('lists only the category URLs the shared module allows', () => {
+    const xml = readFileSync(built, 'utf8');
+    const listed = [...xml.matchAll(/\/blog\/category\/([a-z0-9-]+)\//g)]
+      .map((m) => m[1])
+      .sort();
+    expect([...new Set(listed)]).toEqual(indexableCategorySlugs());
   });
 });

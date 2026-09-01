@@ -3,6 +3,7 @@ import cloudflare from '@astrojs/cloudflare';
 import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 import { serializeWithLastmod } from './src/lib/seo/sitemapLastmod.mjs';
+import { sitemapAllowsCategoryUrl } from './src/lib/seo/blogCategoryIndexing.mjs';
 
 export default defineConfig({
   output: 'hybrid',
@@ -30,12 +31,17 @@ export default defineConfig({
   },
   integrations: [
     react(),
-    // Blog category pages are excluded while thin — many render zero posts and
-    // the rest are still just templated one-liners over a post grid (see
-    // .outputs/seo/2026-07-06-blog-seo-geo-audit.md). Category pages with posts
-    // additionally get noindex in blog/category/[category].astro; this keeps
-    // them out of the sitemap across the board so Google isn't fed empty/thin
-    // URLs while the section is young. Revisit once categories fill out.
+    // Blog category pages were excluded across the board from 2026-07-06, when every one of
+    // them was thin and several rendered zero posts (see
+    // .outputs/seo/2026-07-06-blog-seo-geo-audit.md). Three of the six have since filled out,
+    // and a blanket exclusion left those three indexable on the page and withheld from the
+    // sitemap at the same time, which is one decision written down twice and disagreeing with
+    // itself. The rule now lives in one place, src/lib/seo/blogCategoryIndexing.mjs: a category
+    // is offered here only when it clears the published post threshold, and
+    // blog/category/[category].astro sets noindex from that same function. A category that
+    // fills up later crosses over on its own. See that module's header for why the threshold is
+    // two posts and not one, and src/lib/compliance/blog-category-indexing-guard.test.ts for the
+    // assertion that the two surfaces still agree in the built output.
     //
     // serialize adds <lastmod>, which until 2026-08-28 no entry carried. lastmod is the field
     // Google's scheduler reads to decide a recrawl is worth doing, and /delivery/ plus
@@ -52,7 +58,12 @@ export default defineConfig({
     // changefreq and priority stay off. Google has said publicly it ignores both, and unlike
     // lastmod neither can be derived from anything this repository actually knows.
     sitemap({
-      filter: (page) => !page.includes('/admin/') && !page.includes('/blog/category/'),
+      filter: (page) => {
+        // /admin/ is Disallowed in robots.txt and is never advertised, under any condition.
+        if (page.includes('/admin/')) return false;
+        if (page.includes('/blog/category/')) return sitemapAllowsCategoryUrl(page);
+        return true;
+      },
       serialize: serializeWithLastmod,
     }),
   ],
