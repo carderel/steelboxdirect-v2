@@ -420,6 +420,17 @@ const ALLOWLIST: AllowEntry[] = [
       'statement about what any reader\'s policy covers. A deductible is by definition the ' +
       'uncovered portion. The same post is cited in the 2026-08-10 inventory as a CLEAN model.',
   },
+  {
+    file: 'src/content/blog/check-used-container-identity-free-bic-lookups.md',
+    contains: 'Coverage is partial and voluntary',
+    classes: [5],
+    reason:
+      'The subject of "Coverage" here is a DATABASE, not a policy: it is how much of the world ' +
+      'container fleet appears in BIC BoxTech, sourced to UK MCA notice MIN 633 in the very next ' +
+      'sentence. No insurer, no carrier and no reader policy is named anywhere in the paragraph, ' +
+      'and the sentence attributes the claim to a regulator rather than determining anything for ' +
+      'the reader. Class 5 fires only on the bare word "Coverage" plus a negation.',
+  },
 ];
 
 /* ------------------------------------------------------------------ detector */
