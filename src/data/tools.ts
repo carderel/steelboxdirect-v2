@@ -61,6 +61,17 @@ export const tools: Tool[] = [
       + 'delivered on the other, and finds the month where the two totals cross. Enter your own '
       + 'numbers; nothing is filled in for you.',
   },
+  {
+    id: 'iso-6346-check-digit-calculator',
+    code: 'CHK',
+    kind: 'Check Digit Calculator',
+    url: '/iso-6346-check-digit-calculator/',
+    question: 'Does this container number check out?',
+    blurb:
+      'Takes the 11-character number stencilled on a container and says whether the boxed check '
+      + 'digit agrees with the other ten, or works the digit out if you only have the first ten. '
+      + 'Shows every row of the arithmetic, and is straight about how little a match proves.',
+  },
 ];
 
 export const toolCount = tools.length;

@@ -11,11 +11,13 @@ const REPO_ROOT = import.meta.dirname
 const SOURCE = readFileSync(join(REPO_ROOT, 'src/data/tools.ts'), 'utf8');
 
 describe('tools catalogue', () => {
-  it('holds two tools with unique ids, codes and urls', () => {
-    expect(tools).toHaveLength(2);
-    expect(new Set(tools.map((t) => t.id)).size).toBe(2);
-    expect(new Set(tools.map((t) => t.code)).size).toBe(2);
-    expect(new Set(tools.map((t) => t.url)).size).toBe(2);
+  // Three as of 2026-09-02: the ISO 6346 check digit calculator is the third. The count is
+  // asserted rather than derived on purpose, so adding a tool is a deliberate edit here too.
+  it('holds three tools with unique ids, codes and urls', () => {
+    expect(tools).toHaveLength(3);
+    expect(new Set(tools.map((t) => t.id)).size).toBe(3);
+    expect(new Set(tools.map((t) => t.code)).size).toBe(3);
+    expect(new Set(tools.map((t) => t.url)).size).toBe(3);
   });
 
   it('derives the count rather than hardcoding it', () => {
@@ -52,6 +54,10 @@ describe('tools catalogue', () => {
     const rentVsBuy = tools.find((t) => t.url === '/container-rent-vs-buy-calculator/');
     expect(rentVsBuy).toBeDefined();
     expect(rentVsBuy?.code).toBe('RVB');
+
+    const checkDigit = tools.find((t) => t.url === '/iso-6346-check-digit-calculator/');
+    expect(checkDigit).toBeDefined();
+    expect(checkDigit?.code).toBe('CHK');
   });
 
   it('every code fits the nav .dc convention: two to four uppercase letters', () => {
@@ -76,6 +82,10 @@ describe('tools catalogue', () => {
       guidesSource.includes('/container-rent-vs-buy-calculator/'),
       'A calculator entry in guides.ts would bump guideTitleCountWord and rewrite the live meta '
       + 'description of the guides hub. The tool belongs in tools.ts.',
+    ).toBe(false);
+    expect(
+      guidesSource.includes('/iso-6346-check-digit-calculator/'),
+      'Same reason: the check digit calculator is a tool, not a twelfth guide.',
     ).toBe(false);
 
     // Eleven as of 2026-08-25: the inspector finder is the eleventh GUIDE (it is a directory

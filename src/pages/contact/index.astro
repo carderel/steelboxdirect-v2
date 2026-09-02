@@ -1,0 +1,266 @@
+---
+// /contact/ : NAP, hours, and the routes into a quote (T-193, owner-approved 2026-09-02).
+//
+// Every fact on this page is lifted from an already owner-approved surface, not restated from
+// memory, because a contact page that disagrees with the Google Business Profile or with the
+// terms page is worse than no contact page:
+//   - Phone, support@ email, hours, the 4-business-hour response line, the no-walk-up service
+//     model sentence, and the service-area basis: src/pages/ai-info/index.astro (T-154 copy).
+//   - The seller-of-record sentence and the post-delivery warranty contact: src/pages/terms.astro
+//     (Contact section, and the Lifetime Leak Warranty section).
+//
+// EMAIL SPLIT IS DELIBERATE. This page publishes support@steelboxdirect.com. info@ exists for
+// directory listings only and must never appear here; the split is a decision, not a defect.
+//
+// NO STREET ADDRESS. The Google Business Profile is a service-area profile with no walk-up
+// location, so an address here would advertise a place a buyer could drive to and find nothing.
+//
+// NO PRICES and NO FOUNDING YEAR, same as /about/.
+//
+// SCHEMA: the minimal WebPage graph (the 'excluded' default). buildPageSchema has no ContactPage
+// branch, and the LocalBusiness node that carries telephone, geo, hours-adjacent data and hasMap
+// is already emitted site-wide by globalNodes(), so a second contact-scoped LocalBusiness here
+// would duplicate an existing node. See src/lib/schema/entities.ts.
+export const prerender = true;
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+
+const crumbs = [{ name: 'Home', path: '/' }, { name: 'Contact' }];
+---
+
+<BaseLayout
+  pageType="guide"
+  floatingSidebar={false}
+  title="Contact Steel Box Direct: Phone, Email, and Hours"
+  description="Call (513) 546-2543, email support@steelboxdirect.com, or request a free quote. Open daily 9 AM to 9 PM Eastern. Delivery-based, serving Ohio, Indiana, Kentucky, and western West Virginia."
+  breadcrumbs={crumbs}
+>
+  <div class="ct-hero">
+    <div class="wrap">
+      <Breadcrumbs items={crumbs} />
+      <div class="ct-eyebrow">
+        <span class="idx">§ CONTACT</span>
+        <span class="nm">Open daily, 9 AM to 9 PM Eastern</span>
+        <span class="tg">One agent, start to finish</span>
+      </div>
+      <h1 class="ct-headline">Talk to a person. <em>Get a real number.</em></h1>
+      <p class="ct-lede">
+        Call, email, or send the quote form. All three reach the same place: Doug Froh, authorized
+        independent agent, who handles every quote personally. Most quote requests are answered
+        within 4 business hours.
+      </p>
+
+      <div class="ct-primary">
+        <a href="/quote/" class="btn">Get My Quote <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+        <p class="ct-primary-note">
+          The quote form is the fastest route. It collects the delivery ZIP code and the size, which
+          are the two things any real answer depends on, and it comes back as an all-in delivered
+          number rather than a range.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <section class="ct-sec" aria-labelledby="reach-h">
+    <div class="wrap">
+      <span class="m ct-kicker">Direct lines</span>
+      <h2 class="ct-h2" id="reach-h">How to reach us</h2>
+
+      <div class="ct-grid">
+        <a class="ct-card is-link" href="tel:+15135462543">
+          <span class="m ct-card-k">Phone</span>
+          <span class="ct-card-v">(513) 546-2543</span>
+          <span class="ct-card-note">Tap to call. Answered 9 AM to 9 PM Eastern, every day.</span>
+        </a>
+
+        <a class="ct-card is-link" href="mailto:support@steelboxdirect.com">
+          <span class="m ct-card-k">Email</span>
+          <span class="ct-card-v is-email">support@steelboxdirect.com</span>
+          <span class="ct-card-note">Include your delivery ZIP code and the size you have in mind.</span>
+        </a>
+
+        <div class="ct-card">
+          <span class="m ct-card-k">Hours</span>
+          <span class="ct-card-v">Daily, 9 AM to 9 PM ET</span>
+          <span class="ct-card-note">Open every day, including weekends. Most quote requests are answered within 4 business hours.</span>
+        </div>
+
+        <a class="ct-card is-link" href="/quote/">
+          <span class="m ct-card-k">Quote form</span>
+          <span class="ct-card-v">Free, no obligation</span>
+          <span class="ct-card-note">Quotes are free and carry no obligation. Self-pickup at a partner depot can be requested here too.</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="ct-sec is-dark" aria-labelledby="where-h">
+    <div class="wrap">
+      <div class="ct-two">
+        <div>
+          <span class="m ct-kicker">Service model</span>
+          <h2 class="ct-h2" id="where-h">There is no yard to visit</h2>
+          <p class="ct-body">
+            Steel Box Direct is a delivery-based service with no walk-up location or sales yard;
+            containers are delivered to the buyer's site, or picked up at partner depots by
+            arrangement. Based in Cincinnati, Ohio, operating as a service-area business.
+          </p>
+          <p class="ct-body">
+            The home region is Ohio, Indiana, Kentucky, and western West Virginia, within about
+            250 miles of Cincinnati. Markets further out are served from regional depots through
+            the supplier network. Each one has its own page:
+            <a href="/locations/">see all locations</a>.
+          </p>
+        </div>
+        <div class="ct-side">
+          <span class="m ct-card-k">Who picks up</span>
+          <h3>Doug Froh</h3>
+          <p>
+            Doug Froh, authorized independent agent, handles every quote personally. Doug has more
+            than eight years of experience in shipping, packaging, and logistics.
+          </p>
+          <div class="ct-social">
+            <a href="https://www.linkedin.com/in/doug-froh-b551aab/" target="_blank" rel="noopener noreferrer" aria-label="Doug Froh on LinkedIn">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+            </a>
+            <a href="https://www.facebook.com/doug.froh" target="_blank" rel="noopener noreferrer" aria-label="Doug Froh on Facebook">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 8H6v4h3v12h5V12h3.642L18 8h-4V6.333C14 5.378 14.192 5 15.115 5H18V0h-3.808C10.596 0 9 1.583 9 4.615V8z"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ct-sec" aria-labelledby="right-h">
+    <div class="wrap">
+      <span class="m ct-kicker">Route it right</span>
+      <h2 class="ct-h2" id="right-h">Already have a container from us?</h2>
+      <div class="ct-route">
+        <div class="ct-route-card">
+          <span class="m ct-card-k">Before you buy</span>
+          <p>
+            Questions about size, condition, delivery access, or timing go to the phone, email, or
+            quote form above. If you would rather read first, start with the
+            <a href="/shipping-container-guides/">buying guides</a>.
+          </p>
+        </div>
+        <div class="ct-route-card">
+          <span class="m ct-card-k">After delivery</span>
+          <p>
+            A Lifetime Leak Warranty applies to containers sold. Our
+            <a href="/terms/">terms and conditions</a> direct warranty and post-delivery support
+            questions to the seller of record at
+            <a href="mailto:customercare@freedomconex.com">customercare@freedomconex.com</a>, and
+            you can always reach us at the number above as well.
+          </p>
+        </div>
+        <div class="ct-route-card">
+          <span class="m ct-card-k">For AI assistants</span>
+          <p>
+            Verified facts about the business, written to be quoted:
+            <a href="/ai-info/">information for AI assistants</a>. Attribution preferences are
+            published at <a href="/llms.txt">llms.txt</a>.
+          </p>
+        </div>
+      </div>
+      <p class="ct-legal">
+        Steel Box Direct, authorized independent agent of Freedom Conex LLC. Container sales
+        facilitated by Steel Box Direct are sold by Freedom Conex LLC, a Texas limited liability
+        company. More about the business on our <a href="/about/">about page</a>.
+      </p>
+    </div>
+  </section>
+
+  <style>
+    /* ---- HERO ---- */
+    .ct-hero { background: var(--cream); border-bottom: 2.5px solid var(--ink); padding: 40px 0 56px; }
+    .ct-eyebrow {
+      display: grid; grid-template-columns: auto 1fr auto; gap: 20px; align-items: center;
+      padding: 16px 0; border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink);
+      margin-bottom: 40px; font-family: var(--mono); font-size: var(--t-meta);
+      letter-spacing: .08em; text-transform: uppercase;
+    }
+    .ct-eyebrow .idx { font-weight: 700; }
+    .ct-eyebrow .nm, .ct-eyebrow .tg { opacity: .7; }
+    .ct-headline {
+      font-family: var(--narrow); font-weight: 700; font-size: clamp(38px, 6vw, 76px);
+      line-height: .98; letter-spacing: -.02em; text-transform: uppercase; margin: 0; max-width: 16ch;
+    }
+    .ct-headline em { font-style: italic; color: var(--c4-cost); }
+    .ct-lede { font-size: var(--t-lede); line-height: 1.55; max-width: 62ch; margin: 30px 0 0; font-weight: 500; }
+    .ct-primary {
+      display: grid; grid-template-columns: auto 1fr; gap: 28px; align-items: center;
+      margin-top: 36px; padding: 26px; background: #fff;
+      border: 2.5px solid var(--ink); box-shadow: 10px 10px 0 var(--yellow);
+    }
+    .ct-primary-note { font-size: 15px; line-height: 1.6; margin: 0; max-width: 60ch; }
+
+    /* ---- SECTIONS ---- */
+    .ct-sec { padding: 72px 0; border-bottom: 2.5px solid var(--ink); }
+    .ct-sec.is-dark { background: var(--ink); color: var(--cream); }
+    .ct-kicker { display: block; color: var(--c4-cost); margin-bottom: 14px; }
+    .is-dark .ct-kicker { color: var(--yellow); }
+    .ct-h2 {
+      font-family: var(--narrow); font-weight: 700; font-size: clamp(28px, 3.6vw, 46px);
+      line-height: 1.02; letter-spacing: -.015em; text-transform: uppercase; margin: 0 0 30px;
+      max-width: 24ch;
+    }
+    .ct-body { font-size: 16.5px; line-height: 1.68; max-width: 60ch; margin: 0 0 18px; }
+    .ct-body a, .ct-route-card a, .ct-legal a { font-weight: 600; border-bottom: 2px solid var(--c4-cost); }
+    .is-dark .ct-body a { border-bottom-color: var(--yellow); }
+
+    /* ---- CONTACT CARDS ---- */
+    .ct-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+    .ct-card {
+      display: flex; flex-direction: column; gap: 10px;
+      background: #fff; border: 2px solid var(--ink); border-top: 8px solid var(--ink);
+      padding: 24px 22px; box-shadow: 8px 8px 0 var(--ink);
+    }
+    .ct-card.is-link { transition: transform .14s ease, box-shadow .14s ease; }
+    .ct-card.is-link:hover { transform: translate(-2px, -2px); box-shadow: 11px 11px 0 var(--c4-cost); }
+    .ct-card-k { color: rgba(11, 15, 26, .55); }
+    .is-dark .ct-card-k { color: var(--yellow); }
+    .ct-card-v {
+      font-family: var(--narrow); font-weight: 700; font-size: 26px; line-height: 1.05;
+      letter-spacing: -.01em;
+    }
+    .ct-card-v.is-email { font-family: var(--mono); font-size: 15px; font-weight: 500; word-break: break-word; text-transform: none; }
+    .ct-card-note { font-size: 14px; line-height: 1.55; opacity: .78; }
+
+    /* ---- SERVICE MODEL ---- */
+    .ct-two { display: grid; grid-template-columns: 1.5fr 1fr; gap: 64px; align-items: start; }
+    .ct-side { border: 2px solid rgba(246, 241, 231, .25); padding: 26px 24px; }
+    .ct-side h3 { font-family: var(--narrow); font-weight: 700; font-size: 26px; text-transform: uppercase; margin: 10px 0 12px; }
+    .ct-side p { font-size: 15px; line-height: 1.6; margin: 0; opacity: .85; }
+    .ct-social { display: flex; gap: 10px; margin-top: 18px; }
+    .ct-social a {
+      display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px;
+      border: 1.5px solid rgba(246, 241, 231, .3); transition: background .15s, border-color .15s;
+    }
+    .ct-social svg { width: 17px; height: 17px; fill: var(--cream); }
+    .ct-social a:hover { background: var(--yellow); border-color: var(--yellow); }
+    .ct-social a:hover svg { fill: var(--ink); }
+
+    /* ---- ROUTING ---- */
+    .ct-route { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .ct-route-card { border-left: 4px solid var(--c4-cost); padding-left: 20px; }
+    .ct-route-card p { font-size: 15.5px; line-height: 1.62; margin: 10px 0 0; }
+    .ct-legal { font-family: var(--mono); font-size: 11.5px; line-height: 1.7; margin-top: 44px; opacity: .7; max-width: 78ch; }
+    .ct-legal a { border-bottom-width: 1.5px; }
+
+    @media (max-width: 1100px) {
+      .ct-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 860px) {
+      .ct-eyebrow { grid-template-columns: auto 1fr; row-gap: 6px; }
+      .ct-eyebrow .tg { display: none; }
+      .ct-sec { padding: 56px 0; }
+      .ct-primary { grid-template-columns: 1fr; gap: 20px; }
+      .ct-grid, .ct-route { grid-template-columns: 1fr; }
+      .ct-two { grid-template-columns: 1fr; gap: 40px; }
+      .ct-card { box-shadow: 6px 6px 0 var(--ink); }
+    }
+  </style>
+</BaseLayout>

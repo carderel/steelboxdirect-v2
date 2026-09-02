@@ -1,0 +1,424 @@
+---
+// /about/ : the identity page (T-193, owner-approved 2026-09-02).
+//
+// EVERY legal-identity and service-area sentence on this page is lifted from an already
+// owner-approved surface rather than re-written, because a second paraphrase of the entity
+// relationship is a second thing that can drift out of agreement with the first:
+//   - Identity, agent relationship, service model, what is sold, service area, and the three
+//     current-state facts: src/pages/ai-info/index.astro (owner-interviewed T-154 copy).
+//   - The seller-of-record framing is also the operative sentence in src/pages/terms.astro
+//     ("FREEDOM CONEX LLC, a Texas Limited Liability Company ... through its authorized
+//     independent agent, Steel Box Direct").
+//
+// NO FOUNDING YEAR, anywhere, in any form. Owner ruling 2026-08-20 (T-154 / T-105) removed all
+// 2009 references site-wide. Doug's experience is stated the one approved way: more than eight
+// years, with no start year attached, which is exactly how /ai-info/ states it.
+//
+// NO PRICES. This page states the pricing MODEL and links to the pages that carry figures with
+// their effective date and disclaimer. Nothing here is interpolated from src/data/pricing.ts
+// because nothing here needs a number.
+//
+// SCHEMA: the minimal WebPage graph (the 'excluded' default). buildPageSchema has no AboutPage
+// branch, and the site already emits Organization + LocalBusiness in globalNodes() on every page,
+// so an About-specific Organization or LocalBusiness node here would be a duplicate of an
+// existing node rather than new information. See src/lib/schema/entities.ts.
+export const prerender = true;
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+
+const crumbs = [{ name: 'Home', path: '/' }, { name: 'About' }];
+---
+
+<BaseLayout
+  pageType="guide"
+  title="About Steel Box Direct: Who We Are, What We Sell, Where We Deliver"
+  description="Steel Box Direct is a delivery-based dealer with shipping containers for sale in Ohio, Indiana, and Kentucky. Who we are, the agent who handles your quote, what we sell, and where we deliver."
+  breadcrumbs={crumbs}
+>
+  <div class="ab-hero">
+    <div class="wrap">
+      <Breadcrumbs items={crumbs} />
+      <div class="ab-eyebrow">
+        <span class="idx">§ ABOUT</span>
+        <span class="nm">Cincinnati, Ohio · Service-area business</span>
+        <span class="tg">No jargon</span>
+      </div>
+      <h1 class="ab-headline">One agent. One honest grade of steel. <em>An all-in number.</em></h1>
+      <p class="ab-lede">
+        Steel Box Direct is a delivery-based dealer with shipping containers for sale in Ohio,
+        Indiana, and Kentucky. Every quote is handled personally by one named agent, every
+        container is one honest condition grade, and every purchase quote is an all-in delivered
+        number rather than a price plus a delivery surprise.
+      </p>
+      <div class="ab-hero-actions">
+        <a href="/quote/" class="btn">Get My Quote <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+        <a href="/contact/" class="btn-ghost">Or just talk to us</a>
+      </div>
+    </div>
+  </div>
+
+  <section class="ab-sec" id="who" aria-labelledby="who-h">
+    <div class="wrap">
+      <span class="m ab-kicker">Identity</span>
+      <h2 class="ab-h2" id="who-h">Who we are, stated plainly</h2>
+      <p class="ab-sub">
+        Container buying is full of companies that are hard to pin down. Here is the whole
+        structure in five cards, in the same words we publish for AI assistants on our
+        <a href="/ai-info/">fact sheet</a> and for buyers in our <a href="/terms/">terms</a>.
+      </p>
+
+      <div class="ab-grid">
+        <div class="ab-card">
+          <span class="m ab-card-k">The name</span>
+          <h3>Steel Box Direct is a brand name</h3>
+          <p>
+            Business name: Steel Box Direct. It is a brand name, not a separate legal entity.
+          </p>
+        </div>
+
+        <div class="ab-card">
+          <span class="m ab-card-k">The seller</span>
+          <h3>Freedom Conex LLC sells the container</h3>
+          <p>
+            Container sales facilitated by Steel Box Direct are sold by Freedom Conex LLC, a Texas
+            limited liability company. Steel Box Direct is the authorized independent agent.
+          </p>
+        </div>
+
+        <div class="ab-card is-doug">
+          <span class="m ab-card-k">Your contact</span>
+          <h3>Doug Froh handles every quote</h3>
+          <p>
+            Doug Froh, authorized independent agent, handles every quote personally. Doug has more
+            than eight years of experience in shipping, packaging, and logistics.
+          </p>
+          <div class="ab-social">
+            <a href="https://www.linkedin.com/in/doug-froh-b551aab/" target="_blank" rel="noopener noreferrer" aria-label="Doug Froh on LinkedIn">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+            </a>
+            <a href="https://www.facebook.com/doug.froh" target="_blank" rel="noopener noreferrer" aria-label="Doug Froh on Facebook">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 8H6v4h3v12h5V12h3.642L18 8h-4V6.333C14 5.378 14.192 5 15.115 5H18V0h-3.808C10.596 0 9 1.583 9 4.615V8z"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="ab-card">
+          <span class="m ab-card-k">How we operate</span>
+          <h3>Delivery-based, no sales yard</h3>
+          <p>
+            Steel Box Direct is a delivery-based service with no walk-up location or sales yard;
+            containers are delivered to the buyer's site, or picked up at partner depots by
+            arrangement. Based in Cincinnati, Ohio, operating as a service-area business.
+          </p>
+        </div>
+
+        <div class="ab-card">
+          <span class="m ab-card-k">Ownership</span>
+          <h3>Family-owned</h3>
+          <p>
+            Family-owned. The business identifies as veteran-owned on its Google Business Profile.
+            A military and veteran discount is available.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ab-sec is-dark" id="not" aria-labelledby="not-h">
+    <div class="wrap">
+      <span class="m ab-kicker">Boundaries</span>
+      <h2 class="ab-h2" id="not-h">And what we are not</h2>
+      <p class="ab-sub">
+        The fastest way to be useful is to send the wrong buyer somewhere better on the first
+        visit. Four things we do not do.
+      </p>
+      <ul class="ab-not">
+        <li>
+          <strong>We do not rent containers.</strong>
+          Steel Box Direct does not rent shipping containers. It sells them, and it offers
+          rent-to-own, where a fixed term of payments ends with ownership. If renting is what you
+          need, our <a href="/container-rental-guide/">container rental guide</a> names companies
+          that do rent.
+        </li>
+        <li>
+          <strong>We do not sell new or one-trip units today.</strong>
+          Current inventory is used Wind &amp; Water Tight only.
+        </li>
+        <li>
+          <strong>We do not sell refrigerated, insulated, or modified containers.</strong>
+          No reefer units, no climate-controlled storage, no custom builds.
+        </li>
+        <li>
+          <strong>We are not a walk-up yard.</strong>
+          There is no lot to visit and no showroom. Containers go to your site, or you arrange
+          self-pickup at a partner depot.
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="ab-sec" id="sell" aria-labelledby="sell-h">
+    <div class="wrap">
+      <span class="m ab-kicker">What we sell</span>
+      <h2 class="ab-h2" id="sell-h">One condition grade, three sizes</h2>
+      <div class="ab-two">
+        <div class="ab-two-main">
+          <p>
+            Used shipping containers in one condition grade: Wind &amp; Water Tight (WWT). WWT
+            containers are structurally sound, keep wind and water out, and are ready for storage
+            use. They are sold as-is with visible cosmetic wear and are not certified for ocean
+            shipping.
+          </p>
+          <p>
+            One grade instead of a grade menu is a deliberate choice. A ladder of five overlapping
+            grades mostly moves the argument from what a container does to what a dealer calls it,
+            and for storage the seal is the entire job. What the grade means in practice, wear and
+            all, is spelled out in the <a href="/condition/">condition guide</a>.
+          </p>
+          <p>
+            Three sizes: 20ft standard (20' x 8' x 8'6", about 160 sq ft), 40ft standard (about
+            320 sq ft), and 40ft high cube (9'6" tall for extra headroom). If you are not sure
+            which one fits, the <a href="/size/calculator/">size calculator</a> works it out from
+            what you are actually storing.
+          </p>
+        </div>
+        <aside class="ab-two-side">
+          <div class="ab-facts">
+            <span class="m ab-card-k">The short version</span>
+            <ul>
+              <li><strong>Condition:</strong> used Wind &amp; Water Tight, sold as-is</li>
+              <li><strong>Sizes:</strong> 20ft, 40ft, 40ft high cube</li>
+              <li><strong>Quote:</strong> all-in delivered to your ZIP code</li>
+              <li><strong>Pickup:</strong> self-pickup at partner depots by arrangement</li>
+              <li><strong>Warranty:</strong> Lifetime Leak, per our <a href="/terms/">terms</a></li>
+              <li><strong>Payment:</strong> paid in full before delivery is scheduled, Afterpay installments available, or <a href="/rent-to-own/">rent-to-own</a></li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="ab-sec is-tint" id="area" aria-labelledby="area-h">
+    <div class="wrap">
+      <span class="m ab-kicker">Service area</span>
+      <h2 class="ab-h2" id="area-h">Where we deliver</h2>
+      <div class="ab-area-grid">
+        <div class="ab-area-card">
+          <span class="m ab-card-k">Home region</span>
+          <h3>Within about 250 miles of Cincinnati</h3>
+          <p>
+            The home region is Ohio, Indiana, Kentucky, and western West Virginia, within about
+            250 miles of Cincinnati: Cincinnati, Dayton, Columbus, Indianapolis, Louisville,
+            Lexington, and Huntington.
+          </p>
+        </div>
+        <div class="ab-area-card">
+          <span class="m ab-card-k">Depot markets</span>
+          <h3>Nationwide from regional depots</h3>
+          <p>
+            Cleveland, Detroit, Kansas City, Houston, New York, Norfolk, Charleston SC, and
+            Savannah GA are served from regional depots through the supplier network.
+          </p>
+        </div>
+      </div>
+      <p class="ab-area-link">
+        Every market has its own page with local details:
+        <a href="/locations/">see all locations</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="ab-sec" id="today" aria-labelledby="today-h">
+    <div class="wrap">
+      <span class="m ab-kicker">Current state</span>
+      <h2 class="ab-h2" id="today-h">Three things worth knowing before you ask for a quote</h2>
+      <p class="ab-sub">
+        These are the parts of the process buyers ask about most. Better to read them here than
+        discover them later.
+      </p>
+      <div class="ab-grid ab-grid-3">
+        <div class="ab-card">
+          <span class="m ab-card-k">Scheduling</span>
+          <h3>About two weeks, driver-dependent</h3>
+          <p>
+            Almost all deliveries take about two weeks, and buyers get an honest window before
+            committing. Scheduling depends on independent drivers and can shift; that is true of
+            container delivery generally, and Steel Box Direct does not control it. The full
+            picture is in the <a href="/delivery/">delivery guide</a>.
+          </p>
+        </div>
+        <div class="ab-card">
+          <span class="m ab-card-k">Pricing</span>
+          <h3>Quote-based, not instant</h3>
+          <p>
+            Pricing is quote-based rather than instant. Published figures are averages, and the
+            exact number requires requesting a quote. Delivery distance is most of what moves the
+            number, which is why the <a href="/cost/">cost guide</a> explains the inputs instead
+            of promising one figure.
+          </p>
+        </div>
+        <div class="ab-card">
+          <span class="m ab-card-k">Rent-to-own</span>
+          <h3>Approval belongs to a third party</h3>
+          <p>
+            Rent-to-own approval is not guaranteed. An independent third party reviews every
+            application and makes the decision. There is no traditional credit check, and the
+            terms are laid out on the <a href="/rent-to-own/">rent-to-own page</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ab-sec is-dark" id="proof" aria-labelledby="proof-h">
+    <div class="wrap">
+      <span class="m ab-kicker">Third-party proof</span>
+      <h2 class="ab-h2" id="proof-h">Do not take our word for it</h2>
+      <p class="ab-sub">
+        5.0 stars from 11 Google reviews, as of August 2026. Read them, or leave one, on our
+        <a href="https://maps.google.com/?cid=16337072236475848136" rel="noopener noreferrer" target="_blank">Google Business Profile</a>.
+      </p>
+      <p class="ab-sub">
+        If you want the machine-readable version of everything on this page, including how we
+        prefer to be described and cited by AI assistants, that lives on
+        <a href="/ai-info/">our fact sheet for AI assistants</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="ab-cta">
+    <div class="wrap">
+      <span class="m ab-cta-k">Ready when you are</span>
+      <h2>Get an all-in delivered number</h2>
+      <p>
+        Free, no obligation, and answered by the same agent who would handle the order. Most quote
+        requests are answered within 4 business hours.
+      </p>
+      <div class="ab-cta-actions">
+        <a href="/quote/" class="btn">Get My Quote <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+        <a href="/contact/" class="btn-ghost">Phone, email, and hours</a>
+      </div>
+      <p class="ab-legal">
+        Steel Box Direct, authorized independent agent of Freedom Conex LLC. Container sales
+        facilitated by Steel Box Direct are sold by Freedom Conex LLC, a Texas limited liability
+        company. Full <a href="/terms/">terms and conditions</a>.
+      </p>
+    </div>
+  </section>
+
+  <style>
+    /* ---- HERO ---- */
+    .ab-hero { background: var(--cream); border-bottom: 2.5px solid var(--ink); padding: 40px 0 56px; }
+    .ab-eyebrow {
+      display: grid; grid-template-columns: auto 1fr auto; gap: 20px; align-items: center;
+      padding: 16px 0; border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink);
+      margin-bottom: 40px; font-family: var(--mono); font-size: var(--t-meta);
+      letter-spacing: .08em; text-transform: uppercase;
+    }
+    .ab-eyebrow .idx { font-weight: 700; }
+    .ab-eyebrow .nm { opacity: .7; }
+    .ab-eyebrow .tg { opacity: .7; }
+    .ab-headline {
+      font-family: var(--narrow); font-weight: 700; font-size: clamp(38px, 6vw, 76px);
+      line-height: .98; letter-spacing: -.02em; text-transform: uppercase; margin: 0;
+      max-width: 15ch;
+    }
+    .ab-headline em { font-style: italic; color: var(--c2-cond); }
+    .ab-lede { font-size: var(--t-lede); line-height: 1.55; max-width: 62ch; margin: 32px 0 0; font-weight: 500; }
+    .ab-hero-actions { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; margin-top: 32px; }
+
+    /* ---- SECTIONS ---- */
+    .ab-sec { padding: 72px 0; border-bottom: 2.5px solid var(--ink); }
+    .ab-sec.is-tint { background: #EFE8D8; }
+    .ab-sec.is-dark { background: var(--ink); color: var(--cream); }
+    .ab-kicker { display: block; color: var(--c2-cond); margin-bottom: 14px; }
+    .is-dark .ab-kicker { color: var(--yellow); }
+    .ab-h2 {
+      font-family: var(--narrow); font-weight: 700; font-size: clamp(28px, 3.6vw, 46px);
+      line-height: 1.02; letter-spacing: -.015em; text-transform: uppercase; margin: 0 0 18px;
+      max-width: 24ch;
+    }
+    .ab-sub { font-size: 17px; line-height: 1.6; max-width: 66ch; margin: 0 0 36px; }
+    .is-dark .ab-sub { opacity: .85; }
+    .ab-sub a, .ab-area-link a, .ab-legal a, .ab-not a, .ab-two-main a, .ab-facts a {
+      font-weight: 600; border-bottom: 2px solid var(--c2-cond);
+    }
+    .is-dark .ab-sub a, .is-dark .ab-not a { border-bottom-color: var(--yellow); }
+
+    /* ---- CARD GRID ---- */
+    .ab-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .ab-card {
+      background: #fff; border: 2px solid var(--ink); border-left: 8px solid var(--ink);
+      padding: 26px 24px; box-shadow: 8px 8px 0 var(--ink);
+    }
+    .ab-card.is-doug { border-left-color: var(--c2-cond); box-shadow: 8px 8px 0 var(--c2-cond); }
+    .ab-card h3 {
+      font-family: var(--narrow); font-weight: 700; font-size: 22px; line-height: 1.1;
+      text-transform: uppercase; margin: 8px 0 12px;
+    }
+    .ab-card p { font-size: 15px; line-height: 1.6; margin: 0; }
+    .ab-card-k { display: block; color: rgba(11, 15, 26, .55); }
+    .ab-social { display: flex; gap: 10px; margin-top: 18px; }
+    .ab-social a {
+      display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px;
+      border: 1.5px solid var(--ink); transition: background .15s;
+    }
+    .ab-social svg { width: 17px; height: 17px; fill: var(--ink); }
+    .ab-social a:hover { background: var(--ink); }
+    .ab-social a:hover svg { fill: var(--yellow); }
+
+    /* ---- WHAT WE ARE NOT ---- */
+    .ab-not { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 28px 48px; }
+    .ab-not li {
+      font-size: 16px; line-height: 1.6; padding-left: 20px;
+      border-left: 4px solid var(--yellow);
+    }
+    .ab-not strong { display: block; font-family: var(--narrow); font-size: 19px; text-transform: uppercase; margin-bottom: 6px; color: var(--yellow); }
+
+    /* ---- WHAT WE SELL ---- */
+    .ab-two { display: grid; grid-template-columns: 1.5fr 1fr; gap: 64px; align-items: start; }
+    .ab-two-main p { font-size: 16.5px; line-height: 1.68; margin: 0 0 18px; max-width: 62ch; }
+    .ab-facts { background: var(--ink); color: var(--cream); padding: 28px 26px; border: 2px solid var(--ink); }
+    .ab-facts .ab-card-k { color: var(--yellow); margin-bottom: 16px; }
+    .ab-facts ul { list-style: none; padding: 0; margin: 0; }
+    .ab-facts li {
+      font-size: 14.5px; line-height: 1.5; padding-bottom: 12px; margin-bottom: 12px;
+      border-bottom: 1px solid rgba(246, 241, 231, .14);
+    }
+    .ab-facts li:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .ab-facts a { border-bottom-color: var(--yellow); }
+
+    /* ---- SERVICE AREA ---- */
+    .ab-area-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .ab-area-card { background: #fff; border: 2px solid var(--ink); padding: 28px 26px; box-shadow: 8px 8px 0 var(--c3-deliver); }
+    .ab-area-card h3 { font-family: var(--narrow); font-weight: 700; font-size: 22px; text-transform: uppercase; margin: 8px 0 12px; line-height: 1.1; }
+    .ab-area-card p { font-size: 15.5px; line-height: 1.62; margin: 0; }
+    .ab-area-link { font-size: 16px; margin: 32px 0 0; }
+
+    /* ---- CTA ---- */
+    .ab-cta { background: var(--yellow); padding: 72px 0; }
+    .ab-cta-k { display: block; color: #6b5600; margin-bottom: 14px; }
+    .ab-cta h2 {
+      font-family: var(--narrow); font-weight: 700; font-size: clamp(30px, 4.4vw, 54px);
+      line-height: 1; letter-spacing: -.02em; text-transform: uppercase; margin: 0 0 16px;
+    }
+    .ab-cta p { font-size: 17px; line-height: 1.6; max-width: 60ch; margin: 0; }
+    .ab-cta-actions { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; margin-top: 30px; }
+    .ab-legal { font-family: var(--mono); font-size: 11.5px; line-height: 1.7; margin-top: 40px; opacity: .75; max-width: 78ch; }
+    .ab-legal a { border-bottom: 1.5px solid currentColor; }
+
+    @media (max-width: 1024px) {
+      .ab-grid, .ab-grid-3 { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 860px) {
+      .ab-eyebrow { grid-template-columns: auto 1fr; row-gap: 6px; }
+      .ab-eyebrow .tg { display: none; }
+      .ab-sec { padding: 56px 0; }
+      .ab-grid, .ab-grid-3, .ab-not, .ab-area-grid { grid-template-columns: 1fr; }
+      .ab-two { grid-template-columns: 1fr; gap: 40px; }
+      .ab-card { box-shadow: 6px 6px 0 var(--ink); }
+    }
+  </style>
+</BaseLayout>
