@@ -1,3 +1,96 @@
+> ## CURRENT AS OF 2026-08-31. Everything below this block is older and partly superseded.
+>
+> **LIVE AT `f787819`. `main == origin`. 64 built routes, 473 tests, guards green, nothing unpushed.**
+> The working session ran 2026-08-27 through 2026-08-31. Read the session logs
+> `sessions/2026-08-27`, `-08-28`, `-08-31` and the transcripts
+> `history/2026-08-27-session-transcript.md`, `-08-28-`, `-08-31-` in order.
+> `PROJECT_STATE.json` carries the per-item record (T-172 through T-185).
+>
+> ### PATH CHANGE THAT WILL TRIP YOU UP FIRST
+>
+> The UDO records live under **`UDO Project/`**. The root `PROJECT_STATE.json`, root
+> `.project-catalog/`, `ORCHESTRATOR.md`, `HARD_STOPS.md` and the rest of the root UDO markdown are
+> **deleted but NOT committed**, along with modified `README.md` and `START_HERE.md`. That migration
+> is still undecided and is why the Stop hook keeps hunting for a session log at the repo root.
+> CLAUDE.md still points at the root paths. Do not "fix" either side without asking the owner.
+>
+> ### WHAT IS LIVE NOW THAT WAS NOT ON 2026-08-26
+>
+> 1. **The $99 RTO down payment, site-wide (T-183, the big one).** My Container Rental made $99 the
+>    standard rent-to-own down payment from 2026-09-01, replacing 10% down, with 20% beyond 150
+>    miles. Ten commits. One canonical module `src/data/rtoTerms.ts` feeds a no-props CTA plate on
+>    all 15 city pages (owner-designed placement, the dead right column beside the delivered price),
+>    a `#down-payment` section on `/rent-to-own/`, all 3 product buy boxes, `/cost/`, the rent-vs-buy
+>    calculator, `/ai-info/`, two use-case pages, and a blog post. **25 live pages carry the figure
+>    and all 25 carry its condition**, verified with a Googlebot UA.
+> 2. **`/delivery/` rebuilt, 347 -> 2,636 words**, and **two invented statistics removed** from it.
+> 3. **Both white parables published** and linked in context from `/for/contractors/`, `/cost/`,
+>    and `/delivery/`. Blog went 6 posts to 8, RSS 6 items to 9.
+> 4. **Sitemap `lastmod`**, derived from git or post frontmatter, never generated. 55 of 55 URLs.
+> 5. **`/ai-info/`, `/terms/`, `/privacy/` centred**; they had been pinned to the left viewport edge.
+>
+> ### FOUR RULINGS FROM THIS STRETCH. DO NOT RELITIGATE.
+>
+> - **RTO application wording stays.** Doug's 2026-08-28 memo says "no application or special
+>   approval is needed". The owner called him, found everything observable still requires one, and
+>   ruled the site publishes what is observable. Every "application" and "subject to third-party
+>   approval" string on `/rent-to-own/` is owner-ruled copy. A later pass tidying it to match the
+>   memo would be a regression.
+> - **The 150 miles is measured from the DEPOT the container ships from, NOT from Cincinnati.** An
+>   earlier pass assumed Cincinnati and wrongly concluded 8 of 15 city pages could not offer $99.
+>   Containers ship nationwide from depot hubs. The CTA is evergreen and identical on all 15 pages.
+> - **The blog post title deliberately omits `$99`.** With it, the figure leaked onto six card
+>   surfaces whose ItemList JSON-LD carries titles only, never descriptions, so the condition could
+>   not travel with it. Costed and declined by the owner 2026-08-31. Do not "optimise" it back in.
+> - **n8n is OFF LIMITS for SBD.** It is the owner's wowbrands work account and he keeps them
+>   separate. SBD's own substrate is GitHub Actions (3 cron workflows live in this repo), Supabase
+>   and Cloudflare. He is leaning toward building his own social planning dashboard and asked for
+>   thinking room. Do not pitch him a design unprompted.
+>
+> ### WHAT THE GSC DATA ACTUALLY SAID (T-172, settled)
+>
+> Impressions went **101/day to ~398/day** after 08-21 and held. **86% of the gain is location
+> pages**, and Indianapolis alone is 48% of it. **The cause was a bug fix**: `78e5f48` 301'd four
+> flat city URLs Google had indexed as 404s, and GSC's own drilldown shows Google recrawling all
+> four on 08-21 and 08-22, the exact days the curve turned. But **clicks did not follow**: 15 in 28
+> days, and average position got worse. This is coverage, not ranking. The four rows actually worth
+> something are `/ai-info/` (0 -> 94 impressions at position 5.7), the GBP-linked homepage
+> (position 3.7), `/blog/12-things-never-store-in-a-shipping-container/` (position 11.5), and
+> `/container-reference/` (27.6 -> 15.5).
+>
+> ### OWNER'S DESK. The entire critical path is his.
+>
+> 1. **LIVE CALLBACK E2E TEST with Doug.** Still not run. It is the only thing that closes T-171.
+> 2. **Yard photo shoot.** Gates T-170's honest-wear gallery and per-size product heroes.
+> 3. **Three textless Gemini clearance illustrations.** Prompts ready in `.outputs/image-prompts/`.
+> 4. **VRTO live date from Ryan**, which starts the 10-day clock. Gates T-159.
+> 5. **Maps rank recheck ~2026-09-04** against the #23 Cincinnati baseline. T-155.
+> 6. **Re-request indexing on `/delivery/` and `/container-buying-guide/`** (T-175). `/delivery/` was
+>    347 words when Google declined to crawl it and is now 2,636, so this is newly worth retrying.
+> 7. Standing: tilt-bed rto image, info@ routing test, Pinterest claim, Facebook About.
+>
+> ### OPEN, NOT BLOCKED ON HIM
+>
+> - **T-174**: five commercial pages lost impressions in the 08-21..08-26 window (`/cost/` -18,
+>   `/size/` -17, `/for/businesses/` -16, `/shipping-containers-for-sale/` -16, 20ft -9). Possible
+>   cannibalisation by `/conex-boxes-for-sale/`. Too small to act on. Recheck on the next export.
+> - **T-176**: the 6 `/blog/category/*` pages are held out of the sitemap AND noindexed while thin.
+>   The blog now has 8 posts. `astro.config.mjs:36` says "revisit once categories fill out".
+> - **T-168 remainder**: certification posts 3 and 4. Post 2 is drafted and verifier-passed but
+>   **never integrated**: `.outputs/content/2026-08-27-bic-provenance-self-check-post.md`. Strip its
+>   marked working-note section before moving it into `src/content/blog/`.
+> - **T-173 closed with a negative result**: index coverage is clean. There is no second
+>   indexed-404 goldmine. Do not go looking again without new evidence.
+>
+> ### TWO TRAPS THIS SESSION PAID FOR
+>
+> - **`grep --include=*.html` silently fails under this zsh** and returns a false pass. A
+>   verification sweep written that way "passed" while checking nothing. Write verification in
+>   Python.
+> - **`route-lastmod-freshness-guard` compares against git COMMITTER dates**, so it can only fail
+>   after a commit exists. When a commit touches a page module, run `npm run generate:route-lastmod`
+>   and amend the regenerated table into that same commit.
+
 > ## CURRENT AS OF 2026-08-26. Everything below this block is older and partly superseded.
 >
 > **LIVE AT `03ec219`. `main == origin`. Site at 62 routes, 435 tests, guards green.**
