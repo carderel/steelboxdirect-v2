@@ -168,7 +168,26 @@ jobs:
         # that added this workflow, so a clean exit is achievable and therefore the right bar. An
         # error count threshold would pass a run where the old error got fixed and a new one appeared
         # on the same day, which is exactly the silent failure this feature is built to avoid.
-        run: npx tsc --noEmit
+        #
+        # `astro sync` IS LOAD BEARING, DO NOT DROP IT. It writes .astro/types.d.ts, which is the
+        # only source of `astro:content`, `ImportMeta.env`, `ImportMeta.glob`, `ImageMetadata` and
+        # the per file image module declarations. `.astro/` is gitignored and is NOT in this job's
+        # cache (that cache holds only .cache/geo-pricing-state.json), so on a fresh runner those
+        # types do not exist and `tsc --noEmit` alone reports exactly 20 errors that are all
+        # missing-generated-types, none of which are real defects. Verified 2026-09-03 by deleting
+        # .astro/ locally: 20 errors without sync, 0 with. It passes on a developer machine only
+        # because a previous `astro dev` or `astro build` already left .astro/ behind, which is what
+        # hid this for the entire life of the workflow.
+        #
+        # WHY THIS WAS NOT CAUGHT ON DAY ONE. Every gate in this job is conditional on
+        # `harvest.outputs.status == 'written'`. The only green harvest run, 2026-08-19, was a no-op
+        # day: the feed did not move, so status was not 'written' and EVERY gate was skipped. The
+        # first day the feed actually moved, 2026-08-20, was the first time this step ever executed,
+        # and it failed. It then failed on all 15 subsequent runs. This gate has never once passed,
+        # and the single green run before it tested nothing. A skipped gate reads as a green run.
+        run: |
+          npx astro sync
+          npx tsc --noEmit
 
       - name: Gate, production build
         if: steps.harvest.outputs.status == 'written'
