@@ -501,5 +501,26 @@ const isProd = import.meta.env.PROD;
         .brand span:last-child{display:inline-block}
       }
     </style>
+
+    <!-- Cloudflare Web Analytics -->
+    {/*
+      Gated on isProd for the same reason the GTM tags above are: an ungated beacon reports every
+      `astro dev` page view and every `npm run build` preview as real traffic, which silently
+      corrupts the numbers this is being installed to read.
+
+      The token is a PUBLIC beacon token, not a secret. Cloudflare's own instructions put it in
+      client-side HTML, so every visitor can already read it. It belongs in the repo rather than in
+      an env var, because an env var would imply it needs protecting and would break the build for
+      anyone who cloned without it.
+
+      Placed here, immediately before </body>, per Cloudflare's instructions. This is the only
+      layout in the project and every .astro page under src/pages uses it, so one insertion covers
+      every rendered route. Verified 2026-09-03: zero pages skip BaseLayout.
+
+      IF A CONTENT-SECURITY-POLICY IS EVER ADDED (it deliberately is not today, see T-188):
+      static.cloudflareinsights.com must be allowlisted in script-src or this goes silently dead.
+    */}
+    {isProd && <script type="module" is:inline src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "dc2d2a4a7b6d42dca44ba4929976d302"}'></script>}
+    <!-- End Cloudflare Web Analytics -->
   </body>
 </html>
