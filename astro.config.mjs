@@ -2,7 +2,7 @@ import { defineConfig } from 'astro/config';
 import cloudflare from '@astrojs/cloudflare';
 import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
-import { serializeWithLastmod } from './src/lib/seo/sitemapLastmod.mjs';
+import { serializeWithLastmod, routeLastmodIndexPlugin } from './src/lib/seo/sitemapLastmod.mjs';
 import { sitemapAllowsCategoryUrl } from './src/lib/seo/blogCategoryIndexing.mjs';
 
 export default defineConfig({
@@ -18,6 +18,14 @@ export default defineConfig({
     },
   }),
   site: 'https://steelboxdirect.com',
+  vite: {
+    // Serves the sitemap's lastmod index into the page bundle as virtual:route-lastmod-index, so
+    // the WebPage node's dateModified (src/lib/schema/buildPageSchema.ts) is resolved from the
+    // exact data the serialize hook below uses for <lastmod>. The bundle cannot import the disk
+    // reading half itself: this adapter refuses to bundle node:fs. See the 2026-09-08 section of
+    // the header in src/lib/seo/sitemapLastmod.mjs.
+    plugins: [routeLastmodIndexPlugin()],
+  },
   redirects: {
     '/admin': '/admin/login',
     '/shipping-containers-for-sale/40-foot-one-trip-container': '/shipping-containers-for-sale/40-foot-high-cube-container',

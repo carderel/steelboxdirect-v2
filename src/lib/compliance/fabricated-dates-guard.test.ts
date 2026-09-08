@@ -21,6 +21,13 @@
  *      is known, because a page never modified was last modified when it was published. That
  *      is a true statement, not an invented one.
  *
+ *      Since 2026-09-08 (T-212) dateModified on every node is read first from the committed
+ *      route lastmod table, the same source the sitemap uses, and the caller's values only fill a
+ *      gap. So the two assertions below use a route the table does NOT know: on a known route the
+ *      Article would rightly carry the table's date, which is derived, not invented. The rendering
+ *      is toISOString, the sitemap's own, so the fallback is compared in that form. See
+ *      webpage-datemodified-guard.test.ts for the table side of the same rule.
+ *
  * If this guard fires, the fix is to derive a real date (git history, content frontmatter, a
  * feed's effective date) or to omit the field. It is never to type a plausible-looking date.
  */
@@ -85,9 +92,12 @@ describe('fabricated-dates guard: the retired literal is gone from src/', () => 
 });
 
 describe('fabricated-dates guard: buildPageSchema invents no dates', () => {
+  /** A route absent from src/data/routeLastmod.mjs, so only caller supplied dates could appear. */
+  const UNLISTED_URL = 'https://steelboxdirect.com/no-such-guide/';
+
   const guideWithoutDates = () =>
     buildPageSchema({
-      url: 'https://steelboxdirect.com/size/',
+      url: UNLISTED_URL,
       title: 'Size',
       description: 'd',
       page: { kind: 'guide', topic: 'size', title: 'Size', specs: [], faqs: [] },
@@ -108,7 +118,7 @@ describe('fabricated-dates guard: buildPageSchema invents no dates', () => {
 
   it('dateModified may still fall back to a KNOWN datePublished, and only to that', () => {
     const { graph } = buildPageSchema({
-      url: 'https://steelboxdirect.com/size/',
+      url: UNLISTED_URL,
       title: 'Size',
       description: 'd',
       datePublished: '2026-05-19',
@@ -116,6 +126,6 @@ describe('fabricated-dates guard: buildPageSchema invents no dates', () => {
     });
     const art = graph.find((n) => n['@type'] === 'Article') as Record<string, unknown>;
     expect(art.datePublished).toBe('2026-05-19');
-    expect(art.dateModified).toBe('2026-05-19');
+    expect(art.dateModified).toBe(new Date('2026-05-19').toISOString());
   });
 });

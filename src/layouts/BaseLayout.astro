@@ -21,6 +21,12 @@ interface Props {
   cityOverride?: CityOverride;
   noindex?: boolean;
   datePublished?: string;
+  // Reaches the Article node as given. The WebPage node does NOT read it first: it takes the
+  // sitemap's own lastmod for Astro.url (src/lib/seo/sitemapLastmod.mjs, the same lookup the
+  // sitemap integration uses) and falls back to this prop only when that table has no entry for
+  // the route, so a page's WebPage date and its <lastmod> can never disagree. A route absent from
+  // the table with no prop ships no WebPage date at all; nothing here reaches for build time.
+  // Reasoning: webPageDateModified in src/lib/schema/buildPageSchema.ts.
   dateModified?: string;
   breadcrumbs?: { name: string; path?: string }[];
   floatingSidebar?: boolean;
