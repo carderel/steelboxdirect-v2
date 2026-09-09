@@ -106,7 +106,7 @@ export const geoSkuKeys: GeoSkuKey[] = ['20ftCargo', '40ftStandard', '40ftStanda
  * ISO date of the last successful, fully validated harvest run, or null before the first one.
  * OPERATIONAL ONLY, never rendered on any surface. See rule 4 in the header.
  */
-export const lastVerified: string | null = '2026-09-03';
+export const lastVerified: string | null = '2026-09-09';
 
 /**
  * Metro slug to priced record. Empty until the first harvest run commits, which is why every
@@ -131,11 +131,11 @@ export const geoPricing: Record<string, GeoMetroPricing> = {
         effectiveSince: "2026-08-18"
       },
       "40ftStandardHC": {
-        delivered: 2090,
+        delivered: 2140,
         pickup: 2010,
         pickupDistanceMiles: 7.3,
         available: true,
-        effectiveSince: "2026-09-03"
+        effectiveSince: "2026-09-09"
       }
     }
   },
@@ -495,11 +495,11 @@ export const geoPricing: Record<string, GeoMetroPricing> = {
         effectiveSince: "2026-09-03"
       },
       "40ftStandardHC": {
-        delivered: 2040,
-        pickup: 1470,
+        delivered: 2090,
+        pickup: 1520,
         pickupDistanceMiles: 6.1,
         available: true,
-        effectiveSince: "2026-09-03"
+        effectiveSince: "2026-09-09"
       }
     }
   }
