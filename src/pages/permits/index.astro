@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { permitStates, permitCountyCount } from '../../data/permitCounties';
 ---
 
 <BaseLayout
@@ -157,12 +158,47 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       .guide-header { padding: 48px 0; }
       .big { font-size: clamp(48px, 10vw, 80px); }
     }
+    .permit-directory { padding: 64px 0; background: white; border-top: 2.5px solid var(--ink); }
+    .permit_directory_label { margin-bottom: 12px; color: var(--c5-permits); }
+    .permit-directory h2 { font-family: var(--narrow); font-weight: 700; font-size: clamp(28px, 4vw, 40px); text-transform: uppercase; letter-spacing: -.01em; line-height: 1; margin: 0 0 20px; }
+    .permit_directory_intro { font-size: 17px; line-height: 1.6; max-width: 720px; margin: 0 0 32px; }
+    .permit-directory-list { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
+    .permit-directory-list li { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; border: 2px solid var(--ink); padding: 14px 18px; box-shadow: 4px 4px 0 var(--ink); }
+    .permit-directory-list a { font-family: var(--narrow); font-weight: 700; font-size: 19px; text-transform: uppercase; }
+    .permit-directory-list a:hover { color: var(--c5-permits); }
+    .permit_directory_count { font-family: var(--mono); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; opacity: .6; white-space: nowrap; }
+
     .guide-next { padding: 48px 0; background: var(--ink); border-top: 2px solid rgba(255,255,255,.08); }
     .guide-next-label { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: .1em; color: var(--yellow); margin-bottom: 16px; }
     .guide-next-links { display: flex; flex-wrap: wrap; gap: 20px; }
     .guide-next-links a { font-family: var(--narrow); font-size: 17px; font-weight: 600; color: var(--cream); text-decoration: none; border-bottom: 2px solid rgba(255,255,255,.2); padding-bottom: 2px; }
     .guide-next-links a:hover { color: var(--yellow); border-color: var(--yellow); }
   </style>
+
+  <!-- The county directory. Added 2026-09-10 (T-215). The page above describes what the question
+       turns on; this is the part that tells a reader in a named place who to go and ask, which is
+       the only half of the question this site answers. Every entry is derived from
+       src/data/permitCounties.ts, which is itself derived from the zoning arrays in
+       src/data/cities.ts, so the directory cannot list a state whose counties do not exist. -->
+  <section class="permit-directory">
+    <div class="wrap">
+      <p class="m permit_directory_label">County directory</p>
+      <h2>Find the office that decides where you are</h2>
+      <p class="permit_directory_intro">
+        Permit and zoning questions are answered by your county or municipal zoning office, not by
+        us. We publish the office for every county we deliver to, {permitCountyCount} jurisdictions
+        across {permitStates.length} states, with the questions worth putting to each one.
+      </p>
+      <ul class="permit-directory-list">
+        {permitStates.map((entry) => (
+          <li>
+            <a href={entry.path}>{entry.state}</a>
+            <span class="permit_directory_count">{entry.counties.length} listed</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
 
   <section class="guide-next">
     <div class="wrap">

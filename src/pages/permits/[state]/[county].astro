@@ -1,0 +1,362 @@
+---
+export const prerender = true;
+
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import {
+  permitCounties,
+  ASK_CHECKLIST,
+  PERMIT_DISCLAIMER,
+  MUNICIPAL_CARVE_OUT,
+  DELIVERY_ACCESS,
+  type PermitCounty,
+} from '../../../data/permitCounties';
+
+// One page per record in src/data/permitCounties.ts, which is itself derived from the zoning arrays
+// in src/data/cities.ts. Nothing is enumerated here: a county added to a city's zoning array gets a
+// page on the next build, and one removed loses its page.
+export function getStaticPaths() {
+  return permitCounties.map((county) => ({
+    params: { state: county.stateSlug, county: county.slug },
+    props: { county },
+  }));
+}
+
+interface Props { county: PermitCounty }
+const { county } = Astro.props;
+
+// One array feeds the visible trail and the JSON-LD BreadcrumbList, so they cannot drift. Every
+// crumb but the last carries a path, which Google requires and which the state index now supplies:
+// before /permits/{state}/ existed this trail would have needed an unlinked middle crumb, and that
+// is a GSC "Missing field item" error rather than a nicety. See breadcrumbNode in
+// src/lib/schema/buildPageSchema.ts.
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Permits', path: '/permits/' },
+  { name: county.state, path: `/permits/${county.stateSlug}/` },
+  { name: county.name },
+];
+
+const place = county.headingPlace;
+
+// The offices, as one sentence, for the FAQ answer.
+//
+// BOTH BRANCHES SAY "START WITH", and the single-office branch used to say "is the office that
+// decides for", which was wrong twice over: it is an exclusive determination about a jurisdiction,
+// and on the 26 pages whose office is a Planning Commission (an advisory body) and the seven whose
+// own office label says the municipality or township administers zoning, it was also false. The
+// reasoning is recorded in full above MUNICIPAL_CARVE_OUT in src/data/permitCounties.ts, and the
+// determination scanner in src/lib/compliance/permit-county-guard.test.ts now carries the phrase so
+// it cannot come back.
+const officeSentence =
+  county.offices.length === 1
+    ? `${county.offices[0]?.name} is the office to start with for ${place}`
+    : `${county.offices.map((o) => o.name).join(' and ')} are the offices to start with for ${place}`;
+
+// The multi-office note. Shown whenever there is more than one office rather than only when the two
+// share a scope, because the two pages where the split matters most (Franklin County OH, city of
+// Columbus against the townships, and Cabell County WV, the city of Huntington against outside the
+// city limits) are exactly the two that a shared-scope condition left without a note while the body
+// copy said "the office below" in the singular.
+// Singular or plural, derived rather than assumed. The body used to say "the office below" on the
+// three pages that render two office cards, which is the same mismatch the note below fixes.
+const startPhrase =
+  county.offices.length === 1
+    ? 'the office below is where to start'
+    : 'the offices below are where to start';
+
+const multiOfficeNote =
+  county.offices.length < 2
+    ? ''
+    : county.scopeNote
+      ? `Every office above answers for ${county.scopeNote}, and which one takes your question depends on what you are asking about. Start with either and ask them to point you at the other.`
+      : `More than one office is listed above, and the scope beside each one is the part of ${county.name} it answers for. A parcel inside the city limits and a parcel outside them are two different questions, so start with the one that matches yours and ask them to point you at the other.`;
+
+// NO datePublished AND NO dateModified PROP, deliberately, and it is not an oversight to fix by
+// typing today's date in. dateModified for every node comes from the committed route lastmod table
+// (src/data/routeLastmod.mjs, the same source the sitemap's own lastmod comes from), which is
+// generated from git history by npm run generate:route-lastmod. This module has no commit yet, so
+// the honest statement about when it last changed is silence, and the guide Article emits no date
+// field it was not given (see the fabricated-dates guard). The moment this file is committed and
+// the generator is run, the sitemap entry and the WebPage node both acquire the same real date
+// with no edit to this page.
+const faqs = [
+  {
+    q: `Who decides whether a shipping container needs a permit in ${place}?`,
+    a: `${officeSentence}. ${MUNICIPAL_CARVE_OUT} Requirements vary by jurisdiction and by what you intend to use the container for, and confirming them is the buyer's responsibility. Steel Box Direct does not determine, advise on, or guarantee permit requirements.`,
+  },
+  {
+    q: `What should I ask the zoning office in ${place} about a shipping container?`,
+    a: `Ask about your intended use, how long the container sits there, setbacks from your property lines, which category their own code puts it in, whether they want it set on a pad or tied down, and what your HOA or deed restrictions add on top. The checklist on this page puts each of those in the form to ask it in.`,
+  },
+  {
+    q: `Does Steel Box Direct handle permits in ${place}?`,
+    a: `No. We sell containers and we deliver them. We do not determine, advise on, or guarantee permit requirements: the office named on this page is where to start, and confirming what applies to your property is the buyer's responsibility.`,
+  },
+];
+
+const title = `Shipping Container Permits in ${place}: Who to Ask | Steel Box Direct`;
+const description = `Who decides on a shipping container in ${place}, and what to ask them. Requirements vary by jurisdiction and intended use, and confirming them is the buyer's responsibility.`;
+---
+
+<BaseLayout
+  pageType="guide"
+  title={title}
+  description={description}
+  breadcrumbs={crumbs}
+  schema={{
+    kind: 'guide',
+    title: `Shipping Container Permits in ${place}`,
+    specs: [
+      { k: 'Jurisdiction', v: place },
+      { k: 'Offices listed', v: String(county.offices.length) },
+      { k: 'Served from', v: county.cities.map((c) => c.city).join(', ') },
+    ],
+    faqs,
+  }}
+>
+  <!-- Ink on signal orange, not cream, for the same reason /permits/ carries the note: cream on
+       #FF5A1F is 2.77:1 and fails WCAG AA at both thresholds, ink on it is 6.14:1. -->
+  <section class="county-hero" style="background: var(--c5-permits); color: var(--ink);">
+    <div class="wrap">
+      <Breadcrumbs items={crumbs} />
+      <div class="sh county_eyebrow" style="border-color: var(--ink);">
+        <span class="idx">§ 05</span>
+        <span class="nm">{place}</span>
+        <span class="tg">Who decides &amp; what to ask</span>
+      </div>
+      <h1 class="county_headline">Shipping container permits in <em>{place}.</em></h1>
+
+      <div class="county-disclaimer">
+        <p class="m county_disclaimer_label">Read this first</p>
+        <p class="county_disclaimer_body">{PERMIT_DISCLAIMER.lede}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="county-decides">
+    <div class="wrap">
+      <div class="row county_row">
+        <div class="main-col">
+          <h2>Who decides in {place}?</h2>
+          <p class="county_lede_body">
+            Your parcel sits in {place}, and {startPhrase}. {MUNICIPAL_CARVE_OUT}
+            We publish who to ask and what to ask them. We do not answer for them, and nothing on
+            this page is a determination about your property.
+          </p>
+
+          <ul class="office-list">
+            {county.offices.map((office) => (
+              <li class="office-card">
+                <div class="m office_card_label">
+                  {county.name}{office.scope ? `, ${office.scope}` : ''}
+                </div>
+                <h3 class="office_card_name">
+                  <a href={office.url} rel="noopener" target="_blank">{office.name}</a>
+                </h3>
+                <p class="office_card_meta">{county.name}, {county.state}</p>
+              </li>
+            ))}
+          </ul>
+
+          {multiOfficeNote && <p class="county_scope_note">{multiOfficeNote}</p>}
+
+          <p class="county_office_note">
+            Office pages move and phone trees change. If a link above lands somewhere unhelpful,
+            search the {county.siteNoun} site for planning, zoning, or building, and ask for the
+            person who handles land use questions from residents.
+          </p>
+        </div>
+
+        <aside class="sidebar-col">
+          <div class="authority-card">
+            <div class="m">Your responsibility</div>
+            <ul>
+              {PERMIT_DISCLAIMER.responsibility.map((line) => <li>{line}</li>)}
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="county-ask">
+    <div class="wrap">
+      <h2>What to ask them</h2>
+      <p class="county_ask_intro">
+        {ASK_CHECKLIST.length} questions, in the form to put them in. Every one is a question for the office rather
+        than an answer from us, because the answer is theirs to give and it turns on your parcel and
+        your plans.
+      </p>
+      <ol class="ask-list">
+        {ASK_CHECKLIST.map((item) => (
+          <li class="ask-item">
+            <span class="m ask_item_label">{item.label}</span>
+            <span class="ask_item_ask">{item.ask}</span>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="county-us">
+    <div class="wrap">
+      <h2>What Steel Box Direct can and cannot tell you</h2>
+      <div class="county_us_body">
+        <p>
+          We sell containers and we deliver them. We do not determine, advise on, or guarantee
+          permit requirements, and we do not speak for any office named on this page.
+        </p>
+        <p>
+          What we can tell you is the outside dimensions, the condition grade, the door end, and what
+          the truck needs to reach the spot you have in mind. If the office in {county.name} wants
+          dimensions or a site sketch to answer your question, ask us and we will send what we have.
+        </p>
+        <p>
+          Confirming what applies to your property is the buyer's responsibility, and it is worth
+          doing before you buy rather than after the container is on the ground.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="county-delivery">
+    <div class="wrap">
+      <div class="row county_row">
+        <div class="main-col">
+          <h2>Getting the truck in</h2>
+          <p>{DELIVERY_ACCESS.clearance}</p>
+          <p>{DELIVERY_ACCESS.timing}</p>
+          <p class="county_delivery_link">
+            The full version, with the tilt-bed geometry and the four things that stop a delivery, is
+            in <a href="/delivery/">our delivery guide</a>.
+          </p>
+        </div>
+        <aside class="sidebar-col">
+          <div class="access-card">
+            <div class="m">Clearance at a glance</div>
+            <ul>
+              <li>100+ feet of straight approach</li>
+              <li>12 feet of width at the tightest pinch</li>
+              <li>14 feet overhead, lane and drop spot</li>
+              <li>Ground that holds 30,000 lb</li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="county-next">
+    <div class="wrap">
+      <p class="county-next-label">Where to go next</p>
+      <div class="county-next-links">
+        {county.cities.map((city) => (
+          <a href={city.path}>Containers in {city.city}, {city.state}</a>
+        ))}
+        <a href={`/permits/${county.stateSlug}/`}>All {county.state} counties we list</a>
+        <a href="/permits/">Permits and zoning: the general guide</a>
+        <a href="/delivery/">How delivery works</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="county-cta">
+    <div class="wrap">
+      <p class="m county_cta_label">Ready when you are</p>
+      <h2>Get your container quote</h2>
+      <p class="county_cta_body">
+        Tell us your size, condition, and delivery details and we will get you an all-in number.
+        Confirming permit and zoning requirements for your property stays with you and your local
+        authority.
+      </p>
+      <a href="/quote/" class="btn county_cta_btn">
+        Start My Quote
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <style>
+    .county-hero { padding: 64px 0 56px; border-bottom: 2.5px solid var(--ink); }
+    .sh { display: grid; grid-template-columns: auto 1fr auto; gap: 20px; align-items: center; padding: 18px 0; border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink); margin-bottom: 40px; }
+    .sh .idx { font-family: var(--mono); font-size: var(--t-meta); letter-spacing: .08em; text-transform: uppercase; }
+    .sh .nm { font-family: var(--narrow); font-weight: 700; font-size: 22px; text-transform: uppercase; letter-spacing: -.01em; }
+    .sh .tg { font-family: var(--mono); font-size: var(--t-meta); letter-spacing: .08em; text-transform: uppercase; opacity: .55; text-align: right; }
+
+    .county_headline { font-family: var(--narrow); font-weight: 700; font-size: clamp(34px, 6vw, 62px); line-height: .95; letter-spacing: -.02em; text-transform: uppercase; margin: 0; max-width: 900px; }
+    .county_headline em { font-style: italic; font-weight: 700; }
+
+    .county-disclaimer { margin: 36px 0 0; max-width: 760px; background: var(--ink); color: var(--cream); border: 2.5px solid var(--ink); padding: 24px 28px; box-shadow: 8px 8px 0 rgba(11,15,26,.25); }
+    .county_disclaimer_label { color: var(--yellow); margin: 0 0 10px; }
+    .county_disclaimer_body { font-size: 16px; line-height: 1.6; margin: 0; }
+
+    .county-decides { padding: 72px 0; background: var(--cream); }
+    .row { display: grid; grid-template-columns: 1.5fr 1fr; gap: 72px; align-items: start; }
+    .main-col h2, .county-ask h2, .county-us h2, .county-cta h2 { font-family: var(--narrow); font-weight: 700; font-size: clamp(28px, 4vw, 40px); text-transform: uppercase; letter-spacing: -.01em; line-height: 1; margin: 0 0 20px; }
+    .county_lede_body { font-size: 17px; line-height: 1.6; margin: 0; max-width: 720px; }
+
+    .office-list { list-style: none; padding: 0; margin: 32px 0 0; display: grid; gap: 24px; }
+    .office-card { background: white; border: 2px solid var(--ink); border-left: 8px solid var(--c5-permits); padding: 24px 28px; box-shadow: 8px 8px 0 var(--ink); }
+    .office_card_label { color: var(--c5-permits); margin: 0 0 8px; }
+    .office_card_name { font-family: var(--narrow); font-weight: 700; font-size: 24px; text-transform: uppercase; line-height: 1.05; margin: 0 0 8px; }
+    .office_card_name a { border-bottom: 3px solid var(--yellow); }
+    .office_card_name a:hover { background: var(--yellow); }
+    .office_card_meta { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; opacity: .65; margin: 0; }
+
+    .county_scope_note, .county_office_note { font-size: 15px; line-height: 1.6; margin: 24px 0 0; max-width: 700px; opacity: .82; }
+
+    .authority-card { background: var(--ink); color: var(--cream); padding: 32px; border: 2px solid var(--ink); }
+    .authority-card .m { color: var(--yellow); margin-bottom: 16px; }
+    .authority-card ul { list-style: none; padding: 0; margin: 0; }
+    .authority-card li { margin-bottom: 16px; font-size: 15px; line-height: 1.45; border-bottom: 1px solid rgba(246,241,231,.1); padding-bottom: 16px; }
+    .authority-card li:last-child { border: none; margin-bottom: 0; padding-bottom: 0; }
+
+    .county-ask { padding: 72px 0; background: white; border-top: 1.5px solid rgba(11,15,26,.1); }
+    .county_ask_intro { font-size: 17px; line-height: 1.6; max-width: 720px; margin: 0 0 32px; }
+    .ask-list { list-style: none; counter-reset: ask; padding: 0; margin: 0; border-top: 2.5px solid var(--ink); max-width: 860px; }
+    .ask-item { counter-increment: ask; display: grid; grid-template-columns: 200px 1fr; gap: 8px 28px; padding: 20px 0; border-bottom: 1.5px solid rgba(11,15,26,.15); }
+    .ask_item_label { color: var(--c5-permits); }
+    .ask_item_label::before { content: counter(ask) ". "; }
+    .ask_item_ask { font-size: 16px; line-height: 1.55; }
+
+    .county-us { padding: 72px 0; background: var(--ink); color: var(--cream); }
+    .county-us h2 { color: var(--cream); }
+    .county_us_body { max-width: 760px; }
+    .county_us_body p { font-size: 16px; line-height: 1.65; margin: 0 0 18px; opacity: .88; }
+    .county_us_body p:last-child { margin-bottom: 0; }
+
+    .county-delivery { padding: 72px 0; background: var(--cream); }
+    .county-delivery h2 { font-family: var(--narrow); font-weight: 700; font-size: clamp(28px, 4vw, 40px); text-transform: uppercase; margin: 0 0 20px; }
+    .county-delivery p { font-size: 16px; line-height: 1.65; max-width: 720px; margin: 0 0 18px; }
+    .county_delivery_link a { border-bottom: 2px solid var(--yellow); font-weight: 600; }
+    .county_delivery_link a:hover { background: var(--yellow); }
+    .access-card { background: white; border: 2px solid var(--ink); padding: 28px; box-shadow: 8px 8px 0 var(--yellow); }
+    .access-card .m { margin-bottom: 16px; }
+    .access-card ul { list-style: none; padding: 0; margin: 0; }
+    .access-card li { font-family: var(--mono); font-size: 12px; letter-spacing: .04em; text-transform: uppercase; padding: 10px 0; border-bottom: 1px solid rgba(11,15,26,.12); }
+    .access-card li:last-child { border: none; }
+
+    .county-next { padding: 48px 0; background: var(--ink); border-top: 2px solid rgba(255,255,255,.08); }
+    .county-next-label { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: .1em; color: var(--yellow); margin-bottom: 16px; }
+    .county-next-links { display: flex; flex-wrap: wrap; gap: 20px; }
+    .county-next-links a { font-family: var(--narrow); font-size: 17px; font-weight: 600; color: var(--cream); text-decoration: none; border-bottom: 2px solid rgba(255,255,255,.2); padding-bottom: 2px; }
+    .county-next-links a:hover { color: var(--yellow); border-color: var(--yellow); }
+
+    .county-cta { padding: 64px 0 80px; background: var(--c5-permits); color: var(--ink); border-top: 2.5px solid var(--ink); }
+    .county_cta_label { margin: 0 0 12px; }
+    .county_cta_body { font-size: 17px; line-height: 1.6; max-width: 680px; margin: 0 0 28px; }
+    .county_cta_btn { background: var(--ink); color: var(--yellow); border-color: var(--ink); }
+
+    @media (max-width: 960px) {
+      .row { grid-template-columns: 1fr; gap: 40px; }
+      .ask-item { grid-template-columns: 1fr; gap: 6px; }
+    }
+    @media (max-width: 768px) {
+      .sh { grid-template-columns: auto 1fr; row-gap: 6px; }
+      .sh .tg { grid-column: 1 / -1; text-align: left; opacity: .5; }
+      .county-hero { padding: 48px 0 40px; }
+      .county-disclaimer { padding: 20px; }
+    }
+  </style>
+</BaseLayout>

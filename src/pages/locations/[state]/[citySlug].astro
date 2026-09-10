@@ -9,6 +9,7 @@ import { centroidBySlug } from '../../../data/geoCentroids';
 import { geoPricing, geoSkuKeys, type GeoSkuKey } from '../../../data/geoPricing';
 import { pricing, formatPrice, effectiveSinceLabel } from '../../../data/pricing';
 import RtoDownPaymentCta from '../../../components/RtoDownPaymentCta.astro';
+import { countiesForCity } from '../../../data/permitCounties';
 
 export function getStaticPaths() {
   return cities.map((c) => ({ params: { state: c.stateSlug, citySlug: c.slug }, props: { city: c } }));
@@ -145,6 +146,11 @@ const pickupLines = priceLines.filter(
 // off, so no second condition is written there. Every line on display travels, in display order,
 // so the Quick Facts block states the same sizes as the price band above it rather than only the
 // smallest, and both surfaces share the one ZIP and the one latest-change date resolved above.
+// The county permit pages that serve this metro, in the order permitCounties.ts sorts them. Derived
+// from the same zoning array rendered just above the links, so a county cannot appear in one list
+// and be missing from the other.
+const permitPages = countiesForCity(c.slug);
+
 const cityPrice = showPrice
   ? {
       zip: priceZip,
@@ -179,7 +185,7 @@ const cityPrice = showPrice
       <div class="sh local_hero_eyebrow">
         <span class="idx">Region</span>
         <span class="nm">{c.eyebrow}</span>
-        <span class="tg">Local Delivery Expert</span>
+        <span class="tg">{c.region === 'home' ? 'Local Delivery Expert' : 'Depot Network Delivery'}</span>
       </div>
       <h1 class="big local_hero_headline">Shipping &amp; Storage Containers<br>in <em>{c.city}.</em></h1>
       <p class="lede local_hero_lede">{c.lede}</p>
@@ -372,6 +378,25 @@ const cityPrice = showPrice
           </li>
         ))}
       </ul>
+      <!-- Contextual outbound links to the permit pages, added 2026-09-10 (T-215). Before this the
+           city pages named these offices and linked them off site, and had zero contextual links
+           into /permits/ anywhere on the page: the only path to the permit content was the footer.
+           countiesForCity() reads the same records the county pages are built from, so this list
+           and those pages can never disagree about which counties belong to this metro. -->
+      {permitPages.length > 0 && (
+        <>
+          <p class="local_zoning_permits_intro">
+            We keep a page for each of those offices, naming who decides and listing the questions
+            worth asking your county or municipal zoning office before you buy:
+          </p>
+          <ul class="zoning-permit-links">
+            {permitPages.map((county) => (
+              <li><a href={county.path}>Permits in {county.name}, {county.state}</a></li>
+            ))}
+          </ul>
+        </>
+      )}
+
       <p class="local_zoning_zips">Primary ZIPs served: {c.primaryZips.join(' · ')}</p>
     </div>
   </section>
@@ -523,6 +548,10 @@ const cityPrice = showPrice
   .zoning-list { list-style: none; padding: 0; margin: 16px 0 24px; display: grid; gap: 10px; }
   .zoning-list a { font-family: var(--mono); font-size: 13px; border-bottom: 1.5px solid currentColor; padding-bottom: 2px; }
   .zoning-list a:hover { color: var(--c5-permits); }
+  .local_zoning_permits_intro { font-size: 16px; line-height: 1.6; max-width: 720px; margin: 0 0 14px; }
+  .zoning-permit-links { list-style: none; padding: 0; margin: 0 0 24px; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; }
+  .zoning-permit-links a { font-family: var(--narrow); font-weight: 600; font-size: 16px; border-bottom: 2px solid var(--yellow); }
+  .zoning-permit-links a:hover { background: var(--yellow); }
   .local_zoning_zips { font-family: var(--mono); font-size: 12px; opacity: .7; }
 
   @media (max-width: 768px) {
