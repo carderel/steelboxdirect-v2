@@ -19,12 +19,22 @@ interface Props { city: City }
 const { city: c } = Astro.props;
 
 // One array feeds both the JSON-LD BreadcrumbList (via BaseLayout) and the visible trail, so the
-// two can never drift. There is deliberately no state-level crumb: /locations/{state}/ has no page
-// to link to, and Google requires an `item` URL on every ListItem except the last, so an unlinked
-// middle crumb is a GSC error rather than a nicety. The state lives inside the final crumb instead.
+// two can never drift.
+//
+// The state rung is real now. It used to be absent on purpose, because /locations/{state}/ had no
+// page to point at and Google requires an `item` URL on every ListItem except the last, which makes
+// an unlinked middle crumb a GSC error rather than a nicety. src/pages/locations/[state]/index.astro
+// builds one index per state in cities.ts, so every value of `c.stateSlug` resolves to a page that
+// exists, by construction rather than by anyone keeping a list in step. The path is spelled from the
+// city's own stateSlug for the same reason: the crumb cannot point somewhere the city does not live.
+//
+// The final crumb still carries no path, and that is what keeps the last rung unlinked in the visible
+// trail and item-less in the JSON-LD. It keeps naming the state as well as the city, because the
+// heading it sits under is the page's own name and "Cincinnati" alone is not one.
 const crumbs = [
   { name: 'Home', path: '/' },
   { name: 'Locations', path: '/locations/' },
+  { name: c.state, path: `/locations/${c.stateSlug}/` },
   { name: `${c.city}, ${c.state}` },
 ];
 
@@ -90,13 +100,21 @@ const showPrice = priceLines.length > 0;
 // stability, and a date per figure would put three dates in a block whose job is to state a number
 // plainly. Understating how long a price has held is the conservative direction of the two.
 //
-// This same date is handed to BaseLayout as dateModified. Stated honestly, that is INERT today: the
-// city branch of the schema builder emits Service, FAQPage, WebPage and BreadcrumbList, none of
-// which carries a date, so nothing renders from it. It is passed anyway because the alternative is
-// worse. The moment that branch gains a dated node it would fall through to the March 2026 default
-// that the guide branch uses, and a page whose visible copy states one date while its graph states
-// another is the contradiction this whole workstream exists to avoid. The prop costs one line and
-// removes that failure mode in advance.
+// This same date is handed to BaseLayout as dateModified, and what happens to it there changed on
+// 2026-09-08. It used to be inert, because the city branch emitted Service, FAQPage, WebPage and
+// BreadcrumbList and not one of them carried a date. The WebPage node carries dateModified now, so
+// the prop reaches a node that renders.
+//
+// It still does not decide the value, and that is the point. pageDateModified() in
+// src/lib/schema/buildPageSchema.ts resolves the committed table FIRST and honours a caller's prop
+// only where the table has no entry for the route. This template has an entry, so what ships in the
+// graph is the last commit that touched this file, and the date below reaches the visible price
+// copy and the QuickFacts cell and stops there. That ordering is deliberate and it is the reason
+// src/data/geoPricing.ts is excluded from the table: an effective date is a fact about a PRICE, and
+// letting the daily harvest publish it as dateModified would tell Google every priced page on the
+// site changed today, every day. The prop stays because it is the documented fallback for a route
+// the table does not know yet, which is what a city page is between being written and being
+// committed.
 const priceEffectiveSince = metroPrices
   ? geoSkuKeys
       .filter((k: GeoSkuKey) => metroPrices.skus[k].available)
@@ -150,6 +168,26 @@ const pickupLines = priceLines.filter(
 // from the same zoning array rendered just above the links, so a county cannot appear in one list
 // and be missing from the other.
 const permitPages = countiesForCity(c.slug);
+
+// THE AREA PROFILE, and why it is here at all.
+//
+// `areaProfile` and `geography` have been in cities.ts since the records were written, and until
+// today the only surface that rendered them was the markdown twin at [citySlug].md.ts. The audit on
+// 2026-09-10 caught it: 1,042 words of real local prose across the 15 records were being served to
+// assistants and withheld from readers and from Google. This block is a RENDERING fix and nothing
+// else. Every string below comes from the record, none is written here, and the shaping mirrors
+// renderCityMarkdown() in src/lib/aeo/markdownTwin.ts line for line, including its order (the
+// profile first, then interstates, then features) and its two label words, so the HTML page and its
+// twin say the same thing in the same sequence and cannot drift into saying different ones.
+//
+// The gates are separate on purpose. A record with prose but no interstates renders the prose
+// alone, and a record with neither renders no section at all rather than a heading over nothing.
+// Today every record has all three, which is exactly why the gates are written now: the first
+// record that does not is the one nobody will be watching for.
+const areaInterstates = c.geography?.interstates ?? [];
+const areaFeatures = c.geography?.features ?? [];
+const areaProfile = c.areaProfile ?? '';
+const showArea = Boolean(areaProfile) || areaInterstates.length > 0 || areaFeatures.length > 0;
 
 const cityPrice = showPrice
   ? {
@@ -308,6 +346,34 @@ const cityPrice = showPrice
       </div>
     </div>
   </section>
+
+  {showArea && (
+    <section class="local-area">
+      <div class="wrap">
+        <div class="area-band">
+          <div class="m local_area_label">About the area</div>
+          <h2 class="local_area_headline">About the {c.city} area.</h2>
+          {areaProfile && <p class="local_area_body">{areaProfile}</p>}
+          {(areaInterstates.length > 0 || areaFeatures.length > 0) && (
+            <ul class="area-geo">
+              {areaInterstates.length > 0 && (
+                <li class="local_area_geo_line">
+                  <span class="local_area_geo_label">Interstates</span>
+                  <span class="local_area_geo_value">{areaInterstates.join(', ')}.</span>
+                </li>
+              )}
+              {areaFeatures.length > 0 && (
+                <li class="local_area_geo_line">
+                  <span class="local_area_geo_label">Local geography</span>
+                  <span class="local_area_geo_value">{areaFeatures.join(', ')}.</span>
+                </li>
+              )}
+            </ul>
+          )}
+        </div>
+      </div>
+    </section>
+  )}
 
   <section class="local-content">
     <div class="wrap">
@@ -499,6 +565,20 @@ const cityPrice = showPrice
   .local_details_card_2 { padding: 0; overflow: hidden; }
   .local-map { width: 100%; height: 100%; min-height: 320px; display: block; border: none; }
 
+  /* The area profile. White on white against .local-content below it, separated by the same
+     hairline rule .local-faq and .local-zoning already use, and banded on the left in yellow like
+     .local-bridge, because it reads as the same kind of thing: one block of local prose rather
+     than a grid. Measure matches .bridge-band so the two bands line up down the page. */
+  .local-area { padding: 64px 0; background: white; border-bottom: 1.5px solid rgba(11,15,26,.1); }
+  .area-band { border-left: 4px solid var(--yellow); padding-left: 24px; max-width: 860px; }
+  .local_area_label { margin-bottom: 12px; }
+  .local_area_headline { font-family: var(--narrow); font-weight: 700; font-size: clamp(26px, 4.4vw, 40px); text-transform: uppercase; letter-spacing: -.01em; line-height: .98; margin: 0 0 20px; }
+  .local_area_body { font-size: 17px; line-height: 1.6; margin: 0; opacity: .85; }
+  .area-geo { list-style: none; padding: 0; margin: 24px 0 0; display: grid; gap: 10px; }
+  .local_area_geo_line { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; }
+  .local_area_geo_label { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; opacity: .6; min-width: 130px; }
+  .local_area_geo_value { font-family: var(--narrow); font-weight: 600; font-size: 17px; }
+
   .local-content { padding: 72px 0; background: white; }
   .row { display: grid; grid-template-columns: 2fr 1fr; gap: 80px; }
   .main-col h2 { font-family: var(--narrow); font-size: 40px; text-transform: uppercase; margin-bottom: 24px; }
@@ -528,6 +608,10 @@ const cityPrice = showPrice
     .cta-box h2 { font-size: 32px; }
     .local-bridge { padding: 40px 0; }
     .local_bridge_body { font-size: 15px; }
+    .local-area { padding: 44px 0; }
+    .local_area_body { font-size: 15px; }
+    .local_area_geo_label { min-width: 0; }
+    .local_area_geo_value { font-size: 15px; }
   }
 
   .local-uses { padding: 64px 0; background: var(--cream); border-top: 1.5px solid rgba(11,15,26,.1); }

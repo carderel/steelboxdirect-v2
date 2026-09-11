@@ -54,6 +54,48 @@ const CARD_META: Record<string, { code: string; region: string }> = {
 const homeCities = cities.filter((c) => c.region === 'home');
 const depotCities = cities.filter((c) => c.region === 'depot');
 const cityUrl = (c: (typeof cities)[number]) => `/locations/${c.stateSlug}/${c.slug}/`;
+
+/**
+ * THE STATE TIER, derived from exactly what src/pages/locations/[state]/index.astro derives its
+ * eleven pages from: the `stateSlug` on each city record. Nothing here is a list of states typed by
+ * hand, so a city added to or dropped from cities.ts adds or drops a state tile on this hub at the
+ * same moment it adds or drops the page that tile points at. A hand-written list is how a hub ends up
+ * linking to a state page that no longer builds.
+ *
+ * Grouping is by insertion order of first appearance, then sorted by slug, which is the same sort the
+ * state index uses, so the two tiers agree on order as well as on membership.
+ */
+interface LocationState {
+  state: string;
+  stateSlug: string;
+  cities: (typeof cities)[number][];
+}
+
+const locationStates: LocationState[] = [
+  ...cities
+    .reduce((acc, c) => {
+      const existing = acc.get(c.stateSlug);
+      if (existing) existing.cities.push(c);
+      else acc.set(c.stateSlug, { state: c.state, stateSlug: c.stateSlug, cities: [c] });
+      return acc;
+    }, new Map<string, LocationState>())
+    .values(),
+].sort((a, b) => a.stateSlug.localeCompare(b.stateSlug));
+
+/**
+ * The tile's second line answers the question the two grids below answer for cities: home region or
+ * depot network. It is read off the city records rather than asserted per state, because Ohio is both
+ * (Cincinnati, Dayton and Columbus are home region, Cleveland is depot) and a blanket state label
+ * would be false in one direction or the other.
+ */
+function stateMix(s: LocationState): string {
+  const home = s.cities.some((c) => c.region === 'home');
+  const depot = s.cities.some((c) => c.region === 'depot');
+  if (home && depot) return 'Home region + depot';
+  return home ? 'Home region delivery' : 'Depot network delivery';
+}
+
+const stateUrl = (s: LocationState) => `/locations/${s.stateSlug}/`;
 ---
 
 <BaseLayout
@@ -83,6 +125,33 @@ const cityUrl = (c: (typeof cities)[number]) => `/locations/${c.stateSlug}/${c.s
       <p>Steel Box Direct is a regional container dealer, not a marketplace or national broker. The person quoting your container is the same person coordinating your delivery. We source from depots close to you, keep freight costs honest, and stay in contact from order to drop-off. Our home region covers Ohio, Indiana, Kentucky, and western West Virginia (<a href="/locations/west-virginia/huntington-shipping-containers/">Huntington</a>, Charleston, Parkersburg), and we now serve eight more major markets through our supplier network, from depots right in each metro.</p>
     </div>
   </div>
+
+  <!-- ============ STATE TIER ============ -->
+  <section class="state-tier">
+    <div class="wrap">
+      <p class="st_label">Browse by state</p>
+      <h2 class="st_head">Every state we <em>deliver to.</em></h2>
+      <p class="st_intro">
+        {locationStates.length} states, {cities.length} markets. Each state has its own page, with how
+        that state is fulfilled written out, the counties each market reaches, and the local offices to
+        ask about permits and zoning. If you would rather go straight to a city, the cards below are
+        sorted by how we fulfill them rather than by state.
+      </p>
+      <ul class="st-grid">
+        {locationStates.map((s) => (
+          <li class="st-tile">
+            <a href={stateUrl(s)}>
+              <span class="st_abbrev" aria-hidden="true">{STATE_ABBREV[s.stateSlug]}</span>
+              <span class="st_name">{s.state}</span>
+              <span class="st_mix">{stateMix(s)}</span>
+              <span class="st_cities">{s.cities.map((c) => c.city).join(' \u00b7 ')}</span>
+              <span class="st_go">Containers in {s.state} &rarr;</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
 
   <!-- ============ CITY GRID: HOME REGION ============ -->
   <section class="city-section">
@@ -241,6 +310,21 @@ const cityUrl = (c: (typeof cities)[number]) => `/locations/${c.stateSlug}/${c.s
     .loc-intro{background:var(--cream);padding:40px 0;border-bottom:1.5px solid rgba(11,15,26,.15)}
     .loc-intro p{font-size:17px;line-height:1.75;opacity:.75;margin:0;max-width:760px}
 
+    /* State tier: navigation band above the city grids */
+    .state-tier{background:var(--ink);color:var(--cream);padding:56px 0 60px;border-bottom:2.5px solid var(--ink)}
+    .st_label{font-family:var(--mono);font-size:var(--t-meta);letter-spacing:.1em;text-transform:uppercase;color:var(--yellow);margin:0 0 12px}
+    .st_head{font-family:var(--narrow);font-weight:700;font-size:clamp(26px,3.4vw,40px);line-height:.95;letter-spacing:-.015em;text-transform:uppercase;margin:0 0 14px}
+    .st_head em{font-style:italic;font-weight:700;color:var(--yellow)}
+    .st_intro{font-size:15px;line-height:1.6;opacity:.75;margin:0 0 28px;max-width:720px}
+    .st-grid{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+    .st-tile a{position:relative;display:grid;gap:6px;align-content:start;height:100%;overflow:hidden;background:var(--cream);color:var(--ink);border:2.5px solid var(--ink);padding:18px 20px 16px;text-decoration:none;transition:transform .15s,box-shadow .15s}
+    .st-tile a:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--yellow)}
+    .st_abbrev{position:absolute;right:10px;top:50%;transform:translateY(-50%);font-family:var(--narrow);font-weight:700;font-size:64px;line-height:1;letter-spacing:-.04em;color:rgba(11,15,26,.07);pointer-events:none}
+    .st_name{font-family:var(--narrow);font-weight:700;font-size:24px;line-height:1;text-transform:uppercase;letter-spacing:-.01em;position:relative}
+    .st_mix{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;opacity:.55;position:relative}
+    .st_cities{font-size:14px;line-height:1.45;opacity:.8;position:relative}
+    .st_go{font-family:var(--narrow);font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:.04em;color:var(--c3-deliver);margin-top:4px;position:relative}
+
     /* City grid */
     .city-section{background:var(--cream);padding:3em 0 3em;border-bottom:2.5px solid var(--ink)}
     .city-hd{width:85%;margin:0 auto 18px}
@@ -322,6 +406,7 @@ const cityUrl = (c: (typeof cities)[number]) => `/locations/${c.stateSlug}/${c.s
 
     @media(max-width:720px){
       .city-grid{grid-template-columns:1fr}
+      .st-grid{grid-template-columns:1fr}
 .sh{grid-template-columns:auto 1fr;row-gap:6px}
       .sh .tg{grid-column:1 / -1;text-align:left;opacity:.5}
       .big{font-size:clamp(36px,9vw,64px)}

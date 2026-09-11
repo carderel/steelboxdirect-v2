@@ -1,0 +1,282 @@
+---
+export const prerender = true;
+
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import { cities, type City } from '../../../data/cities';
+import { permitStates } from '../../../data/permitCounties';
+
+interface LocationState {
+  state: string;
+  stateSlug: string;
+  cities: City[];
+}
+
+/**
+ * One index per state that has at least one city record, grouped out of the same module the city
+ * pages come from, on the pattern of src/pages/permits/[state]/index.astro (where the same grouping
+ * lives in permitCounties.ts as `permitStates`). A state with no cities cannot produce an empty
+ * index, because the grouping is built from the cities themselves: this is whatever cities.ts
+ * contains and nothing else, so adding or dropping a city record adds or drops a state page without
+ * anyone remembering to edit a list here.
+ *
+ * The grouping sits INSIDE getStaticPaths rather than at module scope on purpose. Astro hoists
+ * getStaticPaths into its own scope, so a const declared in the frontmatter above it is not defined
+ * when it runs ("locationStates is not defined" at build time). Imports hoist; frontmatter consts do
+ * not.
+ */
+export function getStaticPaths() {
+  const locationStates: LocationState[] = [
+    ...cities
+      .reduce((acc, c) => {
+        const existing = acc.get(c.stateSlug);
+        if (existing) existing.cities.push(c);
+        else acc.set(c.stateSlug, { state: c.state, stateSlug: c.stateSlug, cities: [c] });
+        return acc;
+      }, new Map<string, LocationState>())
+      .values(),
+  ].sort((a, b) => a.stateSlug.localeCompare(b.stateSlug));
+
+  return locationStates.map((entry) => ({
+    params: { state: entry.stateSlug },
+    props: { entry },
+  }));
+}
+
+interface Props { entry: LocationState }
+const { entry } = Astro.props;
+
+// Home cities first, then depot, so the page reads in the order the framing paragraph names them.
+const homeCities = entry.cities.filter((c) => c.region === 'home');
+const depotCities = entry.cities.filter((c) => c.region === 'depot');
+const orderedCities = [...homeCities, ...depotCities];
+
+/**
+ * THE WHOLE POINT OF THIS PAGE, so it is derived and never asserted.
+ *
+ * `mix` is read off the city records rather than off a list of states, because the honest answer is
+ * per city and only sometimes per state. Ohio is the case that proves it: Cincinnati, Dayton and
+ * Columbus are home-region and Cleveland is fulfilled from a depot, so a blanket sentence about Ohio
+ * would be false in one direction or the other whichever way it was written. A state whose cities are
+ * all depot says so plainly; a mixed state labels each city and says it is labelling each city.
+ */
+const mix: 'home' | 'depot' | 'mixed' =
+  homeCities.length > 0 && depotCities.length > 0 ? 'mixed' : homeCities.length > 0 ? 'home' : 'depot';
+
+function nameList(list: City[]): string {
+  // New York City in the state of New York is the one record whose city name repeats its state name,
+  // which turns the depot sentence into "New York is not part of it. New York is a market we
+  // fulfill". Naming the metro instead of the city breaks the echo without changing the claim.
+  const names = list.map((c) => (c.city === c.state ? `The ${c.city} metro` : c.city));
+  if (names.length === 1) return names[0];
+  if (names.length === 2) return `${names[0]} and ${names[1]}`;
+  return `${names.slice(0, -1).join(', ')}, and ${names[names.length - 1]}`;
+}
+
+const isAre = (n: number) => (n === 1 ? 'is' : 'are');
+const marketWord = (n: number) => (n === 1 ? 'a market' : 'markets');
+// "an Ohio city" / "a Texas city": the article agrees with the state name it precedes, derived, not
+// listed. (No U-state is in cities.ts; "a Utah city" would need a sound check, not a letter check.)
+const article = (name: string) => (/^[aeiou]/i.test(name) ? 'an' : 'a');
+
+/** The home region as the hub and the city template already state it, spelled once. */
+const HOME_REGION = 'Ohio, Indiana, Kentucky, and western West Virginia';
+
+/**
+ * The depot sentence is the bridge paragraph the city template renders for every depot city
+ * ([citySlug].astro, .local-bridge), reused rather than rewritten, so the state page cannot drift
+ * into a claim the city page does not make.
+ */
+const DEPOT_CLAUSE =
+  'we fulfill through our supplier network, from a depot right in the area rather than from a yard ' +
+  'of our own: same containers, same Lifetime Leak Warranty, same person handling your quote. ' +
+  'Sourcing from a local yard instead of hauling steel across the country keeps freight short, and ' +
+  'short freight is what keeps our pricing structure low.';
+
+const framing =
+  mix === 'home'
+    ? `Steel Box Direct is a family-run dealer headquartered near Cincinnati, and ${nameList(homeCities)} ${isAre(homeCities.length)} inside our home delivery region: ${HOME_REGION}. The person quoting your container is the same person coordinating your delivery, and we source from depots close to you rather than hauling steel across the country.`
+    : mix === 'depot'
+      ? `Our home delivery region is ${HOME_REGION}, and ${entry.state} is not part of it. ${nameList(depotCities)} ${isAre(depotCities.length)} ${marketWord(depotCities.length)} ${DEPOT_CLAUSE}`
+      : `${entry.state} has two different answers, so this page labels it city by city rather than claiming one answer for the whole state. ${nameList(homeCities)} ${isAre(homeCities.length)} inside our home delivery region, ${HOME_REGION}. ${nameList(depotCities)} ${isAre(depotCities.length)} ${marketWord(depotCities.length)} ${DEPOT_CLAUSE}`;
+
+const framingLabel =
+  mix === 'home'
+    ? `How we serve ${entry.state}`
+    : mix === 'depot'
+      ? `How ${entry.state} is fulfilled`
+      : `How ${entry.state} is fulfilled, city by city`;
+
+const regionTag =
+  mix === 'home' ? 'Home region delivery' : mix === 'depot' ? 'Depot network delivery' : 'Home region and depot network';
+
+/** The permit index for this state, when one exists. Read off the permits module, never assumed. */
+const permitEntry = permitStates.find((s) => s.stateSlug === entry.stateSlug);
+
+const cityUrl = (c: City) => `/locations/${c.stateSlug}/${c.slug}/`;
+
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Locations', path: '/locations/' },
+  { name: entry.state },
+];
+
+// No date props, for the reason spelled out in the permits state index: dateModified comes from the
+// committed route lastmod table, this module has no commit yet, and silence is the honest answer.
+//
+// NO PRICE, ANYWHERE ON THIS PAGE, and not even an import that could become one. The 2026-08-17
+// override allows a figure on a CITY page under four conditions, one of which is a named ZIP. A state
+// is not a ZIP, so there is no honest way to state one here and the page links to /cost/ instead.
+const title = `Shipping Containers in ${entry.state} | Steel Box Direct`;
+const description =
+  mix === 'home'
+    ? `Shipping containers delivered across ${entry.state}, inside our home delivery region. Every ${entry.state} market we cover, with the counties each one reaches.`
+    : mix === 'depot'
+      ? `Shipping containers delivered in ${entry.state} through our supplier network, from a depot in each metro. Every ${entry.state} market we cover, and what each one reaches.`
+      : `Shipping containers delivered across ${entry.state}. Every market we cover, labelled city by city: home region delivery, or a supplier-network depot.`;
+---
+
+<BaseLayout
+  pageType="guide"
+  title={title}
+  description={description}
+  breadcrumbs={crumbs}
+  schema={{
+    kind: 'collection',
+    title: `Shipping Container Delivery in ${entry.state}`,
+    items: orderedCities.map((c) => ({
+      name: `${c.city}, ${c.state}`,
+      url: `https://steelboxdirect.com${cityUrl(c)}`,
+    })),
+    faqs: [],
+  }}
+>
+  <section class="ls-hero">
+    <div class="wrap">
+      <Breadcrumbs items={crumbs} />
+      <div class="sh ls_hero_eyebrow">
+        <span class="idx">Locations</span>
+        <span class="nm">{entry.state}</span>
+        <span class="tg">{regionTag}</span>
+      </div>
+      <h1 class="ls_headline">Shipping Containers in <em>{entry.state}.</em></h1>
+      <p class="ls_lede">
+        {entry.cities.length === 1 ? 'The one' : `All ${entry.cities.length}`} {entry.state} {entry.cities.length === 1 ? 'market' : 'markets'} we deliver to, with how each one is fulfilled written on the card instead of left for you to guess.
+      </p>
+
+      <div class="ls-framing">
+        <p class="m ls_framing_label">{framingLabel}</p>
+        <p class="ls_framing_body">{framing}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="ls-cities">
+    <div class="wrap">
+      <h2>Where we deliver in {entry.state}</h2>
+      <p class="ls_cities_intro">
+        One page per market, each with its own delivery area, site-access notes, and the local offices
+        to ask about zoning. The list follows where we actually deliver rather than every city in the
+        state, so {article(entry.state)} {entry.state} city missing here is one we have not opened yet, and the quote
+        form will still check your ZIP.
+      </p>
+
+      <ul class="ls-grid">
+        {orderedCities.map((c) => (
+          <li class="ls-tile">
+            <a href={cityUrl(c)}>
+              <span class={c.region === 'home' ? 'ls_tile_badge ls_tile_badge_home' : 'ls_tile_badge ls_tile_badge_depot'}>
+                {c.region === 'home' ? 'Home region delivery' : 'Depot network delivery'}
+              </span>
+              <span class="ls_tile_name">{c.city}</span>
+              <span class="ls_tile_eyebrow">{c.eyebrow}</span>
+              <span class="ls_tile_lede">{c.lede}</span>
+              <span class="ls_tile_area_label">Delivery area</span>
+              <span class="ls_tile_area">{c.delivery.counties.join(', ')}</span>
+              {c.geography.interstates.length > 0 && (
+                <span class="ls_tile_routes">{c.geography.interstates.join(' · ')}</span>
+              )}
+              <span class="ls_tile_go">Containers in {c.city} &rarr;</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+
+      <p class="ls_permit_note">
+        Permit and zoning requirements are set by your local authority and are the buyer's
+        responsibility to confirm before purchasing.
+        {permitEntry && (
+          <>
+            {' '}We list the offices to put the question to:
+            <a href={permitEntry.path}>who to ask about a container in {entry.state}</a>.
+          </>
+        )}
+      </p>
+    </div>
+  </section>
+
+  <section class="ls-next">
+    <div class="wrap">
+      <p class="ls_next_label">Where to go next</p>
+      <div class="ls-next-links">
+        <a href="/cost/">What a container costs</a>
+        {permitEntry && <a href={permitEntry.path}>Permits in {entry.state}</a>}
+        <a href="/delivery/">How delivery works</a>
+        <a href="/locations/">Every city we deliver to</a>
+        <a href="/quote/">Get a quote</a>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .ls-hero { background: var(--yellow); color: var(--ink); padding: 64px 0 56px; border-bottom: 2.5px solid var(--ink); }
+    .sh { display: grid; grid-template-columns: auto 1fr auto; gap: 20px; align-items: center; padding: 18px 0; border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink); margin-bottom: 40px; }
+    .sh .idx { font-family: var(--mono); font-size: var(--t-meta); letter-spacing: .08em; text-transform: uppercase; }
+    .sh .nm { font-family: var(--narrow); font-weight: 700; font-size: 22px; text-transform: uppercase; letter-spacing: -.01em; }
+    .sh .tg { font-family: var(--mono); font-size: var(--t-meta); letter-spacing: .08em; text-transform: uppercase; opacity: .55; text-align: right; }
+
+    .ls_headline { font-family: var(--narrow); font-weight: 700; font-size: clamp(34px, 6.4vw, 66px); line-height: .95; letter-spacing: -.02em; text-transform: uppercase; margin: 0; max-width: 900px; }
+    .ls_headline em { font-style: italic; font-weight: 700; color: var(--c3-deliver); }
+    .ls_lede { font-size: var(--t-lede); line-height: 1.5; margin: 28px 0 0; max-width: 640px; font-weight: 500; opacity: .85; }
+
+    .ls-framing { margin: 36px 0 0; max-width: 780px; background: var(--ink); color: var(--cream); border: 2.5px solid var(--ink); padding: 24px 28px; box-shadow: 8px 8px 0 rgba(11,15,26,.25); }
+    .ls_framing_label { color: var(--yellow); margin: 0 0 10px; }
+    .ls_framing_body { font-size: 16px; line-height: 1.6; margin: 0; }
+
+    .ls-cities { padding: 72px 0; background: var(--cream); }
+    .ls-cities h2 { font-family: var(--narrow); font-weight: 700; font-size: clamp(28px, 4vw, 40px); text-transform: uppercase; letter-spacing: -.01em; line-height: 1; margin: 0 0 20px; }
+    .ls_cities_intro { font-size: 17px; line-height: 1.6; max-width: 760px; margin: 0 0 36px; }
+
+    .ls-grid { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
+    .ls-tile a { display: grid; gap: 10px; align-content: start; height: 100%; background: white; border: 2.5px solid var(--ink); padding: 22px; box-shadow: 6px 6px 0 var(--ink); text-decoration: none; color: var(--ink); transition: transform .15s, box-shadow .15s; }
+    .ls-tile a:hover { transform: translate(-2px,-2px); box-shadow: 8px 8px 0 var(--c3-deliver); }
+    .ls_tile_badge { font-family: var(--mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; padding: 5px 8px; justify-self: start; }
+    .ls_tile_badge_home { background: var(--yellow); color: var(--ink); }
+    .ls_tile_badge_depot { background: var(--c3-deliver); color: var(--cream); }
+    .ls_tile_name { font-family: var(--narrow); font-weight: 700; font-size: 30px; text-transform: uppercase; line-height: 1; letter-spacing: -.01em; }
+    .ls_tile_eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; opacity: .55; margin-top: -4px; }
+    .ls_tile_lede { font-size: 15px; line-height: 1.55; opacity: .85; }
+    .ls_tile_area_label { font-family: var(--mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; opacity: .5; margin-top: 4px; }
+    .ls_tile_area { font-size: 14px; line-height: 1.45; opacity: .8; }
+    .ls_tile_routes { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; opacity: .55; }
+    .ls_tile_go { font-family: var(--narrow); font-weight: 700; font-size: 16px; text-transform: uppercase; letter-spacing: .04em; color: var(--c3-deliver); margin-top: 6px; }
+
+    .ls_permit_note { font-size: 15px; line-height: 1.6; max-width: 760px; margin: 32px 0 0; opacity: .8; }
+    .ls_permit_note a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+    .ls_permit_note a:hover { color: var(--c5-permits); }
+
+    .ls-next { padding: 48px 0; background: var(--ink); border-top: 2px solid rgba(255,255,255,.08); }
+    .ls_next_label { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: .1em; color: var(--yellow); margin-bottom: 16px; }
+    .ls-next-links { display: flex; flex-wrap: wrap; gap: 20px; }
+    .ls-next-links a { font-family: var(--narrow); font-size: 17px; font-weight: 600; color: var(--cream); text-decoration: none; border-bottom: 2px solid rgba(255,255,255,.2); padding-bottom: 2px; }
+    .ls-next-links a:hover { color: var(--yellow); border-color: var(--yellow); }
+
+    @media (max-width: 768px) {
+      .sh { grid-template-columns: auto 1fr; row-gap: 6px; }
+      .sh .tg { grid-column: 1 / -1; text-align: left; opacity: .5; }
+      .ls-hero { padding: 48px 0 40px; }
+      .ls-framing { padding: 20px; }
+      .ls-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</BaseLayout>
