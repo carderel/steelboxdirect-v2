@@ -91,7 +91,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     </section>
 
     <section>
-      <h2>Lifetime Leak Warranty</h2>
+      <h2 id="lifetime-leak-warranty">Lifetime Leak Warranty</h2>
       <p>The Company provides a limited Lifetime Leak Warranty on your container. If you discover a leak, the Company will send you an industry-approved equipment patch along with installation instructions; the patch is installed by the Customer. The patch is manufactured from durable fiberglass-reinforced polyester fabric that bonds to the metal surface. It is flexible and easy to apply and becomes solid when fully cured, approximately five to ten minutes under a UV lamp or direct sunlight, or one to two hours in other conditions. Once cured, it can be drilled, sanded, or painted and is resistant to many common chemicals, solvents, and oils.</p>
       <p>The Company is willing to assist customers in resolving issues. If a concern arises, the Customer should email <a href="mailto:customercare@freedomconex.com">customercare@freedomconex.com</a> within a reasonable time after delivery or out-gating the unit from the storage facility. Failure to do so may limit the support that can be provided. All decisions regarding additional customer support are made by the Company’s management team.</p>
     </section>
@@ -185,6 +185,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
        800px reading measure centred inside it rather than pinned to the gutter. */
     article { max-width: 800px; margin-inline: auto; padding-block: 2.5rem 4rem; line-height: 1.6; }
     h2 { margin-top: 2rem; margin-bottom: 1rem; }
+    /* clears the sticky site header when a badge deep-links to a section anchor */
+    h2[id] { scroll-margin-top: 96px; }
     h3 { margin-top: 1.5rem; margin-bottom: 0.75rem; }
     ul { margin: 1rem 0 1rem 1.5rem; }
     li { margin-bottom: 0.5rem; }

@@ -16,7 +16,7 @@
           <span class="w-small">Lifetime Leak</span>
           <span class="w-outline">Warranty.<sup class="w-ast">*</sup></span>
           <span class="warranty-sub">on every unit we place.</span>
-          <span class="warranty-note">*See terms &amp; conditions in your quote.</span>
+          <span class="warranty-note">*If it leaks, we send a fiberglass patch kit you apply yourself. <a href="/terms/#lifetime-leak-warranty">Read the terms.</a></span>
         </div>
       </div>
       <div class="problem_stats">
@@ -66,7 +66,10 @@
   .w-outline{font-family:'Permanent Marker',cursive;font-size:clamp(42px,4.4vw,64px);color:var(--ink);line-height:1;margin-left:0.7em}
   .warranty-sub{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;opacity:.5;margin-top:10px;transform:rotate(15deg);transform-origin:left center}
   .w-ast{font-family:var(--mono);font-weight:400;font-size:.26em;vertical-align:super;line-height:0}
-  .warranty-note{font-family:var(--mono);font-size:10px;letter-spacing:.04em;opacity:.45;margin-top:6px;transform:rotate(15deg);transform-origin:left center}
+  /* the asterisk pays off here: the actual remedy, legible rather than buried */
+  .warranty-note{font-family:var(--mono);font-size:10.5px;line-height:1.5;letter-spacing:.04em;opacity:.7;margin-top:6px;max-width:40ch;transform:rotate(15deg);transform-origin:left center}
+  .warranty-note a{color:inherit;text-decoration:underline;text-underline-offset:2px}
+  .warranty-note a:hover{color:var(--c2-cond)}
   .stat{display:grid;grid-template-columns:auto 1fr;gap:22px;padding:22px 0;border-top:1.5px solid var(--ink);align-items:baseline}
   .stat:last-child{border-bottom:1.5px solid var(--ink)}
   .stat .num{font-family:var(--narrow);font-weight:700;font-size:64px;line-height:.85;letter-spacing:-.02em}

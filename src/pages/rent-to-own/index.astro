@@ -24,14 +24,16 @@ const faqs: { q: string; a: string; html?: string }[] = [
         'Renting is open ended: you pay every month for as long as you keep the container, and '
         + 'when you stop paying, it goes back on a truck and you keep nothing. Rent-to-own has a '
         + 'finish line built into it. Pick 12, 24, 36, or 48 months, complete the term, and the '
-        + 'same Wind & Water Tight container with the same Lifetime Leak Warranty is yours. If '
+        + 'same Wind & Water Tight container is yours, carrying the same Lifetime Leak '
+        + 'Warranty: if it leaks, we send a patch kit you apply yourself. If '
         + 'your need has an end date on it, renting from somebody else may be the better fit, and '
         + 'we list the rental companies we could verify in this region.',
       contextHtml:
         'Renting is open ended: you pay every month for as long as you keep the container, and '
         + 'when you stop paying, it goes back on a truck and you keep nothing. Rent-to-own has a '
         + 'finish line built into it. Pick 12, 24, 36, or 48 months, complete the term, and the '
-        + 'same Wind &amp; Water Tight container with the same Lifetime Leak Warranty is yours. If '
+        + 'same Wind &amp; Water Tight container is yours, carrying the same Lifetime Leak '
+        + 'Warranty: if it leaks, we send a patch kit you apply yourself. If '
         + 'your need has an end date on it, renting from somebody else may be the better fit, and '
         + 'we list <a href="/container-rental-guide/">the rental companies we could verify</a> in '
         + 'this region.',
@@ -51,7 +53,7 @@ const faqs: { q: string; a: string; html?: string }[] = [
   },
   {
     q: 'What condition are rent-to-own containers?',
-    a: "The same single grade as every container we sell: Wind & Water Tight (used), which means structurally sound and weather-tight, with surface rust that's purely cosmetic. The Lifetime Leak Warranty applies to rent-to-own units just like purchased ones.",
+    a: "The same single grade as every container we sell: Wind & Water Tight (used), which means structurally sound and weather-tight, with surface rust that's purely cosmetic. The Lifetime Leak Warranty applies to rent-to-own units just like purchased ones: if a unit leaks, we send you a fiberglass patch kit you apply yourself.",
   },
   {
     q: 'How fast is delivery on a rent-to-own container?',
@@ -87,7 +89,7 @@ const faqs: { q: string; a: string; html?: string }[] = [
     specs: [
       { k: 'Terms', v: '12 / 24 / 36 / 48 months' },
       { k: 'Credit', v: 'No traditional credit check' },
-      { k: 'Warranty', v: 'Lifetime Leak, applies to RTO' },
+      { k: 'Warranty', v: 'Lifetime Leak, self-applied patch kit, RTO included' },
       { k: 'Delivery', v: 'About two weeks after approval' },
     ],
     faqs: faqs.map((f) => ({ q: f.q, a: f.a })) }}
@@ -286,7 +288,7 @@ const faqs: { q: string; a: string; html?: string }[] = [
           </tr>
           <tr>
             <th scope="row">End state</th>
-            <td class="is-rto" data-label="Rent-to-own">A Wind &amp; Water Tight container on your property, with the Lifetime Leak Warranty</td>
+            <td class="is-rto" data-label="Rent-to-own">A Wind &amp; Water Tight container on your property, with the Lifetime Leak Warranty (self-applied patch kit)</td>
             <td data-label="Buy outright">Same container, same warranty, just paid all at once</td>
             <td data-label="Self-storage">An ongoing bill and an empty unit to hand back</td>
           </tr>
@@ -311,7 +313,7 @@ const faqs: { q: string; a: string; html?: string }[] = [
         </div>
         <div class="trust-cell">
           <span class="trust-k m">Warranty</span>
-          <span class="trust-v">Lifetime Leak Warranty applies to rent-to-own units</span>
+          <span class="trust-v">Lifetime Leak Warranty, rent-to-own included: a patch kit we send and you apply</span>
         </div>
         <div class="trust-cell">
           <span class="trust-k m">Ownership</span>

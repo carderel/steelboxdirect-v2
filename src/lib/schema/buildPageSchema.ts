@@ -216,7 +216,9 @@ export function buildPageSchema(args: BuildSchemaArgs): BuiltSchema {
               : `${p.city.city} + surrounding counties`,
           },
           { k: 'Condition', v: 'Wind & Water Tight (used)' },
-          { k: 'Warranty', v: 'Lifetime Leak' },
+          // Spec cells travel alone into scrapers and answer engines, so the remedy rides in the
+          // value rather than sitting in prose further down the page.
+          { k: 'Warranty', v: 'Lifetime Leak, self-applied patch kit' },
           { k: 'Delivery', v: 'All-in quote, about two weeks' },
         ],
         faqs: p.faqs.slice(0, 3),

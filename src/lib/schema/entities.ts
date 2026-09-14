@@ -11,9 +11,17 @@ const SAME_AS = [
   'https://www.youtube.com/@steelboxdirect',
 ];
 
+// The machine-readable claim is held to the same scope as the visible one, and to what
+// `src/pages/terms.astro` actually promises: the remedy is a patch kit the customer installs,
+// not a repair we perform. A bare "Lifetime Leak Warranty" string here would be a broader claim
+// than any page makes, and an assistant quoting it would mislead the buyer on our behalf.
 const WARRANTY = {
   '@type': 'WarrantyPromise',
-  description: 'Lifetime Leak Warranty on Wind & Water Tight containers',
+  description:
+    'Lifetime Leak Warranty on Wind & Water Tight containers: if the container leaks, '
+    + 'Steel Box Direct sends an industry-approved fiberglass-reinforced patch kit with '
+    + 'instructions, and the customer installs it. Full terms at '
+    + 'https://steelboxdirect.com/terms/#lifetime-leak-warranty',
 };
 
 const OFFERED_SERVICE = {

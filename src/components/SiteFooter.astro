@@ -118,7 +118,7 @@ const pathname = Astro.url.pathname;
         </div>
       </div>
       <div class="trust-badges">
-        <span class="trust-badge">Lifetime Leak Warranty</span>
+        <a class="trust-badge" href="/terms/#lifetime-leak-warranty">Lifetime Leak Warranty <span class="badge-qual">(self-applied patch kit)</span></a>
         <span class="trust-badge">Family-owned</span>
       </div>
     </div>
@@ -257,6 +257,16 @@ const pathname = Astro.url.pathname;
     border: 1px solid rgba(246, 241, 231, .25); border-radius: 3px;
     padding: 6px 10px; white-space: nowrap;
   }
+  /* prefixed with footer.site to out-specify `footer.site a { display:block }` */
+  footer.site a.trust-badge {
+    display: inline-block;
+    font-size: 10.5px; font-weight: 400; line-height: 1.3;
+    padding: 6px 10px; opacity: .75;
+    text-decoration: none;
+  }
+  footer.site a.trust-badge:hover { color: var(--cream); border-color: var(--yellow); opacity: 1; }
+  footer.site a.trust-badge:hover .badge-qual { color: var(--yellow); opacity: 1; }
+  .trust-badge .badge-qual { opacity: .8; letter-spacing: .04em; }
   @media (max-width: 720px) {
     .trust-row { flex-direction: column; align-items: flex-start; gap: 18px; }
     .trust-badge { white-space: normal; }
