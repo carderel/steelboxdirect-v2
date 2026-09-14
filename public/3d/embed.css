@@ -1,0 +1,382 @@
+/* embed.css - Clean, Lightweight CSS for Steel Box Direct 3D Embeds */
+
+:root {
+  --bg-dark: #0f1318;
+  --bg-card: rgba(20, 24, 32, 0.9);
+  --bg-card-hover: rgba(28, 34, 46, 0.95);
+  --accent-cyan: #00d2ff;
+  --accent-yellow: #f5b800;
+  --accent-blue: #2563eb;
+  --sbd-yellow: #ffc80a;
+  --text-main: #f0f4f8;
+  --text-muted: #8e9ca8;
+  --border-color: rgba(255, 255, 255, 0.12);
+  --border-highlight: rgba(0, 210, 255, 0.4);
+  --shadow-panel: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 1px rgba(255, 255, 255, 0.15);
+  --font-mono: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
+  --font-sans: "Archivo", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: var(--font-sans);
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  user-select: none;
+}
+
+/* 3D Canvas Viewport */
+#canvas-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* 3D Interactive Hotspot Markers Overlay */
+#hotspots-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.hotspot-marker {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hotspot-dot {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--accent-cyan);
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 12px var(--accent-cyan);
+  z-index: 2;
+  transition: all 0.2s ease;
+}
+
+.hotspot-pulse {
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(0, 210, 255, 0.35);
+  animation: pulse 2.2s infinite ease-out;
+  z-index: 1;
+}
+
+@keyframes pulse {
+  0% { transform: scale(0.6); opacity: 0.9; }
+  100% { transform: scale(1.8); opacity: 0; }
+}
+
+.hotspot-marker:hover .hotspot-dot,
+.hotspot-marker.active .hotspot-dot {
+  transform: scale(1.3);
+  background: #ffffff;
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 16px var(--accent-cyan);
+}
+
+.hotspot-tooltip {
+  position: absolute;
+  left: 36px;
+  white-space: nowrap;
+  background: rgba(14, 18, 24, 0.95);
+  border: 1px solid var(--border-color);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  color: var(--text-main);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-4px);
+  transition: all 0.2s ease;
+}
+
+.hotspot-marker:hover .hotspot-tooltip {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Header Badge */
+.embed-header {
+  position: absolute;
+  top: 14px;
+  left: 16px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  pointer-events: auto;
+}
+
+.header-badge {
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-color);
+  padding: 6px 14px;
+  border-radius: 8px;
+  box-shadow: var(--shadow-panel);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.badge-tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--sbd-yellow);
+  background: rgba(255, 200, 10, 0.15);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.badge-title {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  color: var(--text-main);
+}
+
+.badge-sub {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* Streamlined Controls Floating Toolbar */
+.embed-toolbar {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  pointer-events: auto;
+}
+
+.control-pill {
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-color);
+  padding: 5px 8px;
+  border-radius: 10px;
+  box-shadow: var(--shadow-panel);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-pill {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+}
+
+.btn-pill:hover {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.btn-pill.active {
+  background: var(--accent-cyan);
+  color: #0c1218;
+  border-color: var(--accent-cyan);
+  font-weight: 700;
+}
+
+.slider-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 4px;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.slider-group input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 75px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  outline: none;
+}
+
+.slider-group input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent-cyan);
+  cursor: pointer;
+  box-shadow: 0 0 6px var(--accent-cyan);
+}
+
+/* Engineering Component Spec Drawer */
+.spec-drawer {
+  position: absolute;
+  top: 60px;
+  right: 16px;
+  width: 320px;
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: var(--shadow-panel);
+  z-index: 15;
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  pointer-events: auto;
+  animation: slideIn 0.25s ease-out;
+}
+
+.spec-drawer.open {
+  display: flex;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.drawer-header {
+  padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.spec-category {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--accent-cyan);
+  margin-bottom: 2px;
+}
+
+.drawer-header h2 {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-main);
+  line-height: 1.2;
+}
+
+.btn-close {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 18px;
+  cursor: pointer;
+  padding: 0 4px;
+  line-height: 1;
+}
+
+.btn-close:hover {
+  color: #ffffff;
+}
+
+.spec-body {
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 12px;
+  max-height: 380px;
+  overflow-y: auto;
+}
+
+.spec-section h4 {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  margin-bottom: 3px;
+}
+
+.spec-section p {
+  color: var(--text-main);
+  line-height: 1.4;
+  font-size: 11.5px;
+}
+
+.spec-highlight-box {
+  background: rgba(0, 210, 255, 0.08);
+  border-left: 3px solid var(--accent-cyan);
+  padding: 6px 10px;
+  border-radius: 0 6px 6px 0;
+}
+
+/* No-JS notice. Sits above the (empty) canvas so a reader with scripting off gets a sentence
+   instead of a black box with dead buttons. */
+.noscript-note {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 24px;
+  background: var(--bg-dark);
+  color: var(--text-main);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
+}

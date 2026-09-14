@@ -51,6 +51,44 @@ function sizeParamFor(slug: string): string {
 }
 const sizeParam = sizeParamFor(c.slug);
 
+// 3D VIEWER REGISTRY. One entry per product that has a model built for it; the section markup
+// below renders only when the current slug has an entry, so adding a fourth product is a data
+// change here and nothing else, and a product with no model renders no band at all rather than
+// a broken frame. Each embed HTML in public/3d/ loads the SAME engine (embed-core.js) and the
+// SAME stylesheet (embed.css) and differs only in its init block, so the second and third
+// products cost a small HTML file and one JPG each, not another copy of the renderer.
+// isoCode and modelLabel exist because the figure's head bar names the exact unit modeled:
+// a 40ft high cube is 45G1 and is not "standard", so neither string can be derived from
+// shortName without a special case. The still images are all 1376x768, which is why the
+// width/height attributes below are literal.
+interface ViewerModel {
+  embed: string;
+  still: string;
+  modelLabel: string;
+  isoCode: string;
+}
+const VIEWER_MODELS: Record<string, ViewerModel> = {
+  '20-foot-shipping-container': {
+    embed: '/3d/embed-20ft.html',
+    still: '/3d/container-20ft-exploded.jpg',
+    modelLabel: '20ft standard',
+    isoCode: '22G1',
+  },
+  '40-foot-shipping-container': {
+    embed: '/3d/embed-40ft.html',
+    still: '/3d/container-40ft-exploded.jpg',
+    modelLabel: '40ft standard',
+    isoCode: '42G1',
+  },
+  '40-foot-high-cube-container': {
+    embed: '/3d/embed-40ft-hc.html',
+    still: '/3d/container-40ft-hc-exploded.jpg',
+    modelLabel: '40ft high cube',
+    isoCode: '45G1',
+  },
+};
+const viewer: ViewerModel | undefined = VIEWER_MODELS[c.slug];
+
 // ONE comparison data source: the desktop table and the mobile cards both map over
 // compareRows, so the two presentations cannot diverge. Best-for cells drop the shared
 // CONDITION.blurb tail that containers.ts appends to every compareNote; the condition
@@ -235,6 +273,75 @@ const plateAria = `Side profile of a tilt bed delivery truck carrying a ${c.shor
         </p>
     </div>
   </section>
+
+  <!-- 3D VIEWER (2026-09-11, all three sizes), and trivially reversible: delete this block, the .prod-3d rules in the stylesheet below, and
+       public/3d/. The gate reads VIEWER_MODELS above rather than naming a slug, so a
+       product with no model renders no band.
+       PLACEMENT is deliberate. It is NOT inside .listing-media: that photo is the page's
+       LCP element and ships loading="eager" fetchpriority="high", so hanging an iframe
+       there would trade Core Web Vitals on a commercial page for a toy. It sits under the
+       spec table instead, where a reader who has just read the dimensions can go look at
+       them.
+       Desktop (>=769px) gets the lazy iframe; 768px and below gets the exploded still, so
+       a phone is never asked to run WebGL over cell data. -->
+  {viewer && (
+  <section class="prod-3d">
+    <div class="wrap">
+      <h2 class="section-title">See It In 3D</h2>
+      <p class="viewer-lede">The same {c.shortName} those numbers describe, modeled to spec. Drag to spin it, swing the cargo doors open, and pull the assembly apart to see the crossmembers, the plywood subfloor, and the corner castings, the parts you never get to look at on a box that is already sitting on a trailer. On a phone you get the exploded view as a still image instead.</p>
+      <figure class="viewer-fig">
+        <div class="viewer-fig-head" aria-hidden="true">
+          <span class="viewer-fig-no">3D</span>
+          <span class="viewer-fig-title">Interactive model · {viewer.modelLabel} · {viewer.isoCode}</span>
+        </div>
+        <div class="viewer-stage">
+          <!-- NO sandbox attribute. Deliberate, re-tested 2026-09-14, and NOT the risk it
+               used to be.
+               The old reason to want a sandbox here is gone. This frame used to pull Three.js
+               from a public CDN through an import map, so third-party code ran same-origin
+               with the lead forms, unpinnable (an import map cannot carry integrity=""). As of
+               2026-09-14 Three.js r160 is vendored into public/3d/vendor/ and the import map
+               resolves only ./vendor/ paths, so the frame now executes first-party code only.
+               Verified in a real browser against the built dist: zero requests to any
+               third-party host from all three embeds.
+               sandbox="allow-scripts" was then tried again on top of the vendored build, and it
+               STILL breaks the viewer. Vendoring does not fix it, because the CDN was never the
+               cause. The sandbox drops the frame into an opaque origin, which makes the browser
+               fetch even our OWN ./embed-core.js in CORS mode with Origin: null; /3d/* sends no
+               Access-Control-Allow-Origin, so the module is blocked and the viewer renders as a
+               black box. Measured, both times:
+                 Access to script at '/3d/embed-core.js' from origin 'null' has been blocked by
+                 CORS policy: No 'Access-Control-Allow-Origin' header is present
+               The unblock is still one rule on /3d/* in public/_headers:
+                 Access-Control-Allow-Origin: *
+               _headers is generated and held in sync by markdown-twin-guard.test.ts, so that has
+               to come from renderHeadersFile() in src/lib/aeo/markdownTwin.ts, not by hand. Add
+               it there first, then add sandbox="allow-scripts" below, then re-test. Shipping the
+               attribute without the header ships a black box.
+               Worth knowing before doing that work: with the code vendored, the sandbox now buys
+               defense in depth against our own bug, not containment of somebody else's code. -->
+          <iframe
+            class="viewer-canvas"
+            src={viewer.embed}
+            title={`Interactive 3D model of a ${c.name}`}
+            loading="lazy"
+            allow="fullscreen"></iframe>
+          <div class="viewer-still">
+            <img
+              src={viewer.still}
+              width="1376"
+              height="768"
+              loading="lazy"
+              decoding="async"
+              alt={`Exploded view of a ${c.shortName} shipping container: the roof panel lifted off, the corrugated side walls and cargo doors swung clear, and the steel floor crossmembers under the plywood decking left on the base frame`} />
+            <p class="viewer-still-badge">For the interactive version, view on desktop</p>
+          </div>
+        </div>
+        <figcaption>A model, not a photograph. It shows how a {c.shortName} is built; it does not show the wear on the unit you would receive. For that, read <a href="/condition/">what Wind &amp; Water Tight means</a>.</figcaption>
+      </figure>
+    </div>
+  </section>
+  )}
 
   <!-- SIZE COMPARE -->
   <section class="prod-compare">
@@ -569,6 +676,33 @@ const plateAria = `Side profile of a tilt bed delivery truck carrying a ${c.shor
     .clr-fig-scroll svg { min-width: 680px; padding: 14px 12px 8px; }
     .clr-fig-foot { padding: 8px 10px; }
     .clr-fig figcaption { margin: 8px 10px 10px; }
+  }
+
+  /* 3D VIEWER (all three sizes). The widget ships its own dark chrome (#0f1318), so
+     rather than fight it the whole band goes dark. var(--ink) is #0B0F1A, near enough
+     that the iframe reads as a screen set into the section instead of a pasted-in
+     rectangle. The frame keeps the site's grammar, just inverted for the dark ground:
+     2.5px hard border in cream, 8px offset shadow in yellow, mono head bar. The page
+     already runs one ink band (.prod-guides), so the rhythm is not new. */
+  .prod-3d { padding: 72px 0; background: var(--ink); color: var(--cream); border-bottom: 1.5px solid rgba(255,255,255,.1); }
+  .prod-3d .section-title { color: var(--cream); margin-bottom: 18px; }
+  .viewer-lede { font-size: 16px; line-height: 1.6; max-width: 700px; margin: 0 0 30px; opacity: .78; }
+  .viewer-fig { margin: 0; border: 2.5px solid var(--cream); box-shadow: 8px 8px 0 var(--yellow); background: #0f1318; }
+  .viewer-fig-head { display: flex; align-items: center; gap: 10px; padding: 9px 14px 8px; background: var(--yellow); color: var(--ink); border-bottom: 2.5px solid var(--cream); font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+  .viewer-fig-no { background: var(--ink); color: var(--yellow); padding: 3px 7px; letter-spacing: .08em; flex: none; }
+  .viewer-fig-title { opacity: .72; }
+  .viewer-fig-head::after { content: ""; flex: 1 1 24px; height: 2px; background: repeating-linear-gradient(90deg, var(--ink) 0 6px, transparent 6px 12px); opacity: .35; }
+  .viewer-stage { position: relative; background: #0f1318; }
+  .viewer-canvas { display: block; width: 100%; height: 560px; border: 0; background: #0f1318; }
+  .viewer-still { display: none; }
+  .viewer-fig figcaption { font-family: var(--mono); font-size: 12px; line-height: 1.6; letter-spacing: .02em; color: var(--cream); opacity: .7; margin: 0; padding: 11px 14px 12px; border-top: 1.5px solid rgba(246,241,231,.16); }
+  .viewer-fig figcaption a { color: var(--yellow); font-weight: 700; border-bottom: 1.5px solid currentColor; text-decoration: none; }
+  @media (max-width: 768px) {
+    .viewer-fig { box-shadow: 4px 4px 0 var(--yellow); }
+    .viewer-canvas { display: none; }
+    .viewer-still { display: block; position: relative; }
+    .viewer-still img { display: block; width: 100%; height: auto; }
+    .viewer-still-badge { position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%); margin: 0; max-width: calc(100% - 28px); text-align: center; background: rgba(15,19,24,.88); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,.18); color: #f0f4f8; font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 7px 14px; box-shadow: 0 4px 12px rgba(0,0,0,.4); }
   }
 
   /* USE CASES */

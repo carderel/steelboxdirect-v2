@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>40ft High Cube Shipping Container 3D Model | Steel Box Direct</title>
+  <link rel="stylesheet" href="./embed.css">
+
+  <!-- Three.js import map, SAME ORIGIN ONLY. Every value below must stay a ./vendor/ path.
+       Three.js used to be pulled from a public CDN through this map, which put third-party
+       code on our own origin inside a frame that ships on three commercial pages. An import
+       map cannot carry integrity="", so there was no SRI and no byte-level guarantee about
+       what came back, and a CDN outage turned the viewer into a black box.
+       It is vendored now: r160 ships from public/3d/vendor/, copied out of the official
+       three@0.160.0 npm tarball. The version is pinned on purpose, because embed-core.js and
+       containerModel.js were written against r160. Provenance, checksum, the full rationale,
+       and the update procedure are in vendor/README.md.
+       The map is kept (rather than rewriting import specifiers in embed-core.js,
+       containerModel.js, and OrbitControls.js) because it leaves those files as plain
+       bare-specifier modules and puts the whole resolution story in one readable block. -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "./vendor/three.module.min.js",
+      "three/addons/": "./vendor/addons/"
+    }
+  }
+  </script>
+</head>
+<body>
+
+  <!-- No-JS fallback. The controls below are all script driven, so without JavaScript the
+       reader would otherwise be looking at an empty black frame with dead buttons. -->
+  <noscript>
+    <div class="noscript-note">The interactive 3D model needs JavaScript turned on to load.</div>
+  </noscript>
+
+  <!-- WebGL 3D Canvas Viewport -->
+  <div id="canvas-container"></div>
+
+  <!-- 3D Interactive Hotspot Markers Overlay -->
+  <div id="hotspots-overlay"></div>
+
+  <!-- Model Header Badge -->
+  <div class="embed-header">
+    <div class="header-badge">
+      <span class="badge-tag">40HC</span>
+      <span class="badge-title">40ft High Cube Container</span>
+      <span class="badge-sub">9'6" (45G1)</span>
+    </div>
+  </div>
+
+  <!-- Streamlined Controls Toolbar -->
+  <div class="embed-toolbar">
+    <div class="control-pill">
+      <button id="btn-explode-toggle" class="btn-pill" title="Toggle Exploded Assembly View">Explode View</button>
+      <div class="slider-group">
+        <span>Spread:</span>
+        <input type="range" id="slider-explode" min="0" max="100" value="0">
+      </div>
+    </div>
+
+    <div class="control-pill">
+      <button id="btn-doors-toggle" class="btn-pill" title="Open or close cargo doors">Open Doors</button>
+    </div>
+
+    <div class="control-pill">
+      <button id="btn-toggle-hotspots" class="btn-pill active" title="Toggle Hotspot Points (Key: H)">Hotspots</button>
+      <button id="btn-reset-cam" class="btn-pill" title="Reset Camera View (Key: R)">Reset View</button>
+    </div>
+  </div>
+
+  <!-- Engineering Spec Drawer -->
+  <aside id="spec-drawer" class="spec-drawer">
+    <div class="drawer-header">
+      <div>
+        <div id="card-category" class="spec-category">Structural Component</div>
+        <h2 id="card-title">ISO Corner Castings</h2>
+      </div>
+      <button id="btn-close-drawer" class="btn-close" aria-label="Close details">&times;</button>
+    </div>
+    <div class="spec-body">
+      <div class="spec-section">
+        <h4>Material & Specification</h4>
+        <p id="card-material">Cast Carbon Steel (SCW 480 / ASTM A216 WCB)</p>
+      </div>
+      <div class="spec-section">
+        <h4>Engineering Function</h4>
+        <p id="card-purpose">Primary load-bearing point interface for twistlocks and crane spreaders.</p>
+      </div>
+      <div class="spec-section spec-highlight-box">
+        <h4>Load Capacity & Structural Rating</h4>
+        <p id="card-load">86,400 kg per post (Supports 9-high container stacks).</p>
+      </div>
+      <div class="spec-section">
+        <h4>Manufacturing & Treatment</h4>
+        <p id="card-fab">Sand-cast, normalized and heat-treated to resist brittle fracture down to -40°C.</p>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Application Initialization -->
+  <script type="module">
+    import { EmbedApp } from './embed-core.js';
+
+    window.addEventListener('DOMContentLoaded', () => {
+      window.app = new EmbedApp({
+        typeId: '40hc',
+        color: 0xe25816, // Safety Orange (Hapag-Lloyd RAL 2004)
+        title: '40ft High Cube Container',
+        tag: '40HC',
+        sub: '9\'6" (45G1)'
+      });
+    });
+  </script>
+</body>
+</html>
