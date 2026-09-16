@@ -57,7 +57,7 @@ export const routeLastmod = {
   'src/pages/condition/index.astro': '2026-09-14T14:49:00-04:00',
   'src/pages/conex-boxes-for-sale/index.astro': '2026-09-14T14:49:00-04:00',
   'src/pages/contact/index.astro': '2026-09-14T14:49:00-04:00',
-  'src/pages/container-buying-guide/index.astro': '2026-09-14T14:49:00-04:00',
+  'src/pages/container-buying-guide/index.astro': '2026-09-16T16:52:11-04:00',
   'src/pages/container-certification-guide/index.astro': '2026-08-25T13:21:46-04:00',
   'src/pages/container-reference/index.astro': '2026-08-24T15:22:53-04:00',
   'src/pages/container-rent-vs-buy-calculator/index.astro': '2026-09-14T14:49:00-04:00',
