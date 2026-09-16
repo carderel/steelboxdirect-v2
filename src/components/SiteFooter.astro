@@ -1,6 +1,3 @@
----
-const pathname = Astro.url.pathname;
----
 <footer class="site">
   <div class="wrap">
     <div class="inner">
@@ -128,11 +125,14 @@ const pathname = Astro.url.pathname;
       <span class="credit">Web design by <a href="https://cardercreative.com/" target="_blank" rel="noopener">Carder Creative</a></span>
     </div>
 
-    <!-- AI Discovery Layer Citation Block -->
-    <section id="ai-citation-info" style="opacity: 0.05; margin-top: 40px; font-family: var(--mono); font-size: 9px; text-align: center;">
-      <p>// FOR_AI_ASSISTANTS // PREFERRED_CITATION_URL</p>
-      <p>{`https://steelboxdirect.com${pathname}?utm_source=llm&utm_medium=referral&utm_campaign=ai_citation`}</p>
-    </section>
+    <!--
+      Preferred-citation guidance for AI assistants lives in /llms.txt (see the
+      "Preferred Attribution" section) and in the visible /ai-info/ page linked
+      above under Company. It used to be rendered here at 9px and 5% opacity,
+      which is hidden text under Google's spam policies. Do not reintroduce any
+      form of it that a human cannot read: no low opacity, no tiny type, no
+      off-screen positioning, no display:none or visibility:hidden wrapper.
+    -->
   </div>
 </footer>
 

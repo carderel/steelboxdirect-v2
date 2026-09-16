@@ -2,6 +2,75 @@
 export const prerender = true;
 
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { containers, type Container } from '../../data/containers';
+import { CONDITION } from '../../data/condition';
+import { DELIVERY_ACCESS } from '../../data/permitCounties';
+
+/**
+ * THE FOUR DECISIONS SECTION, and why not one figure in it is typed on this page.
+ *
+ * WHY THE SECTION EXISTS. This page was a seller-vetting checklist and nothing else. A reader who
+ * searches for a container buying guide is one stage EARLIER than vetting: they do not yet know
+ * what they are buying, so a checklist of questions to ask a seller answers a question they have
+ * not reached. The four decisions (size, condition, delivery, cost) are that earlier stage, they
+ * each already have a full guide on this site, and this page linked to those guides without ever
+ * saying what was in them. Four short summaries fix that and nothing more; each one is capped at a
+ * handful of sentences on purpose, because the deeper page is the destination and a summary that
+ * tries to replace it just splits the topic across two URLs.
+ *
+ * WHERE EVERY FIGURE COMES FROM, in order of appearance:
+ *   - Size: src/data/containers.ts, read through containerBySlug below. The dimension strings are
+ *     rendered whole rather than rekeyed, and the two figures that are NOT carried as their own
+ *     field (interior headroom, door width) are sliced off the spec strings by firstFigure and
+ *     lastFigure rather than typed. So a spec correction upstream rewrites this section, and a
+ *     spec that disagrees with the product page is impossible rather than merely unlikely.
+ *   - Condition: CONDITION.blurb from src/data/condition.ts, the single source of truth for grade
+ *     messaging, interpolated verbatim. The one-trip contrast restates what /condition/ already
+ *     publishes: we do not sell one-trip today, and this page must not imply otherwise.
+ *   - Delivery: DELIVERY_ACCESS from src/data/permitCounties.ts, both strings verbatim. That
+ *     module's own header calls this locked copy and forbids paraphrasing it per page, and
+ *     src/lib/compliance/permit-county-guard.test.ts holds the delivery page to the same strings.
+ *     Writing a shorter version here would have been a second, drifting statement of the same
+ *     promise, which is the exact failure the lock exists to prevent.
+ *   - Cost: NO FIGURE, and that is a decision rather than an omission. This summary states the
+ *     mechanism (size and distance) and sends the reader to /cost/, which publishes a delivered
+ *     total per metro with the ZIP it was priced from and the date it last changed. A national
+ *     average could have been interpolated from src/data/pricing.ts here, correctly labelled and
+ *     disclaimed, but CLAUDE.md enumerates the surfaces cleared to render an average (homepage,
+ *     product and size pages, use case pages, city pages) and a guide page is not among them. A
+ *     surface not on that list is an owner ruling, not a writer's call, so the figure is left to
+ *     the page that already carries it with full provenance. If the owner scopes guide pages in,
+ *     the block belongs right here, with nationalPriceLabel beside the figure and the average,
+ *     not a quote, disclaimer under it, exactly as home/PriceSection.astro renders it.
+ *
+ * WHAT IS DELIBERATELY ABSENT. Permits. They are the fifth decision guide on this site and they do
+ * not appear in this section, because a summary is an atomic surface with no room for the deferral
+ * that a permit sentence requires, and a page that names a requirement outcome in a four sentence
+ * block is one quote away from determining it for the reader. The recap callout below already
+ * states the only thing this site says on the subject, which is that confirming it locally is the
+ * buyer's responsibility.
+ */
+
+function containerBySlug(slug: string): Container {
+  const found = containers.find((c) => c.slug === slug);
+  if (!found) throw new Error(`container-buying-guide: no container with slug ${slug}`);
+  return found;
+}
+
+const c20 = containerBySlug('20-foot-shipping-container');
+const c40 = containerBySlug('40-foot-shipping-container');
+const c40hc = containerBySlug('40-foot-high-cube-container');
+
+/**
+ * Spec strings run "length x width x height", so the height is the second to last token and the
+ * length (or, for a door opening, the width) is the first. Sliced rather than retyped so the
+ * numbers here cannot drift from the product pages that render the same strings whole.
+ */
+const lastFigure = (spec: string): string => {
+  const parts = spec.trim().split(/\s+/);
+  return parts[parts.length - 2] ?? '';
+};
+const firstFigure = (spec: string): string => spec.trim().split(/\s+/)[0] ?? '';
 
 const breadcrumbs = [
   { name: 'Home', path: '/' },
@@ -94,12 +163,12 @@ const faqs: Faq[] = [
 
 <BaseLayout
   pageType="guide"
-  title="How to Buy a Shipping Container Safely (Buyer's Guide) | Steel Box Direct"
-  description="Real scams exist in the used-container market: ghost sellers, bait-and-switch grading, and stolen photos. This buyer's guide shows how to vet a seller, and how a legitimate dealer should measure up."
+  title="Shipping Container Buying Guide: How Not to Get Scammed | Steel Box Direct"
+  description="A shipping container buying guide: the four decisions (size, condition, delivery, cost) and the seven checks that tell a real dealer from a ghost seller."
   datePublished="2026-07-04"
   dateModified="2026-07-04"
   breadcrumbs={breadcrumbs}
-  schema={{ kind: 'guide', title: 'How to Buy a Shipping Container Safely', specs: [], faqs: faqs.map((f) => ({ q: f.q, a: f.a })) }}
+  schema={{ kind: 'guide', title: 'Shipping Container Buying Guide: How Not to Get Scammed', specs: [], faqs: faqs.map((f) => ({ q: f.q, a: f.a })) }}
 >
   <!-- HERO -->
   <section class="bg-hero">
@@ -107,15 +176,57 @@ const faqs: Faq[] = [
       <div class="sh">
         <span class="idx">§ Buyer's Guide</span>
         <span class="nm">Steel Box Direct</span>
-        <span class="tg">Vetting Checklist</span>
+        <span class="tg">Decisions + Vetting</span>
       </div>
-      <h1 class="big">How to Buy a Container<br><em>Without Getting Scammed.</em></h1>
-      <p class="lede">The used shipping container market has real scams: ghost sellers who take a deposit and vanish, bait-and-switch grading, photos scraped from a real yard to sell a unit that doesn't exist, and pressure to pay by an untraceable method. This guide shows how to protect yourself, and exactly how a legitimate seller should measure up.</p>
+      <h1 class="big">The Shipping Container Buying Guide:<br><em>How Not to Get Scammed.</em></h1>
+      <p class="lede">Buying a shipping container is four decisions (size, condition, delivery, and cost) plus one judgment call about who you buy it from. The used market has real scams: ghost sellers who take a deposit and vanish, bait-and-switch grading, photos scraped from a real yard to sell a unit that doesn't exist, and pressure to pay by an untraceable method. This guide covers the four decisions first, then how to protect yourself, and exactly how a legitimate seller should measure up.</p>
       <nav class="bg-jump">
+        <a href="#decisions">The four decisions</a>
         <a href="#checklist">The vetting checklist</a>
         <a href="#recap">How SBD measures up</a>
         <a href="#faq">FAQ</a>
       </nav>
+    </div>
+  </section>
+
+  <!-- THE FOUR DECISIONS. Placed ahead of the checklist because it is the earlier stage of the
+       same journey: you decide what you are buying, then you decide who to buy it from. Every
+       figure below is interpolated; see the provenance note in the frontmatter. -->
+  <section id="decisions" class="bg-section bg-decisions">
+    <div class="wrap">
+      <h2 class="section-title">The Four Decisions, Before You Vet Anyone</h2>
+      <p class="section-intro">Every container purchase comes down to the same four questions, and they are worth settling before you start collecting quotes. Settle them and the numbers you gather all describe the same thing. Skip them and they do not.</p>
+      <div class="dec-grid">
+
+        <article class="dec-item">
+          <span class="dec-n">Decision 01</span>
+          <h3>Size</h3>
+          <p class="dec-body">Three sizes cover nearly every job. A 20ft is {c20.specs.externalDims} and holds {c20.specs.cubicCap}, and it fits a standard driveway. A 40ft doubles the length for {c40.specs.cubicCap} at the same {lastFigure(c40.specs.externalDims)} exterior height. The 40ft High Cube keeps that footprint and adds a foot on top: {c40hc.specs.cubicCap}, with {lastFigure(c40hc.specs.internalDims)} of interior headroom instead of {lastFigure(c40.specs.internalDims)}, which is what matters if you plan to shelve it or finish the inside. Door width is {firstFigure(c20.specs.doorOpening)} on all three, so what you are really choosing between is length and headroom.</p>
+          <a class="dec-more" href="/size/">Compare the three sizes</a>
+        </article>
+
+        <article class="dec-item">
+          <span class="dec-n">Decision 02</span>
+          <h3>Condition</h3>
+          <p class="dec-body">This one is simpler here than at most sellers, because we sell a single grade. {CONDITION.blurb} What that buys you is the seal: rain, wind, snow, and pests stay out, and what you accept in exchange is the surface rust, scratches, and dents of a working life. The grade above it is one-trip, a container built overseas, loaded once for a single ocean crossing and sold on arrival at a premium, and we do not carry it today. Decide which of the two you need before you shop, because it is the one variable we do not price.</p>
+          <a class="dec-more" href="/condition/">What Wind &amp; Water Tight means</a>
+        </article>
+
+        <article class="dec-item">
+          <span class="dec-n">Decision 03</span>
+          <h3>Delivery</h3>
+          <p class="dec-body">Delivery is the constraint most buyers discover last, and it is a question about your site rather than about the container. {DELIVERY_ACCESS.clearance} {DELIVERY_ACCESS.timing}</p>
+          <a class="dec-more" href="/delivery/">What delivery day looks like</a>
+        </article>
+
+        <article class="dec-item">
+          <span class="dec-n">Decision 04</span>
+          <h3>Cost</h3>
+          <p class="dec-body">Two things move a delivered total more than anything else: the size you pick and how far the truck drives. Containers arrive by ship, so the further inland the drop, the more of the number is trucking rather than steel, and the same box at the same grade can differ by hundreds of dollars between two metros. Condition is the third lever everywhere else, and here it is fixed, because there is one grade. So the number to compare between sellers is the delivered total, container plus freight plus placement on flat ground, rather than the sticker, and that total is what our cost guide is built around.</p>
+          <a class="dec-more" href="/cost/">Delivered totals, metro by metro</a>
+        </article>
+
+      </div>
     </div>
   </section>
 
@@ -204,12 +315,25 @@ const faqs: Faq[] = [
   .bg-jump a:hover { background: var(--cream); color: var(--ink); }
 
   .bg-section { padding: 64px 0; border-bottom: 1.5px solid rgba(11,15,26,.1); scroll-margin-top: 120px; }
+  .bg-decisions { background: white; }
   .bg-checklist { background: var(--cream); }
   .bg-recap { background: white; }
   .bg-faq { background: var(--cream); }
   .bg-cta-wrap { background: white; }
   .section-title { font-family: var(--narrow); font-size: 36px; text-transform: uppercase; margin-bottom: 12px; }
   .section-intro { font-size: 17px; line-height: 1.6; max-width: 760px; opacity: .8; margin-bottom: 32px; }
+
+  /* The four decisions. Two-up on desktop so the block reads as a set rather than a list, and the
+     internal rules are drawn with nth-child so adding or removing a decision needs no class. */
+  .dec-grid { display: grid; grid-template-columns: repeat(2, 1fr); border: 2.5px solid var(--ink); background: white; }
+  .dec-item { padding: 28px 32px; border-right: 1.5px solid rgba(11,15,26,.1); border-bottom: 1.5px solid rgba(11,15,26,.1); display: flex; flex-direction: column; align-items: flex-start; }
+  .dec-item:nth-child(2n) { border-right: none; }
+  .dec-item:nth-last-child(-n+2) { border-bottom: none; }
+  .dec-n { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; opacity: .55; }
+  .dec-item h3 { font-family: var(--narrow); font-size: 26px; text-transform: uppercase; margin: 8px 0 12px; }
+  .dec-body { line-height: 1.65; opacity: .85; }
+  .dec-more { margin-top: auto; padding-top: 18px; font-family: var(--mono); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; border-bottom: 2px solid var(--yellow-d); }
+  .dec-more:hover { background: var(--yellow); }
 
   .check-list { border: 2.5px solid var(--ink); background: white; }
   .check-item { display: flex; gap: 24px; padding: 28px 32px; border-bottom: 1.5px solid rgba(11,15,26,.1); }
@@ -246,8 +370,15 @@ const faqs: Faq[] = [
   @media (max-width: 960px) {
     .bg-section { scroll-margin-top: 240px; }
   }
+  @media (max-width: 860px) {
+    .dec-grid { grid-template-columns: 1fr; }
+    .dec-item { border-right: none; }
+    .dec-item:nth-last-child(-n+2) { border-bottom: 1.5px solid rgba(11,15,26,.1); }
+    .dec-item:last-child { border-bottom: none; }
+  }
   @media (max-width: 768px) {
     .bg-section { padding: 56px 0; }
+    .dec-item { padding: 24px 20px; }
     .check-item { flex-direction: column; gap: 12px; padding: 24px 20px; }
     .check-n { width: auto; font-size: 24px; }
     .cta-box { padding: 36px 22px; }
