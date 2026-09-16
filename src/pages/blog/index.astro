@@ -71,11 +71,15 @@ const breadcrumbs = [
         <p class="empty-note">No posts published yet. Check back soon.</p>
       ) : (
         <div class="post-grid">
-          {posts.map(({ post, heroImg }) => (
+          {posts.map(({ post, heroImg }, i) => (
             <a class="post-card" href={`/blog/${post.slug}/`}>
               {heroImg && (
                 <div class="post-card-thumb">
-                  <Image src={heroImg} alt="" width={600} format="webp" />
+                  {/* Never lazy. These cards sit at the top of the page, and the first one
+                      measured as the LCP element at 2340ms while it was lazy-loaded. Card
+                      counts here are 2 to 5, so eager costs nothing worth having. */}
+                  <Image src={heroImg} alt="" width={600} format="webp" loading="eager"
+                    fetchpriority={i === 0 ? 'high' : 'auto'} />
                 </div>
               )}
               <div class="post-card-chip" style={`background:${categoryColor(post.data.category)};color:${categoryTextColor(post.data.category)}`}>{post.data.category}</div>
