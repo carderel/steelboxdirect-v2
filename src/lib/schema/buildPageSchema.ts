@@ -155,11 +155,22 @@ export function buildPageSchema(args: BuildSchemaArgs): BuiltSchema {
           url: args.url,
         },
       });
+      // The FAQPage node is additive here, unlike productHub where the FAQ IS the page's main
+      // entity. A product page's main entity is the Product, so webPageNode keeps pointing at it
+      // and the FAQ rides alongside; an absent or empty list emits no node at all.
+      const productFaqs = p.faqs ?? [];
+      if (productFaqs.length) graph.push(faqNode(args.url, productFaqs));
       graph.push(webPageNode(args, productId, productId));
       quickFacts = {
         entityTitle: p.container.name,
         entitySubtitle: 'Wind & Water Tight (used) · sold as-is',
         specs: p.specs,
+        // DELIBERATELY EMPTY even when the page supplies FAQs, which is the one place this branch
+        // differs from productHub. Since 2026-09-16 the product template renders its own visible
+        // seven-question FAQ as section 07, and the QuickFacts card sits BELOW it. Echoing the
+        // first three there would print the same question and the same multi-paragraph answer
+        // twice within one screen of each other. The FAQPage node above is what the markup was
+        // for; the visible echo was not.
         faqs: [],
         showPriceDisclaimer: Boolean(p.price),
       };

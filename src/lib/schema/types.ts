@@ -48,7 +48,14 @@ export type PageSchemaInput =
   | { kind: 'productHub'; faqs: QuickFaq[] }
   | { kind: 'product'; container: import('../../data/containers').Container;
       price?: import('../../data/pricing').ContainerPrice;
-      specs: QuickFact[] }
+      specs: QuickFact[];
+      /**
+       * OPTIONAL, and optional on purpose. The three product pages carried no FAQ at all until
+       * 2026-09-16, and a product without one must stay buildable: an absent or empty list emits
+       * NO FAQPage node rather than an empty one, because a FAQPage with no mainEntity is invalid
+       * markup that a validator will flag on every page that ships it.
+       */
+      faqs?: QuickFaq[] }
   | { kind: 'city'; city: import('../../data/cities').City; faqs: QuickFaq[];
       price?: CityPriceFacts }
   | { kind: 'useCase'; audience: string; title: string; specs: QuickFact[]; faqs: QuickFaq[];

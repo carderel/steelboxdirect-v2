@@ -9,7 +9,20 @@ import type { Container } from '../../data/containers';
 import { CONDITION } from '../../data/condition';
 import { priceBySlug, formatPrice, asOfLabel, nationalPriceLabel } from '../../data/pricing';
 import { RTO_TERMS, RTO_DOWN_CONDITION } from '../../data/rtoTerms';
+import { DELIVERY_ACCESS } from '../../data/permitCounties';
 
+// MOCK A RESTRUCTURE, 2026-09-16, owner approved build and ship.
+//
+// The page is now an ordered proof document in three acts. Listing head, then the 3D viewer
+// UNNUMBERED above the acts, then 01 to 07 with no gap:
+//   ACT ONE / WHAT IT IS              01 specs + compare merged, 02 what Wind and Water Tight means
+//   ACT TWO / HOW YOU GET IT          03 when it arrives and where it lands, 04 the single ask
+//   ACT THREE / WHERE AND WHO IT COMES FROM  05 is this a real company, 06 guides, 07 FAQ
+// Cut in this pass: prod-uses, the closing cta-section, prod-pricing as a band (it survives as one
+// link inside the buy box), and the three spec chips under the H1 (the dimensions block states
+// those numbers properly). New: the dimensions block, the delivery block under the hero photo, the
+// seven question FAQ and its FAQPage markup, and the act band markers.
+//
 // THE VISIBLE DATE STAYS AT MONTH PRECISION, and it is a decision rather than an oversight.
 //
 // The feed now carries day precision, and effectiveSinceLabel in src/data/pricing.ts renders it, so
@@ -36,6 +49,8 @@ const { container: c } = Astro.props;
 const others = containers.filter((x) => x.slug !== c.slug);
 const price = priceBySlug[c.slug];
 // Clearance plate hidden pending the owner-approved illustration; flip to re-enable.
+// The plate itself is still rejected (v1 and v2, 2026-08-26), so this gate stays false and the
+// clearance FIGURES ship as text in section 03 instead, derived from DELIVERY_ACCESS below.
 const SHOW_CLEARANCE_PLATE = false;
 
 // Maps each product slug to the quote form's size_preference select value, which the
@@ -59,8 +74,9 @@ const sizeParam = sizeParamFor(c.slug);
 // products cost a small HTML file and one JPG each, not another copy of the renderer.
 // isoCode and modelLabel exist because the figure's head bar names the exact unit modeled:
 // a 40ft high cube is 45G1 and is not "standard", so neither string can be derived from
-// shortName without a special case. The still images are all 1376x768, which is why the
-// width/height attributes below are literal.
+// shortName without a special case. The dimensions block head reads the same two fields, with a
+// fallback to shortName, so a future product with no model still gets a titled block.
+// The still images are all 1376x768, which is why the width/height attributes below are literal.
 interface ViewerModel {
   embed: string;
   still: string;
@@ -88,27 +104,161 @@ const VIEWER_MODELS: Record<string, ViewerModel> = {
   },
 };
 const viewer: ViewerModel | undefined = VIEWER_MODELS[c.slug];
+const dimsTitle = viewer ? `${viewer.modelLabel}, ISO ${viewer.isoCode}` : c.shortName;
 
-// ONE comparison data source: the desktop table and the mobile cards both map over
-// compareRows, so the two presentations cannot diverge. Best-for cells drop the shared
-// CONDITION.blurb tail that containers.ts appends to every compareNote; the condition
-// is stated once in the line above the comparison instead of repeating per column.
+// THE DIMENSIONS BLOCK, and why it parses strings instead of reading new fields.
+//
+// containers.ts stores each measurement as ONE sentence-shaped string, "20' L x 8' W x 8'6\" H".
+// That is the right shape for the spec table, the markdown twin and the Product schema, all of
+// which want the whole measurement in one cell, and it is the wrong shape for a reference block
+// whose entire job is that a buyer can read 8' against 7'8" straight down a column. Rather than
+// add three more fields to containers.ts and have two sources for one fact that can then
+// disagree, the strings are split here and the split is checked: an unparseable segment throws
+// at build time rather than rendering a blank cell. So there is still exactly one source for
+// every number on this page, and a malformed edit to containers.ts fails the build loudly.
+// The separator is U+00D7 (multiplication sign), written as an escape to keep this file ASCII.
+const DIM_SEP = '\u00D7';
+type Axis = 'L' | 'W' | 'H';
+function splitDims(value: string, field: string): Partial<Record<Axis, string>> {
+  const out: Partial<Record<Axis, string>> = {};
+  for (const part of value.split(DIM_SEP)) {
+    const m = part.trim().match(/^(.+?)\s+([LWH])$/);
+    if (!m) {
+      throw new Error(
+        `containers.ts ${c.slug}.specs.${field}: cannot read an axis out of "${part.trim()}". ` +
+        `Each segment must end in L, W or H, for example "8'6\\" H".`,
+      );
+    }
+    out[m[2] as Axis] = m[1];
+  }
+  return out;
+}
+const dimRows: { label: string; note: string; axes: Partial<Record<Axis, string>> }[] = [
+  { label: 'External',     note: 'What your pad has to take',  axes: splitDims(c.specs.externalDims, 'externalDims') },
+  { label: 'Internal',     note: 'The space you get to fill',  axes: splitDims(c.specs.internalDims, 'internalDims') },
+  { label: 'Door opening', note: 'What has to fit through it', axes: splitDims(c.specs.doorOpening, 'doorOpening') },
+];
+// Capacity, payload and tare split into figure and unit so the footer strip can set the numeral
+// at display size and the unit at label size. A value that does not start with a numeral renders
+// whole, which is the honest fallback rather than a throw: nothing is lost, only the styling.
+function splitFigure(value: string): { n: string; u: string } {
+  const m = value.match(/^([\d,.]+)\s*(.*)$/);
+  return m ? { n: m[1], u: m[2] } : { n: value, u: '' };
+}
+const dimFigures = [
+  { k: 'Capacity',    ...splitFigure(c.specs.cubicCap) },
+  { k: 'Payload',     ...splitFigure(c.specs.payload) },
+  { k: 'Tare (empty)', ...splitFigure(c.specs.tare) },
+];
+
+// THE CLEARANCE FIGURES, pulled out of the locked sentence rather than typed beside it.
+//
+// DELIVERY_ACCESS.clearance in src/data/permitCounties.ts is the site's one statement of what a
+// delivery rig needs, and it is prose. The delivery block under the hero photo and the site-check
+// strip in section 03 both want the bare figures. Retyping them here would create a second source
+// that drifts the first time the sentence is reworded, so each figure is extracted from the one
+// string and a miss THROWS at build time: if somebody rewords the locked sentence, this page fails
+// the build instead of quietly publishing stale numbers beside the new wording.
+function clearanceFigure(name: string, re: RegExp): string {
+  const m = DELIVERY_ACCESS.clearance.match(re);
+  if (!m || !m[1]) {
+    throw new Error(
+      `DELIVERY_ACCESS.clearance (src/data/permitCounties.ts) no longer states the ${name} figure ` +
+      `in the shape ${re}. Update the pattern in src/pages/shipping-containers-for-sale/[slug].astro ` +
+      `to match the new wording rather than typing the figure in.`,
+    );
+  }
+  return m[1];
+}
+const CLR = {
+  rig:      clearanceFigure('truck combination', /roughly a ([a-z-]+ foot) truck combination/),
+  approach: clearanceFigure('straight approach', /at least ([\d,]+ feet) of straight approach/),
+  width:    clearanceFigure('width clearance',   /([\d,]+ feet) of width clearance/),
+  overhead: clearanceFigure('overhead clearance', /([\d,]+ feet) of overhead clearance/),
+  ground:   clearanceFigure('ground support',    /support a ([\d,]+ lb) truck/),
+};
+
+// ONE comparison data source, now doing both jobs. prod-specs and prod-compare were two bands
+// showing overlapping numbers; section 01 is the merged table, so the rows below carry the full
+// specification rather than the three-row summary the old compare band used. Best-for cells drop
+// the shared CONDITION.blurb tail that containers.ts appends to every compareNote; the condition
+// is stated once in the line above the table instead of repeating per column.
 function comparisonColumn(pick: (x: Container) => string): Record<string, string> {
   const values: Record<string, string> = {};
   for (const x of containers) values[x.slug] = pick(x);
   return values;
 }
 const compareRows: { label: string; values: Record<string, string> }[] = [
-  { label: 'External', values: comparisonColumn((x) => x.specs.externalDims) },
-  { label: 'Internal', values: comparisonColumn((x) => x.specs.internalDims) },
-  { label: 'Capacity', values: comparisonColumn((x) => x.specs.cubicCap) },
-  { label: 'Best for', values: comparisonColumn((x) => x.compareNote.replace(CONDITION.blurb, '').trim()) },
+  { label: 'External',        values: comparisonColumn((x) => x.specs.externalDims) },
+  { label: 'Internal',        values: comparisonColumn((x) => x.specs.internalDims) },
+  { label: 'Door opening',    values: comparisonColumn((x) => x.specs.doorOpening) },
+  { label: 'Cubic capacity',  values: comparisonColumn((x) => x.specs.cubicCap) },
+  { label: 'Payload',         values: comparisonColumn((x) => x.specs.payload) },
+  { label: 'Tare weight',     values: comparisonColumn((x) => x.specs.tare) },
+  { label: 'Best for',        values: comparisonColumn((x) => x.compareNote.replace(CONDITION.blurb, '').trim()) },
 ];
-// Mobile cards lead with the container this page sells.
-const compareOrder = [c, ...others];
 
-// FIG. D1 delivery clearance plate. Every number on the plate traces to a published
-// source and NOTHING is estimated (spec: omit rather than estimate):
+// SECTION 07, THE FAQ. New to the three product pages on 2026-09-16 and the FAQPage schema source
+// for this template: eleven other pages carry FAQPage markup, including the listing page these
+// three sit under, so the site's highest-intent commercial pages carried none at all.
+//
+// NOTHING BELOW IS A NEW CLAIM. Every answer is lifted from copy already published on this site or
+// from /terms/, and where a locked string exists it is interpolated rather than retyped:
+// DELIVERY_ACCESS.timing (Q2), DELIVERY_ACCESS.clearance (Q7) and CONDITION.blurb (Q4) all come
+// from their modules. Order is the review corpus order (see
+// UDO Project/.outputs/research/2026-09-14-columbus-review-mining.md), not the order that is
+// easiest to answer: delivery cost, date, placement, condition, the warranty remedy, ground,
+// access. Three answers are deliberately less comfortable than a competitor's would be. Q3 does
+// not promise placement anywhere you want it, it states the terms clause that makes a failed
+// delivery the buyer's cost. Q5 names the customer-applied fiberglass patch kit as the whole
+// remedy inside the answer. Q1 keeps the 250 mile scope instead of saying delivery is always
+// included. There is NO permit question, and no answer states or implies whether a permit is
+// needed; the guides row in section 06 still carries the permit link, where the deferral to the
+// local authority belongs.
+//
+// `a` is the plain-text answer and the only thing the schema ever sees. `html` is an optional
+// richer rendering for the visible block, so a link in the copy never leaks into JSON-LD.
+interface Faq { q: string; a: string; html?: string }
+const faqs: Faq[] = [
+  {
+    q: 'Is delivery included in the price?',
+    a: 'Within 250 miles of Cincinnati, yes. We quote all-in on purpose: the container, delivery to your ZIP, and placement on flat ground, in one number, rather than a container price with a freight line arriving later. The figure at the top of this page is a delivered average across the home metros, not a bare unit price with delivery still to come. Past that home region we deliver from regional depot hubs, and the delivery cost depends on the distance from the depot your container ships from, so that one has to be quoted for your address.',
+  },
+  {
+    q: 'How long does delivery actually take?',
+    a: `${DELIVERY_ACCESS.timing} Depot inventory is stacked and sequenced rather than staged for a quick pull, and drivers book out several weeks ahead, so exact timing depends on current availability and where you are. Scheduling depends on independent drivers and can shift; that is true of container delivery generally, and Steel Box Direct does not control it.`,
+  },
+  {
+    q: 'Will the driver put it exactly where I want it?',
+    a: "Where it lands is decided before delivery is scheduled, not on delivery day. A tilt-bed does not lower the container down: it raises the front of the bed and the box slides off the back while the truck creeps forward, so the container lands in a straight line along the truck's path. Placement is directional, and if you want the doors facing the house, that has to be planned before the truck backs in. So send photos of the route and the placement spot with your quote request, mark the exact spot with stakes, paint or cones at the four corners, and have somebody on site who can point at it and make a decision. Where a site cannot give the truck what it needs, a crane-set delivery places the container instead: that exists precisely for sharp turns, fencelines and soft ground. It is worth knowing what happens if the site will not take it, because it costs money. Under our terms, if delivery cannot be made due to space limitations or an unsuitable environment, for example wet ground, snow, mud, no clear path, graded hills or low bridges, it is the customer's responsibility to cover the transport fee, the return delivery fee, and any third-party costs such as wrecker or tow charges. If there is not adequate space, we confer with you to either call the attempt a failed delivery or agree an alternate suitable location. An hour spent looking at your access now is the cheapest hour in the whole transaction.",
+    html: "<p>Where it lands is decided before delivery is scheduled, not on delivery day. A tilt-bed does not lower the container down: it raises the front of the bed and the box slides off the back while the truck creeps forward, so the container lands in a straight line along the truck's path. Placement is directional, and if you want the doors facing the house, that has to be planned before the truck backs in.</p><p>So send photos of the route and the placement spot with your quote request, mark the exact spot with stakes, paint or cones at the four corners, and have somebody on site who can point at it and make a decision. Where a site cannot give the truck what it needs, a crane-set delivery places the container instead: that exists precisely for sharp turns, fencelines and soft ground.</p><p>It is worth knowing what happens if the site will not take it, because it costs money. Under our <a href=\"/terms/#delivery\">terms</a>, if delivery cannot be made due to space limitations or an unsuitable environment, for example wet ground, snow, mud, no clear path, graded hills or low bridges, it is the customer's responsibility to cover the transport fee, the return delivery fee, and any third-party costs such as wrecker or tow charges. If there is not adequate space, we confer with you to either call the attempt a failed delivery or agree an alternate suitable location. An hour spent looking at your access now is the cheapest hour in the whole transaction.</p>",
+  },
+  {
+    q: 'What does Wind and Water Tight mean, and what wear should I expect?',
+    a: `${CONDITION.blurb} It is the one grade we sell, in all three sizes, sealed against rain, wind, snow and pests, and sold as-is for storage and on-site use. It spent years at sea and it looks like it. Expect surface rust, patched paint, dents in the corrugation and a previous owner's markings, over weathering (Cor-Ten) steel built to last decades. What you should not expect is daylight through the roof, a floor that gives, or door seals that have gone.`,
+  },
+  {
+    q: 'What happens if it leaks?',
+    a: 'There is a limited Lifetime Leak Warranty, and the remedy is the part worth knowing before you buy rather than after. If you discover a leak, we send you an industry-approved equipment patch along with installation instructions, and the patch is installed by you. It is a durable fiberglass-reinforced polyester fabric that bonds to the metal surface, flexible and easy to apply, and it becomes solid when fully cured: roughly five to ten minutes under a UV lamp or direct sunlight, one to two hours in other conditions. Once cured it can be drilled, sanded or painted. That is the entire remedy, and we state it here rather than in fine print, because the remedy is where every warranty argument in this business ends up.',
+    html: '<p>There is a limited Lifetime Leak Warranty, and the remedy is the part worth knowing before you buy rather than after. If you discover a leak, we send you an industry-approved equipment patch along with installation instructions, and the patch is installed by you.</p><p>It is a durable fiberglass-reinforced polyester fabric that bonds to the metal surface, flexible and easy to apply, and it becomes solid when fully cured: roughly five to ten minutes under a UV lamp or direct sunlight, one to two hours in other conditions. Once cured it can be drilled, sanded or painted. That is the entire remedy, and we state it here rather than in fine print, because the remedy is where every warranty argument in this business ends up. <a href="/terms/#lifetime-leak-warranty">Read the terms</a></p>',
+  },
+  {
+    q: 'What do I need to set it on?',
+    a: 'Level ground that drains, and no slab to pour. A container carries its load at its four corner castings, and when one corner sits low the frame twists slightly; that twist shows up at the door end, because the door opening is the one side of the box with no wall across it, and the result is doors that bind or will not latch fully. Level side to side matters most for door operation, and keeping the container up out of standing water lets the underside dry between rains. Gravel is the most reliable surface because it drains and spreads load. Packed dirt is dependable when dry and much less so when wet. Grass is the one that fools people: turf is a thin mat over topsoil, and topsoil holds water, so a lawn that felt solid underfoot in the morning can rut badly under loaded tires by the afternoon. If you want the container set on blocking, say so in your quote request: blocking changes how the box comes off the truck, and it has to be planned before the driver is on your property rather than decided in your driveway.',
+  },
+  {
+    q: 'Will a truck fit down my driveway?',
+    a: `${DELIVERY_ACCESS.clearance} Measure the narrowest point of your route rather than the average: gate posts, a mailbox, a parked truck, the corner of the garage. And look up at the drop spot as well as at the lane, because when the bed tilts the raised end reaches higher than the truck stood driving in.`,
+    html: `<p>${DELIVERY_ACCESS.clearance}</p><p>Measure the narrowest point of your route rather than the average: gate posts, a mailbox, a parked truck, the corner of the garage. And look up at the drop spot as well as at the lane, because when the bed tilts the raised end reaches higher than the truck stood driving in. <a href="#clearance">See the clearance figures</a> in section 03.</p>`,
+  },
+];
+
+// FIG. D1 delivery clearance plate. STILL HIDDEN: plate v1 and v2 were rejected by the owner on
+// 2026-08-26 and nothing here un-hides them. The section below is kept, gated, so the owner's
+// Gemini illustration drops straight into the right act when it lands. Prompts:
+// UDO Project/.outputs/image-prompts/2026-08-26-clearance-plate-prompts.md
+// Every number on the plate traces to a published source and NOTHING is estimated (spec: omit
+// rather than estimate):
 //   - 65 ft truck combination, 100+ ft straight approach (tilt bed), 14 ft overhead,
 //     12 ft wide path, 30,000 lb ground: all published on src/pages/delivery/index.astro.
 //   - Container length and height: c.specs.externalDims (containers.ts).
@@ -123,7 +273,7 @@ const compareOrder = [c, ...others];
 // length and height are the only per-page variables; both scale off c.specs.externalDims.
 const PX_PER_FT = 9;
 const DECK_TOP = 150; // tilt deck surface the container rides on (illustration height)
-const lengthFt = parseInt(c.specs.externalDims, 10); // "20' L × ..." -> 20
+const lengthFt = parseInt(c.specs.externalDims, 10); // "20' L x ..." -> 20
 const contLenPx = lengthFt * PX_PER_FT;
 const contX1 = 645; // container rear sits at the rear of the tilt deck
 const contX0 = contX1 - contLenPx;
@@ -148,28 +298,26 @@ const plateAria = `Side profile of a tilt bed delivery truck carrying a ${c.shor
       { k: 'Condition', v: 'Wind & Water Tight (used)' },
       { k: 'Warranty', v: 'Lifetime Leak, self-applied patch kit' },
       ...(price ? [{ k: nationalPriceLabel, v: formatPrice(price.price) }] : []),
-    ] }}>
+    ],
+    faqs: faqs.map((f) => ({ q: f.q, a: f.a })) }}>
 
-  <!-- LISTING HERO (owner brief 2026-08-25): one dense Amazon-style module instead of a
-       scattered stack. Desktop is photo left, decision column right. Mobile keeps the
-       owner's exact order via DOM order alone: H1 + chips, photo, bullets, buy box.
-       The four bullets are the old confidence strip minus its price line; the price
-       moved into the buy box so it is stated once, disclaimer adjacent, all from
-       src/data/pricing.ts. The /condition/ link swaps to the T-170 wear guide when
-       that page ships. The interim photo is a real 40ft, captioned as such in
-       containers.ts, shared by all three pages until per-size yard photos land. -->
-  <section class="prod-hero">
+  <!-- LISTING HEAD. Desktop is photo left, decision column right; the aside is LAST in the DOM so
+       that on a phone it falls below the price rather than pushing it down, and the >=961px grid
+       lifts it back into the empty left column under the photo.
+       The four trust bullets that used to sit here are gone: each of them is now a band below,
+       where it can be argued instead of asserted. The dimensions block replaces the three 11px
+       spec chips that used to sit under the H1. The interim photo is a real 40ft, captioned as
+       such in containers.ts, shared by all three pages until per-size yard photos land, and it is
+       still the only eager image on the page. -->
+  <section class="prod-head">
     <div class="wrap">
       <div class="breadcrumb-nav">
         <a href="/shipping-containers-for-sale/">Shipping Containers for Sale</a>
-        <span>›</span>
+        <span>&rsaquo;</span>
         <span>{c.name}</span>
       </div>
       <div class="listing">
         <h1 class="listing-h1">{c.name}</h1>
-        <div class="key-specs">
-          {c.keySpecs.map((s) => <span class="spec-chip">{s}</span>)}
-        </div>
         {c.heroPhoto && (
           <figure class="listing-media">
             <div class="listing-frame">
@@ -180,12 +328,6 @@ const plateAria = `Side profile of a tilt bed delivery truck carrying a ${c.shor
         )}
         <div class="listing-body">
           <p class="listing-lede">{c.tagline}</p>
-          <ul class="listing-bullets" aria-label="Why buyers trust this container">
-            <li><strong>Wind &amp; Water Tight (used).</strong> Honest cosmetic wear. <a href="/condition/">What that means</a></li>
-            <li><strong>Lifetime Leak Warranty</strong> on every container. Find a leak and we send a fiberglass patch kit you apply yourself. <a href="/terms/#lifetime-leak-warranty">Read the terms</a></li>
-            <li>Delivered across <strong>Ohio, Indiana, Kentucky + western West Virginia</strong> <em class="buy-bullet-note">Outside the home region? We deliver nationwide from depot hubs.</em></li>
-            <li>Quotes answered within <strong>4 business hours</strong></li>
-          </ul>
           {price && (
             <div class="buy-box">
               <p class="buy-box-label">{nationalPriceLabel}</p>
@@ -196,18 +338,17 @@ const plateAria = `Side profile of a tilt bed delivery truck carrying a ${c.shor
               )}
               <div class="buy-box-ctas">
                 <a href="#talk-to-doug" class="btn buy-btn-primary">Have Doug call me <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
-                <a href={'/quote/?size=' + sizeParam} class="btn buy-btn-secondary">Build my full quote <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
               </div>
-              <!-- RENT TO OWN. Placed BELOW the two primary CTAs rather than directly under
-                   .buy-box-disclaimer, for two reasons. The .buy-box-note negative top margin is
-                   coupled to the disclaimer and only the High Cube renders it, so an insert between
-                   the two breaks that page's spacing alone, which is the kind of regression nobody
-                   sees. And the monthly path is the secondary route: it belongs after the buyer has
-                   been offered the call and the quote, not in front of them.
-                   The figure and its condition render in ONE block. That is the whole rule: the
-                   headline states an offer, the line under it states what makes the offer true, and
-                   neither may ship without the other. Both come from src/data/rtoTerms.ts, so
-                   nothing here is typed, and src/lib/compliance/rto-terms-guard.test.ts fails the
+              <!-- The quote form drops from a second button to a text link, and the whole
+                   prod-pricing band drops to the /locations/ line under it. That band's only
+                   unique job was the delivered-price-by-ZIP bridge, and a link does that job for
+                   the cost of a line. No dollar figure renders anywhere below this block. -->
+              <p class="buy-alt">Rather write it all down? <a href={'/quote/?size=' + sizeParam}>Build my full quote</a></p>
+              <p class="buy-alt"><a href="/locations/">See the delivered price in your city</a></p>
+              <!-- RENT TO OWN. The figure and its condition render in ONE block. That is the whole
+                   rule: the headline states an offer, the line under it states what makes the offer
+                   true, and neither may ship without the other. Both come from src/data/rtoTerms.ts,
+                   so nothing here is typed, and src/lib/compliance/rto-terms-guard.test.ts fails the
                    suite if a later edit types the figure in. -->
               <div class="buy-box-rto">
                 <p class="buy-box-rto-offer">
@@ -221,78 +362,96 @@ const plateAria = `Side profile of a tilt bed delivery truck carrying a ${c.shor
               </div>
             </div>
           )}
+
+          <!-- THE DIMENSIONS BLOCK. Deliberately built in the same reference grammar as the
+               delivery block opposite it: 2.5px ink edge, the head's yellow ground showing
+               straight through, no drop shadow, no button. The buy box owns the decision and keeps
+               the shadow; this is the data you check the decision against. Every figure comes from
+               c.specs through dimRows / dimFigures above; nothing here is typed. -->
+          <section class="dims" aria-labelledby="dims-h">
+            <div class="dims-head">
+              <span class="dims-tag">Dimensions</span>
+              <span class="dims-title" id="dims-h">{dimsTitle}</span>
+            </div>
+            <table class="dims-tbl">
+              <thead>
+                <tr>
+                  <th class="dims-rowlab" scope="col"><span class="vh">Measurement</span></th>
+                  <th scope="col">Length</th><th scope="col">Width</th><th scope="col">Height</th>
+                </tr>
+              </thead>
+              <tbody>
+                {dimRows.map((row) => (
+                  <tr>
+                    <th class="dims-rowlab" scope="row"><b>{row.label}</b><span>{row.note}</span></th>
+                    {(['L', 'W', 'H'] as const).map((axis) => (
+                      row.axes[axis]
+                        ? <td>{row.axes[axis]}</td>
+                        : <td class="dims-na" aria-label="not applicable">-</td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <div class="dims-foot">
+              {dimFigures.map((f) => (
+                <div class="dims-fig">
+                  <span class="dims-fig-k">{f.k}</span>
+                  <span class="dims-fig-v">{f.n}{f.u && <i>{f.u}</i>}</span>
+                </div>
+              ))}
+            </div>
+            <a class="dims-jump" href="#size-compare">Compare all three sizes <span>&rarr;</span></a>
+          </section>
         </div>
+
+        <!-- THE DELIVERY BLOCK, in the dead space under the hero photo. Not a second buy box: no
+             drop shadow, no button, body type a step down. It answers the most frequent
+             operational complaint in the review corpus (a missed delivery date, about 28 of 379)
+             above the fold, using the locked site wording rather than a new timeline, and hands
+             placement off to the clearance figures in section 03 with one line. -->
+        <aside class="prod-aside" aria-labelledby="aside-k aside-h">
+          <div class="qa-head">
+            <span class="qa-tag" id="aside-k">Delivery</span>
+            <span class="qa-title" id="aside-h">Timing and truck access</span>
+          </div>
+          <div class="qa-body">
+            <div class="qa-item">
+              <span class="qa-k">When it arrives</span>
+              <p>{DELIVERY_ACCESS.timing} Scheduling depends on independent drivers and can shift. <a href="#delivery-date">How delivery works</a></p>
+            </div>
+          </div>
+          <p class="qa-foot">
+            <span class="qa-foot-k">Will a truck fit?</span>
+            A {CLR.rig} truck combination, {CLR.approach} of straight approach, {CLR.overhead} overhead.
+            <a href="#clearance">See the clearance figures</a>
+          </p>
+        </aside>
       </div>
     </div>
   </section>
 
-  <!-- PRICING: slimmed 2026-08-25. The big average figure moved into the hero buy box,
-       so repeating it here was noise; this section keeps the one job the buy box cannot
-       do, the delivered-price-by-ZIP pitch and its /locations/ bridge. No dollar figure
-       renders here, so no disclaimer is needed here; the JSON-LD Product offer and the
-       QuickFacts price bind through the schema prop above and are unchanged. -->
-  <section class="prod-pricing">
-    <div class="wrap">
-      <h2 class="section-title">Used {c.shortName} Shipping Container for Sale</h2>
-      <div class="pricing-card">
-        <h3 class="m" style="margin-top: 0;">What a {c.shortName} actually costs you</h3>
-        <p class="price-pitch">The average above is a national figure, not your number. What you pay rides mostly on how far we deliver and current market supply, so prices vary by metro, and we publish a dated delivered figure for each one we serve: <a href="/locations/">see the delivered price in your city</a>.</p>
-        <a href="/quote/" class="btn">Get a Current Quote <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
-        <p class="response-note">Most requests answered within 4 business hours.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ACTION BLOCK: Doug callback or preselected full quote. The id is the hero
-       buy box's "Have Doug call me" anchor target. -->
-  <section class="prod-action" id="talk-to-doug">
-    <div class="wrap">
-      <CallbackForm sizeLabel={c.shortName} sizePreference={sizeParam} />
-    </div>
-  </section>
-
-  <!-- SPECS TABLE -->
-  <section class="prod-specs">
-    <div class="wrap">
-      <h2 class="section-title">Specifications</h2>
-      <div class="specs-card">
-        <table class="specs-table">
-          <tbody>
-            <tr><th>External Dimensions</th><td>{c.specs.externalDims}</td></tr>
-            <tr><th>Internal Dimensions</th><td>{c.specs.internalDims}</td></tr>
-            <tr><th>Door Opening</th><td>{c.specs.doorOpening}</td></tr>
-            <tr><th>Payload Capacity</th><td>{c.specs.payload}</td></tr>
-            <tr><th>Tare Weight</th><td>{c.specs.tare}</td></tr>
-            <tr><th>Cubic Capacity</th><td>{c.specs.cubicCap}</td></tr>
-          </tbody>
-        </table>
-      </div>
-        <p class="spec-ref-link">
-          Full ISO 668 dimensions for every size are in our
-          <a href="/container-reference/#dimensions">Container Reference</a>.
-        </p>
-    </div>
-  </section>
-
-  <!-- 3D VIEWER (2026-09-11, all three sizes), and trivially reversible: delete this block, the .prod-3d rules in the stylesheet below, and
-       public/3d/. The gate reads VIEWER_MODELS above rather than naming a slug, so a
-       product with no model renders no band.
-       PLACEMENT is deliberate. It is NOT inside .listing-media: that photo is the page's
-       LCP element and ships loading="eager" fetchpriority="high", so hanging an iframe
-       there would trade Core Web Vitals on a commercial page for a toy. It sits under the
-       spec table instead, where a reader who has just read the dimensions can go look at
-       them.
-       Desktop (>=769px) gets the lazy iframe; 768px and below gets the exploded still, so
-       a phone is never asked to run WebGL over cell data. -->
+  <!-- SEE IT IN 3D. Unnumbered on purpose and outside the act structure: the 01 to 07 chips are the
+       spine of the three acts, and a section outside the acts cannot hold one of them without either
+       opening act one at 02 or stranding a number outside its act. Moved here 2026-09-16 on owner
+       instruction; it is a feature, so it leads, and the argument starts after it.
+       Trivially reversible: delete this block, the .prod-3d rules in the stylesheet below, and
+       public/3d/. The gate reads VIEWER_MODELS above rather than naming a slug, so a product with
+       no model renders no band.
+       It is NOT inside .listing-media: that photo is the page's LCP element and ships
+       loading="eager" fetchpriority="high", so hanging an iframe there would trade Core Web Vitals
+       on a commercial page for a toy. Desktop (>=769px) gets the lazy iframe; 768px and below gets
+       the exploded still, so a phone is never asked to run WebGL over cell data. -->
   {viewer && (
   <section class="prod-3d">
     <div class="wrap">
+      <div class="band-head no-num"><span class="band-kicker">Spin it, open the doors, pull it apart</span></div>
       <h2 class="section-title">See It In 3D</h2>
-      <p class="viewer-lede">The same {c.shortName} those numbers describe, modeled to spec. Drag to spin it, swing the cargo doors open, and pull the assembly apart to see the crossmembers, the plywood subfloor, and the corner castings, the parts you never get to look at on a box that is already sitting on a trailer. On a phone you get the exploded view as a still image instead.</p>
+      <p class="viewer-lede">This is a {viewer.modelLabel}, modeled to spec, and you can handle it on screen. It opens half pulled apart, so the crossmembers, the plywood subfloor and the corner castings are the first thing you see; push it back together, spin it, swing the cargo doors, look at how the thing is built before you read a single number about it. Every measurement behind the model is in the specification table below. On a phone you get the exploded view as a still image instead.</p>
       <figure class="viewer-fig">
         <div class="viewer-fig-head" aria-hidden="true">
           <span class="viewer-fig-no">3D</span>
-          <span class="viewer-fig-title">Interactive model · {viewer.modelLabel} · {viewer.isoCode}</span>
+          <span class="viewer-fig-title">Interactive model &middot; {viewer.modelLabel} &middot; {viewer.isoCode}</span>
         </div>
         <div class="viewer-stage">
           <!-- NO sandbox attribute. Deliberate, re-tested 2026-09-14, and NOT the risk it
@@ -337,77 +496,164 @@ const plateAria = `Side profile of a tilt bed delivery truck carrying a ${c.shor
             <p class="viewer-still-badge">For the interactive version, view on desktop</p>
           </div>
         </div>
-        <figcaption>A model, not a photograph. It shows how a {c.shortName} is built; it does not show the wear on the unit you would receive. For that, read <a href="/condition/">what Wind &amp; Water Tight means</a>.</figcaption>
+        <figcaption>Interactive, and it frames itself: drag, open the doors, slide it back together. A model built to spec is not a photograph of the unit you would receive. For that, read <a href="#condition">what Wind &amp; Water Tight means</a>.</figcaption>
       </figure>
     </div>
   </section>
   )}
 
-  <!-- SIZE COMPARE -->
-  <section class="prod-compare">
+  <!-- ACT ONE. The marker is not a new device: it is the .band-head grammar (ink chip plus narrow
+       uppercase title plus mono line) promoted to full width and set on its own yellow, so a
+       chapter break is the only place on the page where the ink rule doubles up. Yellow rather
+       than ink because an act can open onto a dark band. This act lands on the 3D viewer's dark
+       slab, and a 5px ink line over a dark slab is not a boundary, so THIS rule inverts to cream:
+       see the .prod-3d + .act rule in the stylesheet. -->
+  <div class="act" id="act-one">
     <div class="wrap">
-      <h2 class="section-title">How It Compares</h2>
-      <p class="compare-condition">All three sizes are {CONDITION.blurb}</p>
-      <div class="compare-desktop">
-        <div class="compare-card">
-          <table class="compare-table">
-            <thead>
+      <div class="act-row"><span class="act-no">Act one</span><h2 class="act-title">What it is</h2></div>
+      <p class="act-sub">The box itself, in numbers first and then in condition: every measurement for all three sizes, and what Wind and Water Tight actually looks like when it is on your pad.</p>
+    </div>
+  </div>
+
+  <!-- 01. SPECIFICATIONS AND COMPARE, MERGED. prod-specs and prod-compare were two bands showing
+       overlapping numbers. One table with the current size highlighted does both jobs, keeps the
+       internal links to the other two products, and gives back a screen of scroll. -->
+  <section class="prod-specs" id="size-compare">
+    <div class="wrap">
+      <div class="band-head"><span class="band-no">01</span><span class="band-kicker">The numbers, and the other two sizes</span></div>
+      <h2 class="section-title">Specifications, and how the three sizes compare</h2>
+      <p class="cmp-note">All three sizes are {CONDITION.blurb}</p>
+      <div class="cmp-scroll">
+        <table class="cmp">
+          <thead>
+            <tr>
+              <th></th>
+              {containers.map((x) => (
+                <th class={x.slug === c.slug ? 'cur' : ''}>
+                  {x.slug === c.slug
+                    ? <span>{x.shortName}</span>
+                    : <a href={`/shipping-containers-for-sale/${x.slug}/`}>{x.shortName}</a>
+                  }
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {compareRows.map((row) => (
               <tr>
-                <th></th>
-                {containers.map((x) => (
-                  <th class={x.slug === c.slug ? 'current-col' : ''}>
-                    {x.slug === c.slug
-                      ? <span>{x.shortName}</span>
-                      : <a href={`/shipping-containers-for-sale/${x.slug}/`}>{x.shortName}</a>
-                    }
-                  </th>
-                ))}
+                <th>{row.label}</th>
+                {containers.map((x) => <td class={x.slug === c.slug ? 'cur' : ''}>{row.values[x.slug]}</td>)}
               </tr>
-            </thead>
-            <tbody>
-              {compareRows.map((row) => (
-                <tr>
-                  <th>{row.label}</th>
-                  {containers.map((x) => <td class={x.slug === c.slug ? 'current-col' : ''}>{row.values[x.slug]}</td>)}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+            ))}
+          </tbody>
+        </table>
       </div>
-      <div class="compare-cards">
-        {compareOrder.map((x) => (
-          <article class={'compare-mcard' + (x.slug === c.slug ? ' is-current' : '')}>
-            <header class="compare-mcard-head">
-              {x.slug === c.slug
-                ? <span class="compare-mcard-name">{x.shortName}</span>
-                : <a class="compare-mcard-name" href={`/shipping-containers-for-sale/${x.slug}/`}>{x.shortName}</a>
-              }
-              {x.slug === c.slug && <span class="compare-mcard-badge">This page</span>}
-            </header>
-            <dl class="compare-mcard-list">
-              {compareRows.map((row) => (
-                <div class="compare-mcard-row">
-                  <dt>{row.label}</dt>
-                  <dd>{row.values[x.slug]}</dd>
-                </div>
-              ))}
-            </dl>
-          </article>
-        ))}
+      <p class="spec-ref-link">
+        Full ISO 668 dimensions for every size are in our
+        <a href="/container-reference/#dimensions">Container Reference</a>.
+      </p>
+    </div>
+  </section>
+
+  <!-- 02. CONDITION. The hero bullet that asserted the grade, and the hero bullet that asserted the
+       Lifetime Leak Warranty, both land here, where each can be argued. The warranty NEVER appears
+       on any surface without its remedy in the same block: the self-applied fiberglass patch kit is
+       named inside the claim, not linked to. -->
+  <section class="band band-cream" id="condition">
+    <div class="wrap">
+      <div class="band-head"><span class="band-no">02</span><span class="band-kicker">What the box will actually look like</span></div>
+      <h2 class="section-title">What Wind and Water Tight actually means</h2>
+      <div class="cond-grid">
+        <div>
+          <p class="cond-blurb">{CONDITION.blurb}</p>
+          <p class="cond-body">It spent years at sea. It looks like it. Expect surface rust, patched paint, dents in the corrugation and a previous owner's markings, over weathering (Cor-Ten) steel built to last decades. What you should not expect is daylight through the roof, a floor that gives, or door seals that have gone.</p>
+          <p class="cond-body">It is the one grade we sell, in all three sizes, sealed against rain, wind, snow and pests, and sold as-is for storage and on-site use. There is no upsell ladder here and no surprise downgrade at delivery: what you are quoted is what arrives. <a href="/condition/">The full condition guide</a></p>
+        </div>
+        <div>
+          <div class="cond-claim">
+            <h3>Lifetime Leak Warranty</h3>
+            <p>Find a leak and we send you an industry-approved fiberglass patch kit, with instructions, that you apply yourself.</p>
+            <p>That is the entire remedy, and we state it here rather than in fine print, because the remedy is where every warranty argument in this business ends up. <a href="/terms/#lifetime-leak-warranty">Read the terms</a></p>
+          </div>
+          <div class="cond-claim">
+            <h3>One honest grade, named before you pay</h3>
+            <p>Bait-and-switch grading is one of the most common tactics in this market: a seller quotes a nicer grade, then delivers something worse. We sell one grade, we name it on every page, and it is the grade on the invoice.</p>
+            <p><a href="/container-buying-guide/">How to vet any container seller</a></p>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- CLEARANCE SECTION HIDDEN 2026-08-26 per owner: plate v1 and v2 rejected. It returns
-       when the owner's Gemini illustration lands with code-overlaid dimensions. Prompts:
-       UDO Project/.outputs/image-prompts/2026-08-26-clearance-plate-prompts.md -->
+  <!-- ACT TWO -->
+  <div class="act" id="act-two">
+    <div class="wrap">
+      <div class="act-row"><span class="act-no">Act two</span><h2 class="act-title">How you get it</h2></div>
+      <p class="act-sub">The price, what moves it and rent to own are in the buy box above, where a buyer who scrolled here for a number should not have to hunt for one. This is the rest of getting it: when it arrives, where it lands, and the only time this page asks you for anything.</p>
+    </div>
+  </div>
+
+  <!-- 03. THE DATE AND THE SPOT, with the clearance figures folded in. The clearance FIGURES ship
+       as text: the illustrated plate below this section is still gated off, and un-hiding it is not
+       what this band needed. Placement is the most praised moment in the whole review corpus
+       (about 115 of 379), so the band should not have gone on waiting for artwork. -->
+  <section class="band band-white" id="delivery-date">
+    <div class="wrap">
+      <div class="band-head"><span class="band-no">03</span><span class="band-kicker">The two things delivery day is judged on</span></div>
+      <h2 class="section-title">When it arrives, and where it lands</h2>
+      <div class="deliver-grid">
+        <div class="dcard">
+          <h3>The date</h3>
+          <p>{DELIVERY_ACCESS.timing}</p>
+          <p>Depot inventory is stacked and sequenced rather than staged for a quick pull, and drivers book out several weeks ahead, so exact timing depends on current availability and where you are. Scheduling depends on independent drivers and can shift; that is true of container delivery generally, and Steel Box Direct does not control it.</p>
+          <p><a class="dcard-link" href="/delivery/">How delivery works</a></p>
+        </div>
+        <div class="dcard">
+          <h3>The spot</h3>
+          <p>A tilt-bed sets the container along the line the truck was traveling, so placement is directional: if you want the doors facing the house, that has to be planned before the truck backs in. Mark the exact spot with stakes, paint or cones at the four corners, and have somebody on site who can point at it and make a decision.</p>
+          <p>Send photos of the approach with your quote request and we can tell you before delivery day whether a tilt-bed can make it, or whether a crane set is the better call. Almost everything that goes wrong on delivery day is access, not the box. An hour of looking at your driveway now is the cheapest hour in the whole transaction.</p>
+        </div>
+      </div>
+
+      <!-- The figures, not the drawing. Every value below is extracted from DELIVERY_ACCESS
+           .clearance at build time (see CLR above), so this strip cannot drift from the locked
+           sentence, and the sentence itself is quoted in full underneath. -->
+      <figure class="clr-fig" id="clearance">
+        <div class="clr-head">
+          <span class="clr-no">FIG. D1</span>
+          <span class="clr-title">Delivery clearance &middot; {c.shortName}</span>
+        </div>
+        <div class="clr-body">
+          <div class="clr-figs">
+            <div class="clr-cell"><span class="clr-k">Truck combination</span><span class="clr-v">{CLR.rig}</span></div>
+            <div class="clr-cell"><span class="clr-k">Straight approach</span><span class="clr-v">{CLR.approach}</span></div>
+            <div class="clr-cell"><span class="clr-k">Width at the pinch</span><span class="clr-v">{CLR.width}</span></div>
+            <div class="clr-cell"><span class="clr-k">Overhead</span><span class="clr-v">{CLR.overhead}</span></div>
+            <div class="clr-cell"><span class="clr-k">Ground must hold</span><span class="clr-v">{CLR.ground}</span></div>
+          </div>
+          <p class="clr-prose">{DELIVERY_ACCESS.clearance}</p>
+        </div>
+        <div class="clr-foot">
+          <span class="clr-foot-tag">Site check</span>
+          <span>Measure the narrowest point of the route, not the average</span>
+          <span class="clr-foot-sep" aria-hidden="true">&middot;</span>
+          <span>Look up at the drop spot as well as at the lane</span>
+        </div>
+        <figcaption>The rig and the room it needs, with the figures our <a href="/delivery/">delivery guide</a> publishes. Tight access? A crane-set delivery solves most of it; the guide covers both.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- CLEARANCE PLATE, STILL HIDDEN since 2026-08-26 per owner: plate v1 and v2 rejected. The
+       markup is untouched and stays gated; it returns when the owner's Gemini illustration lands
+       with code-overlaid dimensions. The figures it carries ship as text in section 03 above.
+       Prompts: UDO Project/.outputs/image-prompts/2026-08-26-clearance-plate-prompts.md -->
   {SHOW_CLEARANCE_PLATE && (
   <section class="prod-clearance">
     <div class="wrap">
       <h2 class="section-title">Will It Fit Down Your Driveway?</h2>
-      <figure class="clr-fig">
-        <div class="clr-fig-head" aria-hidden="true"><span class="clr-fig-no">FIG. D1</span><span class="clr-fig-title">Delivery clearance · {c.shortName}</span></div>
+      <figure class="clr-plate">
+        <div class="clr-fig-head" aria-hidden="true"><span class="clr-fig-no">FIG. D1</span><span class="clr-fig-title">Delivery clearance &middot; {c.shortName}</span></div>
         <div class="clr-fig-scroll" role="region" aria-label={`Delivery clearance drawing for the ${c.shortName}, scrolls sideways on small screens`} tabindex="0">
         <svg viewBox="0 0 960 284" role="img" aria-label={plateAria}>
           <title>{plateTitle}</title>
@@ -493,7 +739,7 @@ const plateAria = `Side profile of a tilt bed delivery truck carrying a ${c.shor
           <text x="400" y="271" text-anchor="middle"><tspan font-size="15" font-weight="700">100+ FT</tspan><tspan dx="10" font-size="13" opacity=".65">STRAIGHT APPROACH FOR TILT BED</tspan></text>
         </svg>
         </div>
-        <div class="clr-fig-foot">
+        <div class="clr-plate-foot">
           <span class="clr-fig-foot-tag">SITE CHECK</span>
           <span>12 FT WIDE PATH MINIMUM</span>
           <span class="clr-fig-foot-sep" aria-hidden="true">·</span>
@@ -505,188 +751,402 @@ const plateAria = `Side profile of a tilt bed delivery truck carrying a ${c.shor
   </section>
   )}
 
-  <!-- USE CASES -->
-  <section class="prod-uses">
+  <!-- 04. THE ONE ASK. Three ask moments became one: the buy box button is an anchor to this block
+       and the old closing cta-section is gone. A page that asks three times reads as a page that is
+       worried you will not say yes. CallbackForm renders its own "Get Your {size} Price" h2. -->
+  <section class="prod-action" id="talk-to-doug">
     <div class="wrap">
-      <h2 class="section-title">Common Uses</h2>
-      <div class="uses-grid">
-        {c.useCases.map((u) => (
-          <div class="feature">
-            <h4>{u.title}</h4>
-            <p>{u.body}</p>
-          </div>
-        ))}
+      <div class="band-head"><span class="band-no">04</span><span class="band-kicker">The only time this page asks you for anything</span></div>
+      <CallbackForm sizeLabel={c.shortName} sizePreference={sizeParam} />
+    </div>
+  </section>
+
+  <!-- ACT THREE -->
+  <div class="act" id="act-three">
+    <div class="wrap">
+      <div class="act-row"><span class="act-no">Act three</span><h2 class="act-title">Where and who it comes from</h2></div>
+      <p class="act-sub">No walk-up yard: a network of regional depots, an operating container company, and Doug. This is the part you can go and check yourself before you pay anybody in this business a dollar.</p>
+    </div>
+  </div>
+
+  <!-- 05. IS THIS A REAL COMPANY. Evidence: across 379 competitor reviews in the Columbus corpus,
+       scam language appears about 35 times and another 30 reviews describe relief that the seller
+       turned out to be real; price is the complaint in 2 of 379.
+       EVERY CLAIM IN THIS BAND IS ALREADY PUBLISHED ELSEWHERE ON THIS SITE. The proof cards are
+       drawn from /container-buying-guide/, /about/, /contact/ and /delivery/, and nothing here
+       promises anything fulfilment is not already committed to in public. Three cards from the
+       mockup were deliberately NOT built, because they carried owner-confirm flags and one of them
+       (pay by card, never wire or ACH) contradicts the accepted payment methods published in
+       /terms/. See the handoff notes for that call. -->
+  <section class="band band-ink" id="real-company">
+    <div class="wrap">
+      <div class="band-head"><span class="band-no">05</span><span class="band-kicker">The first thing buyers want to know, answered in full</span></div>
+      <h2 class="section-title">Is this a real company?</h2>
+      <p class="band-lede">Most people buying a used container have never bought one before, and what they are actually afraid of is paying a stranger and never seeing a box. That is a fair thing to be afraid of in this business. So here is what you can check about us before you send anyone any money.</p>
+      <div class="proof-grid">
+        <div class="proof">
+          <span class="proof-tag">Who you buy from</span>
+          <h3>A traceable business</h3>
+          <p>Steel Box Direct is the authorized independent agent of Freedom Conex LLC, an operating company that sells containers. That is a company you can look up, not a phone number and a stock photo of a yard.</p>
+        </div>
+        <div class="proof">
+          <span class="proof-tag">Contact</span>
+          <h3>A phone a person answers</h3>
+          <p>Doug Froh handles every quote personally, start to finish. We answer calls 9am to 9pm Eastern, every day, and most quote requests come back within 4 business hours.</p>
+        </div>
+        <div class="proof">
+          <span class="proof-tag">Delivery</span>
+          <h3>A real delivery footprint</h3>
+          <p>We deliver within roughly 250 miles of Cincinnati, across Ohio, Indiana, Kentucky and western West Virginia, from real regional depots. Beyond the home region we ship from depot hubs nationwide.</p>
+        </div>
+        <div class="proof">
+          <span class="proof-tag">The number</span>
+          <h3>A delivered total, not a sticker price</h3>
+          <p>We quote all-in on purpose: the container, delivery to your ZIP, and placement on flat ground, in one number, so there is no freight line arriving after you have agreed a price.</p>
+        </div>
+      </div>
+      <div class="redflags">
+        <h3>Red flags, whoever you end up buying from</h3>
+        <p>This applies to any seller, anywhere, including us. If a seller does these things, slow down.</p>
+        <ul>
+          <li>Pressure to wire money, send Zelle or pay in cryptocurrency before you have verified who you are dealing with</li>
+          <li>An invoice payable to a person's name rather than to a business</li>
+          <li>Stock yard photos instead of photos of the specific unit, and no CSC plate to check</li>
+          <li>A condition grade that is described on the phone and never written down</li>
+          <li>Manufactured urgency: today only, another buyer is waiting</li>
+        </ul>
+        <p class="redflags-link"><a href="/container-buying-guide/">The full seven-point vetting checklist</a></p>
       </div>
     </div>
   </section>
 
-  <!-- GUIDE LINKS -->
+  <!-- 06. GUIDES. Cheapest section on the page and it does real work. The kicker moved off
+       "Before you buy: answers to common questions" because a real FAQ now sits immediately below
+       it, and two adjacent heads promising answers to common questions is a page arguing with
+       itself. One link added for the vetting guide section 05 points at. -->
   <section class="prod-guides">
     <div class="wrap">
-      <p class="guides-label">Before you buy: answers to common questions</p>
+      <div class="band-head"><span class="band-no">06</span><span class="band-kicker">The long versions, if you want them</span></div>
       <div class="guides-row">
-        <a href="/permits/" class="guide-link">Do I need a permit? →</a>
-        <a href="/cost/" class="guide-link">What does it cost? →</a>
-        <a href="/delivery/" class="guide-link">How is it delivered? →</a>
-        <a href="/condition/" class="guide-link">New vs. used condition →</a>
-        <a href="/container-reference/#markings" class="guide-link">How to read container markings →</a>
+        <a href="/permits/" class="guide-link">Do I need a permit? &rarr;</a>
+        <a href="/cost/" class="guide-link">What does it cost? &rarr;</a>
+        <a href="/delivery/" class="guide-link">How is it delivered? &rarr;</a>
+        <a href="/condition/" class="guide-link">New vs. used condition &rarr;</a>
+        <a href="/container-reference/#markings" class="guide-link">How to read container markings &rarr;</a>
+        <a href="/container-buying-guide/" class="guide-link">Is this seller a scam? &rarr;</a>
       </div>
     </div>
   </section>
 
-  <!-- CTA -->
-  <section class="cta-section">
+  <!-- 07. FAQ, and the FAQPage schema source for this template. Not an accordion: a collapsed FAQ
+       shows nothing in a screenshot and nothing to a skimming reader, and this page's whole thesis
+       is that the proof is visible without being asked for. -->
+  <section class="prod-faq" id="faq">
     <div class="wrap">
-      <div class="cta-box">
-        <h2>Ready for a {c.shortName} quote?</h2>
-        <p>Tell us your zip code and we'll get you a real number, fast.</p>
-        <a href="/quote/" class="btn">Get My Quote <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
-      </div>
+      <div class="band-head"><span class="band-no">07</span><span class="band-kicker">The seven questions buyers actually ask</span></div>
+      <h2 class="section-title">Questions, answered on the page</h2>
+      <p class="faq-lede">Everything below is already argued at length somewhere above, or on a guide this page links to. It is repeated here in the shortest honest form, in the order buyers actually ask it, so that nobody has to read the whole page to get an answer.</p>
+      <dl class="faq-wrap">
+        {faqs.map((f, i) => (
+          <div class="faq-item">
+            <dt class="faq-q"><span class="faq-n">Q{i + 1}</span>{f.q}</dt>
+            <dd class="faq-a">
+              {f.html ? <Fragment set:html={f.html} /> : <p>{f.a}</p>}
+            </dd>
+          </div>
+        ))}
+      </dl>
     </div>
   </section>
 
 </BaseLayout>
 
 <style>
-  /* LISTING HERO: one dense module. The base styles ARE the mobile layout, because the
-     DOM order (H1 + chips, photo, description, buy box) is the owner's exact mobile
-     order; the >=961px query regrids the same children into photo-left, decision-right. */
-  .prod-hero { padding: 36px 0 56px; background: var(--yellow); border-bottom: 2.5px solid var(--ink); }
+  /* ============================================================================
+     LISTING HEAD. The base styles ARE the mobile layout: the DOM order is H1,
+     photo, body (lede + buy box + dimensions), delivery aside, and the >=961px
+     query regrids the same children into photo-left, decision-right with the
+     aside lifted back into the empty left column under the photo.
+     ============================================================================ */
+  .prod-head { padding: 32px 0 52px; background: var(--yellow); border-bottom: 2.5px solid var(--ink); }
   .breadcrumb-nav { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; opacity: .6; margin-bottom: 22px; display: flex; align-items: center; gap: 8px; }
   .breadcrumb-nav a { color: inherit; text-decoration: none; }
   .breadcrumb-nav a:hover { opacity: 1; }
   .listing { display: grid; grid-template-columns: minmax(0, 1fr); }
-  .listing-h1 { font-family: var(--narrow); font-size: clamp(30px, 4vw, 44px); font-weight: 800; line-height: 1.02; text-transform: uppercase; letter-spacing: -.01em; margin: 0 0 14px; }
-  .key-specs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; }
-  .spec-chip { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; background: var(--ink); color: var(--yellow); padding: 6px 14px; }
-  .listing-media { margin: 0 0 26px; }
+  .listing-h1 { font-family: var(--narrow); font-size: clamp(30px, 4.4vw, 46px); font-weight: 800; line-height: 1.02; text-transform: uppercase; letter-spacing: -.015em; margin: 0 0 14px; }
+  .listing-media { margin: 0 0 24px; }
   .listing-frame { border: 2.5px solid var(--ink); box-shadow: 8px 8px 0 var(--ink); background: white; }
   .listing-frame img { display: block; width: 100%; height: auto; }
-  .listing-caption { font-family: var(--mono); font-size: 11px; letter-spacing: .05em; text-transform: uppercase; opacity: .65; margin-top: 16px; }
-  .listing-lede { font-size: 19px; line-height: 1.4; font-weight: 600; margin: 0 0 16px; }
-  .listing-bullets { list-style: none; margin: 0 0 26px; padding: 0; }
-  .listing-bullets li { position: relative; padding-left: 24px; margin-bottom: 10px; font-size: 15.5px; line-height: 1.5; }
-  .listing-bullets li:last-child { margin-bottom: 0; }
-  .listing-bullets li::before { content: ''; position: absolute; left: 2px; top: 8px; width: 8px; height: 8px; background: var(--ink); }
-  .listing-bullets li a { color: inherit; border-bottom: 1.5px solid var(--ink); font-weight: 600; text-decoration: none; }
+  .listing-caption { font-family: var(--mono); font-size: 11px; letter-spacing: .05em; text-transform: uppercase; opacity: .65; margin-top: 14px; }
+  .listing-lede { font-size: 19px; line-height: 1.4; font-weight: 600; margin: 0 0 20px; }
 
   /* BUY BOX: the only place in the visible body a dollar figure renders; the disclaimer
      is its adjacent sibling per the standing pricing policy. Figures flow from
      src/data/pricing.ts only. */
   .buy-box { background: white; border: 2.5px solid var(--ink); box-shadow: 8px 8px 0 var(--ink); padding: 24px 24px 22px; max-width: 480px; }
   .buy-box-label { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; opacity: .6; margin: 0 0 8px; }
-  .buy-box-price { font-family: var(--narrow); font-size: 54px; font-weight: 800; line-height: .95; letter-spacing: -.02em; margin: 0 0 10px; }
-  .buy-box-disclaimer { font-size: 13px; line-height: 1.5; opacity: .8; margin: 0 0 18px; }
-  .buy-bullet-note { display: block; font-style: italic; font-size: 13px; opacity: .75; margin-top: 2px; }
-  .buy-box-note { font-family: var(--mono); font-size: 11px; line-height: 1.55; letter-spacing: .02em; opacity: .6; margin: -8px 0 18px; }
+  .buy-box-price { font-family: var(--narrow); font-size: clamp(42px, 9vw, 54px); font-weight: 800; line-height: .95; letter-spacing: -.02em; margin: 0 0 10px; }
+  .buy-box-disclaimer { font-size: 13px; line-height: 1.5; opacity: .8; margin: 0 0 16px; }
+  .buy-box-note { font-family: var(--mono); font-size: 11px; line-height: 1.55; letter-spacing: .02em; opacity: .6; margin: -8px 0 16px; }
   .buy-box-ctas { display: grid; gap: 10px; }
   .buy-box-ctas .btn { justify-content: center; padding: 15px 22px; }
+  .buy-btn-primary { background: var(--yellow); color: var(--ink); }
+  .buy-btn-primary:hover { background: var(--ink); color: var(--yellow); }
+  /* The demoted quote link and the surviving /locations/ bridge. Mono and small so neither
+     competes with the single button above them. */
+  .buy-alt { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; margin: 14px 0 0; opacity: .7; }
+  .buy-alt + .buy-alt { margin-top: 8px; }
+  .buy-alt a { border-bottom: 1.5px solid var(--ink); font-weight: 700; }
 
-  /* Rent-to-own footer of the plate. A hairline rule separates it from the CTAs so it reads as a
-     second path rather than a third button, and the condition sits immediately under the offer at
+  /* Rent-to-own footer of the plate. A hairline rule separates it from the CTA so it reads as a
+     second path rather than a second button, and the condition sits immediately under the offer at
      the same small size as .buy-box-disclaimer, inside the same bordered block. */
-  .buy-box-rto { border-top: 1.5px solid rgba(0, 0, 0, .14); margin: 18px 0 0; padding: 16px 0 0; }
+  .buy-box-rto { border-top: 1.5px solid rgba(0, 0, 0, .14); margin: 16px 0 0; padding: 14px 0 0; }
   .buy-box-rto-offer { font-size: 14px; line-height: 1.5; margin: 0 0 6px; }
   .buy-box-rto-cond { font-size: 12px; line-height: 1.55; opacity: .75; margin: 0; }
   .buy-box-rto-cond a { border-bottom: 1.5px solid var(--ink); white-space: nowrap; }
-  .buy-btn-primary { background: var(--yellow); color: var(--ink); }
-  .buy-btn-primary:hover { background: var(--ink); color: var(--yellow); }
-  .buy-btn-secondary { background: white; color: var(--ink); }
-  .buy-btn-secondary:hover { background: var(--ink); color: var(--yellow); }
+
+  /* ---- THE DELIVERY BLOCK (left column, under the photo) ---- */
+  .prod-aside { border: 2.5px solid var(--ink); background: transparent; margin: 26px 0 0; }
+  .qa-head { display: flex; align-items: center; gap: 10px; padding: 9px 13px; border-bottom: 2px solid var(--ink); font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; }
+  .qa-tag { background: var(--ink); color: var(--yellow); padding: 3px 7px; flex: none; }
+  .qa-title { opacity: .72; }
+  .qa-body { padding: 0 13px; }
+  .qa-item { padding: 19px 0; border-bottom: 1.5px solid rgba(11,15,26,.22); }
+  .qa-item:last-child { border-bottom: 0; }
+  .qa-k { display: block; font-family: var(--mono); font-size: 10.5px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; opacity: .62; margin-bottom: 7px; }
+  .qa-item p { font-size: 15.5px; line-height: 1.62; margin: 0; }
+  .qa-item a { font-weight: 700; border-bottom: 2px solid var(--ink); }
+  .qa-foot { margin: 0; padding: 11px 13px; border-top: 2px solid var(--ink); background: var(--ink); color: var(--cream); font-family: var(--mono); font-size: 11px; line-height: 1.85; }
+  .qa-foot-k { display: inline-block; background: var(--yellow); color: var(--ink); padding: 2px 7px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; margin-right: 6px; }
+  .qa-foot a { color: var(--yellow); border-bottom: 1.5px solid var(--yellow); font-weight: 700; white-space: nowrap; }
+
+  /* ---- THE DIMENSIONS BLOCK (right column, under the buy box) ----
+     Same reference grammar as the delivery block opposite: 2.5px ink edge, the head's
+     yellow ground showing through, no drop shadow, no button. The only thing allowed to
+     shout is the numbers, which is why the L/W/H strings are broken out of their sentences
+     into aligned tabular columns: the point of the row is that a buyer can read 8' against
+     7'8" straight down. */
+  .dims { border: 2.5px solid var(--ink); background: transparent; max-width: 480px; margin: 26px 0 0; }
+  .dims-head { display: flex; align-items: center; gap: 10px; padding: 9px 13px; border-bottom: 2px solid var(--ink); font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; }
+  .dims-tag { background: var(--ink); color: var(--yellow); padding: 3px 7px; flex: none; }
+  .dims-title { opacity: .72; }
+  .dims-tbl { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; table-layout: fixed; }
+  .dims-tbl thead th { font-family: var(--mono); font-size: 9.5px; font-weight: 700; letter-spacing: .11em; text-transform: uppercase; opacity: .5; text-align: right; padding: 7px 10px 0; }
+  .dims-tbl thead th:last-child { padding-right: 13px; }
+  .dims-tbl tbody tr { border-top: 1.5px solid rgba(11,15,26,.22); }
+  .dims-rowlab { text-align: left; padding: 10px 8px 10px 13px; font-weight: 400; width: 41%; }
+  .dims-rowlab b { display: block; font-family: var(--mono); font-size: 10.5px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; opacity: .7; }
+  .dims-rowlab span { display: block; font-size: 11.5px; line-height: 1.35; opacity: .58; margin-top: 4px; }
+  .dims-tbl td { text-align: right; padding: 10px; font-family: var(--narrow); font-size: 26px; font-weight: 700; line-height: 1; letter-spacing: -.015em; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .dims-tbl td:last-child { padding-right: 13px; }
+  .dims-na { opacity: .26; font-weight: 400; }
+  .dims-foot { display: flex; border-top: 2px solid var(--ink); }
+  .dims-fig { flex: 1 1 0; min-width: 0; padding: 9px 12px; border-left: 1.5px solid rgba(11,15,26,.22); font-variant-numeric: tabular-nums; }
+  .dims-fig:first-child { border-left: 0; }
+  .dims-fig-k { display: block; font-family: var(--mono); font-size: 9.5px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; opacity: .58; margin-bottom: 5px; white-space: nowrap; }
+  .dims-fig-v { display: block; font-family: var(--narrow); font-size: 20px; font-weight: 700; line-height: 1; letter-spacing: -.015em; white-space: nowrap; }
+  .dims-fig-v i { font-style: normal; font-family: var(--mono); font-size: 9.5px; font-weight: 500; letter-spacing: .05em; opacity: .6; margin-left: 4px; text-transform: uppercase; }
+  /* The jump is the same dark closing bar the delivery block uses, so it reads as this
+     block's footer rather than as another call to action. */
+  .dims-jump { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 13px; border-top: 2px solid var(--ink); background: var(--ink); color: var(--cream); font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; transition: background .15s, color .15s; }
+  .dims-jump span { color: var(--yellow); flex: none; }
+  .dims-jump:hover, .dims-jump:focus-visible { background: var(--yellow); color: var(--ink); }
+  .dims-jump:hover span, .dims-jump:focus-visible span { color: var(--ink); }
+  .vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
   @media (min-width: 961px) {
-    .listing { grid-template-columns: minmax(0, 45fr) minmax(0, 55fr); grid-template-rows: auto auto 1fr; grid-template-areas: "media h1" "media chips" "media body"; column-gap: 56px; }
+    .listing { grid-template-columns: minmax(0, 45fr) minmax(0, 55fr); grid-template-rows: auto auto 1fr; grid-template-areas: "media h1" "media body" "aside body"; column-gap: 52px; }
     .listing-h1 { grid-area: h1; }
-    .key-specs { grid-area: chips; }
     .listing-media { grid-area: media; align-self: start; margin: 6px 0 0; }
     .listing-body { grid-area: body; align-self: start; }
+    /* The aside is last in the DOM so a phone gets it below the price rather than above it;
+       on desktop the grid lifts it back under the photo. The extra top margin is spacing,
+       not stretching: the block is set to the size its content wants and the column gap that
+       remains under it is deliberate. */
+    .prod-aside { grid-area: aside; align-self: start; margin: 50px 0 0; }
   }
 
-  /* Smooth travel for the buy box's Have Doug call me anchor; page-scoped stylesheet,
-     so the rule ships only with this template. */
+  /* Smooth travel for the in-page anchors, and enough scroll margin that the sticky header
+     never lands on a section head. Page-scoped stylesheet, so the rule ships only with this
+     template. */
   :global(html) { scroll-behavior: smooth; }
+  #act-one, #act-two, #act-three, #size-compare, #condition,
+  #delivery-date, #clearance, #talk-to-doug, #real-company, #faq { scroll-margin-top: 80px; }
 
-  /* SPECS TABLE */
-  .prod-specs { padding: 72px 0; background: var(--cream); border-bottom: 1.5px solid rgba(11,15,26,.1); }
-  .section-title { font-family: var(--narrow); font-size: 36px; text-transform: uppercase; margin-bottom: 32px; }
-  .specs-card { background: white; border: 2.5px solid var(--ink); box-shadow: 8px 8px 0 var(--ink); overflow: hidden; }
-  .specs-table { width: 100%; border-collapse: collapse; }
-  .specs-table tr { border-bottom: 1.5px solid rgba(11,15,26,.1); }
-  .specs-table tr:last-child { border-bottom: none; }
-  .specs-table th { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; opacity: .55; text-align: left; padding: 18px 24px; width: 40%; font-weight: 500; }
-  .specs-table td { font-family: var(--narrow); font-size: 20px; font-weight: 600; padding: 18px 24px; }
+  /* ============================================================================
+     ACT MARKERS. Not a new device: the .band-head grammar promoted to full width
+     and set on its own yellow, so a chapter break is the only place on the page
+     where the ink rule doubles up. The 5px top rule lands against the 2.5px
+     bottom rule of whatever ended the previous act, which makes it the heaviest
+     horizontal line in the document.
+     ============================================================================ */
+  .act { background: var(--yellow); border-top: 5px solid var(--ink); border-bottom: 2.5px solid var(--ink); padding: 22px 0 20px; }
+  .act-row { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
+  .act-no { font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; background: var(--ink); color: var(--yellow); padding: 5px 9px; flex: none; }
+  .act-title { font-family: var(--narrow); font-size: clamp(25px, 3.4vw, 34px); font-weight: 800; text-transform: uppercase; letter-spacing: -.015em; line-height: 1; margin: 0; }
+  .act-sub { font-family: var(--mono); font-size: 11.5px; line-height: 1.75; max-width: 780px; margin: 11px 0 0; opacity: .72; }
+  /* Act one lands on the 3D viewer's dark slab. An ink bar over a dark band is not a
+     boundary, which is the whole reason the act bands are yellow, so the heaviest line in
+     the document is drawn in cream in the one place it would otherwise disappear. */
+  .prod-3d + .act { border-top-color: var(--cream); }
+
+  /* ============================================================================
+     BAND CHROME. Each numbered section carries the same head, so the page reads
+     as an ordered argument rather than a pile of sections.
+     ============================================================================ */
+  .section-title { font-family: var(--narrow); font-size: clamp(26px, 4vw, 36px); text-transform: uppercase; margin: 0 0 26px; font-weight: 800; letter-spacing: -.01em; line-height: 1.05; }
+  .band { padding: 64px 0; border-bottom: 2.5px solid var(--ink); }
+  .band-ink { background: var(--ink); color: var(--cream); }
+  .band-cream { background: var(--cream); }
+  .band-white { background: white; }
+  .band-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 8px; flex-wrap: wrap; }
+  .band-no { font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: .14em; background: var(--ink); color: var(--yellow); padding: 5px 9px; }
+  .band-ink .band-no { background: var(--yellow); color: var(--ink); }
+  .band-kicker { font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; opacity: .55; }
+  .band-lede { font-size: 17px; line-height: 1.6; max-width: 720px; margin: 0 0 30px; opacity: .85; }
+  .band-ink .section-title { color: var(--cream); }
+
+  /* ============================================================================
+     01. SPECIFICATIONS AND COMPARE, MERGED
+     ============================================================================ */
+  .prod-specs { padding: 64px 0; background: white; border-bottom: 2.5px solid var(--ink); }
+  .prod-specs .band-head { margin-bottom: 10px; }
+  .cmp-note { font-family: var(--mono); font-size: 12px; line-height: 1.6; opacity: .75; max-width: 700px; margin: -12px 0 24px; }
+  .cmp-scroll { overflow-x: auto; border: 2.5px solid var(--ink); box-shadow: 8px 8px 0 var(--ink); background: var(--cream); }
+  .cmp { width: 100%; border-collapse: collapse; min-width: 640px; }
+  .cmp th, .cmp td { padding: 14px 18px; text-align: left; border-bottom: 1.5px solid rgba(11,15,26,.12); font-size: 14.5px; }
+  .cmp thead th { font-family: var(--narrow); font-size: 18px; font-weight: 700; text-transform: uppercase; background: var(--cream); }
+  .cmp tbody th { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; opacity: .55; font-weight: 500; background: var(--cream); width: 20%; }
+  .cmp tr:last-child td, .cmp tr:last-child th { border-bottom: none; }
+  .cur { background: var(--ink); color: var(--yellow); }
+  /* The header cell needs its own rule, and this is a real fix rather than a duplicate.
+     `.cmp thead th` and `.cmp tbody th` are two classes and two elements deep, so they outrank
+     the single class on `.cur` and win the background. The current column's HEAD therefore
+     inherited .cur's yellow text on the header's cream ground, which is yellow on cream: the
+     page's worst contrast pairing, on the one cell that tells a reader which column is theirs.
+     The old prod-compare table shipped the same collision and the mockup inherited it. */
+  .cmp thead th.cur, .cmp tbody th.cur { background: var(--ink); color: var(--yellow); }
+  .cur a { color: var(--yellow); }
+  .cmp a { text-decoration: underline; text-underline-offset: 3px; }
   .spec-ref-link { margin-top: 20px; font-size: 15px; opacity: .85; }
   .spec-ref-link a { border-bottom: 2px solid var(--yellow-d); font-weight: 600; }
 
-  /* COMPARE: one compareRows array renders twice. Desktop (>960px) shows the table,
-     960px and below shows the cards; the current page's card leads, badged This page. */
-  .prod-compare { padding: 72px 0; background: white; border-bottom: 1.5px solid rgba(11,15,26,.1); }
-  .compare-condition { font-family: var(--mono); font-size: 12px; line-height: 1.6; letter-spacing: .02em; opacity: .75; max-width: 680px; margin: -12px 0 28px; }
-  .compare-card { background: var(--cream); border: 2.5px solid var(--ink); overflow-x: auto; }
-  .compare-table { width: 100%; border-collapse: collapse; min-width: 520px; }
-  .compare-table th, .compare-table td { padding: 16px 20px; text-align: left; border-bottom: 1.5px solid rgba(11,15,26,.1); font-size: 14px; }
-  .compare-table thead th { font-family: var(--narrow); font-size: 18px; font-weight: 700; text-transform: uppercase; background: var(--cream); }
-  .compare-table tbody th { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; opacity: .55; font-weight: 500; background: var(--cream); }
-  .compare-table tr:last-child td, .compare-table tr:last-child th { border-bottom: none; }
-  .current-col { background: var(--ink); color: var(--yellow); }
-  .current-col a { color: var(--yellow); }
-  .compare-table a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+  /* ============================================================================
+     02. CONDITION
+     ============================================================================ */
+  .cond-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 36px; align-items: start; }
+  .cond-blurb { font-size: 17px; line-height: 1.6; margin: 0 0 20px; }
+  .cond-body { font-size: 15.5px; line-height: 1.65; margin: 0 0 20px; opacity: .85; }
+  .cond-body a { border-bottom: 2px solid var(--yellow-d); font-weight: 600; }
+  .cond-claim { border: 2.5px solid var(--ink); background: white; box-shadow: 8px 8px 0 var(--yellow); padding: 22px; }
+  .cond-claim + .cond-claim { margin-top: 22px; }
+  .cond-claim h3 { font-family: var(--narrow); font-size: 20px; text-transform: uppercase; margin: 0 0 8px; }
+  .cond-claim p { font-size: 15px; line-height: 1.6; margin: 0 0 10px; }
+  .cond-claim p:last-child { margin-bottom: 0; }
+  .cond-claim a { border-bottom: 2px solid var(--yellow-d); font-weight: 600; }
 
-  /* Mobile comparison cards (hidden above 960px) */
-  .compare-cards { display: none; }
-  .compare-mcard { background: var(--cream); border: 2.5px solid var(--ink); padding: 20px; }
-  .compare-mcard.is-current { background: var(--ink); color: var(--yellow); }
-  .compare-mcard-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
-  .compare-mcard-name { font-family: var(--narrow); font-size: 20px; font-weight: 700; text-transform: uppercase; color: inherit; }
-  a.compare-mcard-name { text-decoration: underline; text-underline-offset: 3px; }
-  .compare-mcard-badge { font-family: var(--mono); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; background: var(--yellow); color: var(--ink); padding: 4px 10px; white-space: nowrap; }
-  .compare-mcard-list { margin: 0; }
-  .compare-mcard-row { padding: 10px 0; border-bottom: 1.5px solid rgba(11,15,26,.1); }
-  .compare-mcard.is-current .compare-mcard-row { border-bottom-color: rgba(255,255,255,.15); }
-  .compare-mcard-row:last-child { border-bottom: none; padding-bottom: 0; }
-  .compare-mcard-row dt { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; opacity: .55; margin-bottom: 4px; }
-  .compare-mcard-row dd { margin: 0; font-size: 15px; line-height: 1.5; font-weight: 600; }
-  @media (max-width: 960px) {
-    .compare-desktop { display: none; }
-    .compare-cards { display: grid; gap: 20px; }
-  }
+  /* ============================================================================
+     03. DELIVERY DATE AND PLACEMENT, with the clearance figures
+     ============================================================================ */
+  .deliver-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+  .dcard { border: 2.5px solid var(--ink); background: var(--cream); padding: 24px; }
+  .dcard h3 { font-family: var(--narrow); font-size: 21px; text-transform: uppercase; margin: 0 0 12px; }
+  .dcard p { font-size: 15.5px; line-height: 1.6; margin: 0 0 14px; }
+  .dcard p:last-child { margin-bottom: 0; }
+  .dcard-link { border-bottom: 2px solid var(--yellow-d); font-weight: 600; }
 
-  /* DELIVERY CLEARANCE PLATE: the blog's .dim-fig technical-manual grammar (see the FIG.
-     plates in src/content/blog/shipping-container-dimensions-size-chart.md). Stroke scale:
-     1px construction/dimension lines, 2.5px object lines. */
-  .prod-clearance { padding: 72px 0; background: var(--cream); border-bottom: 1.5px solid rgba(11,15,26,.1); }
-  .clr-fig { margin: 0; border: 2.5px solid var(--ink); box-shadow: 8px 8px 0 var(--yellow); background: #fff; padding: 0; }
-  .clr-fig-head { display: flex; align-items: center; gap: 10px; padding: 9px 14px 8px; border-bottom: 1.5px solid var(--ink); font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
-  .clr-fig-no { background: var(--ink); color: var(--yellow); padding: 3px 7px; letter-spacing: .08em; flex: none; }
-  .clr-fig-title { opacity: .72; }
-  .clr-fig-head::after { content: ""; flex: 1 1 24px; height: 2px; background: repeating-linear-gradient(90deg, var(--ink) 0 6px, transparent 6px 12px); opacity: .35; }
-  /* The drawing fills the section's content width; on small screens the same dim-scroll
-     pattern the blog's wide tables use keeps the plate legible (pan, no page overflow). */
-  .clr-fig-scroll { overflow-x: auto; }
-  .clr-fig svg { display: block; width: 100%; height: auto; padding: 22px 20px 14px; box-sizing: border-box; }
-  .clr-fig text { font-family: var(--mono); letter-spacing: .04em; fill: currentColor; }
-  .clr-fig-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; padding: 9px 14px; border-top: 1.5px solid var(--ink); background: var(--cream); font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
-  .clr-fig-foot-tag { background: var(--ink); color: var(--cream); padding: 3px 7px; font-size: 11px; letter-spacing: .08em; flex: none; }
-  .clr-fig-foot-sep { opacity: .4; }
-  .clr-fig figcaption { font-family: var(--mono); font-size: 12px; letter-spacing: .02em; opacity: .65; margin: 10px 14px 12px; }
+  /* The clearance FIGURES, shipped as text. The illustrated plate is still gated off; this
+     is the technical-manual frame around the numbers, not a placeholder for the drawing. */
+  .clr-fig { margin: 28px 0 0; border: 2.5px solid var(--ink); box-shadow: 8px 8px 0 var(--yellow); background: white; }
+  .clr-head { display: flex; align-items: center; gap: 10px; padding: 9px 14px; border-bottom: 1.5px solid var(--ink); font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+  .clr-no { background: var(--ink); color: var(--yellow); padding: 3px 7px; flex: none; }
+  .clr-title { opacity: .72; }
+  .clr-body { padding: 18px 16px 16px; }
+  .clr-figs { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0; border: 1.5px solid rgba(11,15,26,.22); }
+  .clr-cell { padding: 12px 14px; border-right: 1.5px solid rgba(11,15,26,.22); font-variant-numeric: tabular-nums; }
+  .clr-cell:last-child { border-right: 0; }
+  .clr-k { display: block; font-family: var(--mono); font-size: 9.5px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; opacity: .58; margin-bottom: 6px; }
+  .clr-v { display: block; font-family: var(--narrow); font-size: 21px; font-weight: 700; line-height: 1.1; letter-spacing: -.015em; text-transform: uppercase; }
+  .clr-prose { font-size: 15px; line-height: 1.65; margin: 16px 0 0; opacity: .85; }
+  .clr-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; padding: 10px 14px; border-top: 1.5px solid var(--ink); background: var(--cream); font-family: var(--mono); font-size: 11.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+  .clr-foot-tag { background: var(--ink); color: var(--cream); padding: 3px 7px; flex: none; }
+  .clr-foot-sep { opacity: .4; }
+  .clr-fig figcaption { font-family: var(--mono); font-size: 12px; line-height: 1.6; letter-spacing: .02em; opacity: .65; margin: 0; padding: 11px 14px 12px; border-top: 1.5px solid rgba(11,15,26,.14); }
   .clr-fig figcaption a { color: inherit; font-weight: 700; border-bottom: 1.5px solid var(--ink); text-decoration: none; }
-  @media (max-width: 768px) {
-    .clr-fig { box-shadow: 4px 4px 0 var(--yellow); }
-    .clr-fig-head { padding: 8px 10px 7px; }
-    .clr-fig-scroll svg { min-width: 680px; padding: 14px 12px 8px; }
-    .clr-fig-foot { padding: 8px 10px; }
-    .clr-fig figcaption { margin: 8px 10px 10px; }
-  }
 
-  /* 3D VIEWER (all three sizes). The widget ships its own dark chrome (#0f1318), so
-     rather than fight it the whole band goes dark. var(--ink) is #0B0F1A, near enough
-     that the iframe reads as a screen set into the section instead of a pasted-in
-     rectangle. The frame keeps the site's grammar, just inverted for the dark ground:
-     2.5px hard border in cream, 8px offset shadow in yellow, mono head bar. The page
-     already runs one ink band (.prod-guides), so the rhythm is not new. */
-  .prod-3d { padding: 72px 0; background: var(--ink); color: var(--cream); border-bottom: 1.5px solid rgba(255,255,255,.1); }
-  .prod-3d .section-title { color: var(--cream); margin-bottom: 18px; }
-  .viewer-lede { font-size: 16px; line-height: 1.6; max-width: 700px; margin: 0 0 30px; opacity: .78; }
+  /* ============================================================================
+     04. THE ONE ASK. CallbackForm brings its own h2 and its own two-door layout;
+     only the numbered head belongs to this template.
+     ============================================================================ */
+  .prod-action { padding: 64px 0; background: var(--cream); border-bottom: 2.5px solid var(--ink); }
+  .prod-action .band-head { margin-bottom: 10px; }
+
+  /* ============================================================================
+     05. IS THIS A REAL COMPANY
+     ============================================================================ */
+  .proof-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-bottom: 28px; }
+  .proof { border: 2.5px solid currentColor; padding: 20px; background: transparent; }
+  .band-ink .proof { border-color: var(--cream); background: rgba(246,241,231,.04); }
+  .proof h3 { font-family: var(--narrow); font-size: 19px; text-transform: uppercase; margin: 0 0 8px; letter-spacing: -.005em; }
+  .proof p { font-size: 14.5px; line-height: 1.6; margin: 0; opacity: .85; }
+  .proof-tag { font-family: var(--mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; display: block; margin-bottom: 10px; opacity: .55; }
+  .redflags { border: 2.5px solid var(--cream); background: rgba(229,57,53,.1); padding: 22px; }
+  .redflags h3 { font-family: var(--narrow); font-size: 20px; text-transform: uppercase; margin: 0 0 6px; }
+  .redflags p { font-size: 14px; line-height: 1.6; margin: 0 0 14px; opacity: .8; }
+  .redflags ul { margin: 0; padding: 0; list-style: none; }
+  .redflags li { font-size: 14.5px; line-height: 1.55; padding: 9px 0 9px 30px; position: relative; border-bottom: 1px solid rgba(246,241,231,.15); }
+  .redflags li:last-child { border-bottom: 0; }
+  .redflags li::before { content: "!"; position: absolute; left: 0; top: 8px; width: 19px; height: 19px; background: var(--c2-cond); color: white; font-family: var(--mono); font-size: 12px; font-weight: 700; display: grid; place-items: center; }
+  .redflags-link { margin: 16px 0 0; opacity: 1; }
+  .redflags-link a { color: var(--yellow); font-weight: 700; border-bottom: 1.5px solid currentColor; }
+
+  /* ============================================================================
+     06. GUIDES
+     ============================================================================ */
+  .prod-guides { padding: 48px 0; background: var(--ink); border-top: 2.5px solid var(--yellow); border-bottom: 2.5px solid var(--ink); }
+  .prod-guides .band-head { margin-bottom: 18px; }
+  .prod-guides .band-no { background: var(--yellow); color: var(--ink); }
+  .prod-guides .band-kicker { color: var(--yellow); opacity: .9; }
+  .guides-row { display: flex; flex-wrap: wrap; gap: 16px; }
+  .guide-link { font-family: var(--narrow); font-size: 17px; font-weight: 600; color: var(--cream); text-decoration: none; border-bottom: 2px solid rgba(255,255,255,.25); padding-bottom: 2px; transition: border-color .15s; }
+  .guide-link:hover { border-color: var(--yellow); color: var(--yellow); }
+
+  /* ============================================================================
+     07. FAQ. The same two-column reference grammar the dimensions block uses:
+     question left in narrow uppercase, answer right in body type, so a wide
+     viewport reads down the questions as a list and a narrow one stacks them.
+     It sits on cream after two ink slabs in a row, which makes the end of act
+     three the only place on the page where the surface lightens.
+     ============================================================================ */
+  .prod-faq { padding: 64px 0; background: var(--cream); }
+  .faq-lede { font-size: 17px; line-height: 1.6; max-width: 780px; margin: 0 0 26px; opacity: .85; }
+  .faq-wrap { margin: 0; border: 2.5px solid var(--ink); background: white; box-shadow: 8px 8px 0 var(--yellow); }
+  .faq-item { display: grid; grid-template-columns: minmax(0, 33fr) minmax(0, 67fr); gap: 0 40px; padding: 24px 26px; border-bottom: 1.5px solid rgba(11,15,26,.2); }
+  .faq-item:last-child { border-bottom: 0; }
+  .faq-q { margin: 0; min-width: 0; display: flex; gap: 12px; align-items: flex-start; font-family: var(--narrow); font-size: clamp(19px, 1.8vw, 22px); font-weight: 700; text-transform: uppercase; letter-spacing: -.01em; line-height: 1.14; }
+  .faq-n { font-family: var(--mono); font-size: 10.5px; font-weight: 700; letter-spacing: .1em; background: var(--ink); color: var(--yellow); padding: 4px 8px; flex: none; margin-top: 2px; }
+  .faq-a { margin: 0; min-width: 0; }
+  .faq-a :global(p) { font-size: 15.5px; line-height: 1.65; margin: 0 0 12px; overflow-wrap: break-word; }
+  .faq-a :global(p:last-child) { margin-bottom: 0; }
+  .faq-a :global(a) { border-bottom: 2px solid var(--yellow-d); font-weight: 600; }
+
+  /* ============================================================================
+     3D VIEWER. The widget ships its own dark chrome (#0f1318), so rather than
+     fight it the whole band goes dark. It now sits between the yellow listing
+     head and the yellow act one rule, so nothing adjacent shares its surface and
+     it needs no hairline of its own; the head's own ink rule reads as the top
+     edge of the slab. The frame keeps the site's grammar, inverted for the dark
+     ground: 2.5px hard border in cream, 8px offset shadow in yellow, mono head.
+     ============================================================================ */
+  .prod-3d { padding: 56px 0; background: var(--ink-2); color: var(--cream); }
+  .prod-3d .section-title { color: var(--cream); margin-bottom: 14px; }
+  /* The viewer left the acts on 2026-09-16 and gave up its number with them. The chip is not
+     replaced by a word or a mark: the absence is the signal that this block is not a step in
+     the numbered argument. */
+  .prod-3d .band-head.no-num { margin-bottom: 10px; }
+  .prod-3d .band-kicker { color: var(--cream); opacity: .62; }
+  .viewer-lede { font-size: 15.5px; line-height: 1.6; max-width: 720px; margin: 0 0 24px; opacity: .78; }
   .viewer-fig { margin: 0; border: 2.5px solid var(--cream); box-shadow: 8px 8px 0 var(--yellow); background: #0f1318; }
   .viewer-fig-head { display: flex; align-items: center; gap: 10px; padding: 9px 14px 8px; background: var(--yellow); color: var(--ink); border-bottom: 2.5px solid var(--cream); font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
   .viewer-fig-no { background: var(--ink); color: var(--yellow); padding: 3px 7px; letter-spacing: .08em; flex: none; }
@@ -695,52 +1155,73 @@ const plateAria = `Side profile of a tilt bed delivery truck carrying a ${c.shor
   .viewer-stage { position: relative; background: #0f1318; }
   .viewer-canvas { display: block; width: 100%; height: 560px; border: 0; background: #0f1318; }
   .viewer-still { display: none; }
-  .viewer-fig figcaption { font-family: var(--mono); font-size: 12px; line-height: 1.6; letter-spacing: .02em; color: var(--cream); opacity: .7; margin: 0; padding: 11px 14px 12px; border-top: 1.5px solid rgba(246,241,231,.16); }
+  .viewer-fig figcaption { font-family: var(--mono); font-size: 11.5px; line-height: 1.65; letter-spacing: .02em; color: var(--cream); opacity: .78; margin: 0; padding: 11px 14px 12px; border-top: 1.5px solid rgba(246,241,231,.16); }
   .viewer-fig figcaption a { color: var(--yellow); font-weight: 700; border-bottom: 1.5px solid currentColor; text-decoration: none; }
+
+  /* ============================================================================
+     CLEARANCE PLATE (gated off). Styles kept so flipping SHOW_CLEARANCE_PLATE
+     renders the plate exactly as it was built, without reviving the class names
+     the live clearance figures now use.
+     ============================================================================ */
+  .prod-clearance { padding: 72px 0; background: var(--cream); border-bottom: 1.5px solid rgba(11,15,26,.1); }
+  .clr-plate { margin: 0; border: 2.5px solid var(--ink); box-shadow: 8px 8px 0 var(--yellow); background: #fff; padding: 0; }
+  .clr-fig-head { display: flex; align-items: center; gap: 10px; padding: 9px 14px 8px; border-bottom: 1.5px solid var(--ink); font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+  .clr-fig-no { background: var(--ink); color: var(--yellow); padding: 3px 7px; letter-spacing: .08em; flex: none; }
+  .clr-fig-title { opacity: .72; }
+  .clr-fig-head::after { content: ""; flex: 1 1 24px; height: 2px; background: repeating-linear-gradient(90deg, var(--ink) 0 6px, transparent 6px 12px); opacity: .35; }
+  .clr-fig-scroll { overflow-x: auto; }
+  .clr-plate svg { display: block; width: 100%; height: auto; padding: 22px 20px 14px; box-sizing: border-box; }
+  .clr-plate text { font-family: var(--mono); letter-spacing: .04em; fill: currentColor; }
+  .clr-plate-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; padding: 9px 14px; border-top: 1.5px solid var(--ink); background: var(--cream); font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+  .clr-fig-foot-tag { background: var(--ink); color: var(--cream); padding: 3px 7px; font-size: 11px; letter-spacing: .08em; flex: none; }
+  .clr-fig-foot-sep { opacity: .4; }
+  .clr-plate figcaption { font-family: var(--mono); font-size: 12px; letter-spacing: .02em; opacity: .65; margin: 10px 14px 12px; }
+  .clr-plate figcaption a { color: inherit; font-weight: 700; border-bottom: 1.5px solid var(--ink); text-decoration: none; }
+
+  /* ============================================================================
+     RESPONSIVE
+     ============================================================================ */
+  @media (max-width: 900px) {
+    .cond-grid, .deliver-grid { grid-template-columns: 1fr; }
+    .faq-item { grid-template-columns: 1fr; gap: 12px 0; }
+  }
   @media (max-width: 768px) {
     .viewer-fig { box-shadow: 4px 4px 0 var(--yellow); }
     .viewer-canvas { display: none; }
     .viewer-still { display: block; position: relative; }
     .viewer-still img { display: block; width: 100%; height: auto; }
     .viewer-still-badge { position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%); margin: 0; max-width: calc(100% - 28px); text-align: center; background: rgba(15,19,24,.88); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,.18); color: #f0f4f8; font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 7px 14px; box-shadow: 0 4px 12px rgba(0,0,0,.4); }
+    .clr-plate { box-shadow: 4px 4px 0 var(--yellow); }
+    .clr-fig-head { padding: 8px 10px 7px; }
+    .clr-fig-scroll svg { min-width: 680px; padding: 14px 12px 8px; }
+    .clr-plate-foot { padding: 8px 10px; }
+    .clr-plate figcaption { margin: 8px 10px 10px; }
   }
-
-  /* USE CASES */
-  .prod-uses { padding: 72px 0; background: var(--cream); border-bottom: 1.5px solid rgba(11,15,26,.1); }
-  .uses-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
-  .feature { border-left: 4px solid var(--yellow); padding-left: 24px; }
-  .feature h4 { font-family: var(--narrow); font-size: 22px; text-transform: uppercase; margin-bottom: 10px; }
-  .feature p { opacity: .8; line-height: 1.5; font-size: 15px; }
-
-  /* PRICING */
-  .prod-pricing { padding: 64px 0; background: white; }
-  .pricing-card { background: var(--ink); color: var(--cream); padding: 48px; border: 2.5px solid var(--ink); max-width: 600px; }
-  .pricing-card .m { color: var(--yellow); font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .1em; margin-bottom: 16px; }
-  .pricing-card p { font-size: 17px; line-height: 1.6; opacity: .8; margin-bottom: 28px; }
-  .price-pitch a { color: var(--yellow); border-bottom: 1.5px solid currentColor; font-weight: 600; }
-  .response-note { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; opacity: .45; margin-top: 16px; margin-bottom: 0; }
-
-  /* ACTION BLOCK: scroll-margin keeps the section title clear of the sticky header
-     when the buy box anchor lands here. */
-  .prod-action { padding: 64px 0 72px; background: var(--cream); border-top: 1.5px solid rgba(11,15,26,.1); scroll-margin-top: 76px; }
-
-  /* GUIDE LINKS */
-  .prod-guides { padding: 48px 0; background: var(--ink); border-bottom: 1.5px solid rgba(255,255,255,.1); }
-  .guides-label { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .1em; color: var(--yellow); margin-bottom: 20px; }
-  .guides-row { display: flex; flex-wrap: wrap; gap: 16px; }
-  .guide-link { font-family: var(--narrow); font-size: 17px; font-weight: 600; color: var(--cream); text-decoration: none; border-bottom: 2px solid rgba(255,255,255,.25); padding-bottom: 2px; transition: border-color .15s; }
-  .guide-link:hover { border-color: var(--yellow); color: var(--yellow); }
-
-  /* CTA */
-  .cta-section { padding: 64px 0 80px; background: var(--cream); }
-  .cta-box { background: var(--ink); color: var(--cream); padding: 64px; text-align: center; border: 2.5px solid var(--ink); box-shadow: 12px 12px 0 var(--yellow); }
-  .cta-box h2 { font-family: var(--narrow); font-size: 48px; text-transform: uppercase; margin-bottom: 16px; }
-  .cta-box p { font-size: 18px; opacity: .8; margin-bottom: 40px; }
-
-  @media (max-width: 768px) {
-    .uses-grid { grid-template-columns: 1fr; }
-    .cta-box { padding: 40px 24px; }
-    .cta-box h2 { font-size: 32px; }
-    .pricing-card { padding: 32px 24px; }
+  @media (max-width: 600px) {
+    .prod-head { padding: 24px 0 40px; }
+    .band, .prod-specs, .prod-action, .prod-faq { padding: 44px 0; }
+    .buy-box { padding: 18px; box-shadow: 5px 5px 0 var(--ink); }
+    .listing-frame { box-shadow: 5px 5px 0 var(--ink); }
+    .cmp-scroll { box-shadow: 5px 5px 0 var(--ink); }
+    .cond-claim, .clr-fig, .faq-wrap { box-shadow: 5px 5px 0 var(--yellow); }
+    .qa-item p { font-size: 14.5px; }
+    .qa-foot { padding: 10px 12px; }
+    /* nowrap figures plus a fixed table would push the document sideways at 400px, so the
+       numbers step down rather than the block scrolling. */
+    .dims { max-width: none; margin-top: 22px; }
+    .dims-tbl td { font-size: 20px; padding: 11px 6px; }
+    .dims-tbl td:last-child { padding-right: 11px; }
+    .dims-rowlab { width: 38%; padding: 11px 6px 11px 11px; }
+    .dims-rowlab span { font-size: 11px; }
+    .dims-fig { padding: 9px; }
+    .dims-fig-v { font-size: 17px; }
+    .prod-3d { padding: 40px 0; }
+    .act { padding: 18px 0 16px; border-top-width: 4px; }
+    .act-sub { font-size: 11px; margin-top: 9px; }
+    .clr-cell { border-right: 0; border-bottom: 1.5px solid rgba(11,15,26,.22); }
+    .clr-cell:last-child { border-bottom: 0; }
+    .faq-item { padding: 20px 16px; }
+    .faq-q { font-size: 18px; gap: 10px; }
+    .faq-a :global(p) { font-size: 15px; }
   }
 </style>
