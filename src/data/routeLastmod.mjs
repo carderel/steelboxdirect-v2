@@ -82,11 +82,11 @@ export const routeLastmod = {
   'src/pages/quote/index.astro': '2026-08-24T15:22:53-04:00',
   'src/pages/rent-to-own/index.astro': '2026-09-14T14:49:00-04:00',
   'src/pages/shipping-container-guides/index.astro': '2026-09-02T15:12:02-04:00',
-  'src/pages/shipping-containers-for-sale/[slug].astro': '2026-09-14T14:49:00-04:00',
+  'src/pages/shipping-containers-for-sale/[slug].astro': '2026-09-16T14:08:18-04:00',
   'src/pages/shipping-containers-for-sale/index.astro': '2026-08-25T13:21:46-04:00',
   'src/pages/size/calculator.astro': '2026-08-24T15:22:53-04:00',
   'src/pages/size/index.astro': '2026-08-25T15:52:34-04:00',
-  'src/pages/terms.astro': '2026-09-14T14:49:00-04:00',
+  'src/pages/terms.astro': '2026-09-16T14:08:18-04:00',
 };
 
 export default routeLastmod;
