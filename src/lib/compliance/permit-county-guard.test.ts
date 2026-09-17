@@ -25,6 +25,14 @@
  *   2. EVERY RETIRED URL REDIRECTS, in both slash forms, to the anchor that replaced it. 77 records
  *      times two forms, recomputed here from the data rather than counted, and read out of the
  *      BUILT dist/_redirects rather than out of the config that is supposed to produce it.
+ *
+ *      REWRITTEN 2026-09-17, because that assertion passed while production served 404s. The 154
+ *      rules were all present in dist/_redirects and Cloudflare was reading only the first 110 of
+ *      them: no build error, no deploy warning, no log line, 56 URLs dead. A local test that reads
+ *      a file the platform silently truncates is measuring the wrong artifact. So the 154 rules are
+ *      22 placeholder rules, the assertion RESOLVES a URL through the rule set instead of looking
+ *      one up in it, and it is joined by the assertion this whole episode was about: the rule count
+ *      in dist/_redirects stays under 100. A silent platform ceiling needs a loud local test.
  *   3. NO SECTION CARRIES A WORD THE DATA DID NOT SUPPLY. This is the assertion that does the real
  *      HS_003 work now. Each built section's visible text is reconstructed from
  *      src/data/permitCounties.ts and compared letter for letter. A single sentence of invented
@@ -91,7 +99,7 @@
 
 import { describe, it, expect } from 'vitest';
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
-import { join, relative } from 'node:path';
+import { join, relative, sep } from 'node:path';
 import { cities } from '../../data/cities';
 import {
   permitCounties,
@@ -330,6 +338,75 @@ const itBuilt = (name: string, fn: () => void): void =>
     fn();
   });
 
+/* ------------------------------------------------------------------ the redirect resolver */
+
+interface RedirectRule {
+  from: string;
+  to: string;
+  status: string;
+}
+
+/** Every rule in the BUILT file, comments and blanks dropped, in the order Cloudflare reads them. */
+function parseRedirects(): RedirectRule[] {
+  const out: RedirectRule[] = [];
+  for (const line of readFileSync(join(DIST, '_redirects'), 'utf-8').split('\n')) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith('#')) continue;
+    const [from, to, status] = trimmed.split(/\s+/);
+    if (from && to && status) out.push({ from, to, status });
+  }
+  return out;
+}
+
+/**
+ * What Cloudflare Pages will serve for one URL, or null if no rule claims it.
+ *
+ * Cloudflare's matcher in miniature, and it has to be a matcher rather than a lookup now: since
+ * 2026-09-17 the 154 retired county URLs are served by 22 PLACEHOLDER rules, and a test that reads
+ * the file as a table of literal paths would have found nothing and reported green. A :placeholder
+ * matches exactly one path segment and is substituted wherever its name appears in the target,
+ * fragment included; a splat matches the rest of the path and fills :splat. First match wins.
+ *
+ * Every one of those behaviours was checked against the real thing before this was written, by
+ * serving a fixture through wrangler pages dev, which runs the same asset runtime Pages runs. This
+ * function is that observed behaviour written down, not an inference from documentation.
+ */
+function resolveRedirect(rules: RedirectRule[], url: string): { target: string; status: string } | null {
+  for (const rule of rules) {
+    const names: string[] = [];
+    const pattern = rule.from
+      .split('/')
+      .map((segment) => {
+        if (segment === '*') {
+          names.push('splat');
+          return '(.*)';
+        }
+        if (segment.startsWith(':')) {
+          names.push(segment.slice(1));
+          return '([^/]+)';
+        }
+        return segment.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      })
+      .join('/');
+    const match = new RegExp(`^${pattern}$`).exec(url);
+    if (!match) continue;
+    let target = rule.to;
+    names.forEach((name, i) => {
+      target = target.split(`:${name}`).join(match[i + 1] ?? '');
+    });
+    return { target, status: rule.status };
+  }
+  return null;
+}
+
+/** The URL every built page answers on, derived from where the file landed in dist/. */
+function builtPageUrls(): string[] {
+  return allBuiltHtml().map((file) => {
+    const rel = relative(DIST, file).split(sep).join('/');
+    return rel.endsWith('/index.html') ? `/${rel.slice(0, -'index.html'.length)}` : `/${rel.replace(/\.html$/, '')}`;
+  });
+}
+
 /* ------------------------------------------------------------------ tier 1: derivation */
 
 describe('permit county derivation', () => {
@@ -483,36 +560,49 @@ describe('the county route is retired, not merely unlinked', () => {
 /* ------------------------------------------------------------------ tier 1: the redirects */
 
 describe('the 77 retired county URLs redirect', () => {
-  it('derives the astro.config.mjs block from permitCounties rather than listing slugs', () => {
-    const config = read(ASTRO_CONFIG);
-    expect(config).toContain("from './src/data/permitCounties.ts'");
-    expect(config).toContain('permitCounties.map');
-    // The anti-transcription assertion. A hand typed block would start correct and end wrong in
-    // the direction nobody looks, which is the exact failure the data module's header exists to
-    // prevent. If a single slug is literally typed in the CODE, this fails. Comments are stripped
-    // first, because the block comment there names /permits/ohio/hamilton-county/ on purpose while
-    // explaining what happened to it, which is documentation rather than a transcribed table.
-    const code = config.replace(/\/\*[\s\S]*?\*\//g, ' ').replace(/^[ \t]*\/\/.*$/gm, ' ');
-    for (const county of permitCounties) {
-      expect(code, `astro.config.mjs hardcodes the slug ${county.slug}`).not.toContain(
-        `/${county.slug}`,
-      );
-    }
-  });
-
-  it('carries a trailing slash rule in public/_redirects for every record and for no other', () => {
-    // Astro normalises a trailing slash off any key in its redirects block, and Cloudflare treats
-    // /a/b/ and /a/b as different paths, so the slash forms, which are the ones Google indexed,
-    // have to be stated in the static file. Recomputed here, so this block cannot rot: adding a
-    // county to a city zoning array fails the suite until the block is regenerated.
+  it('states the retired URLs as placeholder rules, one per state per slash form', () => {
+    // WHY A PLACEHOLDER AND NOT 154 LINES. Both slash forms of all 77 retired URLs were stated
+    // one line each until 2026-09-17, 77 in public/_redirects and 77 generated into
+    // astro.config.mjs, and 56 of them were serving a live 404 in production: Cloudflare Pages
+    // honours roughly the first 110 lines of _redirects and drops the rest with no build error,
+    // no deploy warning and no log line. The rule that broke was not wrong, it was 111th. So the
+    // 154 lines are 22 placeholder rules, recomputed here, so the block cannot rot: adding a
+    // county to a city zoning array in a state that has none yet fails the suite until the block
+    // is regenerated.
     const lines = read(PUBLIC_REDIRECTS)
       .split('\n')
       .map((l) => l.trim())
       .filter((l) => l && !l.startsWith('#'));
     const permitLines = lines.filter((l) => l.startsWith('/permits/'));
-    const expected = permitCounties.map((c) => `${c.path} ${c.anchorPath} 301`);
-    expect(permitLines.slice().sort()).toEqual(expected.slice().sort());
-    expect(permitLines).toHaveLength(permitCountyCount);
+    const expected = permitStates.flatMap((state) => [
+      `${state.path}:county/ ${state.path}#:county 301`,
+      `${state.path}:county ${state.path}#:county 301`,
+    ]);
+    expect(permitLines).toEqual(expected);
+    expect(permitLines).toHaveLength(permitStates.length * 2);
+  });
+
+  it('names no county slug in either redirect surface, because a slug list is what broke', () => {
+    // The anti-transcription assertion, now pointed at both files. A hand typed block would start
+    // correct and end wrong in the direction nobody looks, and a 154 line block was ALSO the
+    // defect on its own terms. Comments are stripped first: both headers name
+    // /permits/ohio/hamilton-county on purpose while explaining what happened to it, which is
+    // documentation rather than a transcribed table.
+    const config = read(ASTRO_CONFIG)
+      .replace(/\/\*[\s\S]*?\*\//g, ' ')
+      .replace(/^[ \t]*\/\/.*$/gm, ' ');
+    const redirects = read(PUBLIC_REDIRECTS)
+      .split('\n')
+      .filter((l) => !l.trim().startsWith('#'))
+      .join('\n');
+    for (const county of permitCounties) {
+      expect(config, `astro.config.mjs hardcodes the slug ${county.slug}`).not.toContain(
+        `/${county.slug}`,
+      );
+      expect(redirects, `public/_redirects hardcodes the slug ${county.slug}`).not.toContain(
+        `/${county.slug}`,
+      );
+    }
   });
 });
 
@@ -934,23 +1024,89 @@ describe('built permit pages', () => {
   });
 
   itBuilt('301s both slash forms of all 77 retired URLs to the section anchor', () => {
-    // Read out of the BUILT file rather than out of the config that is meant to produce it, because
-    // the question this answers is what Cloudflare will serve. Astro contributes the bare form and
-    // public/_redirects the trailing slash form; a reader arriving on either one lands on the
-    // section, not on a 404 and not on a soft landing at the state page top.
-    const rules = new Map<string, string>();
-    for (const line of readFileSync(join(DIST, '_redirects'), 'utf-8').split('\n')) {
-      const trimmed = line.trim();
-      if (!trimmed || trimmed.startsWith('#')) continue;
-      const [from, to, code] = trimmed.split(/\s+/);
-      if (from && to && code === '301' && !rules.has(from)) rules.set(from, to);
-    }
+    // Read out of the BUILT file rather than out of the source that is meant to produce it, because
+    // the question this answers is what Cloudflare will serve, and RESOLVED rather than looked up,
+    // because the rules that serve these 154 URLs are 22 placeholders and a string lookup cannot
+    // see through one. resolveRedirect below is Cloudflare's own matching rules in miniature:
+    // placeholders match one segment and substitute into the destination, fragment included, a
+    // splat matches the rest, and the first matching rule wins. Confirmed against the real asset
+    // runtime with wrangler pages dev before this test was written.
+    const rules = parseRedirects();
     for (const county of permitCounties) {
       const bare = county.path.replace(/\/$/, '');
-      expect(rules.get(county.path), `${county.path} has no 301`).toBe(county.anchorPath);
-      expect(rules.get(bare), `${bare} has no 301`).toBe(county.anchorPath);
+      expect(resolveRedirect(rules, county.path), `${county.path} has no 301`).toEqual({
+        target: county.anchorPath,
+        status: '301',
+      });
+      expect(resolveRedirect(rules, bare), `${bare} has no 301`).toEqual({
+        target: county.anchorPath,
+        status: '301',
+      });
     }
     expect(permitCountyCount).toBe(77);
+  });
+
+  itBuilt('keeps dist/_redirects under the rule count Cloudflare silently stops reading at', () => {
+    // THE ASSERTION THIS FILE EXISTS TO CARRY NOW. On 2026-09-17, 166 rules shipped and production
+    // served 110 of them. Cloudflare Pages stopped reading partway down the file: no build error,
+    // no deploy warning, no log line, and the 56 rules below the cut returned 404 while every rule
+    // above it worked. Nothing in the toolchain can fail on this, so the toolchain has to be told.
+    // The ceiling is measured at roughly 110 and the limit here is 100, deliberately below it: the
+    // exact number is a platform behaviour nobody published and it can move.
+    const rules = parseRedirects();
+    expect(
+      rules.length,
+      `dist/_redirects carries ${rules.length} rules. Cloudflare Pages silently drops the tail of ` +
+        `this file past roughly 110. Collapse rules into placeholders rather than raising this.`,
+    ).toBeLessThan(100);
+  });
+
+  itBuilt('leaves every non permit redirect resolving, including the four flat city URLs', () => {
+    // The permit placeholders sit in the same file as the rules that predate them, above the block
+    // the adapter appends, and a placeholder that matched too much or a rule that fell below the
+    // ceiling would break these without breaking anything above. Stated as URL in, URL out, from
+    // the same resolver, so the check is what Cloudflare serves rather than what the file says.
+    const rules = parseRedirects();
+    const expected: Array<[string, string]> = [
+      ['/admin', '/admin/login'],
+      [
+        '/shipping-containers-for-sale/40-foot-one-trip-container',
+        '/shipping-containers-for-sale/40-foot-high-cube-container',
+      ],
+      ['/cincinnati-shipping-containers', '/locations/ohio/cincinnati-shipping-containers'],
+      ['/cincinnati-shipping-containers/', '/locations/ohio/cincinnati-shipping-containers/'],
+      ['/dayton-shipping-containers', '/locations/ohio/dayton-shipping-containers'],
+      ['/dayton-shipping-containers/', '/locations/ohio/dayton-shipping-containers/'],
+      ['/indianapolis-shipping-containers', '/locations/indiana/indianapolis-shipping-containers'],
+      ['/indianapolis-shipping-containers/', '/locations/indiana/indianapolis-shipping-containers/'],
+      ['/louisville-shipping-containers', '/locations/kentucky/louisville-shipping-containers'],
+      ['/louisville-shipping-containers/', '/locations/kentucky/louisville-shipping-containers/'],
+      ['/~partytown', '/'],
+      ['/~partytown/debug/partytown-sandbox-sw.js', '/'],
+    ];
+    for (const [from, to] of expected) {
+      expect(resolveRedirect(rules, from), `${from} no longer redirects`).toEqual({
+        target: to,
+        status: '301',
+      });
+    }
+  });
+
+  itBuilt('lets a placeholder swallow no path that a real page answers', () => {
+    // A placeholder rule matches more than the 77 URLs it replaced: /permits/ohio/anything 301s to
+    // /permits/ohio/#anything. That is accepted, because nothing links or indexes such a URL and
+    // there is no other real subpath under /permits/{state}/ today. This is the assertion that
+    // keeps "today" honest: the day a real page is built under a state, this fails, and the
+    // placeholder has to be retired in favour of something narrower.
+    const rules = parseRedirects();
+    for (const entry of permitStates) {
+      expect(resolveRedirect(rules, entry.path), `${entry.path} is being redirected`).toBe(null);
+    }
+    for (const url of builtPageUrls()) {
+      expect(resolveRedirect(rules, url), `${url} is a real page and a redirect claims it`).toBe(
+        null,
+      );
+    }
   });
 });
 
