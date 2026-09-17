@@ -1,9 +1,19 @@
 // src/data/permitCounties.ts
-// The county level jurisdictions behind /permits/{state}/{county}/, DERIVED AT IMPORT TIME from the
+// The county level jurisdictions listed on /permits/{state}/, DERIVED AT IMPORT TIME from the
 // zoning arrays in src/data/cities.ts. There is no second copy of a county name, an office name or
 // an office URL anywhere in this repository: cities.ts owns those facts and this module reshapes
-// them. Adding a county to a city's zoning array publishes a permit page for it on the next build,
-// and removing one unpublishes it, with nothing here to remember.
+// them. Adding a county to a city's zoning array publishes a section for it on the next build, and
+// removing one unpublishes it, with nothing here to remember.
+//
+// CONSOLIDATED 2026-09-16. Each record had its own page at /permits/{state}/{county}/ until then.
+// Measured against each other, Hamilton County and Warren County were 1,121 words apiece with
+// 1,105 of those words in identical runs and not one unique four word segment between them, which
+// is a row rather than a page. Every record is now an anchored section on its state page, keyed on
+// the same slug its URL used to end in, and the 77 old URLs 301 to it from a table in
+// astro.config.mjs that is generated from THIS module. No per jurisdiction rule content was
+// written to fill the gap and none may be added later: PROJECT_HS_003 forbids publishing a
+// requirement outcome for a named place, and this repository holds no sourced county level zoning
+// data to write from in any case.
 //
 // WHY DERIVED RATHER THAN TRANSCRIBED. A transcribed copy of 80 office URLs is a second source of
 // truth that starts identical and ends wrong, and the direction it goes wrong in is invisible: the
@@ -91,8 +101,21 @@ export interface PermitCounty {
   stateSlug: string;
   /** Kebab-case final URL segment, e.g. "hamilton-county". */
   slug: string;
-  /** Ready to render path, e.g. "/permits/ohio/hamilton-county/". */
+  /**
+   * THE RETIRED STANDALONE URL, e.g. "/permits/ohio/hamilton-county/". It was a real page until
+   * 2026-09-16 and it is not one any more: the 77 of them were 1,121 words apiece with 1,105 of
+   * those words in runs identical to their neighbours, and the only fact that differed was the
+   * office name, its scope and its link. The field is kept because it is what the 301 table in
+   * astro.config.mjs redirects FROM, and generating that table from the same derivation the
+   * sections are built from is the only way the two cannot drift. Nothing renders it as a link.
+   */
   path: string;
+  /**
+   * WHERE IT LIVES NOW: the anchored section on the state page, e.g. "/permits/ohio/#hamilton-county".
+   * The fragment is deliberately the same slug the retired URL ended in, so an old link, a redirect
+   * destination and an internal link all name the jurisdiction with one string.
+   */
+  anchorPath: string;
   /**
    * How the place is named in a heading. "Hamilton County, Ohio", but "New York City" and "City of
    * Virginia Beach" alone, because a name that already contains its state does not need it twice.
@@ -188,6 +211,7 @@ function derive(source: City[]): PermitCounty[] {
           stateSlug,
           slug,
           path: `/permits/${stateSlug}/${slug}/`,
+          anchorPath: `/permits/${stateSlug}/#${slug}`,
           headingPlace: name.includes(state) ? name : `${name}, ${state}`,
           kind: isCounty ? 'county' : 'municipality',
           siteNoun: isCounty ? 'county' : 'city',
@@ -322,6 +346,26 @@ export const PERMIT_DISCLAIMER = {
  */
 export const MUNICIPAL_CARVE_OUT =
   'If your parcel is inside a city, town, township, or village, that municipality may be the one that answers, so ask which.';
+
+/**
+ * THE MULTI OFFICE NOTE, rendered under the three records that list two offices: Franklin County OH
+ * (city of Columbus, then the townships), Cabell County WV (city of Huntington, then outside the
+ * city limits) and New York City (City Planning, then Buildings). It lives here rather than in the
+ * template for the same reason every other sentence on those sections does: the guard at
+ * src/lib/compliance/permit-county-guard.test.ts reconstructs each rendered section word for word
+ * from this module and fails if the built page carries a single word this module did not supply.
+ * That assertion is what physically prevents per jurisdiction rule prose from being written into
+ * the sections later, which is the failure PROJECT_HS_003 is most exposed to here.
+ *
+ * It says nothing about what either office will decide, only which one to put the question to
+ * first, which is the only half of the exchange this site is in a position to publish.
+ */
+export function multiOfficeNote(county: PermitCounty): string {
+  if (county.offices.length < 2) return '';
+  return county.scopeNote
+    ? `Every office above answers for ${county.scopeNote}, and which one takes your question depends on what you are asking about. Start with either and ask them to point you at the other.`
+    : `Two offices are listed for ${county.name}, and the scope beside each one is the part of it that office answers for. A parcel inside the city limits and a parcel outside them are two different questions, so start with the one that matches yours and ask them to point you at the other.`;
+}
 
 /**
  * WHAT TO ASK, and why every one of these is written as a question rather than as an answer.

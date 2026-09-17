@@ -447,17 +447,26 @@ const cityPrice = showPrice
       <!-- Contextual outbound links to the permit pages, added 2026-09-10 (T-215). Before this the
            city pages named these offices and linked them off site, and had zero contextual links
            into /permits/ anywhere on the page: the only path to the permit content was the footer.
-           countiesForCity() reads the same records the county pages are built from, so this list
-           and those pages can never disagree about which counties belong to this metro. -->
+           countiesForCity() reads the same records those pages are built from, so this list and
+           those pages can never disagree about which counties belong to this metro.
+
+           RETARGETED 2026-09-16. Each jurisdiction used to have its own URL at
+           /permits/{state}/{county}/. Those 77 pages were consolidated into their 11 state pages,
+           where each one is now an anchored section keeping the slug its URL used to end in, so
+           these links point at the section rather than at a URL that would 301. county.anchorPath
+           is derived from the same slug the section id is derived from, so a broken link here is
+           impossible without the section id breaking in the same way. -->
       {permitPages.length > 0 && (
         <>
           <p class="local_zoning_permits_intro">
-            We keep a page for each of those offices, naming who decides and listing the questions
-            worth asking your county or municipal zoning office before you buy:
+            We keep a section on each of those offices, naming who to start with and listing the
+            questions worth asking your county or municipal zoning office before you buy:
           </p>
           <ul class="zoning-permit-links">
             {permitPages.map((county) => (
-              <li><a href={county.path}>Permits in {county.name}, {county.state}</a></li>
+              <li>
+                <a href={county.anchorPath}>Permits in {county.name}, {county.state}</a>
+              </li>
             ))}
           </ul>
         </>

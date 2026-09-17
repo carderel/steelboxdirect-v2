@@ -3,11 +3,44 @@ export const prerender = true;
 
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../../components/Breadcrumbs.astro';
-import { permitStates, PERMIT_DISCLAIMER, MUNICIPAL_CARVE_OUT, type PermitState } from '../../../data/permitCounties';
+import {
+  permitStates,
+  multiOfficeNote,
+  ASK_CHECKLIST,
+  PERMIT_DISCLAIMER,
+  MUNICIPAL_CARVE_OUT,
+  DELIVERY_ACCESS,
+  type PermitState,
+} from '../../../data/permitCounties';
 
-// One index per state that has at least one county record, derived from the same module the county
-// pages come from. A state with no counties cannot get an empty index, because the grouping is
-// built from the counties themselves.
+/**
+ * ONE PAGE PER STATE, AND THE 77 COUNTY PAGES FOLDED INTO IT (2026-09-16).
+ *
+ * WHAT CHANGED AND WHY. Until today this route was an index of links and each of the 77 records in
+ * src/data/permitCounties.ts had its own URL at /permits/{state}/{county}/. Measured against each
+ * other, Hamilton County and Warren County were 1,121 words apiece with 1,105 of those words in
+ * identical runs and not one unique four word segment between them. The only fact that actually
+ * differed was the office name, its scope and its link, which is a row, not a page. So the rows
+ * moved here, each one keeps the anchor id it used to have as a URL segment (id="hamilton-county"
+ * for what was /permits/ohio/hamilton-county/), and the old paths 301 to this page. The redirect
+ * list is generated from the same module in astro.config.mjs, so it cannot fall out of step with
+ * the sections below.
+ *
+ * WHAT DELIBERATELY DID NOT CHANGE. Not one word of per jurisdiction rule content was written to
+ * fill the gap, and none may be added later. This site publishes who to ask and what to ask them,
+ * never what the answer is (PROJECT_HS_003), and there is no sourced county level zoning data in
+ * this repository to write from even if the rule allowed it. Every jurisdiction specific string on
+ * this page is a name, a scope label or a URL that cities.ts already held.
+ *
+ * NO VERIFICATION DATE IS STATED, and that is a decision rather than an omission. cities.ts records
+ * 2026-07-31 for the eight depot metros only; the seven home region metros carry no recorded date
+ * at all. A single date printed over a mixed list would be false for roughly half of it, and there
+ * is no per record date to print instead, so the page prints none. See the "WHEN THE OFFICE URLs
+ * WERE VERIFIED" section of src/data/permitCounties.ts.
+ *
+ * NO STICKY TABLE OF CONTENTS AND NO SCRIPT. The jump list is a plain anchor list at the top of the
+ * section, which is the whole of the behaviour it needs. Standing project rule: avoid JS.
+ */
 export function getStaticPaths() {
   return permitStates.map((entry) => ({
     params: { state: entry.stateSlug },
@@ -24,14 +57,33 @@ const crumbs = [
   { name: entry.state },
 ];
 
-// No date props, for the reason spelled out in the county template: dateModified comes from the
-// committed route lastmod table, this module has no commit yet, and silence is the honest answer.
-// The noun in the title is read off the data rather than assumed. Virginia's seven Hampton Roads
-// entries are INDEPENDENT CITIES that sit in no county, so a title reading "by County in Virginia"
-// over a list of seven cities is wrong on its face. entry.jurisdictionNoun is City there and County
-// everywhere else. See PermitState in src/data/permitCounties.ts.
-const title = `Shipping Container Permits by ${entry.jurisdictionNoun} in ${entry.state} | Steel Box Direct`;
-const description = `The county and city offices to ask about a shipping container in ${entry.state}, with a link to each. Requirements vary by jurisdiction and intended use, and confirming them is the buyer's responsibility.`;
+// The word for what this page lists, read off the data rather than assumed. Virginia's seven
+// Hampton Roads entries are INDEPENDENT CITIES that sit in no county, so a heading reading "county
+// by county" over a list of seven cities is wrong on its face. See PermitState in
+// src/data/permitCounties.ts.
+const noun = entry.jurisdictionNoun.toLowerCase();
+
+// NO datePublished AND NO dateModified PROP, deliberately. dateModified for every node comes from
+// the committed route lastmod table (src/data/routeLastmod.mjs), which is generated from git
+// history by npm run generate:route-lastmod, and the guide Article emits no date field it was not
+// given. See the fabricated-dates guard.
+const faqs = [
+  {
+    q: `Who decides whether a shipping container needs a permit in ${entry.state}?`,
+    a: `That is a question for your local zoning or building department rather than for us. This page lists the office to start with for each of the ${entry.counties.length} ${entry.counties.length === 1 ? 'jurisdiction' : 'jurisdictions'} we deliver to in ${entry.state}, with a link to each. ${MUNICIPAL_CARVE_OUT} Requirements vary by jurisdiction and by what you intend to use the container for, and confirming them is the buyer's responsibility. Steel Box Direct does not determine, advise on, or guarantee permit requirements.`,
+  },
+  {
+    q: `What should I ask a zoning office in ${entry.state} about a shipping container?`,
+    a: `Ask about your intended use, how long the container sits there, setbacks from your property lines, which category their own code puts it in, whether they want it set on a pad or tied down, and what your HOA or deed restrictions add on top. The checklist on this page puts each of those in the form to ask it in.`,
+  },
+  {
+    q: `Does Steel Box Direct handle permits in ${entry.state}?`,
+    a: `No. We sell containers and we deliver them. We do not determine, advise on, or guarantee permit requirements: the offices named on this page are where to start, and confirming what applies to your property is the buyer's responsibility.`,
+  },
+];
+
+const title = `Shipping Container Permits in ${entry.state}: Who to Ask | Steel Box Direct`;
+const description = `The ${entry.counties.length} county and city offices to ask about a shipping container in ${entry.state}, with a link to each. Requirements vary by jurisdiction and intended use, and confirming them is the buyer's responsibility.`;
 ---
 
 <BaseLayout
@@ -42,13 +94,16 @@ const description = `The county and city offices to ask about a shipping contain
   schema={{
     kind: 'collection',
     title: `Shipping Container Permits by ${entry.jurisdictionNoun} in ${entry.state}`,
+    // Each item points at the section on this page that replaced that jurisdiction's old URL.
     items: entry.counties.map((county) => ({
       name: county.headingPlace,
-      url: `https://steelboxdirect.com${county.path}`,
+      url: `https://steelboxdirect.com/permits/${entry.stateSlug}/#${county.slug}`,
     })),
-    faqs: [],
+    faqs,
   }}
 >
+  <!-- Ink on signal orange, not cream: cream on #FF5A1F is 2.77:1 and fails WCAG AA at both
+       thresholds, ink on it is 6.14:1. -->
   <section class="state-hero" style="background: var(--c5-permits); color: var(--ink);">
     <div class="wrap">
       <Breadcrumbs items={crumbs} />
@@ -67,24 +122,137 @@ const description = `The county and city offices to ask about a shipping contain
 
   <section class="state-list">
     <div class="wrap">
-      <h2>Jurisdictions we list in {entry.state}</h2>
-      <p class="state_list_intro">
-        These are the offices we already name on our {entry.state} delivery pages, one page each, with
-        the questions to put to them. The list follows where we deliver rather than every jurisdiction
-        in the state, so one missing here is one we have not researched yet. Each page is a starting
-        point. {MUNICIPAL_CARVE_OUT}
-      </p>
-      <ul class="county-grid">
+      <div class="row state_row">
+        <div class="main-col">
+          <h2>The offices, {noun} by {noun}</h2>
+          <p class="state_list_intro">
+            These are the offices we already name on our {entry.state} delivery pages, with the
+            questions to put to them further down. The list follows where we deliver rather than
+            every jurisdiction in the state, so one missing here is one we have not researched yet.
+            Each entry is a starting point. {MUNICIPAL_CARVE_OUT}
+            We publish who to ask and what to ask them. We do not answer for them, and nothing on
+            this page is a determination about your property.
+          </p>
+        </div>
+        <aside class="sidebar-col">
+          <div class="authority-card">
+            <div class="m">Your responsibility</div>
+            <ul>
+              {PERMIT_DISCLAIMER.responsibility.map((line) => <li>{line}</li>)}
+            </ul>
+          </div>
+        </aside>
+      </div>
+
+      <nav class="jur-toc" aria-label={`Jurisdictions listed in ${entry.state}`}>
+        <p class="m jur_toc_label">Jump to a {noun}</p>
+        <ul>
+          {entry.counties.map((county) => (
+            <li><a href={`#${county.slug}`}>{county.name}</a></li>
+          ))}
+        </ul>
+      </nav>
+
+      <div class="jur-sections">
         {entry.counties.map((county) => (
-          <li class="county-tile">
-            <a href={county.path}>
-              <span class="county_tile_name">{county.name}</span>
-              <span class="county_tile_office">{county.offices[0]?.name}</span>
-              <span class="county_tile_go">Who decides &amp; what to ask</span>
-            </a>
+          <section class="jur" id={county.slug}>
+            <h3 class="jur_name">{county.headingPlace}</h3>
+            <ul class="jur-offices">
+              {county.offices.map((office) => (
+                <li class="jur-office">
+                  {office.scope && (
+                    <span class="m jur_office_scope">{county.name}, {office.scope}</span>
+                  )}
+                  <a class="jur_office_name" href={office.url} rel="noopener" target="_blank">{office.name}</a>
+                </li>
+              ))}
+            </ul>
+            {county.offices.length > 1 && <p class="jur_scope_note">{multiOfficeNote(county)}</p>}
+            <p class="jur_served">
+              {county.cities.map((city, i) => (
+                <>
+                  {i > 0 && <span> and </span>}
+                  <a href={city.path}>Containers in {city.city}, {city.state}</a>
+                </>
+              ))}
+            </p>
+          </section>
+        ))}
+      </div>
+
+      <p class="state_office_note">
+        Office pages move and phone trees change. If a link above lands somewhere unhelpful, search
+        that jurisdiction's own site for planning, zoning, or building, and ask for the person who
+        handles land use questions from residents.
+      </p>
+    </div>
+  </section>
+
+  <section class="state-ask">
+    <div class="wrap">
+      <h2>What to ask them</h2>
+      <p class="state_ask_intro">
+        {ASK_CHECKLIST.length} questions, in the form to put them in, and they are the same eight
+        wherever you are in {entry.state}. Every one is a question for the office rather than an
+        answer from us, because the answer is theirs to give and it turns on your parcel and your
+        plans.
+      </p>
+      <ol class="ask-list">
+        {ASK_CHECKLIST.map((item) => (
+          <li class="ask-item">
+            <span class="m ask_item_label">{item.label}</span>
+            <span class="ask_item_ask">{item.ask}</span>
           </li>
         ))}
-      </ul>
+      </ol>
+    </div>
+  </section>
+
+  <section class="state-us">
+    <div class="wrap">
+      <h2>What Steel Box Direct can and cannot tell you</h2>
+      <div class="state_us_body">
+        <p>
+          We sell containers and we deliver them. We do not determine, advise on, or guarantee
+          permit requirements, and we do not speak for any office named on this page.
+        </p>
+        <p>
+          What we can tell you is the outside dimensions, the condition grade, the door end, and what
+          the truck needs to reach the spot you have in mind. If an office in {entry.state} wants
+          dimensions or a site sketch to answer your question, ask us and we will send what we have.
+        </p>
+        <p>
+          Confirming what applies to your property is the buyer's responsibility, and it is worth
+          doing before you buy rather than after the container is on the ground.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="state-delivery">
+    <div class="wrap">
+      <div class="row state_row">
+        <div class="main-col">
+          <h2>Getting the truck in</h2>
+          <p>{DELIVERY_ACCESS.clearance}</p>
+          <p>{DELIVERY_ACCESS.timing}</p>
+          <p class="state_delivery_link">
+            The full version, with the tilt-bed geometry and the four things that stop a delivery, is
+            in <a href="/delivery/">our delivery guide</a>.
+          </p>
+        </div>
+        <aside class="sidebar-col">
+          <div class="access-card">
+            <div class="m">Clearance at a glance</div>
+            <ul>
+              <li>100+ feet of straight approach</li>
+              <li>12 feet of width at the tightest pinch</li>
+              <li>14 feet overhead, lane and drop spot</li>
+              <li>Ground that holds 30,000 lb</li>
+            </ul>
+          </div>
+        </aside>
+      </div>
     </div>
   </section>
 
@@ -95,8 +263,23 @@ const description = `The county and city offices to ask about a shipping contain
         <a href="/permits/">Permits and zoning: the general guide</a>
         <a href="/locations/">Every city we deliver to</a>
         <a href="/delivery/">How delivery works</a>
-        <a href="/quote/">Get a quote</a>
       </div>
+    </div>
+  </section>
+
+  <section class="state-cta">
+    <div class="wrap">
+      <p class="m state_cta_label">Ready when you are</p>
+      <h2>Get your container quote</h2>
+      <p class="state_cta_body">
+        Tell us your size, condition, and delivery details and we will get you an all-in number.
+        Confirming permit and zoning requirements for your property stays with you and your local
+        authority.
+      </p>
+      <a href="/quote/" class="btn state_cta_btn">
+        Start My Quote
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </a>
     </div>
   </section>
 
@@ -115,15 +298,63 @@ const description = `The county and city offices to ask about a shipping contain
     .state_disclaimer_body { font-size: 16px; line-height: 1.6; margin: 0; }
 
     .state-list { padding: 72px 0; background: var(--cream); }
-    .state-list h2 { font-family: var(--narrow); font-weight: 700; font-size: clamp(28px, 4vw, 40px); text-transform: uppercase; letter-spacing: -.01em; line-height: 1; margin: 0 0 20px; }
-    .state_list_intro { font-size: 17px; line-height: 1.6; max-width: 760px; margin: 0 0 36px; }
+    .row { display: grid; grid-template-columns: 1.5fr 1fr; gap: 72px; align-items: start; }
+    .state-list h2, .state-ask h2, .state-us h2, .state-cta h2, .state-delivery h2 { font-family: var(--narrow); font-weight: 700; font-size: clamp(28px, 4vw, 40px); text-transform: uppercase; letter-spacing: -.01em; line-height: 1; margin: 0 0 20px; }
+    .state_list_intro { font-size: 17px; line-height: 1.6; max-width: 760px; margin: 0; }
 
-    .county-grid { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
-    .county-tile a { display: grid; gap: 10px; height: 100%; background: white; border: 2.5px solid var(--ink); padding: 22px; box-shadow: 6px 6px 0 var(--ink); text-decoration: none; color: var(--ink); transition: transform .15s, box-shadow .15s; }
-    .county-tile a:hover { transform: translate(-2px,-2px); box-shadow: 8px 8px 0 var(--c5-permits); }
-    .county_tile_name { font-family: var(--narrow); font-weight: 700; font-size: 22px; text-transform: uppercase; line-height: 1.02; }
-    .county_tile_office { font-size: 14px; line-height: 1.45; opacity: .8; }
-    .county_tile_go { font-family: var(--mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--c5-permits); }
+    .authority-card { background: var(--ink); color: var(--cream); padding: 32px; border: 2px solid var(--ink); }
+    .authority-card .m { color: var(--yellow); margin-bottom: 16px; }
+    .authority-card ul { list-style: none; padding: 0; margin: 0; }
+    .authority-card li { margin-bottom: 16px; font-size: 15px; line-height: 1.45; border-bottom: 1px solid rgba(246,241,231,.1); padding-bottom: 16px; }
+    .authority-card li:last-child { border: none; margin-bottom: 0; padding-bottom: 0; }
+
+    /* The jump list. A plain anchor list, no sticky positioning and no script: it wraps at any
+       width and needs nothing to work. */
+    .jur-toc { margin: 44px 0 0; border-top: 2.5px solid var(--ink); border-bottom: 2.5px solid var(--ink); padding: 20px 0; }
+    .jur_toc_label { color: var(--c5-permits); margin: 0 0 14px; }
+    .jur-toc ul { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 8px 10px; }
+    .jur-toc a { display: inline-block; font-family: var(--narrow); font-weight: 600; font-size: 15px; line-height: 1.1; text-decoration: none; color: var(--ink); border: 2px solid var(--ink); padding: 7px 11px; background: white; }
+    .jur-toc a:hover { background: var(--c5-permits); }
+
+    .jur-sections { margin: 40px 0 0; display: grid; gap: 22px; }
+    /* scroll-margin so an anchored heading does not land flush against the viewport edge. */
+    .jur { scroll-margin-top: 24px; background: white; border: 2px solid var(--ink); border-left: 8px solid var(--c5-permits); padding: 22px 24px; box-shadow: 6px 6px 0 var(--ink); }
+    .jur_name { font-family: var(--narrow); font-weight: 700; font-size: clamp(21px, 3.2vw, 26px); text-transform: uppercase; line-height: 1.04; margin: 0 0 14px; }
+    .jur-offices { list-style: none; padding: 0; margin: 0; display: grid; gap: 14px; }
+    .jur-office { display: grid; gap: 5px; }
+    .jur_office_scope { color: var(--c5-permits); margin: 0; }
+    .jur_office_name { font-size: 17px; line-height: 1.35; font-weight: 600; border-bottom: 3px solid var(--yellow); }
+    .jur_office_name:hover { background: var(--yellow); }
+    .jur_scope_note { font-size: 15px; line-height: 1.55; margin: 14px 0 0; opacity: .82; }
+    .jur_served { font-family: var(--mono); font-size: 11px; letter-spacing: .05em; text-transform: uppercase; margin: 16px 0 0; }
+    .jur_served a { border-bottom: 2px solid rgba(11,15,26,.2); }
+    .jur_served a:hover { border-color: var(--c5-permits); }
+
+    .state_office_note { font-size: 15px; line-height: 1.6; margin: 36px 0 0; max-width: 720px; opacity: .82; }
+
+    .state-ask { padding: 72px 0; background: white; border-top: 1.5px solid rgba(11,15,26,.1); }
+    .state_ask_intro { font-size: 17px; line-height: 1.6; max-width: 720px; margin: 0 0 32px; }
+    .ask-list { list-style: none; counter-reset: ask; padding: 0; margin: 0; border-top: 2.5px solid var(--ink); max-width: 860px; }
+    .ask-item { counter-increment: ask; display: grid; grid-template-columns: 200px 1fr; gap: 8px 28px; padding: 20px 0; border-bottom: 1.5px solid rgba(11,15,26,.15); }
+    .ask_item_label { color: var(--c5-permits); }
+    .ask_item_label::before { content: counter(ask) ". "; }
+    .ask_item_ask { font-size: 16px; line-height: 1.55; }
+
+    .state-us { padding: 72px 0; background: var(--ink); color: var(--cream); }
+    .state-us h2 { color: var(--cream); }
+    .state_us_body { max-width: 760px; }
+    .state_us_body p { font-size: 16px; line-height: 1.65; margin: 0 0 18px; opacity: .88; }
+    .state_us_body p:last-child { margin-bottom: 0; }
+
+    .state-delivery { padding: 72px 0; background: var(--cream); }
+    .state-delivery p { font-size: 16px; line-height: 1.65; max-width: 720px; margin: 0 0 18px; }
+    .state_delivery_link a { border-bottom: 2px solid var(--yellow); font-weight: 600; }
+    .state_delivery_link a:hover { background: var(--yellow); }
+    .access-card { background: white; border: 2px solid var(--ink); padding: 28px; box-shadow: 8px 8px 0 var(--yellow); }
+    .access-card .m { margin-bottom: 16px; }
+    .access-card ul { list-style: none; padding: 0; margin: 0; }
+    .access-card li { font-family: var(--mono); font-size: 12px; letter-spacing: .04em; text-transform: uppercase; padding: 10px 0; border-bottom: 1px solid rgba(11,15,26,.12); }
+    .access-card li:last-child { border: none; }
 
     .state-next { padding: 48px 0; background: var(--ink); border-top: 2px solid rgba(255,255,255,.08); }
     .state-next-label { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: .1em; color: var(--yellow); margin-bottom: 16px; }
@@ -131,11 +362,22 @@ const description = `The county and city offices to ask about a shipping contain
     .state-next-links a { font-family: var(--narrow); font-size: 17px; font-weight: 600; color: var(--cream); text-decoration: none; border-bottom: 2px solid rgba(255,255,255,.2); padding-bottom: 2px; }
     .state-next-links a:hover { color: var(--yellow); border-color: var(--yellow); }
 
+    .state-cta { padding: 64px 0 80px; background: var(--c5-permits); color: var(--ink); border-top: 2.5px solid var(--ink); }
+    .state_cta_label { margin: 0 0 12px; }
+    .state_cta_body { font-size: 17px; line-height: 1.6; max-width: 680px; margin: 0 0 28px; }
+    .state_cta_btn { background: var(--ink); color: var(--yellow); border-color: var(--ink); }
+
+    @media (max-width: 960px) {
+      .row { grid-template-columns: 1fr; gap: 40px; }
+      .ask-item { grid-template-columns: 1fr; gap: 6px; }
+    }
     @media (max-width: 768px) {
       .sh { grid-template-columns: auto 1fr; row-gap: 6px; }
       .sh .tg { grid-column: 1 / -1; text-align: left; opacity: .5; }
       .state-hero { padding: 48px 0 40px; }
       .state-disclaimer { padding: 20px; }
+      .jur { padding: 18px 18px; box-shadow: 4px 4px 0 var(--ink); }
+      .jur-toc a { font-size: 14px; padding: 6px 9px; }
     }
   </style>
 </BaseLayout>

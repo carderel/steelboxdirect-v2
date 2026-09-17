@@ -153,8 +153,25 @@ jobs:
           fi
           git --no-pager diff --stat -- src/data/geoPricing.ts
 
+      - name: Gate, production build
+        if: steps.harvest.outputs.status == 'written'
+        # THE BUILD RUNS BEFORE THE SUITES, AND THE ORDER IS LOAD BEARING AS OF 2026-09-17.
+        # src/lib/compliance/permit-county-guard.test.ts has 20 assertions that read dist/, including
+        # the section reconstruction that is the mechanical enforcement of PROJECT_HS_003. They used
+        # to SKIP when dist/ was absent, which is exactly what a fresh runner is, so on every day the
+        # feed moved this job ran `npm test` against no build and reported a pass on 20 checks that
+        # read nothing. That is the same "a skipped gate reads as a green run" defect written up in
+        # the type check step below. Those assertions now FAIL without dist/, so the build has to
+        # come first for the suite to have anything to inspect.
+        #
+        # `npm run build` is itself `npm run guard && astro build`, so the hs003 and dash source
+        # guards still run before anything is built. Nothing is weakened by moving this up.
+        run: npm run build
+
       - name: Gate, unit and guard suites
         if: steps.harvest.outputs.status == 'written'
+        # Runs against the dist/ the step above produced, so the built-output guards inspect the
+        # exact artifact this run would ship.
         run: npm test
 
       - name: Gate, harvest script suite
@@ -189,9 +206,6 @@ jobs:
           npx astro sync
           npx tsc --noEmit
 
-      - name: Gate, production build
-        if: steps.harvest.outputs.status == 'written'
-        run: npm run build
 
       - name: Commit and push the new figures
         if: steps.harvest.outputs.status == 'written'

@@ -4,6 +4,46 @@ import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 import { serializeWithLastmod, routeLastmodIndexPlugin } from './src/lib/seo/sitemapLastmod.mjs';
 import { sitemapAllowsCategoryUrl } from './src/lib/seo/blogCategoryIndexing.mjs';
+import { permitCounties } from './src/data/permitCounties.ts';
+
+/**
+ * THE 77 RETIRED COUNTY PERMIT URLs (2026-09-16).
+ *
+ * /permits/{state}/{county}/ was 77 pages of 1,121 words each with 1,105 of those words in runs
+ * identical to their neighbours, and the only fact that differed between any two of them was the
+ * office name, its scope and its link. Those rows now live as anchored sections on the state page,
+ * with each section keeping the exact slug its URL used to end in, and the old URLs 301 here.
+ *
+ * GENERATED, NOT TYPED. The list is built from src/data/permitCounties.ts, the same module the
+ * sections on src/pages/permits/[state]/index.astro are built from, so a redirect cannot name a
+ * jurisdiction the page does not carry and a jurisdiction cannot be added or removed without its
+ * redirect following. Hand typing 77 lines would have made a second source of truth out of a
+ * derived one, which is the failure that module's own header exists to prevent.
+ *
+ * THE KEY IS THE BARE FORM BECAUSE ASTRO ALLOWS NO OTHER. A trailing slash was tried here first
+ * and Astro normalises it away: keying both '/permits/ohio/hamilton-county/' and the bare form
+ * produced 154 lines in dist/_redirects that were 77 rules written twice, with the slash form
+ * emitted nowhere. The pages shipped WITH a trailing slash and that is the form Google indexed, and
+ * Cloudflare's _redirects matcher treats the two paths as different, which is the exact failure
+ * that put the hand written slash variants of the four flat city URLs in public/_redirects. So the
+ * 77 slash companions live there, beside them, generated from this same module and held to it by
+ * src/lib/compliance/permit-county-guard.test.ts. Verified in dist/_redirects after a real build,
+ * not assumed.
+ *
+ * THE DESTINATION CARRIES A FRAGMENT, and that was the open question going in. It survives Astro's
+ * redirect handling and the adapter's _redirects writer intact, confirmed by reading dist/_redirects
+ * rather than by reasoning about it. Google discards the fragment when it consolidates the signal,
+ * so it is a courtesy to the human who clicks an old link rather than an SEO mechanism; if a future
+ * Astro or adapter version starts mangling it, falling back to the bare '/permits/{state}/'
+ * destination costs nothing that matters.
+ */
+const retiredCountyPermitRedirects = Object.fromEntries(
+  // county.path is the retired URL and county.anchorPath is the section that replaced it. Both come
+  // from the same derivation the page sections come from, so neither can name a jurisdiction the
+  // page does not carry. The slash is stripped here rather than left for Astro to strip, so what is
+  // written is what is emitted.
+  permitCounties.map((county) => [county.path.replace(/\/$/, ''), county.anchorPath]),
+);
 
 export default defineConfig({
   output: 'hybrid',
@@ -36,6 +76,8 @@ export default defineConfig({
     '/dayton-shipping-containers': '/locations/ohio/dayton-shipping-containers',
     '/indianapolis-shipping-containers': '/locations/indiana/indianapolis-shipping-containers',
     '/louisville-shipping-containers': '/locations/kentucky/louisville-shipping-containers',
+    // The 77 retired county permit URLs. Trailing slash companions: public/_redirects.
+    ...retiredCountyPermitRedirects,
   },
   integrations: [
     react(),

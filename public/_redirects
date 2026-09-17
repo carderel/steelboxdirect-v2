@@ -10,3 +10,97 @@
 # flagged them, so send everything under that prefix home with a 301.
 /~partytown / 301
 /~partytown/* / 301
+
+# ---- BEGIN generated: retired county permit URLs (2026-09-16) ----
+# The 77 pages at /permits/{state}/{county}/ were folded into the 11 state
+# pages on 2026-09-16, each one keeping the slug its URL ended in as a
+# section anchor. astro.config.mjs carries the same 77 rules in their bare
+# no slash form, derived at build time from src/data/permitCounties.ts.
+# Astro normalises a trailing slash off any key in that block, so the slash
+# forms, which are the ones Google actually indexed, have to be stated here.
+# Same reason as the four city rules above.
+#
+# GENERATED, NOT TYPED, from src/data/permitCounties.ts:
+#   permitCounties.map((c) => `${c.path} ${c.anchorPath} 301`)
+# src/lib/compliance/permit-county-guard.test.ts recomputes that list and
+# fails if this block is missing a jurisdiction or names one that no longer
+# exists, so adding a county to a city's zoning array fails the suite here
+# until the block is regenerated. Do not hand edit a line.
+/permits/georgia/bryan-county/ /permits/georgia/#bryan-county 301
+/permits/georgia/bulloch-county/ /permits/georgia/#bulloch-county 301
+/permits/georgia/chatham-county/ /permits/georgia/#chatham-county 301
+/permits/georgia/effingham-county/ /permits/georgia/#effingham-county 301
+/permits/georgia/liberty-county/ /permits/georgia/#liberty-county 301
+/permits/indiana/hamilton-county/ /permits/indiana/#hamilton-county 301
+/permits/indiana/hancock-county/ /permits/indiana/#hancock-county 301
+/permits/indiana/hendricks-county/ /permits/indiana/#hendricks-county 301
+/permits/indiana/johnson-county/ /permits/indiana/#johnson-county 301
+/permits/indiana/marion-county/ /permits/indiana/#marion-county 301
+/permits/kentucky/bourbon-county/ /permits/kentucky/#bourbon-county 301
+/permits/kentucky/boyd-county/ /permits/kentucky/#boyd-county 301
+/permits/kentucky/bullitt-county/ /permits/kentucky/#bullitt-county 301
+/permits/kentucky/clark-county/ /permits/kentucky/#clark-county 301
+/permits/kentucky/fayette-county/ /permits/kentucky/#fayette-county 301
+/permits/kentucky/greenup-county/ /permits/kentucky/#greenup-county 301
+/permits/kentucky/jefferson-county/ /permits/kentucky/#jefferson-county 301
+/permits/kentucky/jessamine-county/ /permits/kentucky/#jessamine-county 301
+/permits/kentucky/oldham-county/ /permits/kentucky/#oldham-county 301
+/permits/kentucky/scott-county/ /permits/kentucky/#scott-county 301
+/permits/kentucky/shelby-county/ /permits/kentucky/#shelby-county 301
+/permits/kentucky/spencer-county/ /permits/kentucky/#spencer-county 301
+/permits/kentucky/woodford-county/ /permits/kentucky/#woodford-county 301
+/permits/michigan/livingston-county/ /permits/michigan/#livingston-county 301
+/permits/michigan/macomb-county/ /permits/michigan/#macomb-county 301
+/permits/michigan/oakland-county/ /permits/michigan/#oakland-county 301
+/permits/michigan/st-clair-county/ /permits/michigan/#st-clair-county 301
+/permits/michigan/wayne-county/ /permits/michigan/#wayne-county 301
+/permits/missouri/cass-county/ /permits/missouri/#cass-county 301
+/permits/missouri/clay-county/ /permits/missouri/#clay-county 301
+/permits/missouri/jackson-county/ /permits/missouri/#jackson-county 301
+/permits/missouri/platte-county/ /permits/missouri/#platte-county 301
+/permits/new-york/nassau-county/ /permits/new-york/#nassau-county 301
+/permits/new-york/new-york-city/ /permits/new-york/#new-york-city 301
+/permits/new-york/westchester-county/ /permits/new-york/#westchester-county 301
+/permits/ohio/butler-county/ /permits/ohio/#butler-county 301
+/permits/ohio/clark-county/ /permits/ohio/#clark-county 301
+/permits/ohio/clermont-county/ /permits/ohio/#clermont-county 301
+/permits/ohio/cuyahoga-county/ /permits/ohio/#cuyahoga-county 301
+/permits/ohio/delaware-county/ /permits/ohio/#delaware-county 301
+/permits/ohio/fairfield-county/ /permits/ohio/#fairfield-county 301
+/permits/ohio/franklin-county/ /permits/ohio/#franklin-county 301
+/permits/ohio/geauga-county/ /permits/ohio/#geauga-county 301
+/permits/ohio/greene-county/ /permits/ohio/#greene-county 301
+/permits/ohio/hamilton-county/ /permits/ohio/#hamilton-county 301
+/permits/ohio/lake-county/ /permits/ohio/#lake-county 301
+/permits/ohio/lawrence-county/ /permits/ohio/#lawrence-county 301
+/permits/ohio/licking-county/ /permits/ohio/#licking-county 301
+/permits/ohio/lorain-county/ /permits/ohio/#lorain-county 301
+/permits/ohio/madison-county/ /permits/ohio/#madison-county 301
+/permits/ohio/medina-county/ /permits/ohio/#medina-county 301
+/permits/ohio/miami-county/ /permits/ohio/#miami-county 301
+/permits/ohio/montgomery-county/ /permits/ohio/#montgomery-county 301
+/permits/ohio/pickaway-county/ /permits/ohio/#pickaway-county 301
+/permits/ohio/preble-county/ /permits/ohio/#preble-county 301
+/permits/ohio/union-county/ /permits/ohio/#union-county 301
+/permits/ohio/warren-county/ /permits/ohio/#warren-county 301
+/permits/south-carolina/berkeley-county/ /permits/south-carolina/#berkeley-county 301
+/permits/south-carolina/charleston-county/ /permits/south-carolina/#charleston-county 301
+/permits/south-carolina/dorchester-county/ /permits/south-carolina/#dorchester-county 301
+/permits/texas/brazoria-county/ /permits/texas/#brazoria-county 301
+/permits/texas/city-of-houston/ /permits/texas/#city-of-houston 301
+/permits/texas/fort-bend-county/ /permits/texas/#fort-bend-county 301
+/permits/texas/galveston-county/ /permits/texas/#galveston-county 301
+/permits/texas/harris-county/ /permits/texas/#harris-county 301
+/permits/texas/montgomery-county/ /permits/texas/#montgomery-county 301
+/permits/virginia/city-of-chesapeake/ /permits/virginia/#city-of-chesapeake 301
+/permits/virginia/city-of-hampton/ /permits/virginia/#city-of-hampton 301
+/permits/virginia/city-of-newport-news/ /permits/virginia/#city-of-newport-news 301
+/permits/virginia/city-of-norfolk/ /permits/virginia/#city-of-norfolk 301
+/permits/virginia/city-of-portsmouth/ /permits/virginia/#city-of-portsmouth 301
+/permits/virginia/city-of-suffolk/ /permits/virginia/#city-of-suffolk 301
+/permits/virginia/city-of-virginia-beach/ /permits/virginia/#city-of-virginia-beach 301
+/permits/west-virginia/cabell-county/ /permits/west-virginia/#cabell-county 301
+/permits/west-virginia/lincoln-county/ /permits/west-virginia/#lincoln-county 301
+/permits/west-virginia/putnam-county/ /permits/west-virginia/#putnam-county 301
+/permits/west-virginia/wayne-county/ /permits/west-virginia/#wayne-county 301
+# ---- END generated: retired county permit URLs ----
