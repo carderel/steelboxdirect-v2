@@ -233,3 +233,49 @@ claim quoted to show what is being sold, not a measurement.
 weeks with one follow-up each means stop national editorial outreach and redirect to the local lane.
 Realistic round-one yield is zero to two links, and without a pre-agreed stop, that normal outcome
 tends to get treated as a reason to lower the standard and start paying.
+
+## Cycle: ISO 6346 calculator built, then the whole session shipped
+
+**T-204 built.** `/iso-6346-check-digit-calculator/`, 3,274 rendered words (of which 3,138 survive
+with JS off), 51 new tests. The agreement with the published blog post is machine-checked rather than
+asserted: the module DERIVES the letter table from the rule the post states, and the tests assert the
+derivation reproduces the post's 26 published values AND that the post still says it. Three zero
+cases are tested together because two different causes produce a check digit of zero. The floating
+lead-capture aside is suppressed via `pageType="tool"`, because the page exists to be citable rather
+than to convert.
+
+**It found a factual error in the unpublished BIC post (T-206):** the check digit comes from the TEN
+characters before it, not eleven. That post had already passed a verifier AND an integration review,
+and both missed it, because both checked compliance and structure rather than arithmetic. It was only
+caught because a different agent independently implemented the same maths. Verified against the
+algorithm and the live post, then fixed.
+
+**Also worth keeping:** Astro appends its style-scope attribute to the LAST compound selector, so
+`.cd-table tbody td` compiles to `td.astro-xxxx` and misses every cell built with `createElement`.
+The dynamic table rendered completely unstyled while the identical server-rendered table below it
+looked correct.
+
+**Directory bucket verified and mostly WRONG (corrected on T-203).** I had bucketed five "claimable
+directories" from domain names rather than pages. Fetched each: containerauthority.net is a DIRECT
+RETAILER, storagecontainers.com resolves to Great Lakes Kwik Space, a Chicagoland direct seller. Both
+are competitors. Only containermap.net is a real directory, and **T-205** records its positioning
+conflict: its own pitch is "bypass the brokers and agents", and SBD is literally an authorized
+independent agent. That is an owner ruling on how the business is represented, not an SEO task. It
+also sells a 175-dealer CSV for $10, which is cleaner than the 54%-noise harvest and carries no
+policy risk.
+
+**Then the owner said "push everything" and it shipped as 3e707e5..24bad98, three commits (T-207).**
+Deliberately NOT taken literally, and he was told exactly what was left behind: the 34 legacy
+deletions plus README/START_HERE (the undecided path migration), ~50 untracked non-site files, and
+every analysis report, which stays local because `.outputs/` is gitignored by design. Explicit
+pathspecs throughout, never `git add -A`. Secret scan on all six new files: zero hits.
+
+**LIVE-VERIFIED after deploy rather than assumed:** four new routes 200, sitemap 62 with all three
+page URLs, 3 llms.txt entries, the eleven-to-ten fix live, and the identity wording on `/about/`
+traced back to `ai-info/index.astro:38` verbatim rather than accepted as written.
+
+**The trap that nearly shipped a wrong sitemap, and it refines the recorded memory.** The
+pending-work memory says "regenerate and amend the table into the same commit". Necessary but not
+sufficient: the freshness guard compares FULL COMMITTER TIMESTAMPS, so `--amend` bumps the time and
+re-stales the table it just fixed. The guard caught 4 stale entries (15:11:50 vs 15:12:02) before the
+push. It converges only by pinning `GIT_COMMITTER_DATE` to the value the generator recorded.
