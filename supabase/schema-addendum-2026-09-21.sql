@@ -156,10 +156,50 @@ UPDATE leads SET lost_reason = NULL WHERE lost_reason = '';
 -- ----------------------------------------------------------------------------
 -- RLS is the real control; these grants make the intent explicit and close the
 -- gap if a policy is ever dropped.
+--
+-- CORRECTED 2026-09-21. The first version of this fix ended with a blanket
+-- `REVOKE ALL ON leads, lead_status_history FROM anon;`. That revoke was wrong
+-- and it broke the keep-alive. Detail below, because the temptation to
+-- "tighten" this again will come back.
+--
+-- WHY anon MUST KEEP SELECT ON leads
+-- ----------------------------------
+-- 1. IT IS SAFE. Row level security is ENABLED on leads (schema.sql:148) and
+--    there is NO policy for the anon role — the only policies are for
+--    authenticated (schema.sql:155) and service_role (schema.sql:163). With RLS
+--    on and no matching policy, anon may ASK and receives ZERO ROWS. The grant
+--    buys anon the right to run the query, not the right to see any data. This
+--    table-grant + RLS-policy split is the standard Supabase arrangement, and it
+--    is how every Supabase project with a public anon key is meant to be set up.
+--
+-- 2. IT IS REQUIRED. .github/workflows/supabase-keepalive.yml pings
+--    ${SUPABASE_URL}/rest/v1/leads?select=id&limit=1 with the anon/publishable
+--    key every 3 days. That workflow is the ONLY thing preventing the free-tier
+--    auto-pause that preceded the previous project's deletion. Revoke anon's
+--    SELECT and the ping 401s forever, the project pauses, and the outage that
+--    cost us the last database happens again.
+--
+-- 3. THIS WAS PROVEN, NOT INFERRED. On 2026-09-21, `gh workflow run "Supabase
+--    keep-alive"` was executed against the freshly restored project with the
+--    blanket revoke in place. The job FAILED: curl exit 22, HTTP 401. A direct
+--    curl returned the PostgREST body:
+--      {"code":"42501","message":"permission denied for table leads",
+--       "hint":"Grant the required privileges to the current role with:
+--               GRANT SELECT ON public.leads TO anon;"}
+--    PostgREST told us the exact grant to issue. It is issued below.
+--
+-- lead_status_history is NOT pinged by anything, so it stays fully locked down.
 -- ============================================================================
 
 GRANT ALL ON leads, lead_status_history TO authenticated, service_role;
-REVOKE ALL ON leads, lead_status_history FROM anon;
+
+-- History is never read by the anon key. Keep it closed.
+REVOKE ALL ON lead_status_history FROM anon;
+
+-- Leads: strip anon back to nothing, then hand back SELECT only — the single
+-- privilege the keep-alive ping needs. RLS still returns zero rows to anon.
+REVOKE ALL ON leads FROM anon;
+GRANT SELECT ON leads TO anon;
 
 
 -- ============================================================================
@@ -183,5 +223,20 @@ REVOKE ALL ON leads, lead_status_history FROM anon;
 --
 -- 4. Using the anon key with no session, run: select * from lead_summary;
 --    It must error or return nothing. If it returns rows, Fix 3 did not apply.
+--
+-- 5. Manually run the keep-alive and confirm it SUCCEEDS:
+--        gh workflow run "Supabase keep-alive"
+--        gh run list --workflow "Supabase keep-alive" --limit 1
+--    It must finish green, logging "Supabase responded HTTP 200". An HTTP 401
+--    here means Fix 5's `GRANT SELECT ON leads TO anon` did not apply.
+--    Do not skip this step. The workflow only runs on a 3-day cron and fails
+--    silently into the Actions tab where nobody looks — a silent scheduled
+--    failure is exactly how the previous outage went unnoticed until the
+--    project had already paused.
+--
+-- 6. Also confirm with the anon key that the data is still private:
+--        select * from leads;
+--    It must return ZERO ROWS (not an error — the grant makes the query legal,
+--    RLS makes the result empty). Rows here mean an anon policy leaked in.
 --
 -- ============================================================================
