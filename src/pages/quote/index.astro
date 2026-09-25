@@ -46,6 +46,16 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
                     <option value="not_sure">Not sure yet</option>
                   </select>
                 </div>
+                <div class="form-group quote_field">
+                  <label for="quantity">How many?</label>
+                  <select id="quantity" name="quantity">
+                    <option value="1" selected>1 container</option>
+                    <option value="2_4">2 to 4</option>
+                    <option value="5_9">5 to 9</option>
+                    <option value="10_19">10 to 19</option>
+                    <option value="20_plus">20 or more</option>
+                  </select>
+                </div>
               </div>
               <div class="form-group quote_field">
                 <label for="primary_use">Primary use</label>
@@ -206,6 +216,23 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
         });
 
         if (response.ok) {
+          // Read the body BEFORE the UI changes so the GA4 conversion can be joined back to the
+          // Supabase lead row by lead_id. The .catch() is load-bearing: by this point the lead has
+          // already reached the seller by email, so an unparseable body must never cost the buyer
+          // their success message. No PII goes in the dataLayer -- the join happens in Supabase.
+          const result = await response.json().catch(() => ({} as any));
+          (window as any).dataLayer = (window as any).dataLayer || [];
+          (window as any).dataLayer.push({
+            event: 'generate_lead',
+            lead_id:       result.leadId ?? null,
+            lead_saved:    result.saved === true,
+            lead_score:    result.score ?? null,
+            lead_priority: result.priority ?? null,
+            quantity:      data.quantity ?? '1',
+            size:          data.size_preference ?? null,
+            timeline:      data.timeline ?? null,
+          });
+
           form.style.display = 'none';
           if (successMessage) {
             successMessage.style.display = 'block';

@@ -21,6 +21,12 @@ interface QuoteFormData {
   site_access: string;
   receive_method?: string;
   payment_intent?: string;
+  // Email-only pass-through, exactly like leadType, receive_method and payment_intent above.
+  // DELIBERATELY NOT in the leads insert below: the table has no quantity column, and adding an
+  // unknown column to the insert makes EVERY insert fail, which is how this project lost 104 days
+  // of leads in June. It is scored, put in the seller subject line and in the seller email body,
+  // so nothing about it depends on a schema change.
+  quantity?: string;
   timeline: string;
   buyer_notes?: string;
   first_touch_source?: string;
@@ -54,15 +60,83 @@ function getClients() {
   return { supabase, resend };
 }
 
-function calculateLeadScore(data: QuoteFormData): number {
+// Order quantity, the strongest buying signal the form collects. A 20 unit order is a 50k to 120k
+// purchase, so it outweighs every other factor; the points are sized to carry such a lead over the
+// Priority band on their own.
+const QUANTITY_POINTS: Record<string, number> = {
+  '1': 0,
+  '2_4': 10,
+  '5_9': 20,
+  '10_19': 30,
+  '20_plus': 40,
+};
+
+const QUANTITY_LABELS: Record<string, string> = {
+  '1': '1 container',
+  '2_4': '2 to 4',
+  '5_9': '5 to 9',
+  '10_19': '10 to 19',
+  '20_plus': '20 or more',
+};
+
+// Missing means a lead submitted before the field existed, or a cached form. Treat it as one unit
+// in the label and as zero points in the score, never as blank or "undefined".
+export function quantityLabel(quantity: string | undefined): string {
+  if (!quantity) return QUANTITY_LABELS['1'];
+  return QUANTITY_LABELS[quantity] || quantity.replace(/_/g, ' ');
+}
+
+/**
+ * HEURISTIC, not a measurement. Catches the two ways a bulk buyer hides from the quantity field:
+ * leads that predate the field entirely, and buyers who leave the select at 1 and write the real
+ * number in prose ("looking for 20 to 40 units").
+ *
+ * Detects the word "bulk", the phrase "volume discount", or a number of 5 or more immediately
+ * before container / containers / unit / units. The size guard matters: "40ft containers",
+ * "20 foot containers" and "40' containers" are SIZES, and reading them as quantities would flag
+ * nearly every lead. A number followed by ft / foot / feet / ' / " is therefore skipped.
+ *
+ * It only ever RAISES priority, never lowers it, so a false positive costs Doug one closer read
+ * and a false negative costs a five figure order. Erring toward flagging is the correct trade.
+ */
+export function notesSuggestBulk(notes: string | undefined): boolean {
+  if (!notes) return false;
+  const text = notes.toLowerCase();
+  if (/\bbulk\b/.test(text)) return true;
+  if (/volume\s+discounts?\b/.test(text)) return true;
+  const countBeforeUnit = /(\d+)\s*(ft\b|foot\b|feet\b|'|")?\s*(?:container|unit)s?\b/g;
+  let match: RegExpExecArray | null;
+  while ((match = countBeforeUnit.exec(text)) !== null) {
+    // A size token between the number and the noun means the number described the box, not the order.
+    if (match[2]) continue;
+    if (Number(match[1]) >= 5) return true;
+  }
+  return false;
+}
+
+// True when this lead should jump the queue regardless of its numeric score. The notes heuristic
+// counts only when the quantity field cannot already speak for itself, so a lead is never credited
+// for the same signal twice.
+export function isBulkLead(data: Pick<QuoteFormData, 'quantity' | 'buyer_notes'>): boolean {
+  if (data.quantity === '10_19' || data.quantity === '20_plus') return true;
+  const quantityUnstated = !data.quantity || data.quantity === '1';
+  return quantityUnstated && notesSuggestBulk(data.buyer_notes);
+}
+
+export function calculateLeadScore(data: QuoteFormData): number {
   let score = 0;
+  score += QUANTITY_POINTS[data.quantity ?? '1'] ?? 0;
+  // Heuristic top-up, guarded so a lead that already declared 2 or more units cannot be paid twice.
+  if ((!data.quantity || data.quantity === '1') && notesSuggestBulk(data.buyer_notes)) score += 15;
   score += data.size_preference !== 'not_sure' ? 10 : 5;
   score += data.condition_preference !== 'not_sure' ? 10 : 5;
   switch (data.timeline) {
     case 'asap': score += 20; break;
     case '1_3_months': score += 15; break;
     case '3_6_months': score += 10; break;
-    default: score += 3;
+    // "Just researching" is what a procurement buyer collecting competitive bids picks. It was
+    // worth 3, which buried the most valuable state a buyer can be in. Raised to 8.
+    default: score += 8;
   }
   const use = data.primary_use.toLowerCase();
   if (use.includes('farm') || use.includes('equipment') || use.includes('agricultural')) {
@@ -83,7 +157,10 @@ function getZipDistance(zip: string): number | null {
   return null;
 }
 
-function getPriorityLabel(score: number): string {
+// Bulk overrides the bands rather than widening them. The five historical lead scores stay
+// comparable because 'Priority' / 'Standard' / 'Lower' keep their existing thresholds.
+export function getPriorityLabel(score: number, bulk = false): string {
+  if (bulk) return 'BULK - Priority';
   if (score >= 50) return 'Priority';
   if (score >= 30) return 'Standard';
   return 'Lower';
@@ -193,7 +270,8 @@ async function sendSellerNotification(
 ): Promise<boolean> {
   try {
     const { resend } = getClients();
-    const priority = getPriorityLabel(score);
+    const bulk = isBulkLead(data);
+    const priority = getPriorityLabel(score, bulk);
     const inServiceArea = distance === null || distance <= SERVICE_RADIUS_MILES;
     const pagesVisited = data.pages_visited?.join(', ') || 'Unknown';
     // Annotated because import.meta.env is typed any here, so without it the string flowing out of
@@ -234,8 +312,10 @@ async function sendSellerNotification(
     const { error } = await resend.emails.send({
       from: 'Steel Box Direct <noreply@steelboxdirect.com>',
       to: sellerRecipients,
-      subject: `${dbSaved ? '' : '[ACTION NEEDED] '}New Quote Request - ${data.name} - ${data.size_preference} - Score: ${score}`,
-      text: `NEW QUOTE REQUEST\n${dbWarning}${rtoBanner}\nLEAD DETAILS\nName: ${data.name}\nEmail: ${data.email}\nPhone: ${data.phone}\n\nDECISIONS\nSize: ${data.size_preference}\nCondition: ${data.condition_preference}\nUse: ${data.primary_use}\nTimeline: ${data.timeline}\nPayment intent: ${getPaymentIntentLabel(data)}\n\nDELIVERY\nLocation: ${data.delivery_zip}${distance ? ` (${distance}mi from Cincinnati)` : ''}\nService Area: ${inServiceArea ? 'Yes' : 'OUTSIDE AREA - Review'}\nAccess: ${data.site_access}\nMethod: ${data.receive_method === 'pickup' ? 'Self pick-up' : 'Tilt-bed delivery'}\n\nNOTES\n${data.buyer_notes || 'None provided'}\n\nATTRIBUTION\nSource: ${data.first_touch_source || 'Unknown'} / ${data.first_touch_medium || 'Unknown'}\nLanding Page: ${data.landing_page || 'Unknown'}\nPages Visited: ${pagesVisited}\nCalculator Result: ${data.calculator_result || 'Not used'}\nTime on Site: ${data.time_on_site_seconds ? Math.round(data.time_on_site_seconds / 60) + ' minutes' : 'Unknown'}\n\nSCORE: ${score} - ${priority}\n\nLead ID: ${leadId || 'NOT SAVED (database error)'}\n`,
+      // Both prefixes are independent and can stack: [ACTION NEEDED] means the DB save failed,
+      // [BULK] means the order is multi unit. Doug triages from the subject without opening it.
+      subject: `${dbSaved ? '' : '[ACTION NEEDED] '}${bulk ? '[BULK] ' : ''}New Quote Request - ${data.name} - ${data.size_preference} - Score: ${score}`,
+      text: `NEW QUOTE REQUEST\n${dbWarning}${rtoBanner}\nLEAD DETAILS\nName: ${data.name}\nEmail: ${data.email}\nPhone: ${data.phone}\n\nDECISIONS\nQuantity: ${quantityLabel(data.quantity)}\nSize: ${data.size_preference}\nCondition: ${data.condition_preference}\nUse: ${data.primary_use}\nTimeline: ${data.timeline}\nPayment intent: ${getPaymentIntentLabel(data)}\n\nDELIVERY\nLocation: ${data.delivery_zip}${distance ? ` (${distance}mi from Cincinnati)` : ''}\nService Area: ${inServiceArea ? 'Yes' : 'OUTSIDE AREA - Review'}\nAccess: ${data.site_access}\nMethod: ${data.receive_method === 'pickup' ? 'Self pick-up' : 'Tilt-bed delivery'}\n\nNOTES\n${data.buyer_notes || 'None provided'}\n\nATTRIBUTION\nSource: ${data.first_touch_source || 'Unknown'} / ${data.first_touch_medium || 'Unknown'}\nLanding Page: ${data.landing_page || 'Unknown'}\nPages Visited: ${pagesVisited}\nCalculator Result: ${data.calculator_result || 'Not used'}\nTime on Site: ${data.time_on_site_seconds ? Math.round(data.time_on_site_seconds / 60) + ' minutes' : 'Unknown'}\n\nSCORE: ${score} - ${priority}\n\nLead ID: ${leadId || 'NOT SAVED (database error)'}\n`,
     });
     if (error) {
       console.error('Seller notification error:', error);
@@ -371,7 +451,7 @@ export const POST: APIRoute = async ({ request }) => {
         sellerNotified,
         buyerConfirmed: !!emailId,
         score: leadScore,
-        priority: getPriorityLabel(leadScore),
+        priority: getPriorityLabel(leadScore, isCallback ? false : isBulkLead(data)),
       }), { status: 200 });
     }
 

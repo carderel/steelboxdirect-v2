@@ -67,6 +67,19 @@ const { sizeLabel, sizePreference } = Astro.props;
         body: JSON.stringify(payload),
       });
       if (!res.ok) throw new Error('bad status');
+      // GTM conversion. Its own event name, NOT generate_lead: callback leads are email-only
+      // (submit-quote.ts skips the DB insert), so mixing them in would corrupt the lead count.
+      // seller_notified is the whole point. For a callback the seller email IS the only record,
+      // there is no database row to fall back on, so seller_notified: false means the lead was
+      // DESTROYED, not merely unsaved. Do not tidy this field away.
+      // No lead_id (always null here) and no PII: name/phone/email are never pushed.
+      const result = await res.json().catch(function () { return {}; });
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: 'generate_lead_callback',
+        seller_notified: result.sellerNotified === true,
+        size: form.dataset.size,
+      });
       form.hidden = true; ok.hidden = false;
     } catch {
       btn.disabled = false; btn.textContent = btnLabel;
