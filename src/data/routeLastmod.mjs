@@ -71,7 +71,7 @@ export const routeLastmod = {
   'src/pages/for/homeowners/index.astro': '2026-08-31T13:45:44-04:00',
   'src/pages/index.astro': '2026-08-20T15:56:43-04:00',
   'src/pages/iso-6346-check-digit-calculator/index.astro': '2026-09-02T15:12:02-04:00',
-  'src/pages/locations/[state]/[citySlug].astro': '2026-09-30T10:25:25-04:00',
+  'src/pages/locations/[state]/[citySlug].astro': '2026-09-30T17:01:57-04:00',
   'src/pages/locations/[state]/index.astro': '2026-09-14T14:49:00-04:00',
   'src/pages/locations/index.astro': '2026-09-11T16:37:05-04:00',
   'src/pages/permits/[state]/index.astro': '2026-09-17T14:50:00-04:00',
