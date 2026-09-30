@@ -106,7 +106,7 @@ export const geoSkuKeys: GeoSkuKey[] = ['20ftCargo', '40ftStandard', '40ftStanda
  * ISO date of the last successful, fully validated harvest run, or null before the first one.
  * OPERATIONAL ONLY, never rendered on any surface. See rule 4 in the header.
  */
-export const lastVerified: string | null = '2026-09-29';
+export const lastVerified: string | null = '2026-09-30';
 
 /**
  * Metro slug to priced record. Empty until the first harvest run commits, which is why every
@@ -117,11 +117,11 @@ export const geoPricing: Record<string, GeoMetroPricing> = {
     zip: "29406",
     skus: {
       "20ftCargo": {
-        delivered: 1660,
-        pickup: 1390,
+        delivered: 1510,
+        pickup: 1230,
         pickupDistanceMiles: 7.3,
         available: true,
-        effectiveSince: "2026-09-19"
+        effectiveSince: "2026-09-30"
       },
       "40ftStandard": {
         delivered: 2000,
@@ -131,11 +131,11 @@ export const geoPricing: Record<string, GeoMetroPricing> = {
         effectiveSince: "2026-09-19"
       },
       "40ftStandardHC": {
-        delivered: 2140,
-        pickup: 2010,
+        delivered: 2040,
+        pickup: 1900,
         pickupDistanceMiles: 7.3,
         available: true,
-        effectiveSince: "2026-09-09"
+        effectiveSince: "2026-09-30"
       }
     }
   },
@@ -150,11 +150,11 @@ export const geoPricing: Record<string, GeoMetroPricing> = {
         effectiveSince: "2026-09-03"
       },
       "40ftStandard": {
-        delivered: 2340,
-        pickup: 1750,
+        delivered: 2220,
+        pickup: 1620,
         pickupDistanceMiles: 7.7,
         available: true,
-        effectiveSince: "2026-09-19"
+        effectiveSince: "2026-09-30"
       },
       "40ftStandardHC": {
         delivered: 2300,
@@ -169,11 +169,11 @@ export const geoPricing: Record<string, GeoMetroPricing> = {
     zip: "44105",
     skus: {
       "20ftCargo": {
-        delivered: 2070,
-        pickup: 1490,
+        delivered: 2020,
+        pickup: 1440,
         pickupDistanceMiles: 3.1,
         available: true,
-        effectiveSince: "2026-09-19"
+        effectiveSince: "2026-09-30"
       },
       "40ftStandard": {
         delivered: 2610,
@@ -183,11 +183,11 @@ export const geoPricing: Record<string, GeoMetroPricing> = {
         effectiveSince: "2026-09-19"
       },
       "40ftStandardHC": {
-        delivered: 2610,
-        pickup: 2030,
+        delivered: 2530,
+        pickup: 1960,
         pickupDistanceMiles: 3.1,
         available: true,
-        effectiveSince: "2026-09-19"
+        effectiveSince: "2026-09-30"
       }
     }
   },
@@ -195,25 +195,25 @@ export const geoPricing: Record<string, GeoMetroPricing> = {
     zip: "43219",
     skus: {
       "20ftCargo": {
-        delivered: 1990,
-        pickup: 1440,
+        delivered: 1940,
+        pickup: 1360,
         pickupDistanceMiles: 18.3,
         available: true,
-        effectiveSince: "2026-09-19"
+        effectiveSince: "2026-09-30"
       },
       "40ftStandard": {
-        delivered: 2320,
+        delivered: 2270,
         pickup: 1750,
         pickupDistanceMiles: 18.3,
         available: true,
-        effectiveSince: "2026-09-19"
+        effectiveSince: "2026-09-30"
       },
       "40ftStandardHC": {
-        delivered: 2320,
-        pickup: 1750,
+        delivered: 2350,
+        pickup: 1800,
         pickupDistanceMiles: 18.3,
         available: true,
-        effectiveSince: "2026-09-19"
+        effectiveSince: "2026-09-30"
       }
     }
   },
@@ -228,11 +228,11 @@ export const geoPricing: Record<string, GeoMetroPricing> = {
         effectiveSince: "2026-09-03"
       },
       "40ftStandard": {
-        delivered: 2320,
-        pickup: 1750,
+        delivered: 2220,
+        pickup: 1620,
         pickupDistanceMiles: 44.7,
         available: true,
-        effectiveSince: "2026-09-19"
+        effectiveSince: "2026-09-30"
       },
       "40ftStandardHC": {
         delivered: 2300,
@@ -273,18 +273,18 @@ export const geoPricing: Record<string, GeoMetroPricing> = {
     zip: "77008",
     skus: {
       "20ftCargo": {
-        delivered: 1760,
-        pickup: 1160,
+        delivered: 1710,
+        pickup: 1110,
         pickupDistanceMiles: 19.6,
         available: true,
-        effectiveSince: "2026-09-16"
+        effectiveSince: "2026-09-30"
       },
       "40ftStandard": {
-        delivered: 2250,
-        pickup: 1650,
+        delivered: 2140,
+        pickup: 1540,
         pickupDistanceMiles: 19.6,
         available: true,
-        effectiveSince: "2026-09-16"
+        effectiveSince: "2026-09-30"
       },
       "40ftStandardHC": {
         delivered: 2250,
@@ -299,11 +299,11 @@ export const geoPricing: Record<string, GeoMetroPricing> = {
     zip: "25704",
     skus: {
       "20ftCargo": {
-        delivered: 2190,
-        pickup: 1440,
+        delivered: 2110,
+        pickup: 1360,
         pickupDistanceMiles: 129.8,
         available: true,
-        effectiveSince: "2026-09-19"
+        effectiveSince: "2026-09-30"
       },
       "40ftStandard": {
         delivered: 2500,
@@ -313,11 +313,11 @@ export const geoPricing: Record<string, GeoMetroPricing> = {
         effectiveSince: "2026-09-19"
       },
       "40ftStandardHC": {
-        delivered: 2500,
-        pickup: 1750,
+        delivered: 2550,
+        pickup: 1800,
         pickupDistanceMiles: 129.8,
         available: true,
-        effectiveSince: "2026-09-19"
+        effectiveSince: "2026-09-30"
       }
     }
   },
@@ -327,21 +327,21 @@ export const geoPricing: Record<string, GeoMetroPricing> = {
       "20ftCargo": {
         delivered: 2030,
         pickup: 1340,
-        pickupDistanceMiles: 115.9,
+        pickupDistanceMiles: 12.7,
         available: true,
         effectiveSince: "2026-09-21"
       },
       "40ftStandard": {
-        delivered: 2440,
-        pickup: 1750,
+        delivered: 2310,
+        pickup: 1620,
         pickupDistanceMiles: 115.9,
         available: true,
-        effectiveSince: "2026-09-03"
+        effectiveSince: "2026-09-30"
       },
       "40ftStandardHC": {
         delivered: 2390,
-        pickup: 1700,
-        pickupDistanceMiles: 115.9,
+        pickup: 1800,
+        pickupDistanceMiles: 12.7,
         available: true,
         effectiveSince: "2026-09-21"
       }
@@ -351,18 +351,18 @@ export const geoPricing: Record<string, GeoMetroPricing> = {
     zip: "64110",
     skus: {
       "20ftCargo": {
-        delivered: 2020,
-        pickup: 1470,
+        delivered: 2040,
+        pickup: 1490,
         pickupDistanceMiles: 6.3,
         available: true,
-        effectiveSince: "2026-09-03"
+        effectiveSince: "2026-09-30"
       },
       "40ftStandard": {
-        delivered: 2430,
-        pickup: 1880,
+        delivered: 2450,
+        pickup: 1900,
         pickupDistanceMiles: 6.3,
         available: true,
-        effectiveSince: "2026-09-03"
+        effectiveSince: "2026-09-30"
       },
       "40ftStandardHC": {
         delivered: 2220,
@@ -384,15 +384,15 @@ export const geoPricing: Record<string, GeoMetroPricing> = {
         effectiveSince: "2026-09-03"
       },
       "40ftStandard": {
-        delivered: 2350,
-        pickup: 1750,
+        delivered: 2220,
+        pickup: 1620,
         pickupDistanceMiles: 99.4,
         available: true,
-        effectiveSince: "2026-09-03"
+        effectiveSince: "2026-09-30"
       },
       "40ftStandardHC": {
         delivered: 2300,
-        pickup: 1900,
+        pickup: 1750,
         pickupDistanceMiles: 83.7,
         available: true,
         effectiveSince: "2026-09-03"
@@ -410,18 +410,18 @@ export const geoPricing: Record<string, GeoMetroPricing> = {
         effectiveSince: "2026-09-03"
       },
       "40ftStandard": {
-        delivered: 2440,
-        pickup: 1750,
+        delivered: 2310,
+        pickup: 1620,
         pickupDistanceMiles: 115.1,
         available: true,
-        effectiveSince: "2026-09-19"
+        effectiveSince: "2026-09-30"
       },
       "40ftStandardHC": {
-        delivered: 2380,
-        pickup: 1900,
+        delivered: 2300,
+        pickup: 1750,
         pickupDistanceMiles: 12.3,
         available: true,
-        effectiveSince: "2026-09-03"
+        effectiveSince: "2026-09-30"
       }
     }
   },
@@ -429,25 +429,25 @@ export const geoPricing: Record<string, GeoMetroPricing> = {
     zip: "11222",
     skus: {
       "20ftCargo": {
-        delivered: 2060,
-        pickup: 1210,
+        delivered: 1980,
+        pickup: 1130,
         pickupDistanceMiles: 35.5,
         available: true,
-        effectiveSince: "2026-09-03"
+        effectiveSince: "2026-09-30"
       },
       "40ftStandard": {
-        delivered: 2290,
-        pickup: 1440,
+        delivered: 2190,
+        pickup: 1340,
         pickupDistanceMiles: 35.5,
         available: true,
-        effectiveSince: "2026-08-18"
+        effectiveSince: "2026-09-30"
       },
       "40ftStandardHC": {
-        delivered: 2240,
-        pickup: 1390,
+        delivered: 2210,
+        pickup: 1360,
         pickupDistanceMiles: 35.5,
         available: true,
-        effectiveSince: "2026-09-03"
+        effectiveSince: "2026-09-30"
       }
     }
   },
@@ -455,18 +455,18 @@ export const geoPricing: Record<string, GeoMetroPricing> = {
     zip: "23505",
     skus: {
       "20ftCargo": {
-        delivered: 1950,
-        pickup: 1290,
+        delivered: 1870,
+        pickup: 1210,
         pickupDistanceMiles: 25,
         available: true,
-        effectiveSince: "2026-09-24"
+        effectiveSince: "2026-09-30"
       },
       "40ftStandard": {
-        delivered: 2490,
-        pickup: 1830,
+        delivered: 2330,
+        pickup: 1670,
         pickupDistanceMiles: 25,
         available: true,
-        effectiveSince: "2026-09-24"
+        effectiveSince: "2026-09-30"
       },
       "40ftStandardHC": {
         delivered: 2310,
@@ -481,25 +481,25 @@ export const geoPricing: Record<string, GeoMetroPricing> = {
     zip: "31408",
     skus: {
       "20ftCargo": {
-        delivered: 1760,
-        pickup: 1180,
+        delivered: 1600,
+        pickup: 1030,
         pickupDistanceMiles: 6.1,
         available: true,
-        effectiveSince: "2026-08-18"
+        effectiveSince: "2026-09-30"
       },
       "40ftStandard": {
-        delivered: 2070,
-        pickup: 1490,
+        delivered: 1960,
+        pickup: 1390,
         pickupDistanceMiles: 6.1,
         available: true,
-        effectiveSince: "2026-09-03"
+        effectiveSince: "2026-09-30"
       },
       "40ftStandardHC": {
-        delivered: 2090,
-        pickup: 1520,
+        delivered: 1990,
+        pickup: 1410,
         pickupDistanceMiles: 6.1,
         available: true,
-        effectiveSince: "2026-09-09"
+        effectiveSince: "2026-09-30"
       }
     }
   }
