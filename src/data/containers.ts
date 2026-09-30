@@ -94,7 +94,7 @@ export const containers: Container[] = [
     compareNote: `Twice the storage of a 20ft, but it needs more clearance for delivery and placement. ${CONDITION.blurb}`,
     seo: {
       title:       'Used 40ft Shipping Container for Sale | Steel Box Direct',
-      description: `Buy a 40ft shipping container delivered within 250 miles of Cincinnati. ${CONDITION.seoTail} Flat-fee local delivery. Get a quote in 4 hours.`,
+      description: `Buy a 40ft shipping container delivered within 250 miles of Cincinnati. ${CONDITION.seoTail} Delivery priced by distance to your ZIP. Get a quote in 4 hours.`,
     },
     heroPhoto: INTERIM_HERO_PHOTO,
   },
