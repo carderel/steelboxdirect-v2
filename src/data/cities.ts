@@ -17,6 +17,12 @@ export interface City {
   /** 'home' = OH-IN-KY home region · 'depot' = fulfilled via supplier-network depot (bridge copy renders at template level). */
   region: 'home' | 'depot';
   eyebrow: string;
+  /**
+   * Optional per-city subheading under the H1, naming the for-sale query and the sizes. Per city on
+   * purpose rather than templated: a size named here must be a size that metro can supply, and that
+   * is a fact about one record, not about all fifteen. Never put a price in it.
+   */
+  saleHeading?: string;
   lede: string;
   delivery: {
     headline: string;
@@ -54,10 +60,11 @@ export const cities: City[] = [
     stateSlug: 'ohio',
     region: 'home',
     eyebrow: 'Cincinnati · Tri-State',
+    saleHeading: 'Shipping containers for sale in Cincinnati, 20ft and 40ft.',
     lede: 'From the suburbs of Mason to the farms of Brown County, we deliver steel-clad protection to the Queen City. No middleman, no call centers, just local expertise.',
     delivery: {
       headline: 'Hamilton, Clermont, & Warren',
-      body: 'Delivered from regional depots serving the Tri-State. Whether it\'s a tight suburban driveway in Indian Hill or a sprawling field in Bethel, we plan placement and can scout tight or soft sites before scheduling.',
+      body: 'Cincinnati is our home market, and we deliver across the Tri-State. The delivered price depends on the distance from the depot to your site, so we quote it to your ZIP. Whether it\'s a tight suburban driveway in Indian Hill or a sprawling field in Bethel, we plan placement and can scout tight or soft sites before scheduling.',
       counties: ['Hamilton County', 'Clermont County', 'Warren County', 'Butler County', 'Boone/Kenton/Campbell (KY)'],
     },
     map: {
@@ -69,7 +76,7 @@ export const cities: City[] = [
       h2: 'Why Cincinnati buyers choose Steel Box Direct',
       intro: 'The Cincinnati market is flooded with brokers and call centers that have never seen the containers they sell. We\'re different. We\'re a family-owned operation that understands the local landscape.',
       features: [
-        { title: 'No 275-Loop Upcharge',  body: 'Unlike national sellers who charge extra for "metro" delivery, our local presence means we treat every neighborhood with the same fair pricing.' },
+        { title: 'Priced by Delivery Distance',  body: 'Cincinnati is our home market. What you pay depends on how far the delivery runs from the depot to your site, so every address inside or outside the 275 loop is quoted on its own distance rather than a flat metro rate.' },
         { title: 'Site Visits Available', body: 'Not sure if that 40-footer will fit in your Hyde Park driveway? We can often perform a digital or physical site assessment using local knowledge of the area.' },
         { title: 'Local Delivery Knowledge',  body: 'From Brown to Warren to Butler county, we plan delivery routes for tight or rural access before scheduling. Permit and zoning requirements are set by your local authority and are the buyer\'s responsibility to confirm before purchasing.' },
       ],
@@ -104,7 +111,7 @@ export const cities: City[] = [
     },
     seo: {
       title: 'Shipping & Storage Containers for Sale in Cincinnati, OH | Steel Box Direct',
-      description: `Buying a shipping container in Cincinnati? We provide ${CONDITION.label} containers with flat-fee delivery to Hamilton, Clermont, and Warren counties.`,
+      description: `Buying a shipping container in Cincinnati? We provide ${CONDITION.label} containers delivered to Hamilton, Clermont, and Warren counties, priced by distance.`,
     },
   },
   {
@@ -165,7 +172,7 @@ export const cities: City[] = [
     },
     seo: {
       title: 'Shipping & Storage Containers for Sale in Dayton, OH | Steel Box Direct',
-      description: `Looking for a shipping container in Dayton? We offer ${CONDITION.label} containers with flat-fee delivery to Montgomery, Greene, and Miami counties.`,
+      description: `Looking for a shipping container in Dayton? We offer ${CONDITION.label} containers delivered to Montgomery, Greene, and Miami counties, priced by distance.`,
     },
   },
   {
@@ -229,7 +236,7 @@ export const cities: City[] = [
     },
     seo: {
       title: 'Shipping & Storage Containers for Sale in Columbus, OH | Steel Box Direct',
-      description: `Buying a shipping container in Columbus? We provide ${CONDITION.label} containers with flat-fee delivery to Franklin, Delaware, and Licking counties.`,
+      description: `Buying a shipping container in Columbus? We provide ${CONDITION.label} containers delivered to Franklin, Delaware, and Licking counties, priced by distance.`,
     },
   },
   {
@@ -242,7 +249,7 @@ export const cities: City[] = [
     lede: 'From the tech corridors of Fishers to the industrial hubs of Marion County, we deliver steel-clad protection to the Crossroads of America.',
     delivery: {
       headline: 'Marion, Hamilton, & Hendricks',
-      body: 'Delivered from regional depots serving the Indianapolis metro. Whether it\'s a tight site in Carmel or a logistics facility near the airport, we plan placement and can scout tight or soft sites before scheduling.',
+      body: 'Indianapolis is in our home delivery region, and the delivered price depends on the distance from the depot to your site. Whether it\'s a tight site in Carmel or a logistics facility near the airport, we plan placement and can scout tight or soft sites before scheduling.',
       counties: ['Marion County', 'Hamilton County', 'Hendricks County', 'Johnson County', 'Hancock County'],
     },
     map: {
@@ -290,7 +297,7 @@ export const cities: City[] = [
     },
     seo: {
       title: 'Shipping & Storage Containers for Sale in Indianapolis, IN | Steel Box Direct',
-      description: `Buying a shipping container in Indy? We provide ${CONDITION.label} containers with flat-fee delivery to Marion, Hamilton, and Hendricks counties.`,
+      description: `Buying a shipping container in Indy? We provide ${CONDITION.label} containers delivered to Marion, Hamilton, and Hendricks counties, priced by distance.`,
     },
   },
   {
@@ -303,7 +310,7 @@ export const cities: City[] = [
     lede: 'From the historic riverfront to the sprawling horse farms of Oldham County, we deliver steel-clad protection to the gateway of the South.',
     delivery: {
       headline: 'Jefferson, Oldham, & Bullitt',
-      body: 'Delivered from regional depots serving the Louisville metro. Whether it\'s a tight street in the Highlands or a wide-open farm in Bullitt County, we plan placement and can scout tight or soft sites before scheduling.',
+      body: 'Louisville is in our home delivery region, and the delivered price depends on the distance from the depot to your site. Whether it\'s a tight street in the Highlands or a wide-open farm in Bullitt County, we plan placement and can scout tight or soft sites before scheduling.',
       counties: ['Jefferson County', 'Oldham County', 'Bullitt County', 'Shelby County', 'Spencer County'],
     },
     map: {
@@ -351,7 +358,7 @@ export const cities: City[] = [
     },
     seo: {
       title: 'Shipping & Storage Containers for Sale in Louisville, KY | Steel Box Direct',
-      description: `Looking for a shipping container in Louisville? We offer ${CONDITION.label} containers with flat-fee delivery to Jefferson, Oldham, and Bullitt counties.`,
+      description: `Looking for a shipping container in Louisville? We offer ${CONDITION.label} containers delivered to Jefferson, Oldham, and Bullitt counties, priced by distance.`,
     },
   },
   {
@@ -413,7 +420,7 @@ export const cities: City[] = [
     },
     seo: {
       title: 'Shipping & Storage Containers for Sale in Lexington, KY | Steel Box Direct',
-      description: `Buying a shipping container in Lexington? We provide ${CONDITION.label} containers with flat-fee delivery to Fayette, Jessamine, and Scott counties.`,
+      description: `Buying a shipping container in Lexington? We provide ${CONDITION.label} containers delivered to Fayette, Jessamine, and Scott counties, priced by distance.`,
     },
   },
   {
@@ -477,7 +484,7 @@ export const cities: City[] = [
     },
     seo: {
       title: 'Shipping & Storage Containers for Sale in Huntington, WV | Steel Box Direct',
-      description: `Buying a shipping container in Huntington? We provide ${CONDITION.label} containers with flat-fee delivery to Cabell, Wayne, and Putnam counties.`,
+      description: `Buying a shipping container in Huntington? We provide ${CONDITION.label} containers delivered to Cabell, Wayne, and Putnam counties, priced by distance.`,
     },
   },
 

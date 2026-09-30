@@ -129,6 +129,7 @@ export function renderCityMarkdown(c: City): string {
 
   return joinBlocks([
     `# ${title}`,
+    c.saleHeading ? `## ${c.saleHeading}` : null,
     c.lede,
     `## Delivery area`,
     `${c.delivery.headline}. ${c.delivery.body}`,

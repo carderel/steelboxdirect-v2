@@ -40,7 +40,7 @@ const crumbs = [
 
 const deliveryFaqAnswer =
   c.region === 'home'
-    ? `We serve ${c.delivery.counties.join(', ')} with flat-fee delivery from Cincinnati, Ohio.`
+    ? `We serve ${c.delivery.counties.join(', ')} as part of our home delivery region around Cincinnati, Ohio. The delivered price depends on the distance from the depot to your site.`
     : `We serve ${c.delivery.counties.join(', ')} with delivery from a depot in the ${c.city} area through our supplier network.`;
 
 // THE PRICE BLOCK, and the two conditions under which any of it renders.
@@ -226,6 +226,7 @@ const cityPrice = showPrice
         <span class="tg">{c.region === 'home' ? 'Local Delivery Expert' : 'Depot Network Delivery'}</span>
       </div>
       <h1 class="big local_hero_headline">Shipping &amp; Storage Containers<br>in <em>{c.city}.</em></h1>
+      {c.saleHeading && <h2 class="local_hero_subhead">{c.saleHeading}</h2>}
       <p class="lede local_hero_lede">{c.lede}</p>
     </div>
   </section>
@@ -339,7 +340,6 @@ const cityPrice = showPrice
             class="local-map"
             src={`https://www.openstreetmap.org/export/embed.html?bbox=${c.map.bbox}&layer=mapnik&marker=${c.map.marker}`}
             title={c.map.title}
-            loading="lazy"
           ></iframe>
         </div>
 
@@ -500,6 +500,7 @@ const cityPrice = showPrice
   .sh .tg { font-family: var(--mono); font-size: var(--t-meta); letter-spacing: .08em; text-transform: uppercase; opacity: .55; text-align: right; }
 
   .local-hero { padding: 80px 0 64px; background: var(--yellow); border-bottom: 2.5px solid var(--ink); }
+  .local_hero_subhead { font-family: var(--narrow); font-weight: 700; font-size: clamp(22px, 3.2vw, 30px); line-height: 1.1; letter-spacing: -.01em; text-transform: uppercase; margin: 28px 0 0; }
   .lede { font-size: 24px; line-height: 1.4; max-width: 800px; margin-top: 32px; font-weight: 500; }
 
   .local-price { padding: 72px 0 0; background: white; }

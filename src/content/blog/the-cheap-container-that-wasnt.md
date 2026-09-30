@@ -94,6 +94,6 @@ If you're shopping for a container, that question is yours to keep: **"Does that
 
 ## If This Sounds Familiar
 
-Learn what really goes into a container's price on our [cost page](/cost/). See the containers we sell, all quoted delivered, on our [shipping containers for sale page](/shipping-containers-for-sale/).
+Learn what really goes into a container's price on our [cost page](/cost/). See the containers we sell, all quoted delivered, on our [shipping containers for sale page](/shipping-containers-for-sale/). In the Tri-State, our page on [shipping containers for sale in Cincinnati](/locations/ohio/cincinnati-shipping-containers/) shows a delivered price to one named ZIP code, with the date it took effect.
 
 Ready for your real, all-in number? [Get a quote](/quote/) and tell us your size, ZIP code, and where the box is going. One price, delivered to you.
