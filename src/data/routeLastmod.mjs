@@ -63,7 +63,7 @@ export const routeLastmod = {
   'src/pages/container-rent-vs-buy-calculator/index.astro': '2026-09-14T14:49:00-04:00',
   'src/pages/container-rental-guide/index.astro': '2026-09-14T14:49:00-04:00',
   'src/pages/cost/index.astro': '2026-08-31T13:45:44-04:00',
-  'src/pages/delivery/index.astro': '2026-08-28T14:40:49-04:00',
+  'src/pages/delivery/index.astro': '2026-09-30T11:53:20-04:00',
   'src/pages/find-a-container-inspector/index.astro': '2026-08-25T13:21:46-04:00',
   'src/pages/for/businesses/index.astro': '2026-08-31T13:45:44-04:00',
   'src/pages/for/contractors/index.astro': '2026-08-28T14:41:04-04:00',
