@@ -389,6 +389,19 @@ describe('city page pricing: the provenance rule', () => {
     expect(priceSection).toContain('Your ZIP will be different');
   });
 
+  it('states the population-centroid basis of the priced ZIP in the same block', () => {
+    if (!rendersPrice) {
+      expect(priceSection).toBe('');
+      return;
+    }
+    // Decision 2026-08-17: every published city figure is priced from the metro population-centroid
+    // ZIP, and the page has to say so. Asserted in the template, so it holds on every priced city.
+    expect(
+      priceSection,
+      'the price block must say the ZIP it prices from is the population center of the metro',
+    ).toContain('from {priceZip}, the ZIP at the population center of the metro area');
+  });
+
   it('makes no delivery-time claim in the price block', () => {
     if (!rendersPrice) {
       expect(priceSection).toBe('');
