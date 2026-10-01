@@ -245,7 +245,7 @@ describe('quantity is an email only pass through', () => {
   const source = readSource();
 
   it('is not in the leads insert', () => {
-    const insert = source.slice(source.indexOf(".from('leads')"), source.indexOf('.select()'));
+    const insert = source.slice(source.indexOf(".from('leads')"), source.indexOf('distance_miles: distance,'));
     expect(insert).toContain('size_preference: data.size_preference');
     expect(insert).not.toContain('quantity');
   });

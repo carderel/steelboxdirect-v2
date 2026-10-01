@@ -72,7 +72,8 @@ const { sizeLabel, sizePreference } = Astro.props;
       // seller_notified is the whole point. For a callback the seller email IS the only record,
       // there is no database row to fall back on, so seller_notified: false means the lead was
       // DESTROYED, not merely unsaved. Do not tidy this field away.
-      // No lead_id (always null here) and no PII: name/phone/email are never pushed.
+      // No lead_id (deliberately: there is no DB row to join it to; it is in the seller email only)
+      // and no PII: name/phone/email are never pushed.
       const result = await res.json().catch(function () { return {}; });
       window.dataLayer = window.dataLayer || [];
       window.dataLayer.push({

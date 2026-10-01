@@ -263,7 +263,7 @@ async function sendBuyerConfirmation(data: QuoteFormData): Promise<string | null
 
 async function sendSellerNotification(
   data: QuoteFormData,
-  leadId: string | null,
+  leadId: string,
   score: number,
   distance: number | null,
   dbSaved: boolean
@@ -293,7 +293,7 @@ async function sendSellerNotification(
         from: 'Steel Box Direct <noreply@steelboxdirect.com>',
         to: sellerRecipients,
         subject: `CALLBACK REQUESTED - ${data.name} - ${data.phone}${data.size_preference ? ' - ' + data.size_preference : ''}`,
-        text: `${data.phone} Wants a phone call. Answers 9am-9pm ET daily was promised.\n\nName: ${data.name}\nEmail: ${data.email}${data.size_preference ? `\nSize: ${data.size_preference}` : ''}\n\nNOT in the seller dashboard (callback leads are email-only by design).\n`,
+        text: `${data.phone} Wants a phone call. Answers 9am-9pm ET daily was promised.\n\nName: ${data.name}\nEmail: ${data.email}${data.size_preference ? `\nSize: ${data.size_preference}` : ''}\n\nNOT in the seller dashboard (callback leads are email-only by design).\nLead ID: ${leadId}\n`,
       });
       if (error) {
         console.error('Seller notification error:', error);
@@ -315,7 +315,7 @@ async function sendSellerNotification(
       // Both prefixes are independent and can stack: [ACTION NEEDED] means the DB save failed,
       // [BULK] means the order is multi unit. Doug triages from the subject without opening it.
       subject: `${dbSaved ? '' : '[ACTION NEEDED] '}${bulk ? '[BULK] ' : ''}New Quote Request - ${data.name} - ${data.size_preference} - Score: ${score}`,
-      text: `NEW QUOTE REQUEST\n${dbWarning}${rtoBanner}\nLEAD DETAILS\nName: ${data.name}\nEmail: ${data.email}\nPhone: ${data.phone}\n\nDECISIONS\nQuantity: ${quantityLabel(data.quantity)}\nSize: ${data.size_preference}\nCondition: ${data.condition_preference}\nUse: ${data.primary_use}\nTimeline: ${data.timeline}\nPayment intent: ${getPaymentIntentLabel(data)}\n\nDELIVERY\nLocation: ${data.delivery_zip}${distance ? ` (${distance}mi from Cincinnati)` : ''}\nService Area: ${inServiceArea ? 'Yes' : 'OUTSIDE AREA - Review'}\nAccess: ${data.site_access}\nMethod: ${data.receive_method === 'pickup' ? 'Self pick-up' : 'Tilt-bed delivery'}\n\nNOTES\n${data.buyer_notes || 'None provided'}\n\nATTRIBUTION\nSource: ${data.first_touch_source || 'Unknown'} / ${data.first_touch_medium || 'Unknown'}\nLanding Page: ${data.landing_page || 'Unknown'}\nPages Visited: ${pagesVisited}\nCalculator Result: ${data.calculator_result || 'Not used'}\nTime on Site: ${data.time_on_site_seconds ? Math.round(data.time_on_site_seconds / 60) + ' minutes' : 'Unknown'}\n\nSCORE: ${score} - ${priority}\n\nLead ID: ${leadId || 'NOT SAVED (database error)'}\n`,
+      text: `NEW QUOTE REQUEST\n${dbWarning}${rtoBanner}\nLEAD DETAILS\nName: ${data.name}\nEmail: ${data.email}\nPhone: ${data.phone}\n\nDECISIONS\nQuantity: ${quantityLabel(data.quantity)}\nSize: ${data.size_preference}\nCondition: ${data.condition_preference}\nUse: ${data.primary_use}\nTimeline: ${data.timeline}\nPayment intent: ${getPaymentIntentLabel(data)}\n\nDELIVERY\nLocation: ${data.delivery_zip}${distance ? ` (${distance}mi from Cincinnati)` : ''}\nService Area: ${inServiceArea ? 'Yes' : 'OUTSIDE AREA - Review'}\nAccess: ${data.site_access}\nMethod: ${data.receive_method === 'pickup' ? 'Self pick-up' : 'Tilt-bed delivery'}\n\nNOTES\n${data.buyer_notes || 'None provided'}\n\nATTRIBUTION\nSource: ${data.first_touch_source || 'Unknown'} / ${data.first_touch_medium || 'Unknown'}\nLanding Page: ${data.landing_page || 'Unknown'}\nPages Visited: ${pagesVisited}\nCalculator Result: ${data.calculator_result || 'Not used'}\nTime on Site: ${data.time_on_site_seconds ? Math.round(data.time_on_site_seconds / 60) + ' minutes' : 'Unknown'}\n\nSCORE: ${score} - ${priority}\n\nLead ID: ${leadId}${dbSaved ? '' : ' (NOT SAVED to database)'}\n`,
     });
     if (error) {
       console.error('Seller notification error:', error);
@@ -375,12 +375,17 @@ export const POST: APIRoute = async ({ request }) => {
     //    The seller email below is the safety net so a DB outage never silently loses a lead.
     //    Callback leads skip the insert entirely (no schema change; the email IS the record,
     //    the payment-intent precedent), so dbSaved stays false for them.
-    let leadId: string | null = null;
+    //    The id is minted HERE, before the insert, so it exists even when the save fails: the
+    //    seller email, the logs and the response all carry it, and an unsaved lead can be
+    //    backfilled later under the same id. leads.id keeps its Postgres default; we just
+    //    supply the value, so the DB never has to hand a row back.
+    const leadId: string = crypto.randomUUID();
     let dbSaved = false;
     if (!isCallback) try {
-      const { data: lead, error: dbError } = await supabase
+      const { error: dbError } = await supabase
         .from('leads')
         .insert({
+          id: leadId,
           name: data.name,
           email: data.email,
           phone: data.phone,
@@ -401,14 +406,11 @@ export const POST: APIRoute = async ({ request }) => {
           lead_score: leadScore,
           in_service_area: inServiceArea,
           distance_miles: distance,
-        })
-        .select()
-        .single();
+        });
       if (dbError) {
         console.error('API: DB insert failed (continuing to email seller):', dbError.message);
       } else {
         dbSaved = true;
-        leadId = lead.id;
       }
     } catch (e: any) {
       console.error('API: DB insert threw (continuing to email seller):', e?.message || e);
@@ -419,7 +421,7 @@ export const POST: APIRoute = async ({ request }) => {
 
     // 3) Buyer confirmation (best effort); record its id only if we have a DB row to update.
     const emailId = await sendBuyerConfirmation(data);
-    if (emailId && dbSaved && leadId) {
+    if (emailId && dbSaved) {
       try {
         await supabase
           .from('leads')
@@ -436,10 +438,10 @@ export const POST: APIRoute = async ({ request }) => {
     // Loud, non-silent alerting: a 200 to the buyer must never hide a broken email path.
     // (leadId is a UUID, not PII, so it is safe to log per HS-DATA-001.)
     if (!sellerNotified) {
-      console.error(`🚨 SELLER ALERT NOT SENT for lead ${leadId || '(unsaved)'}. Resend send failed or SELLER_EMAIL misconfigured. Lead ${dbSaved ? 'IS in the dashboard, follow up there.' : 'is NOT in the dashboard.'}`);
+      console.error(`🚨 SELLER ALERT NOT SENT for lead ${leadId}${dbSaved ? '' : ' (NOT SAVED to database)'}. Resend send failed or SELLER_EMAIL misconfigured. Lead ${dbSaved ? 'IS in the dashboard, follow up there.' : 'is NOT in the dashboard.'}`);
     }
     if (!emailId) {
-      console.error(`⚠️ Buyer confirmation send failed for lead ${leadId || '(unsaved)'}.`);
+      console.error(`⚠️ Buyer confirmation send failed for lead ${leadId}${dbSaved ? '' : ' (NOT SAVED to database)'}.`);
     }
 
     // 4) Success as long as the lead was captured somewhere (DB row OR seller email).
