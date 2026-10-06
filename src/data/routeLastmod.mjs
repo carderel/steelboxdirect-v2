@@ -65,7 +65,7 @@ export const routeLastmod = {
   'src/pages/cost/index.astro': '2026-10-06T13:57:08-04:00',
   'src/pages/delivery/index.astro': '2026-10-06T13:57:08-04:00',
   'src/pages/find-a-container-inspector/index.astro': '2026-10-06T13:57:08-04:00',
-  'src/pages/for/businesses/index.astro': '2026-10-06T14:03:12-04:00',
+  'src/pages/for/businesses/index.astro': '2026-10-06T14:09:54-04:00',
   'src/pages/for/contractors/index.astro': '2026-10-06T14:03:12-04:00',
   'src/pages/for/farmers/index.astro': '2026-10-06T14:03:12-04:00',
   'src/pages/for/homeowners/index.astro': '2026-10-06T14:03:12-04:00',
