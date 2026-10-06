@@ -155,7 +155,10 @@ describe('webpage dateModified guard: a known route carries the sitemap date', (
   it('a caller prop newer than the table, the /cost/ case, does not win on any node', () => {
     const path = '/cost/';
     const expected = asSitemapWrites(lastmodFor(`${SITE}${path}`) as string);
-    const newer = '2026-09-03';
+    // Derived, not hardcoded: a literal fixture date stops being newer the next time /cost/ is
+    // committed (it did on 2026-10-06), and then this test fails for the wrong reason.
+    const tableDate = lastmodFor(`${SITE}${path}`) as string;
+    const newer = new Date(Date.parse(tableDate) + 2 * 86_400_000).toISOString().slice(0, 10);
     expect(Date.parse(newer), 'fixture must be newer than the table for this test to bite')
       .toBeGreaterThan(Date.parse(lastmodFor(`${SITE}${path}`) as string));
     const { graph } = build(path, {

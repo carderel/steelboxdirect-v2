@@ -91,7 +91,7 @@ export const cities: City[] = [
       { county: 'Hamilton County', office: 'Hamilton County Regional Planning Commission', url: 'https://www.hamiltoncountyohio.gov/business_detail_T22_R29.php' },
       { county: 'Butler County', office: 'Butler County Planning Commission', url: 'https://www.bcohio.gov/board_of_commissioners/commissioner_departments/development/planning.php' },
       { county: 'Warren County', office: 'Warren County Regional Planning Commission', url: 'https://www.warrencountyohio.gov/Planning/GenInfo/Staff/Index' },
-      { county: 'Clermont County', office: 'Clermont County Planning', url: 'http://www.clermontcountyohio.gov/planning' },
+      { county: 'Clermont County', office: 'Clermont County Planning', url: 'https://www.clermontcountyohio.gov/planning' },
     ],
     geography: {
       interstates: ['I-75', 'I-71', 'I-275'],

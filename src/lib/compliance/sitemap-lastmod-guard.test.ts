@@ -64,6 +64,7 @@ import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { lastmodFor, serializeWithLastmod } from '../seo/sitemapLastmod.mjs';
+import { resolvePageFileIn } from '../seo/lastmodResolve.mjs';
 import { indexableCategorySlugs } from '../seo/blogCategoryIndexing.mjs';
 // gitHistoryIsUsable now lives with the derivation, in the generator, because the build no longer
 // asks git anything. One implementation of the shallow clone test, imported by every guard that
@@ -186,6 +187,36 @@ describe('sitemap lastmod guard: the dates are derived from real history', () =>
       new Set(values).size,
       'every sampled URL shares one lastmod, which is what a build timestamp looks like',
     ).toBeGreaterThan(2);
+  });
+
+  // Regression, 2026-10-06: the last segment only ever tried [param] FILES, so a [param]/index
+  // module (every state hub) resolved to nothing and the 22 hubs shipped with no lastmod.
+  it('resolves a [param]/index.astro route, so the state hubs carry a lastmod', () => {
+    const listing = [
+      'src/pages/locations/[state]/[citySlug].astro',
+      'src/pages/locations/[state]/index.astro',
+      'src/pages/locations/index.astro',
+      'src/pages/permits/[state]/index.astro',
+      'src/pages/permits/index.astro',
+    ];
+    expect(resolvePageFileIn(listing, 'src/pages', ['locations', 'ohio'])).toBe(
+      'src/pages/locations/[state]/index.astro',
+    );
+    expect(resolvePageFileIn(listing, 'src/pages', ['permits', 'kentucky'])).toBe(
+      'src/pages/permits/[state]/index.astro',
+    );
+    expect(resolvePageFileIn(listing, 'src/pages', ['locations'])).toBe(
+      'src/pages/locations/index.astro',
+    );
+    expect(resolvePageFileIn(listing, 'src/pages', ['locations', 'ohio', 'x'])).toBe(
+      'src/pages/locations/[state]/[citySlug].astro',
+    );
+    for (const url of [
+      'https://steelboxdirect.com/locations/ohio/',
+      'https://steelboxdirect.com/permits/west-virginia/',
+    ]) {
+      expect(lastmodFor(url), url).toMatch(/^\d{4}-\d{2}-\d{2}/);
+    }
   });
 
   it('returns undefined for a URL it cannot attribute, rather than inventing one', () => {

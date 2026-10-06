@@ -181,8 +181,8 @@ describe('cannibalization controls: link direction between the rental pages', ()
   it('the footer carries both pages and leaves The Five intact', () => {
     expect(footer).toContain('/shipping-container-guides/');
     expect(footer).toContain('/container-rental-guide/');
-    expect(footer).toContain('<h5>The Five</h5>');
-    const five = footer.match(/<h5>The Five<\/h5>([\s\S]*?)<\/div>/)?.[1] ?? '';
+    expect(footer).toContain('<p class="fcol-h">The Five</p>');
+    const five = footer.match(/<p class="fcol-h">The Five<\/p>([\s\S]*?)<\/div>/)?.[1] ?? '';
     expect((five.match(/<a /g) ?? []).length).toBe(5);
   });
 

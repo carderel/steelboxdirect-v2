@@ -87,7 +87,18 @@ export function resolvePageFileIn(pageFiles, dir, segments) {
       }
     }
     const dynamic = [...files].sort().find((n) => /^\[.+\]\.(astro|md|mdx)$/.test(n));
-    return dynamic ? `${dir}/${dynamic}` : null;
+    if (dynamic) return `${dir}/${dynamic}`;
+    // A [param] DIRECTORY with its own index takes the last segment too: /locations/ohio/ is
+    // rendered by src/pages/locations/[state]/index.astro. Until 2026-10-06 this branch only tried
+    // [param] FILES, so every state hub (locations and permits, 22 URLs) resolved to nothing and
+    // shipped with no sitemap lastmod and no WebPage dateModified.
+    for (const d of [...dirs].sort().filter((n) => /^\[.+\]$/.test(n))) {
+      for (const ext of PAGE_EXT) {
+        const index = `${dir}/${d}/index.${ext}`;
+        if (pageFiles.includes(index)) return index;
+      }
+    }
+    return null;
   }
 
   if (dirs.has(head)) {

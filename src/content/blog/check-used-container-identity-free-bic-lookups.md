@@ -80,7 +80,7 @@ Now the three things nobody tells you about this lookup.
 
 **A miss means nothing.** No result is not evidence of a stolen box, a fake number or a problem of any kind. A retired code is one common explanation.
 
-Note also that BIC deliberately does not do container-number lookups here. The register page tells you so directly: "Please use www.bic-boxtech.org to look up specific container numbers." Which is step 3.
+Note also that BIC deliberately does not do container-number lookups here. The register page tells you so directly: "Please use [www.bic-boxtech.org](https://www.bic-boxtech.org/) to look up specific container numbers." Which is step 3.
 
 ## Step 3: Is this box flagged? (FREE ACCOUNT REQUIRED)
 

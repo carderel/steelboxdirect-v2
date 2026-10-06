@@ -105,6 +105,7 @@ const isProd = import.meta.env.PROD;
     <meta name="twitter:image" content={resolvedOgImage} />
     <link rel="canonical" href={`https://steelboxdirect.com${Astro.url.pathname}`} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <title>{title}</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -357,7 +358,9 @@ const isProd = import.meta.env.PROD;
 
       .sbf-primary{padding:18px 16px 14px;border-bottom:1.5px solid rgba(11,15,26,.15)}
       .sbf-primary .mini{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(11,15,26,.6);margin-bottom:6px}
-      .sbf-primary h4{font-family:var(--narrow);font-weight:700;font-size:22px;line-height:1.05;letter-spacing:-.01em;text-transform:uppercase;margin:0 0 4px}
+      /* Sidebar labels are <p>, not h4/h5 (skipped heading levels, SEO report 2 audit 2026-10-06). color:inherit
+         undoes the .sbf-primary p body-copy colour so the label renders exactly as the h4 did. */
+      .sbf-primary .sbf-title{font-family:var(--narrow);font-weight:700;font-size:22px;line-height:1.05;letter-spacing:-.01em;text-transform:uppercase;margin:0 0 4px;color:inherit}
       .sbf-primary p{font-size:13.5px;line-height:1.45;margin:0 0 12px;color:rgba(11,15,26,.72)}
       .sbf-btn{
         display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;
@@ -376,7 +379,7 @@ const isProd = import.meta.env.PROD;
 
       .sbf-secondary{padding:6px 16px 16px}
       .sbf-secondary .mini{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(11,15,26,.55);margin-bottom:4px}
-      .sbf-secondary h5{font-family:var(--narrow);font-weight:700;font-size:16px;line-height:1.15;text-transform:uppercase;letter-spacing:-.005em;margin:0 0 10px}
+      .sbf-secondary .sbf-subtitle{font-family:var(--narrow);font-weight:700;font-size:16px;line-height:1.15;text-transform:uppercase;letter-spacing:-.005em;margin:0 0 10px}
       .sbf-ghost{
         display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;
         padding:10px 12px;background:transparent;color:var(--ink);

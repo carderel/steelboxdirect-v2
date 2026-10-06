@@ -6,7 +6,7 @@
         <p class="tag">Educational shipping-container buying for OH · IN · KY · Western WV. Family-owned, based outside Cincinnati. No jargon. Just clarity.</p>
         <p class="agent-credit">Authorised Independent Agent<br>FreedomConex.com</p>
         <a href="https://www.freedomconex.com/" rel="nofollow noopener noreferrer" target="_blank" class="agent-logo-link">
-          <img src="/assets/freedom-conex-logo.png" alt="FreedomConex, America's Storage Solutions" class="agent-logo" />
+          <img src="/assets/freedom-conex-logo.png" width="450" height="213" alt="FreedomConex, America's Storage Solutions" class="agent-logo" />
         </a>
         <div class="footer-social company-social">
           <p class="social-intro">Follow <strong>Steel Box Direct</strong></p>
@@ -38,7 +38,7 @@
         </div>
       </div>
       <div>
-        <h5>The Five</h5>
+        <p class="fcol-h">The Five</p>
         <a href="/size/">Size</a>
         <a href="/condition/">Condition</a>
         <a href="/delivery/">Delivery</a>
@@ -46,7 +46,7 @@
         <a href="/permits/">Permits</a>
       </div>
       <div>
-        <h5>Tools</h5>
+        <p class="fcol-h">Tools</p>
         <a href="/size/calculator/">Size calculator</a>
         <a href="/container-rent-vs-buy-calculator/">Rent vs buy calculator</a>
         <a href="/iso-6346-check-digit-calculator/">Check digit calculator</a>
@@ -58,7 +58,7 @@
         <a href="/quote/">Get a quote</a>
       </div>
       <div>
-        <h5>Locations</h5>
+        <p class="fcol-h">Locations</p>
         <a href="/locations/ohio/cincinnati-shipping-containers/">Cincinnati</a>
         <a href="/locations/ohio/dayton-shipping-containers/">Dayton</a>
         <a href="/locations/ohio/columbus-shipping-containers/">Columbus</a>
@@ -69,7 +69,7 @@
         <a href="/locations/">All locations →</a>
       </div>
       <div>
-        <h5>Company</h5>
+        <p class="fcol-h">Company</p>
         <a href="/about/">About</a>
         <a href="/contact/">Contact</a>
         <a href="/privacy/">Privacy</a>
@@ -140,7 +140,9 @@
   /* Footer base, co-located here (moved out of BaseLayout's global sheet) */
   footer.site { background: var(--ink); color: var(--cream); padding: 72px 0 24px; border-top: 2.5px solid var(--ink); margin-top: 0; }
   footer.site .inner { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 48px; }
-  footer.site h5 { font-family: var(--mono); font-size: var(--t-meta); letter-spacing: .08em; text-transform: uppercase; margin: 0 0 16px; opacity: .55; font-weight: 500; }
+  /* Column labels are <p>, not <h5>: they label link lists, and an h5 under the page's h2s was a
+     skipped heading level on every page (SEO report 2 audit, 2026-10-06). Same styling as before. */
+  footer.site .fcol-h { font-family: var(--mono); font-size: var(--t-meta); letter-spacing: .08em; text-transform: uppercase; margin: 0 0 16px; opacity: .55; font-weight: 500; }
   footer.site a { display: block; padding: 4px 0; font-size: 14.5px; font-weight: 500; opacity: .85; }
   footer.site a:hover { color: var(--yellow); opacity: 1; }
   footer.site .fbrand-logo-link { display: inline-block; margin: 0 0 16px; }
