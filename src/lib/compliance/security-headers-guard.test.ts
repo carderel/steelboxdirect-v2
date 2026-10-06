@@ -52,6 +52,15 @@ describe('security headers: public/_headers', () => {
     }
   });
 
+  it('allows the two origins the 2026-10-06 live sweep reported (exact tokens, per directive)', () => {
+    const directive = (name: string) =>
+      (buildCsp().split('; ').find((d) => d.startsWith(`${name} `)) ?? '').split(' ');
+    // Bare domain: *.analytics.google.com does not match analytics.google.com itself.
+    expect(directive('connect-src')).toContain('https://analytics.google.com');
+    // Pinterest tag loads /static/ct/token_create.js from ct.pinterest.com.
+    expect(directive('script-src')).toContain('https://ct.pinterest.com');
+  });
+
   it('does not restrict features YouTube and the 3D viewer use', () => {
     const pp = headers.match(/Permissions-Policy: (.*)/)?.[1] ?? '';
     for (const f of ['fullscreen', 'autoplay', 'encrypted-media', 'picture-in-picture', 'web-share']) {

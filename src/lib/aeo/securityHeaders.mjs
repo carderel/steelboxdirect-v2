@@ -16,7 +16,8 @@
  *
  * ORIGINS, verified 2026-10-06 against dist/ and the live GTM container (GTM-K4T6CHW8):
  *   - www.googletagmanager.com: GTM script + noscript iframe; GA4 (G-WXQQVQWWH7) beacons to
- *     *.google-analytics.com / *.analytics.google.com, Google signals to *.g.doubleclick.net and
+ *     *.google-analytics.com / analytics.google.com / *.analytics.google.com (the wildcard does
+ *     not cover the bare domain, found in the 2026-10-06 live sweep), Google signals to *.g.doubleclick.net and
  *     www.google.com.
  *   - static.cloudflareinsights.com (beacon script) and cloudflareinsights.com (RUM POST), see the
  *     Cloudflare Web Analytics block at the bottom of src/layouts/BaseLayout.astro.
@@ -25,7 +26,8 @@
  *     is kept from the audit draft so switching the embed host later does not need a CSP change.
  *   - Microsoft Clarity (custom HTML tag in GTM): script from www.clarity.ms then
  *     scripts.clarity.ms, collect beacons to *.clarity.ms, a pixel from c.bing.com.
- *   - Pinterest tag (__pntr in GTM): script from s.pinimg.com, events to ct.pinterest.com.
+ *   - Pinterest tag (__pntr in GTM): script from s.pinimg.com, events to ct.pinterest.com, which
+ *     also serves a script (/static/ct/token_create.js), so it is on script-src too.
  *   - Supabase: browser-side on /admin/ only, added at BUILD time by `withSupabaseOrigin()`.
  *
  * 'unsafe-inline' is unavoidable on script-src (inline GTM snippet, the font-preload onload
@@ -54,6 +56,7 @@ export const CSP_DIRECTIVES = [
       'https://www.clarity.ms',
       'https://scripts.clarity.ms',
       'https://s.pinimg.com',
+      'https://ct.pinterest.com',
     ],
   ],
   ['style-src', ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com']],
@@ -78,6 +81,7 @@ export const CSP_DIRECTIVES = [
     [
       "'self'",
       'https://*.google-analytics.com',
+      'https://analytics.google.com',
       'https://*.analytics.google.com',
       'https://*.googletagmanager.com',
       'https://*.g.doubleclick.net',
