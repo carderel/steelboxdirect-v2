@@ -126,7 +126,7 @@ const faqs = [
           <!-- IMAGE SLOT 2: weather-sealed doors. Swap data-URI src for the real photo; alt + dimensions stay. -->
           <!-- filename: weather-sealed-container-doors-winter.jpg -->
           <figure class="uc-img uc-img-inline" data-img-slot="weather">
-            <Image class="uc-img-real" src={imgWeather} width={1000} format="webp"
+            <Image loading="eager" class="uc-img-real" src={imgWeather} width={1000} format="webp"
               alt="Weather-sealed shipping container doors and lockbox holding up in winter weather" />
             <span class="uc-img-tag m">Photo · Sealed container doors in winter</span>
           </figure>
@@ -197,7 +197,7 @@ const faqs = [
         <!-- IMAGE SLOT 3: delivery onto gravel pad. Swap data-URI src for the real photo; alt + dimensions stay. -->
         <!-- filename: container-delivery-farm-gravel-pad.jpg -->
         <figure class="uc-img uc-img-setup" data-img-slot="delivery">
-          <Image class="uc-img-real" src={imgDelivery} width={1000} format="webp"
+          <Image loading="eager" class="uc-img-real" src={imgDelivery} width={1000} format="webp"
             alt="Delivery truck placing a shipping container on a gravel pad on a farm access lane" />
           <span class="uc-img-tag m">Photo · Container delivery onto farm lane</span>
         </figure>
@@ -232,7 +232,7 @@ const faqs = [
       <!-- IMAGE SLOT 4: seasonal interior. Swap data-URI src for the real photo; alt + dimensions stay. -->
       <!-- filename: farm-container-interior-equipment-feed.jpg -->
       <figure class="uc-img uc-img-wide" data-img-slot="seasonal">
-        <Image class="uc-img-real" src={imgSeasonal} width={1600} format="webp"
+        <Image loading="eager" class="uc-img-real" src={imgSeasonal} width={1600} format="webp"
           alt="Inside a 40ft farm container storing a combine header, feed, and tools for winter" />
         <span class="uc-img-tag m">Photo · Container interior with farm equipment</span>
       </figure>
@@ -251,7 +251,7 @@ const faqs = [
       <!-- IMAGE SLOT 5: size comparison. Swap data-URI src for the real photo; alt + dimensions stay. -->
       <!-- filename: 20ft-vs-40ft-farm-containers-comparison.jpg -->
       <figure class="uc-img uc-img-wide uc-img-recs" data-img-slot="sizes">
-        <Image class="uc-img-real" src={imgSizes} width={1600} format="webp"
+        <Image loading="eager" class="uc-img-real" src={imgSizes} width={1600} format="webp"
           alt="20ft and 40ft shipping containers side by side for comparison on a farm yard" />
         <span class="uc-img-tag m">Photo · 20ft vs 40ft farm containers</span>
       </figure>

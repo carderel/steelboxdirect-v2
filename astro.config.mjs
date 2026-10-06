@@ -5,6 +5,7 @@ import sitemap from '@astrojs/sitemap';
 import { serializeWithLastmod, routeLastmodIndexPlugin } from './src/lib/seo/sitemapLastmod.mjs';
 import { sitemapAllowsCategoryUrl } from './src/lib/seo/blogCategoryIndexing.mjs';
 import { supabaseCspIntegration } from './src/lib/aeo/supabaseCspIntegration.mjs';
+import { rehypeEagerImages } from './src/lib/seo/rehypeEagerImages.mjs';
 
 /**
  * THE 77 RETIRED COUNTY PERMIT URLs ARE NOT IN THIS FILE ANY MORE (moved 2026-09-17).
@@ -40,6 +41,8 @@ export default defineConfig({
     },
   }),
   site: 'https://steelboxdirect.com',
+  // No lazy loading anywhere (owner rule): Markdown images default to lazy, this makes them eager.
+  markdown: { rehypePlugins: [rehypeEagerImages] },
   vite: {
     // Serves the sitemap's lastmod index into the page bundle as virtual:route-lastmod-index, so
     // the WebPage node's dateModified (src/lib/schema/buildPageSchema.ts) is resolved from the

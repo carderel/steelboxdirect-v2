@@ -137,7 +137,7 @@ const faqs: { q: string; a: string; html?: string }[] = [
           <p class="step-approval-note">There's no traditional credit check, each application is reviewed by an independent program administrator (not by Steel Box Direct) and the final decision is theirs.</p>
           <div class="step-tag step-tag-soft m">Subject to third-party approval</div>
           <figure class="rto-fig rto-step-fig" data-img-slot="application">
-            <Image class="rto-fig-img" src={imgApplication} width={1000} format="webp"
+            <Image loading="eager" class="rto-fig-img" src={imgApplication} width={1000} format="webp"
               alt="Person filling out a rent to own container application on a phone at a kitchen table, with a used shipping container visible outside the window" />
             <figcaption class="rto-fig-tag m">Photo · Applying from the kitchen table</figcaption>
           </figure>
@@ -186,13 +186,13 @@ const faqs: { q: string; a: string; html?: string }[] = [
         </div>
       </div>
       <figure class="rto-fig rto-fig-wide rto-fig-dark" data-img-slot="seasons">
-        <Image class="rto-fig-img" src={imgSeasons} width={1600} format="webp"
+        <Image loading="eager" class="rto-fig-img" src={imgSeasons} width={1600} format="webp"
           alt="Used shipping container on a gravel pad in winter snow, shown in the same spot where it stands year round on a rural property" />
         <figcaption class="rto-fig-tag m">Photo · The same spot, month after month</figcaption>
       </figure>
       <p class="rto-term-note m">Every term · no traditional credit check · subject to third-party approval</p>
       <figure class="rto-fig rto-fig-wide rto-fig-dark" data-img-slot="ownership">
-        <Image class="rto-fig-img" src={imgPainting} width={1600} format="webp"
+        <Image loading="eager" class="rto-fig-img" src={imgPainting} width={1600} format="webp"
           alt="Hands repainting the corrugated side of a used shipping container on a rural property, the kind of change only an owner would make" />
         <figcaption class="rto-fig-tag m">Photo · Yours to repaint at the end of the term</figcaption>
       </figure>
@@ -296,7 +296,7 @@ const faqs: { q: string; a: string; html?: string }[] = [
       </table>
       <p class="rto-compare-note">Deciding between renting and owning at all, rather than between two ways to own? The rent vs buy calculator totals a rental over the months you need it and shows <a href="/container-rent-vs-buy-calculator/">what renting would have cost by then</a>.</p>
       <figure class="rto-fig rto-fig-wide" data-img-slot="comparison">
-        <Image class="rto-fig-img" src={imgComparison} width={1600} format="webp"
+        <Image loading="eager" class="rto-fig-img" src={imgComparison} width={1600} format="webp"
           alt="Used shipping container on a private gravel pad in the foreground with a row of self-storage unit doors visible in the distance" />
         <figcaption class="rto-fig-tag m">Photo · A container on your property, self-storage across the road</figcaption>
       </figure>
@@ -343,7 +343,7 @@ const faqs: { q: string; a: string; html?: string }[] = [
         ))}
       </div>
       <figure class="rto-fig rto-fig-wide" data-img-slot="lockup">
-        <Image class="rto-fig-img" src={imgLocking} width={1600} format="webp"
+        <Image loading="eager" class="rto-fig-img" src={imgLocking} width={1600} format="webp"
           alt="Hands closing the door handles and padlock on a used wind and water tight shipping container at dusk on a gravel drive" />
         <figcaption class="rto-fig-tag m">Photo · Locking up your own box at the end of the day</figcaption>
       </figure>

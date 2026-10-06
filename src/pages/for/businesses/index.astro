@@ -130,7 +130,7 @@ const faqs = [
 
           <!-- IMAGE SLOT 2: forklift access. filename: forklift-pallet-ground-level-container-access.jpg -->
           <figure class="uc-img uc-img-inline" data-img-slot="forklift">
-            <Image class="uc-img-real" src={imgForklift} width={1200} format="webp"
+            <Image loading="eager" class="uc-img-real" src={imgForklift} width={1200} format="webp"
               alt="Forklift loading a pallet into a ground-level shipping container through open doors" />
             <span class="uc-img-tag m">Photo · Forklift loading a ground-level container</span>
           </figure>
@@ -218,7 +218,7 @@ const faqs = [
 
       <!-- IMAGE SLOT 3: cost of space. filename: container-interior-pallet-inventory-storage.jpg -->
       <figure class="uc-img uc-img-wide" data-img-slot="cost">
-        <Image class="uc-img-real" src={imgCost} width={1600} format="webp"
+        <Image loading="eager" class="uc-img-real" src={imgCost} width={1600} format="webp"
           alt="Interior of a 40ft shipping container holding palletized business inventory storage" />
         <span class="uc-img-tag m">Photo · Container interior with palletized inventory</span>
       </figure>
@@ -236,7 +236,7 @@ const faqs = [
 
       <!-- IMAGE SLOT 4: size comparison. filename: 20ft-40ft-40ftHC-commercial-container-size-comparison.jpg -->
       <figure class="uc-img uc-img-wide uc-img-recs" data-img-slot="sizes">
-        <Image class="uc-img-real" src={imgSizes} width={1600} format="webp"
+        <Image loading="eager" class="uc-img-real" src={imgSizes} width={1600} format="webp"
           alt="20ft, 40ft, and 40ft high cube commercial storage containers side by side for size comparison" />
         <span class="uc-img-tag m">Photo · 20ft, 40ft, and 40ft HC containers side by side</span>
       </figure>
@@ -303,7 +303,7 @@ const faqs = [
             {i === 6 && (
               /* IMAGE SLOT 5: security. filename: container-puck-lock-lockbox-security.jpg */
               <figure class="uc-img uc-img-inline uc-img-faq" data-img-slot="security">
-                <Image class="uc-img-real" src={imgSecurity} width={1000} format="webp"
+                <Image loading="eager" class="uc-img-real" src={imgSecurity} width={1000} format="webp"
                   alt="Puck lock in recessed lockbox hasp on a steel commercial storage container door" />
                 <span class="uc-img-tag m">Photo · Puck lock in container lockbox</span>
               </figure>
