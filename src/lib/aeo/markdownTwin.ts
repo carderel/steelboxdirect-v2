@@ -218,7 +218,7 @@ export function renderContainerMarkdown(k: Container, conditionNote: string): st
  * The Astro Cloudflare adapter emits no `_headers` of its own (verified: `dist/` carried only
  * `_redirects` and `_routes.json`), so nothing here overwrites adapter output.
  *
- * SECURITY HEADERS (added 2026-10-06): the `/*` stanza at the top carries the CSP (Report-Only),
+ * SECURITY HEADERS (added 2026-10-06): the `/*` stanza at the top carries the CSP (enforced since 2026-10-06),
  * X-XSS-Protection, Cross-Origin-Opener-Policy and Permissions-Policy, all defined in
  * `./securityHeaders.mjs` with the origin inventory and the reasons for what is left out. HSTS and
  * X-Frame-Options are set at the Cloudflare edge, not here. The Supabase origin is NOT in this

@@ -526,9 +526,9 @@ const isProd = import.meta.env.PROD;
       layout in the project and every .astro page under src/pages uses it, so one insertion covers
       every rendered route. Verified 2026-09-03: zero pages skip BaseLayout.
 
-      CONTENT-SECURITY-POLICY (added 2026-10-06 in Report-Only mode, see T-188 and
-      src/lib/aeo/securityHeaders.mjs): static.cloudflareinsights.com is allowlisted in script-src
-      and cloudflareinsights.com in connect-src. Keep both there or, once the policy is enforced,
+      CONTENT-SECURITY-POLICY (added 2026-10-06 as Report-Only, enforced the same
+      day after a clean live sweep, see T-188 and src/lib/aeo/securityHeaders.mjs): static.cloudflareinsights.com is allowlisted in script-src
+      and cloudflareinsights.com in connect-src. Keep both there or
       this beacon goes silently dead.
     */}
     {isProd && <script type="module" is:inline src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "dc2d2a4a7b6d42dca44ba4929976d302"}'></script>}

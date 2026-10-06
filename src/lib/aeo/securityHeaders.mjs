@@ -7,12 +7,12 @@
  * free of node: imports, because markdownTwin.ts is bundled into the Cloudflare worker.
  * `renderHeadersFile()` in `src/lib/aeo/markdownTwin.ts` emits these on `/*`.
  *
- * WHY REPORT-ONLY. A Content-Security-Policy can break a live page in ways a green build never
- * sees: the GTM container loads Microsoft Clarity and the Pinterest tag at runtime, and neither
- * appears anywhere in this repository. Report-Only logs every violation in the browser console and
- * blocks nothing. Promote the header name to `Content-Security-Policy` only after a browser pass on
- * the live site shows a clean console. After enforcement, any NEW tag added in GTM that loads a new
- * origin is blocked until it is added here.
+ * ENFORCED (2026-10-06). The policy shipped first as Report-Only, because a CSP can break a live
+ * page in ways a green build never sees: the GTM container loads Microsoft Clarity and the
+ * Pinterest tag at runtime, and neither appears anywhere in this repository. A live browser sweep
+ * of 7 pages showed zero violations and the owner's test quote ran with a clean console, so the
+ * header was promoted to `Content-Security-Policy` with the policy string unchanged. Any NEW tag
+ * added in GTM that loads a new origin is now BLOCKED until that origin is added here.
  *
  * ORIGINS, verified 2026-10-06 against dist/ and the live GTM container (GTM-K4T6CHW8):
  *   - www.googletagmanager.com: GTM script + noscript iframe; GA4 (G-WXQQVQWWH7) beacons to
@@ -108,7 +108,7 @@ export const CSP_DIRECTIVES = [
   ['object-src', ["'none'"]],
 ];
 
-export const CSP_HEADER_NAME = 'Content-Security-Policy-Report-Only';
+export const CSP_HEADER_NAME = 'Content-Security-Policy';
 
 export const PERMISSIONS_POLICY =
   'camera=(), microphone=(), geolocation=(), payment=(), usb=(), serial=(), hid=(), bluetooth=(), midi=(), display-capture=()';

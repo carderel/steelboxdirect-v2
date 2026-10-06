@@ -29,8 +29,9 @@ describe('security headers: public/_headers', () => {
     expect(stanza).toMatch(/Permissions-Policy: camera=\(\), microphone=\(\)/);
   });
 
-  it('ships the CSP as Report-Only until a live browser pass clears it', () => {
-    expect(CSP_HEADER_NAME).toBe('Content-Security-Policy-Report-Only');
+  it('enforces the CSP (promoted from Report-Only after a clean live sweep, 2026-10-06)', () => {
+    expect(CSP_HEADER_NAME).toBe('Content-Security-Policy');
+    expect(headers).not.toMatch(/Content-Security-Policy-Report-Only/);
   });
 
   it('never sends COEP (breaks YouTube, OpenStreetMap and GTM iframes)', () => {
@@ -91,7 +92,7 @@ describe('security headers: build-time Supabase origin', () => {
 
   it('appends to connect-src only', () => {
     const out = withSupabaseOrigin(headers, 'https://abc.supabase.co');
-    const csp = out.match(/Content-Security-Policy-Report-Only: (.*)/)?.[1] ?? '';
+    const csp = out.match(/Content-Security-Policy: (.*)/)?.[1] ?? '';
     const connect = csp.split('; ').find((d) => d.startsWith('connect-src')) ?? '';
     expect(connect.endsWith('https://abc.supabase.co wss://abc.supabase.co')).toBe(true);
     expect(csp.match(/supabase/g)?.length).toBe(2);
