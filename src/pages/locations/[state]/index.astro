@@ -101,6 +101,35 @@ const framing =
       ? `Our home delivery region is ${HOME_REGION}, and ${entry.state} is not part of it. ${nameList(depotCities)} ${isAre(depotCities.length)} ${marketWord(depotCities.length)} ${DEPOT_CLAUSE}`
       : `${entry.state} has two different answers, so this page labels it city by city rather than claiming one answer for the whole state. ${nameList(homeCities)} ${isAre(homeCities.length)} inside our home delivery region, ${HOME_REGION}. ${nameList(depotCities)} ${isAre(depotCities.length)} ${marketWord(depotCities.length)} ${DEPOT_CLAUSE}`;
 
+/**
+ * The framing paragraph names this state's home cities in plain text. The ones in LINKED_IN_FRAMING
+ * become contextual links to their city pages (2026-10-06, owner-approved internal-link pass for the
+ * three city pages closest to page one in Search Console: Dayton, Lexington, Huntington). The list is
+ * deliberate rather than "every city", so the paragraph stays prose and not a second tile grid; the
+ * tiles below still link every market. First mention only, one link per city.
+ */
+const LINKED_IN_FRAMING = new Set([
+  'dayton-shipping-containers',
+  'lexington-shipping-containers',
+  'huntington-shipping-containers',
+]);
+type Segment = { text: string; href?: string };
+const framingSegments: Segment[] = (() => {
+  let segs: Segment[] = [{ text: framing }];
+  for (const c of homeCities.filter((h) => LINKED_IN_FRAMING.has(h.slug))) {
+    const next: Segment[] = [];
+    let done = false;
+    for (const seg of segs) {
+      const i = seg.href || done ? -1 : seg.text.indexOf(c.city);
+      if (i < 0) { next.push(seg); continue; }
+      next.push({ text: seg.text.slice(0, i) }, { text: c.city, href: `/locations/${c.stateSlug}/${c.slug}/` }, { text: seg.text.slice(i + c.city.length) });
+      done = true;
+    }
+    segs = next;
+  }
+  return segs.filter((s) => s.text.length > 0);
+})();
+
 const framingLabel =
   mix === 'home'
     ? `How we serve ${entry.state}`
@@ -167,7 +196,7 @@ const description =
 
       <div class="ls-framing">
         <p class="m ls_framing_label">{framingLabel}</p>
-        <p class="ls_framing_body">{framing}</p>
+        <p class="ls_framing_body">{framingSegments.map((seg) => (seg.href ? <a href={seg.href}>{seg.text}</a> : seg.text))}</p>
       </div>
     </div>
   </section>
@@ -243,6 +272,7 @@ const description =
     .ls-framing { margin: 36px 0 0; max-width: 780px; background: var(--ink); color: var(--cream); border: 2.5px solid var(--ink); padding: 24px 28px; box-shadow: 8px 8px 0 rgba(11,15,26,.25); }
     .ls_framing_label { color: var(--yellow); margin: 0 0 10px; }
     .ls_framing_body { font-size: 16px; line-height: 1.6; margin: 0; }
+    .ls_framing_body a { border-bottom: 1.5px solid var(--yellow); }
 
     .ls-cities { padding: 72px 0; background: var(--cream); }
     .ls-cities h2 { font-family: var(--narrow); font-weight: 700; font-size: clamp(28px, 4vw, 40px); text-transform: uppercase; letter-spacing: -.01em; line-height: 1; margin: 0 0 20px; }

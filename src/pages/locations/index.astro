@@ -252,7 +252,7 @@ const stateUrl = (s: LocationState) => `/locations/${s.stateSlug}/`;
         <div class="faq-item">
           <span class="n">Q · 01</span>
           <h3 class="q">What areas do you deliver to?</h3>
-          <p class="a">Our home delivery region is Ohio, Indiana, Kentucky, and western West Virginia: Cincinnati, Dayton, Columbus, Indianapolis, Louisville, <a href="/locations/kentucky/lexington-shipping-containers/">Lexington</a>, and the western West Virginia corridor (<a href="/locations/west-virginia/huntington-shipping-containers/">Huntington</a>, Charleston, Parkersburg). We also serve Cleveland OH, Detroit MI, Kansas City MO, Houston TX, New York NY, Norfolk VA, Charleston SC, and Savannah GA through our supplier network, from depots in each market. If your city isn't listed, use the form below to check your ZIP.</p>
+          <p class="a">Our home delivery region is Ohio, Indiana, Kentucky, and western West Virginia: Cincinnati, <a href="/locations/ohio/dayton-shipping-containers/">Dayton</a>, Columbus, Indianapolis, Louisville, <a href="/locations/kentucky/lexington-shipping-containers/">Lexington</a>, and the western West Virginia corridor (<a href="/locations/west-virginia/huntington-shipping-containers/">Huntington</a>, Charleston, Parkersburg). We also serve Cleveland OH, Detroit MI, Kansas City MO, Houston TX, New York NY, Norfolk VA, Charleston SC, and Savannah GA through our supplier network, from depots in each market. If your city isn't listed, use the form below to check your ZIP.</p>
         </div>
 
         <div class="faq-item">
@@ -309,6 +309,7 @@ const stateUrl = (s: LocationState) => `/locations/${s.stateSlug}/`;
     /* Intro strip */
     .loc-intro{background:var(--cream);padding:40px 0;border-bottom:1.5px solid rgba(11,15,26,.15)}
     .loc-intro p{font-size:17px;line-height:1.75;opacity:.75;margin:0;max-width:760px}
+    .loc-intro p a,.faq-item .a a{border-bottom:1.5px solid currentColor}
 
     /* State tier: navigation band above the city grids */
     .state-tier{background:var(--ink);color:var(--cream);padding:56px 0 60px;border-bottom:2.5px solid var(--ink)}
