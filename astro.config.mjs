@@ -4,6 +4,7 @@ import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 import { serializeWithLastmod, routeLastmodIndexPlugin } from './src/lib/seo/sitemapLastmod.mjs';
 import { sitemapAllowsCategoryUrl } from './src/lib/seo/blogCategoryIndexing.mjs';
+import { supabaseCspIntegration } from './src/lib/aeo/supabaseCspIntegration.mjs';
 
 /**
  * THE 77 RETIRED COUNTY PERMIT URLs ARE NOT IN THIS FILE ANY MORE (moved 2026-09-17).
@@ -62,6 +63,9 @@ export default defineConfig({
   },
   integrations: [
     react(),
+    // Adds the Supabase origin to the CSP in dist/_headers when PUBLIC_SUPABASE_URL is available.
+    // See src/lib/aeo/securityHeaders.mjs for why this is a build step and not in public/_headers.
+    supabaseCspIntegration(),
     // Blog category pages were excluded across the board from 2026-07-06, when every one of
     // them was thin and several rendered zero posts (see
     // .outputs/seo/2026-07-06-blog-seo-geo-audit.md). Three of the six have since filled out,

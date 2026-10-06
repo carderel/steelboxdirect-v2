@@ -1,8 +1,14 @@
 # GENERATED FILE. Do not edit by hand.
 # Source: renderHeadersFile() in src/lib/aeo/markdownTwin.ts, from src/data/cities.ts and
 # src/data/containers.ts. Held in sync by src/lib/compliance/markdown-twin-guard.test.ts.
-# Purpose: advertise the Markdown twin of every commercial page to AI crawlers.
+# Purpose: security headers on every path, and advertise the Markdown twin of every
+# commercial page to AI crawlers.
 
+/*
+  Content-Security-Policy-Report-Only: default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://static.cloudflareinsights.com https://www.clarity.ms https://scripts.clarity.ms https://s.pinimg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https://*.google-analytics.com https://*.googletagmanager.com https://*.g.doubleclick.net https://www.google.com https://*.clarity.ms https://c.bing.com https://ct.pinterest.com; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.g.doubleclick.net https://www.google.com https://cloudflareinsights.com https://*.clarity.ms https://ct.pinterest.com; frame-src 'self' https://www.googletagmanager.com https://www.youtube.com https://www.youtube-nocookie.com https://www.openstreetmap.org https://ct.pinterest.com; frame-ancestors 'self'; base-uri 'self'; form-action 'self'; object-src 'none'
+  X-XSS-Protection: 0
+  Cross-Origin-Opener-Policy: same-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), serial=(), hid=(), bluetooth=(), midi=(), display-capture=()
 /locations/ohio/cincinnati-shipping-containers/
   Link: </locations/ohio/cincinnati-shipping-containers.md>; rel="alternate"; type="text/markdown"
 /locations/ohio/dayton-shipping-containers/

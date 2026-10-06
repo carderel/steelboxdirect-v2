@@ -48,6 +48,7 @@
 
 import type { City } from '../../data/cities';
 import type { Container } from '../../data/containers';
+import { securityHeaderLines } from './securityHeaders.mjs';
 
 const SITE = 'https://steelboxdirect.com';
 
@@ -217,10 +218,12 @@ export function renderContainerMarkdown(k: Container, conditionNote: string): st
  * The Astro Cloudflare adapter emits no `_headers` of its own (verified: `dist/` carried only
  * `_redirects` and `_routes.json`), so nothing here overwrites adapter output.
  *
- * DELIBERATELY ABSENT: the security headers Screaming Frog flagged on 2026-09-01 (HSTS,
- * Content-Security-Policy, X-Frame-Options). They belong in this file, but a Content-Security-Policy
- * can break a live site in ways a green build never catches, so they are their own change with
- * their own verification pass rather than a rider on this one.
+ * SECURITY HEADERS (added 2026-10-06): the `/*` stanza at the top carries the CSP (Report-Only),
+ * X-XSS-Protection, Cross-Origin-Opener-Policy and Permissions-Policy, all defined in
+ * `./securityHeaders.mjs` with the origin inventory and the reasons for what is left out. HSTS and
+ * X-Frame-Options are set at the Cloudflare edge, not here. The Supabase origin is NOT in this
+ * output: it is added to dist/_headers at build time by `supabaseCspIntegration()` (./supabaseCspIntegration.mjs) so this file,
+ * and the drift guard that compares it, stay independent of the environment.
  */
 export function renderHeadersFile(cityList: City[], containerList: Container[]): string {
   const stanza = (pagePath: string, twinPath: string) =>
@@ -230,8 +233,11 @@ export function renderHeadersFile(cityList: City[], containerList: Container[]):
     '# GENERATED FILE. Do not edit by hand.',
     '# Source: renderHeadersFile() in src/lib/aeo/markdownTwin.ts, from src/data/cities.ts and',
     '# src/data/containers.ts. Held in sync by src/lib/compliance/markdown-twin-guard.test.ts.',
-    '# Purpose: advertise the Markdown twin of every commercial page to AI crawlers.',
+    '# Purpose: security headers on every path, and advertise the Markdown twin of every',
+    '# commercial page to AI crawlers.',
     '',
+    '/*',
+    ...securityHeaderLines(),
     ...cityList.map((c) =>
       stanza(`/locations/${c.stateSlug}/${c.slug}/`, `/locations/${c.stateSlug}/${c.slug}.md`),
     ),
