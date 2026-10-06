@@ -1,3 +1,5 @@
+import { OPENING_HOURS_SPECIFICATION } from '../../data/businessHours';
+
 export const SITE_URL = 'https://steelboxdirect.com';
 export const ORG_ID = `${SITE_URL}/#organization`;
 export const LOCALBUSINESS_ID = `${SITE_URL}/#localbusiness`;
@@ -124,6 +126,8 @@ export function globalNodes(): Record<string, unknown>[] {
     geo: { '@type': 'GeoCoordinates', latitude: '39.1365839', longitude: '-84.540972' },
     areaServed: AREA_SERVED,
     hasMap: 'https://maps.google.com/?cid=16337072236475848136',
+    // Owner confirmed 2026-10-06 against the GBP. Same source as the /contact/ copy.
+    openingHoursSpecification: [OPENING_HOURS_SPECIFICATION],
     makesOffer: OFFERED_SERVICE,
     sameAs: SAME_AS,
   };

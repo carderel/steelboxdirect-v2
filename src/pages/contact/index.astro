@@ -18,13 +18,14 @@
 // NO PRICES and NO FOUNDING YEAR, same as /about/.
 //
 // SCHEMA: the minimal WebPage graph (the 'excluded' default). buildPageSchema has no ContactPage
-// branch, and the LocalBusiness node that carries telephone, geo, hours-adjacent data and hasMap
+// branch, and the LocalBusiness node that carries telephone, geo, openingHoursSpecification and hasMap
 // is already emitted site-wide by globalNodes(), so a second contact-scoped LocalBusiness here
 // would duplicate an existing node. See src/lib/schema/entities.ts.
 export const prerender = true;
 
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { HOURS_LABEL } from '../../data/businessHours';
 
 const crumbs = [{ name: 'Home', path: '/' }, { name: 'Contact' }];
 ---
@@ -33,7 +34,7 @@ const crumbs = [{ name: 'Home', path: '/' }, { name: 'Contact' }];
   pageType="guide"
   floatingSidebar={false}
   title="Contact Steel Box Direct: Phone, Email, and Hours"
-  description="Call (513) 546-2543, email support@steelboxdirect.com, or request a free quote. Open daily 9 AM to 9 PM Eastern. Serving OH, IN, KY, and western West Virginia."
+  description={`Call (513) 546-2543, email support@steelboxdirect.com, or request a free quote. Open daily ${HOURS_LABEL} Eastern. Serving OH, IN, KY, and western West Virginia.`}
   breadcrumbs={crumbs}
 >
   <div class="ct-hero">
@@ -41,7 +42,7 @@ const crumbs = [{ name: 'Home', path: '/' }, { name: 'Contact' }];
       <Breadcrumbs items={crumbs} />
       <div class="ct-eyebrow">
         <span class="idx">§ CONTACT</span>
-        <span class="nm">Open daily, 9 AM to 9 PM Eastern</span>
+        <span class="nm">Open daily, {HOURS_LABEL} Eastern</span>
         <span class="tg">One agent, start to finish</span>
       </div>
       <h1 class="ct-headline">Talk to a person. <em>Get a real number.</em></h1>
@@ -71,7 +72,7 @@ const crumbs = [{ name: 'Home', path: '/' }, { name: 'Contact' }];
         <a class="ct-card is-link" href="tel:+15135462543">
           <span class="m ct-card-k">Phone</span>
           <span class="ct-card-v">(513) 546-2543</span>
-          <span class="ct-card-note">Tap to call. Answered 9 AM to 9 PM Eastern, every day.</span>
+          <span class="ct-card-note">Tap to call. Answered {HOURS_LABEL} Eastern, every day.</span>
         </a>
 
         <a class="ct-card is-link" href="mailto:support@steelboxdirect.com">
@@ -82,7 +83,7 @@ const crumbs = [{ name: 'Home', path: '/' }, { name: 'Contact' }];
 
         <div class="ct-card">
           <span class="m ct-card-k">Hours</span>
-          <span class="ct-card-v">Daily, 9 AM to 9 PM ET</span>
+          <span class="ct-card-v">Daily, {HOURS_LABEL} ET</span>
           <span class="ct-card-note">Open every day, including weekends. Most quote requests are answered within 4 business hours.</span>
         </div>
 

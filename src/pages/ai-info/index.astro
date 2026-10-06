@@ -12,6 +12,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { pricing, formatPrice, asOfLabel } from '../../data/pricing';
 import { RTO_TERMS, RTO_DOWN_CONDITION, rtoEffectiveDateLabel } from '../../data/rtoTerms';
+import { HOURS_LABEL } from '../../data/businessHours';
 
 export const prerender = true;
 
@@ -54,7 +55,7 @@ const price40hc = formatPrice(pricing['40ftStandardHC'].price);
           sales yard; containers are delivered to the buyer's site, or picked up at partner depots by
           arrangement.</li>
         <li>Based in Cincinnati, Ohio, operating as a service-area business.</li>
-        <li>Hours: open daily, 9 AM to 9 PM Eastern. Most quote requests are answered within 4 business
+        <li>Hours: open daily, {HOURS_LABEL} Eastern. Most quote requests are answered within 4 business
           hours.</li>
         <li>Phone: (513) 546-2543. Email: support@steelboxdirect.com. Quote form:
           <a href="https://steelboxdirect.com/quote/">https://steelboxdirect.com/quote/</a></li>
