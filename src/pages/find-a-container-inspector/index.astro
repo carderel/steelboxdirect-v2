@@ -35,9 +35,9 @@ const crumbs = [
 const isHomeState = (s: string): boolean => (HOME_REGION_STATES as readonly string[]).includes(s);
 
 const metaDescription =
-  `Every IICL-certified container inspector in the US, grouped by state: ${inspectorCount} `
-  + `inspectors holding ${credentialCount} credentials across ${stateCount} states, from the IICL `
-  + `directory, re-verified quarterly.`;
+  `Every IICL-certified container inspector in the US by state: ${inspectorCount} inspectors, `
+  + `${credentialCount} credentials, ${stateCount} states, from the IICL directory, re-verified `
+  + `quarterly.`;
 
 // Single source for the page FAQ. These strings ARE the FAQPage JSON-LD answers, so each stands
 // alone when quoted, and none names an individual inspector: aggregate counts only.
@@ -74,7 +74,7 @@ const faqs = [
 
 <BaseLayout
   pageType="guide"
-  title="Find a Container Inspector: The US IICL Directory | Steel Box Direct"
+  title="Find a Container Inspector: The US IICL Directory"
   description={metaDescription}
   datePublished="2026-08-25"
   dateModified="2026-08-25"

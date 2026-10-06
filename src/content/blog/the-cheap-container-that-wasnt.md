@@ -1,6 +1,6 @@
 ---
 title: "The Cheap Container That Wasn't"
-description: "A Field Story: a buyer found a container for eight or nine hundred dollars. Then he learned the price didn't include delivery. Here's the one question that protects you."
+description: "A Field Story: a buyer found a container for eight or nine hundred dollars, then learned the price didn't include delivery. The one question that protects you."
 pubDate: 2026-08-28
 category: "Field Stories"
 pillar: "container-buying-basics"

@@ -110,8 +110,8 @@ export const cities: City[] = [
       body: 'Most requests in the Tri-State are answered within 4 business hours.',
     },
     seo: {
-      title: 'Shipping & Storage Containers for Sale in Cincinnati, OH | Steel Box Direct',
-      description: `Buying a shipping container in Cincinnati? We provide ${CONDITION.label} containers delivered to Hamilton, Clermont, and Warren counties, priced by distance.`,
+      title: 'Shipping & Storage Containers for Sale in Cincinnati, OH',
+      description: `Buying a shipping container in Cincinnati? ${CONDITION.label} containers delivered to Hamilton, Clermont, and Warren counties, priced by distance.`,
     },
   },
   {
@@ -171,8 +171,8 @@ export const cities: City[] = [
       body: 'Most requests in the Miami Valley are answered within 4 business hours.',
     },
     seo: {
-      title: 'Shipping & Storage Containers for Sale in Dayton, OH | Steel Box Direct',
-      description: `Looking for a shipping container in Dayton? We offer ${CONDITION.label} containers delivered to Montgomery, Greene, and Miami counties, priced by distance.`,
+      title: 'Shipping & Storage Containers for Sale in Dayton, OH',
+      description: `Looking for a shipping container in Dayton? ${CONDITION.label} containers delivered to Montgomery, Greene, and Miami counties, priced by distance.`,
     },
   },
   {
@@ -235,8 +235,8 @@ export const cities: City[] = [
       body: 'Most requests in central Ohio are answered within 4 business hours.',
     },
     seo: {
-      title: 'Shipping & Storage Containers for Sale in Columbus, OH | Steel Box Direct',
-      description: `Buying a shipping container in Columbus? We provide ${CONDITION.label} containers delivered to Franklin, Delaware, and Licking counties, priced by distance.`,
+      title: 'Shipping & Storage Containers for Sale in Columbus, OH',
+      description: `Buying a shipping container in Columbus? ${CONDITION.label} containers delivered to Franklin, Delaware, and Licking counties, priced by distance.`,
     },
   },
   {
@@ -296,7 +296,7 @@ export const cities: City[] = [
       body: 'Most requests in Central Indiana are answered within 4 business hours.',
     },
     seo: {
-      title: 'Shipping & Storage Containers for Sale in Indianapolis, IN | Steel Box Direct',
+      title: 'Shipping & Storage Containers for Sale in Indianapolis, IN',
       description: `Buying a shipping container in Indy? We provide ${CONDITION.label} containers delivered to Marion, Hamilton, and Hendricks counties, priced by distance.`,
     },
   },
@@ -357,8 +357,8 @@ export const cities: City[] = [
       body: 'Most requests in Kentuckiana are answered within 4 business hours.',
     },
     seo: {
-      title: 'Shipping & Storage Containers for Sale in Louisville, KY | Steel Box Direct',
-      description: `Looking for a shipping container in Louisville? We offer ${CONDITION.label} containers delivered to Jefferson, Oldham, and Bullitt counties, priced by distance.`,
+      title: 'Shipping & Storage Containers for Sale in Louisville, KY',
+      description: `Looking for a shipping container in Louisville? ${CONDITION.label} containers delivered to Jefferson, Oldham, and Bullitt counties, priced by distance.`,
     },
   },
   {
@@ -419,8 +419,8 @@ export const cities: City[] = [
       body: 'Most requests in the Bluegrass are answered within 4 business hours.',
     },
     seo: {
-      title: 'Shipping & Storage Containers for Sale in Lexington, KY | Steel Box Direct',
-      description: `Buying a shipping container in Lexington? We provide ${CONDITION.label} containers delivered to Fayette, Jessamine, and Scott counties, priced by distance.`,
+      title: 'Shipping & Storage Containers for Sale in Lexington, KY',
+      description: `Buying a shipping container in Lexington? ${CONDITION.label} containers delivered to Fayette, Jessamine, and Scott counties, priced by distance.`,
     },
   },
   {
@@ -483,7 +483,7 @@ export const cities: City[] = [
       body: 'Most requests in western West Virginia are answered within 4 business hours.',
     },
     seo: {
-      title: 'Shipping & Storage Containers for Sale in Huntington, WV | Steel Box Direct',
+      title: 'Shipping & Storage Containers for Sale in Huntington, WV',
       description: `Buying a shipping container in Huntington? We provide ${CONDITION.label} containers delivered to Cabell, Wayne, and Putnam counties, priced by distance.`,
     },
   },
@@ -548,7 +548,7 @@ export const cities: City[] = [
       body: 'Most requests in Northeast Ohio are answered within 4 business hours.',
     },
     seo: {
-      title: 'Shipping & Storage Containers for Sale in Cleveland, OH | Steel Box Direct',
+      title: 'Shipping & Storage Containers for Sale in Cleveland, OH',
       description: `Buying a shipping container in Cleveland? We provide ${CONDITION.label} containers with depot-based delivery to Cuyahoga, Lorain, and Lake counties.`,
     },
   },
@@ -609,7 +609,7 @@ export const cities: City[] = [
       body: 'Most requests in the Coastal Empire are answered within 4 business hours.',
     },
     seo: {
-      title: 'Shipping & Storage Containers for Sale in Savannah, GA | Steel Box Direct',
+      title: 'Shipping & Storage Containers for Sale in Savannah, GA',
       description: `Buying a shipping container in Savannah? We provide ${CONDITION.label} containers with depot-based delivery to Chatham, Effingham, and Bryan counties.`,
     },
   },
@@ -668,8 +668,8 @@ export const cities: City[] = [
       body: 'Most requests in the Lowcountry are answered within 4 business hours.',
     },
     seo: {
-      title: 'Shipping & Storage Containers for Sale in Charleston, SC | Steel Box Direct',
-      description: `Buying a shipping container in Charleston? We provide ${CONDITION.label} containers with depot-based delivery to Charleston, Berkeley, and Dorchester counties.`,
+      title: 'Shipping & Storage Containers for Sale in Charleston, SC',
+      description: `Buying a shipping container in Charleston? ${CONDITION.label} containers with depot-based delivery to Charleston, Berkeley, and Dorchester counties.`,
     },
   },
   {
@@ -731,8 +731,8 @@ export const cities: City[] = [
       body: 'Most requests in Hampton Roads are answered within 4 business hours.',
     },
     seo: {
-      title: 'Shipping & Storage Containers for Sale in Norfolk, VA | Steel Box Direct',
-      description: `Buying a shipping container in Norfolk? We provide ${CONDITION.label} containers with depot-based delivery to Norfolk, Virginia Beach, Chesapeake, and across Hampton Roads.`,
+      title: 'Shipping & Storage Containers for Sale in Norfolk, VA',
+      description: `Shipping containers in Norfolk: ${CONDITION.label}, with depot-based delivery to Norfolk, Virginia Beach, Chesapeake, and across Hampton Roads.`,
     },
   },
   {
@@ -793,7 +793,7 @@ export const cities: City[] = [
       body: 'Most requests in Greater Houston are answered within 4 business hours.',
     },
     seo: {
-      title: 'Shipping & Storage Containers for Sale in Houston, TX | Steel Box Direct',
+      title: 'Shipping & Storage Containers for Sale in Houston, TX',
       description: `Buying a shipping container in Houston? We provide ${CONDITION.label} containers with depot-based delivery to Harris, Fort Bend, and Montgomery counties.`,
     },
   },
@@ -853,8 +853,8 @@ export const cities: City[] = [
       body: 'Most requests in the New York metro are answered within 4 business hours.',
     },
     seo: {
-      title: 'Shipping & Storage Containers for Sale in New York, NY | Steel Box Direct',
-      description: `Buying a shipping container in New York? We provide ${CONDITION.label} containers delivered from a regional depot to the five boroughs, Nassau, and Westchester.`,
+      title: 'Shipping & Storage Containers for Sale in New York, NY',
+      description: `Buying a shipping container in New York? ${CONDITION.label} containers delivered from a regional depot to the five boroughs, Nassau, and Westchester.`,
     },
   },
   {
@@ -914,7 +914,7 @@ export const cities: City[] = [
       body: 'Most requests in Metro Detroit are answered within 4 business hours.',
     },
     seo: {
-      title: 'Shipping & Storage Containers for Sale in Detroit, MI | Steel Box Direct',
+      title: 'Shipping & Storage Containers for Sale in Detroit, MI',
       description: `Buying a shipping container in Detroit? We provide ${CONDITION.label} containers with depot-based delivery to Wayne, Oakland, and Macomb counties.`,
     },
   },
@@ -974,7 +974,7 @@ export const cities: City[] = [
       body: 'Most requests in the KC metro are answered within 4 business hours.',
     },
     seo: {
-      title: 'Shipping & Storage Containers for Sale in Kansas City, MO | Steel Box Direct',
+      title: 'Shipping & Storage Containers for Sale in Kansas City, MO',
       description: `Buying a shipping container in Kansas City? We provide ${CONDITION.label} containers with depot-based delivery to Jackson, Clay, and Platte counties.`,
     },
   },

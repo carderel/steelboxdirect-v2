@@ -69,7 +69,7 @@ const breadcrumbs = [
 
 <BaseLayout
   pageType="guide"
-  title={`${post.data.title} | Steel Box Direct Blog`}
+  title={post.data.title}
   description={post.data.description}
   datePublished={post.data.pubDate.toISOString().slice(0, 10)}
   dateModified={(post.data.updatedDate ?? post.data.pubDate).toISOString().slice(0, 10)}

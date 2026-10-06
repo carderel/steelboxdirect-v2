@@ -128,12 +128,12 @@ const crumbs = [
 // NO PRICE, ANYWHERE ON THIS PAGE, and not even an import that could become one. The 2026-08-17
 // override allows a figure on a CITY page under four conditions, one of which is a named ZIP. A state
 // is not a ZIP, so there is no honest way to state one here and the page links to /cost/ instead.
-const title = `Shipping Containers in ${entry.state} | Steel Box Direct`;
+const title = `Shipping Containers in ${entry.state}`;
 const description =
   mix === 'home'
     ? `Shipping containers delivered across ${entry.state}, inside our home delivery region. Every ${entry.state} market we cover, with the counties each one reaches.`
     : mix === 'depot'
-      ? `Shipping containers delivered in ${entry.state} through our supplier network, from a depot in each metro. Every ${entry.state} market we cover, and what each one reaches.`
+      ? `Shipping containers delivered in ${entry.state} through our supplier network, from a depot in each metro. Every market we cover, and what each one reaches.`
       : `Shipping containers delivered across ${entry.state}. Every market we cover, labelled city by city: home region delivery, or a supplier-network depot.`;
 ---
 

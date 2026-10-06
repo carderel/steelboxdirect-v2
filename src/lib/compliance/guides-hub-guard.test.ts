@@ -68,8 +68,11 @@ describe('/shipping-container-guides/ hub guards', () => {
 
   it('the title is short enough not to truncate, and the enumeration lives in the description', () => {
     const title = src.match(/\n\s+title="([^"]+)"/)?.[1] ?? '';
-    expect(title.length).toBeGreaterThan(45);
+    // Lower bound dropped from 45 to 30 on 2026-10-06, when the " | Steel Box Direct" suffix came
+    // off every non-brand title (SEO report 2 audit). 30 is the scanner's "too short" line.
+    expect(title.length).toBeGreaterThanOrEqual(30);
     expect(title.length).toBeLessThanOrEqual(60);
+    expect(title).not.toContain('Steel Box Direct');
 
     // The description is composed from the guide count, so resolve the interpolation before
     // measuring it. The two source fragments are joined the way the template literal joins them.

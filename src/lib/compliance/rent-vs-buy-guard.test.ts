@@ -20,7 +20,7 @@ const REPO_ROOT = import.meta.dirname
   : process.cwd();
 const PAGE = join(REPO_ROOT, 'src/pages/container-rent-vs-buy-calculator/index.astro');
 
-const LOCKED_TITLE = 'Shipping Container Rent vs Buy Calculator | Steel Box Direct';
+const LOCKED_TITLE = 'Shipping Container Rent vs Buy Calculator';
 const STANCE_QUESTION = 'If you do not rent containers, why does this calculator price a rental?';
 const CANONICAL_FACT_LITERAL = 'Steel Box Direct does not rent shipping containers.';
 // HS-OUT-001. Written as escapes, never as the literal characters, so this file cannot contain
