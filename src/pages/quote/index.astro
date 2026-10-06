@@ -27,7 +27,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
         <div class="main-col quote_main_col">
           <form id="quote-form" class="quote-form quote_form">
             <div class="form-section quote_form_section">
-              <h3>The Hardware</h3>
+              <h2>The Hardware</h2>
               <div class="form-grid quote_form_grid">
                 <div class="form-group quote_field">
                   <label for="size_preference">Container size</label>
@@ -85,7 +85,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
             </div>
 
             <div class="form-section quote_form_section">
-              <h3>The Logistics</h3>
+              <h2>The Logistics</h2>
               <div class="form-grid quote_form_grid">
                 <div class="form-group quote_field">
                   <label for="receive_method">How you'll receive it</label>
@@ -111,7 +111,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
             </div>
 
             <div class="form-section quote_form_section">
-              <h3>The Contact</h3>
+              <h2>The Contact</h2>
               <div class="form-group quote_field">
                 <label for="name">Name</label>
                 <input type="text" id="name" name="name" required />
@@ -291,10 +291,11 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       border-bottom: 1.5px solid rgba(11,15,26,.1);
     }
     .form-section:last-of-type { border-bottom: none; margin-bottom: 20px; }
-    .form-section h3 {
+    .form-section h2 {
       font-family: var(--narrow);
       font-size: 24px;
       text-transform: uppercase;
+      margin-top: 1em;
       margin-bottom: 24px;
     }
 

@@ -143,7 +143,7 @@ export default function SizeCalculator() {
     <div className="calculator">
       {step === 'use' && (
         <div className="step">
-          <h3 className="m" style={{color: 'var(--ink)', opacity: .6, marginBottom: '24px'}}>Step 01: Use Case</h3>
+          <h2 className="m" style={{color: 'var(--ink)', opacity: .6, marginTop: '1em', marginBottom: '24px'}}>Step 01: Use Case</h2>
           <div className="options">
             {(Object.entries(USE_CASES) as [UseCase, { label: string; description: string }][]).map(
               ([key, { label, description }]) => (
@@ -163,7 +163,7 @@ export default function SizeCalculator() {
 
       {step === 'quantity' && state.useCase && (
         <div className="step">
-          <h3 className="m" style={{color: 'var(--ink)', opacity: .6, marginBottom: '24px'}}>Step 02: Quantity</h3>
+          <h2 className="m" style={{color: 'var(--ink)', opacity: .6, marginTop: '1em', marginBottom: '24px'}}>Step 02: Quantity</h2>
           <div className="options">
             {QUANTITY_OPTIONS[state.useCase].map(({ value, label, description }) => (
               <button
@@ -208,7 +208,7 @@ export default function SizeCalculator() {
 
       {step === 'result' && result && (
         <div className="step result">
-          <h3 className="m" style={{color: 'var(--c4-cost)', marginBottom: '24px'}}>The Verdict</h3>
+          <h2 className="m" style={{color: 'var(--c4-cost)', marginTop: '1em', marginBottom: '24px'}}>The Verdict</h2>
 
           <div className="result-card">
             <div className="result-size">{SIZE_INFO[result].name}</div>
