@@ -9,7 +9,7 @@
 # state the condition beside it. The slug keeps the search term. Do not move the figure up here
 # without first giving the card component somewhere to put the small print.
 title: "The Rent-to-Own Down Payment Drops September 1: What Actually Changes"
-seoTitle: "Rent-to-Own Down Payment Drops Sept 1: What Actually Changes"
+seoTitle: "Rent-to-Own Down Payment Dropped Sept 1: What Changed"
 description: "My Container Rental resets the rent-to-own down payment on standard containers from September 1, 2026. What changes, what does not, and which tier applies."
 pubDate: 2026-08-31
 category: "Buyer's Guides & How-To"
