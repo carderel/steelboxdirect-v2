@@ -1,5 +1,6 @@
 ---
 title: "Shipping Container Dimensions: The Complete Size Chart (8ft to 53ft)"
+seoTitle: "Shipping Container Dimensions: Full Size Chart (8ft to 53ft)"
 description: "See the exact inside and outside measurements for every common shipping container size, 8ft to 53ft, plus which sizes Steel Box Direct sells."
 pubDate: 2026-07-06
 updatedDate: 2026-08-24

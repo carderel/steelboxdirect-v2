@@ -15,6 +15,9 @@ const blog = defineCollection({
   type: 'content',
   schema: z.object({
     title: z.string(),
+    // Optional <title>/og:title/twitter:title override (<=60 chars) for posts whose H1 runs
+    // longer. The visible H1, cards, and BlogPosting headline keep using `title`.
+    seoTitle: z.string().max(60).optional(),
     description: z.string(),
     pubDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),

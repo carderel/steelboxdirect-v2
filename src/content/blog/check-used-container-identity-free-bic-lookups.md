@@ -1,5 +1,6 @@
 ---
 title: "Check a Used Container's Identity for Free: 4 Lookups and What They Cannot Tell You"
+seoTitle: "Check a Used Container's Identity: 4 Free Lookups & Limits"
 description: "Four free BIC lookups verify a used container's number, prefix owner, theft alerts and ACEP record before you pay. What each proves, and what none of them can."
 pubDate: 2026-08-27
 category: "Buyer's Guides & How-To"

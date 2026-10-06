@@ -1,5 +1,6 @@
 ---
 title: "How Do I Get a Used Shipping Container Certified for Shipping?"
+seoTitle: "How to Get a Used Shipping Container Certified for Shipping"
 description: "The step-by-step path to getting a used container recertified for ocean shipping: what to check, who can survey it, published costs, and when to skip it."
 pubDate: 2026-08-24
 category: "Buyer's Guides & How-To"

@@ -1,5 +1,6 @@
 ---
 title: "How to Read a Container's ID Number & Size/Type Code (ISO 6346)"
+seoTitle: "How to Read a Container ID & Size/Type Code (ISO 6346)"
 description: "How to decode a shipping container's 11-character ISO 6346 ID number, check digit, and 4-character size/type code, walked through on a real, verified example."
 pubDate: 2026-07-06
 category: "Container Specs & Reference"
