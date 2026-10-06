@@ -94,7 +94,7 @@ export const containers: Container[] = [
     compareNote: `Twice the storage of a 20ft, but it needs more clearance for delivery and placement. ${CONDITION.blurb}`,
     seo: {
       title:       'Used 40ft Shipping Container for Sale',
-      description: `Buy a 40ft container delivered within 250 miles of Cincinnati, priced by distance. ${CONDITION.seoTail} Quote in 4 hours.`,
+      description: `Buy a 40ft container delivered within 250 miles of Cincinnati. ${CONDITION.seoTail} Quote in 4 business hours.`,
     },
     heroPhoto: INTERIM_HERO_PHOTO,
   },
@@ -120,7 +120,7 @@ export const containers: Container[] = [
     compareNote: `Same footprint as the standard 40ft, but a foot taller, with the most headroom and cubic capacity we offer. ${CONDITION.blurb}`,
     seo: {
       title:       '40-Foot High Cube Shipping & Storage Container for Sale',
-      description: `Buy a 40ft High Cube delivered within 250 miles of Cincinnati: a foot of extra headroom, ~2,694 cu ft. ${CONDITION.label} steel. Quote in 4 hours.`,
+      description: `Buy a 40ft High Cube delivered within 250 miles of Cincinnati: a foot more headroom, ~2,694 cu ft. ${CONDITION.label} steel. Quote in 4 business hours.`,
     },
     heroPhoto: INTERIM_HERO_PHOTO,
   },
