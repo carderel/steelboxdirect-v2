@@ -24,7 +24,11 @@ cd "${CLAUDE_PROJECT_DIR:-$(git rev-parse --show-toplevel)}" || exit 0
 LOG="$(mktemp -t sbd-seo-scan)"
 
 # Job 0: the full Vitest suite. Any failure blocks the push with the tail of the run attached.
-if ! npx vitest run >"$LOG" 2>&1; then
+# SPEC_GUARD_DIST=require makes the spec claims guard (src/lib/compliance/spec-claims-guard.test.ts)
+# check the BUILT HTML and fail when there is none, so its rendered-output pass can never be a
+# silent skip at the one gate that matters. It catches figures interpolated at build time that a
+# source scan cannot see: percentages, square and cubic feet, weights and door dimensions.
+if ! SPEC_GUARD_DIST=require npx vitest run >"$LOG" 2>&1; then
   tail -n 60 "$LOG" >"$LOG.tail" && mv "$LOG.tail" "$LOG"
   jq -Rs '{hookSpecificOutput:{hookEventName:"PreToolUse",permissionDecision:"deny",permissionDecisionReason:("PUSH BLOCKED: the Vitest suite is failing. Compliance guards (including the fact-check ledger guard) must be green before a push. Fix the cause; do not skip or weaken the guard.\n\n" + .)}}' "$LOG"
   rm -f "$LOG"
