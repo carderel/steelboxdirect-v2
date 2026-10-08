@@ -174,6 +174,13 @@ export const pricing: Pricing = {
   '40ftStandardHC': { label: '40ft Standard HC', price: nationalPrice('40ftStandardHC'), sqft: floorOf('40ftStandardHC') },
 };
 
+/**
+ * True only while the feed puts the High Cube average BELOW the standard 40ft. Gates the "supply runs
+ * deep" note on the homepage, the product hub and the HC product page: that note was typed copy and
+ * went stale when the 2026-10-02 feed put HC above standard. Read it, never retype the claim.
+ */
+export const hcBelowStandard = pricing['40ftStandardHC'].price < pricing['40ftStandard'].price;
+
 /** Map product-page slugs → the matching price record (single source of truth). */
 export const priceBySlug: Record<string, ContainerPrice> = {
   '20-foot-shipping-container': pricing['20ftCargo'],

@@ -1,5 +1,5 @@
 ---
-import { pricing, formatPrice, asOfLabel, nationalPriceLabel } from '../../data/pricing';
+import { pricing, formatPrice, asOfLabel, nationalPriceLabel, hcBelowStandard } from '../../data/pricing';
 
 const p20 = pricing['20ftCargo'];
 const p40 = pricing['40ftStandard'];
@@ -31,7 +31,7 @@ const p40hc = pricing['40ftStandardHC'];
         <ul class="pricing_features">
           <li>~{p20.sqft} sq ft of floor · fits a tractor or a lot of tools</li>
           <li>Wind &amp; Water Tight, minor surface rust</li>
-          <li>Most deliveries in about two weeks</li>
+          <li>Almost all deliveries take about two weeks; we'll give you an honest window before you commit</li>
         </ul>
         <a href="/shipping-containers-for-sale/20-foot-shipping-container/" class="pcard-cta pricing_cta">See full specs <span>→</span></a>
       </div>
@@ -48,7 +48,9 @@ const p40hc = pricing['40ftStandardHC'];
       <div class="pcard rec pricing_card">
         <div class="tag pricing_name"><span class="name">40ft HC</span><span class="chip">Most popular</span></div>
         <div class="num">{formatPrice(p40hc.price)}<small>{nationalPriceLabel}</small></div>
-        <p class="hc-note">Supply runs deep right now, so the High Cube average can land below the standard 40ft.</p>
+        {hcBelowStandard && (
+          <p class="hc-note">Supply runs deep right now, so the High Cube average sits below the standard 40ft.</p>
+        )}
         <ul class="pricing_features">
           <li>Same 40ft footprint, a full foot taller at 9'6"</li>
           <li>~2,700 cu ft, the most cubic capacity in the lineup</li>

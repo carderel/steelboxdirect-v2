@@ -7,7 +7,7 @@ import { Image } from 'astro:assets';
 import { containers, SPEC_WEIGHT_NOTE } from '../../data/containers';
 import type { Container } from '../../data/containers';
 import { CONDITION } from '../../data/condition';
-import { priceBySlug, formatPrice, asOfLabel, nationalPriceLabel } from '../../data/pricing';
+import { priceBySlug, formatPrice, asOfLabel, nationalPriceLabel, hcBelowStandard } from '../../data/pricing';
 import { RTO_TERMS, RTO_DOWN_CONDITION } from '../../data/rtoTerms';
 import { DELIVERY_ACCESS } from '../../data/permitCounties';
 
@@ -336,8 +336,8 @@ const plateAria = `Side profile of a tilt bed delivery truck carrying a ${c.shor
               <p class="buy-box-label">{nationalPriceLabel}</p>
               <p class="buy-box-price">{formatPrice(price.price)}</p>
               <p class="buy-box-disclaimer">Average starting price, not a quote; yours may be more or less. Your ZIP code is a big factor in the delivered price, so for the most accurate number, talk directly to Doug. ({asOfLabel})</p>
-              {c.slug === '40-foot-high-cube-container' && (
-                <p class="buy-box-note">Supply runs deep right now, so the High Cube average can land below the standard 40ft.</p>
+              {c.slug === '40-foot-high-cube-container' && hcBelowStandard && (
+                <p class="buy-box-note">Supply runs deep right now, so the High Cube average sits below the standard 40ft.</p>
               )}
               <div class="buy-box-ctas">
                 <a href="#talk-to-doug" class="btn buy-btn-primary">Have Doug call me <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
