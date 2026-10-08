@@ -28,7 +28,7 @@ faq:
   - q: "Is a 40ft shipping container worth it over a 20ft?"
     a: "For most buyers, yes. A 40ft container has about twice the floor space of a 20ft, roughly 302 square feet versus 148, but it usually costs well under twice as much. That makes the 40ft the better value per square foot. The 20ft is still the right pick when the site is small, delivery access is tight, or the load is small and heavy."
   - q: "Are 20ft shipping containers hard to find?"
-    a: "They are getting harder to find. In October 2026, the supplier that fulfills Steel Box Direct orders reported that 20ft containers are tighter, with one-trip (nearly new) 20fts the hardest to source. Higher shipping costs and manufacturers focusing on 40ft High Cubes are part of the reason. 20ft containers are still available, but supply is thinner than it was."
+    a: "They are getting harder to find. In October 2026, the supplier that fulfills Steel Box Direct orders reported that 20ft containers are tighter, with one-trip (nearly new) 20fts harder to source. Higher shipping costs and manufacturers focusing on 40ft High Cubes are part of the reason. 20ft containers are still available, but supply is thinner than it was."
   - q: "Is one 40ft container better than two 20ft containers?"
     a: "Usually. One 40ft standard holds about 2,390 cubic feet, a little more than two 20fts at about 1,172 cubic feet each. It is one box to deliver, level, and lock instead of two. Two 20fts make sense only when the space has to be split, such as two separate spots on a property or two uses that need their own doors."
   - q: "When should I buy a 20ft container instead of a 40ft?"
@@ -80,7 +80,7 @@ Two 20fts make sense in a few cases. Maybe you need storage in two places on a p
 
 ## Why 20fts are getting harder to find
 
-This part comes from our supplier, the company that fills our orders. In October 2026, they told us 20ft containers are getting tighter, and one-trip 20fts are the hardest to source.
+This part comes from our supplier, the company that fills our orders. In October 2026, they told us 20ft containers are getting tighter, and one-trip 20fts are harder to source.
 
 A "one-trip" container is a nearly new box. It was built, loaded once for an ocean trip, and then sold off. It's the top of the used market.
 

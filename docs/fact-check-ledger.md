@@ -145,3 +145,62 @@ Freshness: checked 2026-10-08. containers.ts working tree 2026-10-08 (facts fix 
 | 35 | Checklist and "storage fills whatever space you give it" | OPINION | - | - | - | 2026-10-08 |
 | 36 | Permits are the buyer's job; we don't determine them | OPINION | Site policy | - | - | 2026-10-08 |
 | 37 | Card copy: "our supplier reports fewer one-trip 20ft containers" / "20fts are getting harder to find" | VERIFIED | Supplier notes | supplier notes above | supplier, internal | 2026-10-08 |
+
+## 20ft-vs-40ft-shipping-container — 2026-10-08
+Checked by: data-auditor, independent of author: yes
+Status of page: final, pre-publish (draft: false, pubDate 2026-10-08). Supersedes the draft entry "blog/20ft-vs-40ft-shipping-container (draft ...)" above; every CORRECTED/REMOVED item there is fixed in the final text.
+Freshness: checked 2026-10-08. All URLs re-opened 2026-10-08: Maersk dry spec PDF (undated), CMA CGM containers page (live; direct fetch 403, read via Google Translate proxy), Hapag-Lloyd spec PDF (03/2016, cross-check), BIC size-type and CSC pages (live), Container xChange (edited 2024-11-06), Freedom Conex RTO page (live). Supplier notes dated 2026-10-08. pricing.ts feed asOf 2026-10-02 (FLAG: 6 days old against a feed described as daily; the post prints no prices and the ratio claims hold, but the feed refresh should be checked). FAQ answers repeat body claims and match the rows below.
+Recorded by the orchestrator from the checker's output (the checker's own write was blocked by a shell hook); content unchanged.
+
+| # | Claim (as written) | Verdict | Correct value / note | Source (URL) | Grade | Accessed |
+|---|---|---|---|---|---|---|
+| 1 | A 40ft has about twice the floor space of a 20ft (description, body, FAQ) | SITE-DATA | 302.2 / 148.2 = 2.04x, recomputed from internalDims | src/data/containers.ts | site data | 2026-10-08 |
+| 2 | About 148 sq ft (20ft) and about 302 sq ft (40ft) of floor | SITE-DATA | 19'4" x 7'8" = 148.2; 39'5" x 7'8" = 302.2; pricing.ts sqft 148/302. Draft CORRECTED item fixed | src/data/containers.ts ; src/data/pricing.ts | site data | 2026-10-08 |
+| 3 | Inside dims 19'4" x 7'8" x 7'10" and 39'5" x 7'8" x 7'10" | SITE-DATA | Maersk cross-check: 19'4 1/8" / 39'5 11/16" x 7'8 1/2" x 7'10 3/16" | src/data/containers.ts ; https://www.maersk.com/~/media_sc9/maersk/local-information/files/africa/south-africa/important-information/container-type-and-sizes/dry-equipment-specifications-updated.pdf | site data / A | 2026-10-08 |
+| 4 | 1,172 cu ft (20ft) and 2,390 cu ft (40ft) | SITE-DATA | containers.ts cubicCap. CMA CGM 33.2 / 67.8 m3 = 1,172 / 2,394 cu ft; Maersk 1,165 / 2,366 | src/data/containers.ts ; https://www.cma-cgm.com/products-services/containers | site data / A | 2026-10-08 |
+| 5 | Width and height are the same; only the length changes | VERIFIED | Maersk 20' and 40' standard: same internal width 2,350 mm and height 2,393 mm | Maersk PDF in #3 | A | 2026-10-08 |
+| 6 | Well under twice the price | SITE-DATA | $2,290 / $1,990 = 1.15x (40ft); $2,360 / $1,990 = 1.19x (HC), feed asOf 2026-10-02, recomputed via vite-node. See freshness flag | src/data/pricing.ts (geoPricing.ts) | site data | 2026-10-08 |
+| 7 | Part of the price is fixed (doors, corner posts, end walls, the trip); a longer box adds floor and side wall | OPINION | Cost-structure reasoning, no source | - | - | 2026-10-08 |
+| 8 | Price per square foot drops as you go up in size | SITE-DATA | $13.45 (20ft) to $7.58 (40ft) / $7.81 (HC) per interior sq ft | src/data/pricing.ts | site data | 2026-10-08 |
+| 9 | Table (302 sq ft / 2,390 cu ft vs 148 / 1,172 each) and "one 40ft holds a little more than two 20fts" | SITE-DATA | 2,390 vs 2,344 cu ft; 302 vs 296 sq ft. Draft CORRECTED combined-figure item no longer present (table now says "each") | src/data/containers.ts | site data | 2026-10-08 |
+| 10 | One delivery / pad / door set; two 20fts only when the space must be split | OPINION | - | - | - | 2026-10-08 |
+| 11 | Oct 2026: supplier says 20fts are getting tighter and one-trip 20fts are the hardest to source (body, FAQ) | VERIFIED | Notes: "20ft scarce ...; one-trip 20s harder". Flag: "hardest" is slightly stronger than the notes' "harder"; low risk. Orchestrator: post reworded to "harder" before publish | UDO Project/.outputs/supplier/2026-10-08-freedom-conex-sales-meeting.md | supplier, internal | 2026-10-08 |
+| 12 | Supplier's reasons: shipping costs up; manufacturers focusing on 40ft High Cubes | VERIFIED | Notes: "(shipping costs, manufacturers focus on 40HC)" | supplier notes above | supplier, internal | 2026-10-08 |
+| 13 | A one-trip container was built, loaded once for an ocean trip, then sold off | VERIFIED | "has made only one trip from the manufacturer to its first shipping destination to drop off cargo" (edited 2024-11-06) | https://www.container-xchange.com/blog/one-trip-shipping-containers | B | 2026-10-08 |
+| 14 | One-trip is "the top of the used market" | OPINION | Consistent with xChange: used containers "are certainly cheaper than one-trip ones" | xChange URL in #13 | B | 2026-10-08 |
+| 15 | Fewer new 20fts now means fewer used 20fts later | OPINION | Labeled in the text as "our own reasoning" | - | - | 2026-10-08 |
+| 16 | 20fts are still available and we still sell them | SITE-DATA | 20ft entry present in containers.ts | src/data/containers.ts | site data | 2026-10-08 |
+| 17 | The 40ft HC is the size the supplier says manufacturers focus on (two places) | VERIFIED | Supplier notes. Now attributed to the supplier; the draft REMOVED claim ("easier to find used than the standard") is absent | supplier notes above | supplier, internal | 2026-10-08 |
+| 18 | A 40ft needs a level strip about 40 feet long, plus door-swing room | VERIFIED | BIC length code 4 = 40 ft (12,192 mm) | https://www.bic-code.org/size-type-code/ | A | 2026-10-08 |
+| 19 | The 20ft fits most suburban lots and standard driveways | SITE-DATA | containers.ts 20ft use case | src/data/containers.ts | site data | 2026-10-08 |
+| 20 | Permits and zoning are the buyer's job; we don't determine or guarantee them | OPINION | Site policy (permit = buyer responsibility) | - | - | 2026-10-08 |
+| 21 | Tilt-bed: the box slides off the back as the truck pulls forward | SITE-DATA | Delivery page FAQ | src/pages/delivery/index.astro | site data | 2026-10-08 |
+| 22 | The truck needs room for its own length plus the container's, in a straight line | SITE-DATA | DELIVERY_ACCESS (100+ ft straight approach) | src/data/permitCounties.ts | site data | 2026-10-08 |
+| 23 | The 40ft needs more clearance; the 20ft costs less to deliver | SITE-DATA | containers.ts compareNote strings | src/data/containers.ts | site data | 2026-10-08 |
+| 24 | Straight approach, width/overhead clearance, firm ground; crane-set may solve tight routes for either size | SITE-DATA | Delivery page | src/pages/delivery/index.astro | site data | 2026-10-08 |
+| 25 | The 20ft fits most job sites where a 40ft would get in the way | SITE-DATA | containers.ts: "fits most job sites where a 40ft would block access" | src/data/containers.ts | site data | 2026-10-08 |
+| 26 | Tool-lockup fit; dense loads run out of weight before room | OPINION | - | - | - | 2026-10-08 |
+| 27 | A 20ft typically carries about 62,020 to 62,280 lbs | VERIFIED | CMA CGM 28,250 kg = 62,281 lb; Maersk 28,200 kg = 62,170 lb; Hapag CPSU 30,480 kg gross less 2,350 kg tare = 28,130 kg = 62,016 lb (Hapag table shows 62,126 lb at 2,300 kg tare) | CMA CGM URL in #4 ; Maersk PDF in #3 ; https://www.hapag-lloyd.com/content/dam/website/downloads/press_and_media/publications/15211_Container_Specification_engl_Gesamt_web.pdf | A | 2026-10-08 |
+| 28 | A 40ft typically carries about 59,000 to 63,490 lbs | VERIFIED | CMA CGM 26,760 kg = 58,996 lb; Maersk 28,800 kg = 63,493 lb | CMA CGM URL in #4 ; Maersk PDF in #3 | A | 2026-10-08 |
+| 29 | So the 20ft carries about the same payload as a 40ft in half the floor | VERIFIED | Recomputed from #27-28 and #1. Draft CORRECTED item fixed | recomputed | A | 2026-10-08 |
+| 30 | Empty weight about 4,920-5,180 lbs (20ft) vs 8,160-8,270 lbs (40ft) | VERIFIED | 20ft: CMA CGM 2,230 kg = 4,916; Maersk 2,280 = 5,027; Hapag up to 2,350 = 5,181. 40ft: Maersk 3,700 = 8,157; CMA CGM 3,720 = 8,201; Hapag 3,750 = 8,267 | Sources in #27 | A | 2026-10-08 |
+| 31 | Ranges are typical; the CSC plate on the door is the authority for your box | VERIFIED | BIC: payload and stacking/racking values must be on the plate, "typically riveted to the outside of the left door" | https://www.bic-code.org/csc-combined-data-plate/ | A | 2026-10-08 |
+| 32 | Quick checklist; "storage fills whatever space you give it" | OPINION | - | - | - | 2026-10-08 |
+| 33 | 40ft and 40ft HC have the same footprint; the HC is one foot taller | VERIFIED | BIC height codes 8'6" vs 9'6"; Maersk 40' x 8' x 8'6" vs 40' x 8' x 9'6" | BIC URL in #18 ; Maersk PDF in #3 | A | 2026-10-08 |
+| 34 | Inside height ~7'10" vs ~8'10"; 2,390 vs 2,694 cu ft (body, FAQ) | SITE-DATA | containers.ts. Maersk 7'10 3/16" / 8'10 1/8"; CMA CGM 67.8 / 76.4 m3 = 2,394 / 2,698 cu ft | src/data/containers.ts ; Maersk PDF in #3 | site data / A | 2026-10-08 |
+| 35 | Door opening 7'5" tall vs 8'5" tall (a foot taller) | VERIFIED | Maersk door height 7'5 1/2" (40' std) vs 8'5 7/16" (40' HC) | Maersk PDF in #3 | A | 2026-10-08 |
+| 36 | The extra foot "can be" one vs two pallet layers depending on load height; HC for shelving, equipment, conversions | OPINION | Hedged as the draft entry required | - | - | 2026-10-08 |
+| 37 | "Almost all deliveries take about two weeks"; honest window before you commit | VERIFIED | Freedom Conex RTO page: "Our delivery timeline is about 2 weeks from the time you place your order." Locked copy; the window promise is a commitment, not a fact | https://www.freedomconex.com/rent-to-own | A | 2026-10-08 |
+
+### Homepage (commit 0df93a6) and 20ft product-page card
+
+| # | Claim (as written) | Verdict | Correct value / note | Source (URL) | Grade | Accessed |
+|---|---|---|---|---|---|---|
+| H1 | Personas: "Wind & Water Tight, so it cost less than a new one-trip unit" (replaces the unsourced "2/3 cost savings") | VERIFIED | xChange: used containers "are certainly cheaper than one-trip ones" | xChange URL in #13 | B | 2026-10-08 |
+| H2 | Price card: "Almost all deliveries take about two weeks; we'll give you an honest window before you commit" | VERIFIED | Same as #37 | https://www.freedomconex.com/rent-to-own | A | 2026-10-08 |
+| H3 | HC note "Supply runs deep right now, so the High Cube average sits below the standard 40ft" (homepage, hub, HC page), now gated on hcBelowStandard | SITE-DATA | Gate logic correct. On the current feed hcBelowStandard = false ($2,360 HC > $2,290 std), so the note does NOT render; it would be false if it did | src/data/pricing.ts | site data | 2026-10-08 |
+| H4 | Price card "~148 sq ft of floor" (read from p20.sqft) | SITE-DATA | 148 | src/data/pricing.ts | site data | 2026-10-08 |
+| H5 | Personas intro "We've placed 400+ containers" (unchanged context for H1) | VERIFIED | Owner-attested 2026-10-08. FLAG: not independently verifiable; no external source | owner attestation | owner, internal | 2026-10-08 |
+| C1 | 20ft card: "Getting harder to find: our supplier reports fewer one-trip 20ft containers" (src/pages/shipping-containers-for-sale/[slug].astro:569) | VERIFIED | Supplier notes: "20ft scarce ...; one-trip 20s harder" | supplier notes above | supplier, internal | 2026-10-08 |
+
+Totals: VERIFIED 18, SITE-DATA 17, OPINION 8, CORRECTED 0, REMOVED 0.
