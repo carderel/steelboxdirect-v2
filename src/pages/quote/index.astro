@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { RTO_QUANTITY_NOTE } from '../../lib/rto-eligibility';
 ---
 
 <BaseLayout
@@ -80,6 +81,9 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
                     <option value="rent_to_own">Rent-to-own, 12-48 months (subject to third-party approval)</option>
                     <option value="not_sure">Not sure yet</option>
                   </select>
+                  <!-- Empty until the script fills it, so the polite live region announces the change.
+                       The server applies the same rule, so a no-JS submission is still handled. -->
+                  <p id="rto_quantity_note" class="quote_field_note" aria-live="polite" data-note={RTO_QUANTITY_NOTE}></p>
                 </div>
               </div>
             </div>
@@ -174,6 +178,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
   <script>
     import { formatForSubmission, clearAttribution, getAttributionData } from '../../lib/attribution';
+    import { exceedsRtoQuantity } from '../../lib/rto-eligibility';
 
     const urlParams = new URLSearchParams(window.location.search);
     const sizeFromUrl = urlParams.get('size');
@@ -191,6 +196,23 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     const payFromUrl = urlParams.get('pay');
     const paySelect = document.getElementById('payment_intent') as HTMLSelectElement;
     if (payFromUrl === 'rto' && paySelect) paySelect.value = 'rent_to_own';
+
+    // Rent-to-own is for limited quantities (cap lives in src/lib/rto-eligibility.ts). Above the cap
+    // the option is disabled and a short note says why; if it was selected, including via ?pay=rto,
+    // it falls back to "not sure". Dropping back under the cap re-enables it and clears the note.
+    const quantitySelect = document.getElementById('quantity') as HTMLSelectElement | null;
+    const rtoOption = paySelect?.querySelector('option[value="rent_to_own"]') as HTMLOptionElement | null;
+    const rtoNote = document.getElementById('rto_quantity_note');
+    function applyRtoQuantityLimit() {
+      if (!quantitySelect || !paySelect || !rtoOption) return;
+      const overCap = exceedsRtoQuantity(quantitySelect.value);
+      rtoOption.disabled = overCap;
+      if (overCap && paySelect.value === 'rent_to_own') paySelect.value = 'not_sure';
+      // Shown whenever the cap applies, so a greyed-out option is never left unexplained.
+      if (rtoNote) rtoNote.textContent = overCap ? (rtoNote.dataset.note ?? '') : '';
+    }
+    quantitySelect?.addEventListener('change', applyRtoQuantityLimit);
+    applyRtoQuantityLimit();
 
     const form = document.getElementById('quote-form') as HTMLFormElement;
     const successMessage = document.getElementById('form-success');
@@ -323,6 +345,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       background: var(--cream);
     }
     .form-group input:focus { outline: none; background: white; border-color: var(--c3-deliver); }
+    .quote_field_note { margin: 8px 0 0; font-size: 14px; line-height: 1.4; }
+    .quote_field_note:empty { display: none; }
 
     .form-submit .btn { width: 100%; justify-content: center; font-size: 20px; }
 

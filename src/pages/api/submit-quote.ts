@@ -1,6 +1,7 @@
 import type { APIRoute } from 'astro';
 import { createClient } from '@supabase/supabase-js';
 import { Resend } from 'resend';
+import { exceedsRtoQuantity, RTO_BULK_SELLER_LINE } from '../../lib/rto-eligibility';
 
 // Service area config
 const CINCINNATI_LAT = 39.1031;
@@ -172,6 +173,20 @@ function isRentToOwn(data: QuoteFormData): boolean {
   return data.payment_intent === 'rent_to_own';
 }
 
+/**
+ * Rent-to-own is capped at RTO_MAX_QUANTITY containers (src/lib/rto-eligibility.ts). The form
+ * already blocks it above the cap, so this catches no-JS, cached and hand-built submissions. The
+ * lead is NEVER rejected: payment_intent is rewritten to not_sure so the buyer email does not
+ * promise an RTO application, and the returned flag puts a line in the seller email instead.
+ * Lead scoring does not read payment_intent, so the score is identical either way.
+ */
+export function applyRtoQuantityRule(data: QuoteFormData): { data: QuoteFormData; rtoBulkRequested: boolean } {
+  if (data.payment_intent === 'rent_to_own' && exceedsRtoQuantity(data.quantity)) {
+    return { data: { ...data, payment_intent: 'not_sure' }, rtoBulkRequested: true };
+  }
+  return { data, rtoBulkRequested: false };
+}
+
 function getPaymentIntentLabel(data: QuoteFormData): string {
   switch (data.payment_intent) {
     case 'buy_outright': return 'Buy outright';
@@ -266,7 +281,8 @@ async function sendSellerNotification(
   leadId: string,
   score: number,
   distance: number | null,
-  dbSaved: boolean
+  dbSaved: boolean,
+  rtoBulkRequested = false
 ): Promise<boolean> {
   try {
     const { resend } = getClients();
@@ -307,7 +323,9 @@ async function sendSellerNotification(
       : '\n⚠️ DATABASE SAVE FAILED: this lead is NOT in the seller dashboard. Capture these details manually and follow up directly.\n';
     const rtoBanner = isRentToOwn(data)
       ? '\n🔶 PAYMENT INTENT: RENT-TO-OWN (subject to third-party approval)\n'
-      : '';
+      : rtoBulkRequested
+        ? `\n🔶 ${RTO_BULK_SELLER_LINE}\n`
+        : '';
 
     const { error } = await resend.emails.send({
       from: 'Steel Box Direct <noreply@steelboxdirect.com>',
@@ -365,6 +383,10 @@ export const POST: APIRoute = async ({ request }) => {
       }
     }
 
+    // Over-cap rent-to-own requests are recorded as not_sure and flagged, never rejected.
+    let rtoBulkRequested = false;
+    if (!isCallback) ({ data, rtoBulkRequested } = applyRtoQuantityRule(data));
+
     // Callback leads carry no ZIP, use, or timeline, so scoring and distance are guarded
     // here: calculateLeadScore/getZipDistance never touch the missing fields.
     const leadScore = isCallback ? 0 : calculateLeadScore(data);
@@ -417,7 +439,7 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     // 2) Seller notification ALWAYS fires: the safety net if the DB is down.
-    const sellerNotified = await sendSellerNotification(data, leadId, leadScore, distance, dbSaved);
+    const sellerNotified = await sendSellerNotification(data, leadId, leadScore, distance, dbSaved, rtoBulkRequested);
 
     // 3) Buyer confirmation (best effort); record its id only if we have a DB row to update.
     const emailId = await sendBuyerConfirmation(data);
