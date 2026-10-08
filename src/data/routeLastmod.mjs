@@ -38,7 +38,7 @@ export const routeLastmod = {
   'src/content/blog/check-used-container-identity-free-bic-lookups.md': '2026-10-06T15:07:27-04:00',
   'src/content/blog/contractor-who-stopped-losing-tools.md': '2026-08-28T14:41:04-04:00',
   'src/content/blog/get-a-used-shipping-container-certified.md': '2026-10-06T15:07:27-04:00',
-  'src/content/blog/how-to-read-container-id-number-iso-6346.md': '2026-10-06T15:07:27-04:00',
+  'src/content/blog/how-to-read-container-id-number-iso-6346.md': '2026-10-08T11:20:33-04:00',
   'src/content/blog/sample-choosing-container-size.md': '2026-08-20T15:56:43-04:00',
   'src/content/blog/sample-container-vs-pole-barn.md': '2026-08-20T15:56:43-04:00',
   'src/content/blog/shipping-container-dimensions-size-chart.md': '2026-10-06T15:07:27-04:00',
