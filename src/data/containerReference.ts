@@ -75,15 +75,17 @@ export const lengthCodes: SizeTypeCode[] = [
   { code: '2', meaning: '20ft' },
   { code: '3', meaning: '30ft' },
   { code: '4', meaning: '40ft' },
-  { code: 'L', meaning: '45ft' },
+  { code: 'L', meaning: '45ft (newer BIC tables list 45ft as 5; most 45ft boxes in service are still marked L, e.g. L5G1)' },
 ];
 
 // ISO 6346 size/type code: second char = height & width.
 export const heightWidthCodes: SizeTypeCode[] = [
   { code: '0', meaning: `8'0" high` },
   { code: '2', meaning: `8'6" high (standard)` },
-  { code: '4', meaning: `4'3" high (half-height)` },
+  { code: '4', meaning: `9'0" high` },
   { code: '5', meaning: `9'6" high (high cube)` },
+  { code: '8', meaning: `4'3" high (half-height)` },
+  { code: '9', meaning: `4'0" high or less` },
   { code: 'C', meaning: `8'6" high & over 8' wide` },
 ];
 
@@ -122,7 +124,7 @@ export const referenceFaqs: RefFaq[] = [
   },
   {
     q: 'How do I read a container\'s size and type code?',
-    a: `The 4-character size/type code sits below the ID. The first character is length (2 = 20ft, 4 = 40ft, L = 45ft), the second is height/width (2 = 8'6" standard, 5 = 9'6" high cube), and the last two describe the type (G1 = general-purpose dry van).`,
+    a: `The 4-character size/type code sits below the ID. The first character is length (2 = 20ft, 4 = 40ft, L = 45ft; newer BIC tables list 45ft as 5, but most 45ft boxes in service are still marked L, e.g. L5G1), the second is height/width (2 = 8'6" standard, 5 = 9'6" high cube), and the last two describe the type (G1 = general-purpose dry van).`,
   },
   {
     q: 'What is the CSC plate on a shipping container?',

@@ -98,7 +98,7 @@ You'll never need to do this math in the field. The point is simpler: a containe
 
 Right under the ID, every container carries a 4-character code (**45G1** in our example). It describes the box itself, no matter what a listing or seller says.
 
-- **1st character (length):** `4` = 40ft. (2 = 20ft, L = 45ft.)
+- **1st character (length):** `4` = 40ft. (2 = 20ft, L = 45ft. Newer BIC tables list 45ft as 5, but most 45ft boxes in service are still marked L, e.g. L5G1.)
 - **2nd character (height):** `5` = 9'6" tall, a "high cube," one foot taller than standard. (2 = 8'6" standard, 0 = 8'0".)
 - **3rd-4th characters (type):** `G1` = a general-purpose dry box with small passive vents that let it breathe. (G0 = no vents; U codes = open-top; P codes = flat rack.)
 
