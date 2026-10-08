@@ -9,8 +9,14 @@ import imgForklift from '../../../assets/photos/businesses/forklift-pallet-groun
 import imgCost from '../../../assets/photos/businesses/container-interior-pallet-inventory-storage.jpg';
 import imgSizes from '../../../assets/photos/businesses/20ft-40ft-40ftHC-commercial-container-size-comparison.jpg';
 import imgSecurity from '../../../assets/photos/businesses/container-puck-lock-lockbox-security.jpg';
+import { containerBySlug, CONTAINER_SLUGS, dimAxis } from '../../../data/containers';
 const std40 = pricing['40ftStandard'];                                  // 40ft Standard, NOT HC
+// std40.sqft is INTERIOR floor area (interior length x width, from containers.ts). Until the
+// 2026-10-08 facts audit it was the 320 sq ft outside footprint, which understated the per square
+// foot cost; the figure below moved up when that was corrected, and that is the honest number.
 const perSqFtDisplay = `$${roundToHalf(perSqFt(std40.price, std40.sqft)).toFixed(2)}`;
+const int40 = containerBySlug(CONTAINER_SLUGS['40ft']).specs.internalDims;
+const int40Text = `${dimAxis(int40, 'L')} \u00D7 ${dimAxis(int40, 'W')}`;
 
 const crumbs = [{ name: 'Home', path: '/' }, { name: 'Businesses', path: '/for/businesses/' }];
 
@@ -157,7 +163,7 @@ const faqs = [
         <span class="m">The Cost of Space</span>
         <h2 class="uc-h2">What shipping container storage actually costs</h2>
       </div>
-      <p class="uc-compare-lead">Rented commercial space is priced to recur. Owned steel is priced once. The cleanest way to compare them is per square foot, so that's how we frame it. A 40ft container gives you roughly <strong>320 square feet of floor space</strong>. Purchased outright, that lands at about <strong>{perSqFtDisplay} per square foot as a one-time cost</strong>. A commercial rack or warehouse bay charges per square foot too, but every month, with annual escalators written into the lease. The longer your storage need runs, the further the two diverge.</p>
+      <p class="uc-compare-lead">Rented commercial space is priced to recur. Owned steel is priced once. The cleanest way to compare them is per square foot, so that's how we frame it. A 40ft container gives you roughly <strong>{std40.sqft} square feet of floor space</strong> inside. Purchased outright, that lands at about <strong>{perSqFtDisplay} per square foot as a one-time cost</strong>. A commercial rack or warehouse bay charges per square foot too, but every month, with annual escalators written into the lease. The longer your storage need runs, the further the two diverge.</p>
 
       <table class="uc-compare-table">
         <caption class="uc-compare-caption">Owning a 40ft container versus renting off-site commercial storage, compared per square foot of floor space.</caption>
@@ -210,7 +216,7 @@ const faqs = [
 
       <p class="uc-compare-pull">Over any horizon longer than a season or two, the question isn't whether owning is cheaper; it's how much sooner the container pays for itself.</p>
 
-      <p class="uc-price-note uc-compare-note">Per-sq-ft figure reflects current market · updated {asOfLabel}. It is a one-time cost for a 40ft Standard unit (gross floor footprint, ~320 sq ft = 8×40), not a Steel Box Direct quote for a specific site.</p>
+      <p class="uc-price-note uc-compare-note">Per-sq-ft figure reflects current market · updated {asOfLabel}. It is a one-time cost for a 40ft Standard unit (interior floor, ~{std40.sqft} sq ft = {int40Text}), based on our average starting price, not a Steel Box Direct quote for a specific site; yours may be more or less.</p>
 
       <p class="uc-compare-lead uc-rto-callout">The comparison above is against leased space by the square foot. If what you are weighing is <a href="/container-rent-vs-buy-calculator/">renting a container rather than leasing space</a>, the rent vs buy calculator puts a monthly rental rate beside a purchase and finds the month the two totals cross.</p>
 

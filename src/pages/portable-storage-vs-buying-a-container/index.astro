@@ -50,6 +50,11 @@ const faqs = [
     }).a,
   },
 ];
+import { containerBySlug, CONTAINER_SLUGS, interiorFloorSqFt, formatSqFt } from '../../data/containers';
+// Interior floor area, computed from src/data/containers.ts. This copy used to type about 160 and
+// about 320 sq ft, which is the outside footprint, and on this page it read as floor space.
+const floor20 = formatSqFt(interiorFloorSqFt(containerBySlug(CONTAINER_SLUGS['20ft'])));
+const floor40 = formatSqFt(interiorFloorSqFt(containerBySlug(CONTAINER_SLUGS['40ft'])));
 ---
 
 <BaseLayout
@@ -248,7 +253,7 @@ const faqs = [
             <tr>
               <th scope="row">Typical sizes</th>
               <td>Purpose-built units, most commonly in the roughly 7 to 16 foot range.</td>
-              <td class="is-hi">20ft standard (about 160 sq ft of floor), 40ft standard (about 320 sq ft), 40ft high cube (9ft 6in tall).</td>
+              <td class="is-hi">20ft standard (about {floor20} sq ft of floor), 40ft standard (about {floor40} sq ft), 40ft high cube (9ft 6in tall).</td>
             </tr>
             <tr>
               <th scope="row">How you pay</th>

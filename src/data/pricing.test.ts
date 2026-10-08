@@ -24,6 +24,7 @@ import { describe, it, expect, vi } from 'vitest';
 import { geoPricing } from './geoPricing';
 import { nationalBasisCentroids } from './geoCentroids';
 import { countWord } from './numberWords';
+import { containers, interiorFloorSqFt } from './containers';
 import {
   pricing,
   nationalPrice,
@@ -95,11 +96,22 @@ describe('pricing.ts keeps the shape its consumers depend on', () => {
     }
   });
 
-  it('keeps identity and geometry hand written, since no feed owns a label or a floor area', () => {
+  it('keeps identity hand written and reads floor area from containers.ts, never from the feed', () => {
     expect(pricing['20ftCargo'].label).toBe('20ft Cargo');
-    expect(pricing['20ftCargo'].sqft).toBe(160);
     expect(pricing['40ftStandard'].label).toBe('40ft Standard');
-    expect(pricing['40ftStandardHC'].sqft).toBe(320);
+    // INTERIOR floor (interior length x width), not the outside footprint of 160 / 320 that this
+    // field carried under a "usable floor area" label until the 2026-10-08 facts audit.
+    expect(pricing['20ftCargo'].sqft).toBe(148);
+    expect(pricing['40ftStandard'].sqft).toBe(302);
+    expect(pricing['40ftStandardHC'].sqft).toBe(302);
+    for (const [sku, slug] of [
+      ['20ftCargo', '20-foot-shipping-container'],
+      ['40ftStandard', '40-foot-shipping-container'],
+      ['40ftStandardHC', '40-foot-high-cube-container'],
+    ] as const) {
+      const c = containers.find((x) => x.slug === slug)!;
+      expect(pricing[sku].sqft, sku).toBe(interiorFloorSqFt(c));
+    }
   });
 
   it('maps every product page slug to one of those same records', () => {
@@ -183,7 +195,7 @@ describe('the national basis: the mean of the national basis metros the feed has
     expect(derivedPrice('20ftCargo')).not.toBe(2010);
     // identity and geometry survive the derivation untouched
     expect(derived['20ftCargo'].label).toBe('20ft Cargo');
-    expect(derived['20ftCargo'].sqft).toBe(160);
+    expect(derived['20ftCargo'].sqft).toBe(148);
     expect(Object.keys(derived)).toEqual(['asOf', '20ftCargo', '40ftStandard', '40ftStandardHC']);
   });
 

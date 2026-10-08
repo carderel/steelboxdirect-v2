@@ -15,13 +15,20 @@ const own20 = pricing['20ftCargo'];
 const ownMonthlyDisplay = `$${monthlyOver5yr(own20.price)}`;
 const ownPurchaseDisplay = `$${own20.price.toLocaleString('en-US')}`;
 
+import { DELIVERY_FIGURES } from '../../../data/permitCounties';
+// The approach distance comes from DELIVERY_ACCESS (src/data/permitCounties.ts). This page used to
+// type "about 50 feet", half the 100 feet the site's delivery sentence states. The self-storage
+// comparison no longer quotes a national monthly rate: the figure had no dated source, so the copy
+// now hands the reader the method (their local rate times the months) instead of our number.
+const ACCESS = DELIVERY_FIGURES;
+
 const crumbs = [{ name: 'Home', path: '/' }, { name: 'Homeowners', path: '/for/homeowners/' }];
 
 // --- Visible FAQ set (single source of truth → drives both the rendered FAQ and the JSON-LD) ---
 const faqs = [
   {
     q: 'Will a 20ft container fit in a standard suburban driveway?',
-    a: 'Usually, yes. A 20ft container is 8 feet wide and 20 feet long, roughly the footprint of a large SUV and a half-car length. Most standard suburban driveways are wide enough, though placement depends on attached garages, fence lines, or utility setbacks. More important than the footprint is delivery clearance: the truck needs about 50 feet of unobstructed approach. A standard residential street with traffic is typically workable. Include your address when requesting a quote and we can assess the approach.',
+    a: `Usually, yes. A 20ft container is 8 feet wide and 20 feet long, roughly the footprint of a large SUV and a half-car length. Most standard suburban driveways are wide enough, though placement depends on attached garages, fence lines, or utility setbacks. More important than the footprint is delivery clearance: for a tilt-bed delivery the truck needs at least ${ACCESS.approach} of straight, unobstructed approach. A standard residential street with traffic is typically workable. Include your address when requesting a quote and we can assess the approach.`,
   },
   {
     q: 'Do I need a permit to have a shipping container on my residential property in Ohio?',
@@ -33,7 +40,7 @@ const faqs = [
   },
   {
     q: 'How does buying a container compare to renting a storage unit long-term?',
-    a: `The math usually favors ownership for anything beyond 2-3 years. A standard 10×10 self-storage unit averages about $120 per month nationally and tends to increase over time, though prices vary by region. Over 5 years, that's roughly $7,200 in fees for space you never own. A 20ft container is a one-time purchase of ${ownPurchaseDisplay} today, far less over that horizon, and you can sell it when you're done. The container also holds more than a 10×10 unit and sits on your property. The tradeoff: you need the outdoor space, and a storage facility protects climate-sensitive items better since containers have no HVAC.`,
+    a: `For long-term storage the math tends to favor ownership. A self-storage unit bills you every month, rates vary by region and tend to increase over time, and after a few years the fees add up to a real sum for space you never own. Multiply your local monthly rate by the months you expect to need it and compare that with a 20ft container, a one-time purchase of ${ownPurchaseDisplay} today at our average starting price (yours may be more or less), which you can sell when you're done. The container also holds more than a 10×10 unit and sits on your property. The tradeoff: you need the outdoor space, and a storage facility protects climate-sensitive items better since containers have no HVAC.`,
   },
   {
     q: 'Can I add shelving, electricity, or other modifications to a container?',
@@ -120,8 +127,8 @@ const faqs = [
       <div class="uc-why-grid">
         <div class="uc-block">
           <h3>Own it instead of renting it</h3>
-          <p>A standard 10×10 self-storage unit runs about $120 per month on the <a href="https://www.sparefoot.com/blog/how-much-does-a-storage-unit-cost" target="_blank" rel="noopener">national average</a>. Over five years, that's roughly $7,200 in fees for a space you never own, that you have to drive to, and that tends to raise its rate over time. A 20ft container is a one-time purchase of {ownPurchaseDisplay} today (roughly {ownMonthlyDisplay} per month if you spread it across the same five years) and it belongs to you permanently. There is no renewal notice and no annual increase. When you no longer need it, you can resell it: steel holds its value because it doesn't rot, warp, or depreciate the way a wood shed does. For anyone storing longer than two or three years, the math runs strongly in favor of ownership.</p>
-          <p class="uc-price-note">Based on the national average; storage rental prices vary by region. Container pricing reflects current market · updated {asOfLabel}.</p>
+          <p>A self-storage unit bills you every month, for a space you never own, that you have to drive to, and that tends to raise its rate over time. Multiply your local monthly rate by sixty and you have its five-year cost. A 20ft container is a one-time purchase of {ownPurchaseDisplay} today (roughly {ownMonthlyDisplay} per month if you spread it across the same five years) and it belongs to you permanently. There is no renewal notice and no annual increase. When you no longer need it, you can resell it: steel holds its value because it doesn't rot, warp, or depreciate the way a wood shed does. Put your own storage rate against that figure and the longer you need the space, the further the math runs in favor of ownership.</p>
+          <p class="uc-price-note">Storage rental prices vary by region; use your local rate. Container price is our average starting price, not a quote; yours may be more or less · updated {asOfLabel}.</p>
         </div>
         <div class="uc-block">
           <h3>More secure than a shed, more accessible than a storage facility</h3>
@@ -136,7 +143,7 @@ const faqs = [
         </div>
         <div class="uc-block">
           <h3>A 20ft container fits most suburban properties</h3>
-          <p>The most common residential size is the 20ft container: <a href="https://www.shippingcontainerdepot.com/20-foot-shipping-container-dimensions/" target="_blank" rel="noopener">8 feet wide, 8'6" tall</a>, and 20 feet long, about the footprint of two standard parking spaces parked end to end. Most suburban driveways and backyards in Ohio, Indiana, Kentucky, and western West Virginia can take a 20ft unit without any special site work. What matters more than the footprint is the <em>approach</em>: the delivery truck needs roughly 50 feet of clear, reasonably level run to back in and tilt the container off. A standard residential street is usually enough. Low branches, tight gate posts, and soft spring ground are the things to flag, and we'd rather hear about them before delivery day than discover them on it.</p>
+          <p>The most common residential size is the 20ft container: <a href="https://www.shippingcontainerdepot.com/20-foot-shipping-container-dimensions/" target="_blank" rel="noopener">8 feet wide, 8'6" tall</a>, and 20 feet long. Most suburban driveways and backyards in Ohio, Indiana, Kentucky, and western West Virginia can take a 20ft unit without any special site work. What matters more than the footprint is the <em>approach</em>: for a tilt-bed delivery the truck needs at least {ACCESS.approach} of straight, clear, reasonably level run to back in and tilt the container off. A standard residential street is usually enough. Low branches, tight gate posts, and soft spring ground are the things to flag, and we'd rather hear about them before delivery day than discover them on it.</p>
 
           <!-- IMAGE SLOT 1B: driveway proof point. filename: homeowner-20ft-container-suburban-driveway.jpg -->
           <figure class="uc-img uc-img-inline" data-img-slot="driveway">
@@ -160,7 +167,7 @@ const faqs = [
         <span class="m">The 5-Year Math</span>
         <h2 class="uc-h2">Rent vs. own, over five years</h2>
       </div>
-      <p class="uc-compare-lead">Renting a standard 10×10 storage unit costs about <strong>$120 a month</strong> on the <a href="https://www.sparefoot.com/blog/how-much-does-a-storage-unit-cost" target="_blank" rel="noopener">national average</a>, and tends to climb over time. Buying a 20ft container is a single payment of <strong>{ownPurchaseDisplay}</strong> (about <strong>{ownMonthlyDisplay} a month</strong> spread over five years), after which you own an asset you can resell.</p>
+      <p class="uc-compare-lead">Renting a standard 10×10 storage unit costs a monthly fee, set by your local market, and that fee tends to climb over time. Buying a 20ft container is a single payment of <strong>{ownPurchaseDisplay}</strong> (about <strong>{ownMonthlyDisplay} a month</strong> spread over five years), after which you own an asset you can resell.</p>
 
       <table class="uc-compare-table">
         <caption class="uc-compare-caption">Renting a 10×10 storage unit versus owning a 20ft container, over a five-year horizon.</caption>
@@ -180,12 +187,12 @@ const faqs = [
         <tbody>
           <tr>
             <th scope="row">What it costs</th>
-            <td>~$120 / month</td>
+            <td>Your local monthly rate</td>
             <td class="is-own"><strong>{ownPurchaseDisplay}</strong> one time (~{ownMonthlyDisplay}/mo over 5 yrs)</td>
           </tr>
           <tr>
             <th scope="row">5-year total</th>
-            <td>~$7,200 in fees</td>
+            <td>That rate × 60 months, in fees</td>
             <td class="is-own">No monthly fee · no annual increase</td>
           </tr>
           <tr>
@@ -211,7 +218,7 @@ const faqs = [
         </tbody>
       </table>
 
-      <p class="uc-price-note uc-compare-note">Container pricing reflects current market · updated {asOfLabel}. Storage-unit figure is the national average (rental prices vary by region) and is not a Steel Box Direct rate.</p>
+      <p class="uc-price-note uc-compare-note">Container price is our average starting price, not a quote; yours may be more or less · updated {asOfLabel}. Storage rental prices vary by region, so use the rate you would actually pay.</p>
 
       <p class="uc-compare-lead uc-rto-callout">The table above compares a container against a self-storage unit. If the comparison you are actually weighing is renting a container against buying one, <a href="/container-rent-vs-buy-calculator/">the rent vs buy calculator</a> runs both columns on your own timeline and finds the month the two totals cross.</p>
 
@@ -322,7 +329,6 @@ const faqs = [
       <div class="uc-sources">
         <span class="m">Sources</span>
         <ul>
-          <li>Self-storage pricing: <a href="https://www.sparefoot.com/blog/how-much-does-a-storage-unit-cost" target="_blank" rel="noopener">SpareFoot, "How Much Does a Storage Unit Cost?"</a></li>
           <li>Container steel: <a href="https://en.wikipedia.org/wiki/Weathering_steel" target="_blank" rel="noopener">Weathering (Cor-Ten) steel</a></li>
           <li>20ft container dimensions: <a href="https://www.shippingcontainerdepot.com/20-foot-shipping-container-dimensions/" target="_blank" rel="noopener">Shipping Container Depot</a></li>
           <li>Storage shed vs shipping container comparison: <a href="https://www.conexwest.com/blog/shipping-container-vs-shed-which-better-storage-solution" target="_blank" rel="noopener">Conexwest</a></li>

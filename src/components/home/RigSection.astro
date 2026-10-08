@@ -1,6 +1,16 @@
 ---
 import { Image } from 'astro:assets';
 import rigDiagram from '../../assets/photos/delivery-rig-diagram.png';
+import { containerBySlug, CONTAINER_SLUGS, dimAxis, footprintSqFt, formatSqFt } from '../../data/containers';
+
+// Spec figures read from src/data/containers.ts. The door card said 7' 9" wide, against the 7'8"
+// door width every product page states; reading it from the spec block ends that kind of drift.
+const c40 = containerBySlug(CONTAINER_SLUGS['40ft']);
+const c40hc = containerBySlug(CONTAINER_SLUGS['40ftHC']);
+const footprint40 = formatSqFt(footprintSqFt(c40));
+const heightHC = dimAxis(c40hc.specs.externalDims, 'H');
+const heightStd = dimAxis(c40.specs.externalDims, 'H');
+const doorWidth = dimAxis(c40.specs.doorOpening, 'W');
 ---
 <!-- ============ §04 THE RIG (Embece slab) ============ -->
 <section class="rig" id="rig">
@@ -22,17 +32,17 @@ import rigDiagram from '../../assets/photos/delivery-rig-diagram.png';
     <div class="grid-below rig_specs_grid">
       <div class="spec rig_spec_item">
         <span class="lbl">Footprint</span>
-        <span class="val">320 sq ft</span>
+        <span class="val">{footprint40} sq ft</span>
         <span class="note">The 40-ft holds a mid-size tractor with room for a grain drill or a pallet-deep shelving run.</span>
       </div>
       <div class="spec rig_spec_item">
         <span class="lbl">Height</span>
-        <span class="val">9' 6" HC</span>
-        <span class="note">High-cube adds 12" of headroom over a standard 8' 6" box. Clears most utility tractors with ROPS folded.</span>
+        <span class="val">{heightHC} HC</span>
+        <span class="note">High-cube adds 12" of headroom over a standard {heightStd} box. Clears most utility tractors with ROPS folded.</span>
       </div>
       <div class="spec rig_spec_item">
         <span class="lbl">Door opening</span>
-        <span class="val">7' 9" wide</span>
+        <span class="val">{doorWidth} wide</span>
         <span class="note">Double cargo doors open 270° and lock flat to the sidewall. No ramp required for most equipment.</span>
       </div>
     </div>

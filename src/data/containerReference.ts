@@ -107,7 +107,7 @@ export const lifecycleFacts: LifecycleFact[] = [
   },
   {
     title: 'Decades of service life',
-    body: `A container spends roughly 10-12 years in active maritime service, then can last 25+ years in static land use with basic maintenance. A Wind & Water Tight unit is retired from the sea, not worn out.`,
+    body: `A container spends years in active maritime service, then can serve for decades in static land use with basic maintenance. A Wind & Water Tight unit is retired from the sea, not worn out.`,
   },
   {
     title: 'Why used units are abundant',

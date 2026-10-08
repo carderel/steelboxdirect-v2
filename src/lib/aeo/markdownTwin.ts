@@ -48,6 +48,7 @@
 
 import type { City } from '../../data/cities';
 import type { Container } from '../../data/containers';
+import { SPEC_WEIGHT_NOTE } from '../../data/containers';
 import { securityHeaderLines } from './securityHeaders.mjs';
 
 const SITE = 'https://steelboxdirect.com';
@@ -168,8 +169,8 @@ export function renderContainerMarkdown(k: Container, conditionNote: string): st
     `| External dimensions | ${k.specs.externalDims} |`,
     `| Internal dimensions | ${k.specs.internalDims} |`,
     `| Door opening | ${k.specs.doorOpening} |`,
-    `| Payload | ${k.specs.payload} |`,
-    `| Tare weight | ${k.specs.tare} |`,
+    `| Payload (typical) | ${k.specs.payload} |`,
+    `| Tare weight (typical) | ${k.specs.tare} |`,
     `| Cubic capacity | ${k.specs.cubicCap} |`,
   ].join('\n');
 
@@ -181,6 +182,7 @@ export function renderContainerMarkdown(k: Container, conditionNote: string): st
     `At a glance: ${k.keySpecs.join(' | ')}.`,
     `## Specifications`,
     specs,
+    SPEC_WEIGHT_NOTE,
     `## Condition`,
     conditionNote,
     `## What it is used for`,

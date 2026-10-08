@@ -4,6 +4,7 @@ import { cities } from '../../data/cities';
 import { publishingCentroids } from '../../data/geoCentroids';
 import { geoPricing, geoSkuKeys, type GeoSkuKey } from '../../data/geoPricing';
 import { pricing, formatPrice, effectiveSinceLabel } from '../../data/pricing';
+import { pctMorePrice, pctCheaperPerSqFt, floorRatio } from '../../data/sizeComparison';
 import { RTO_TERMS, RTO_DOWN_CONDITION, rtoEffectiveDateLabel } from '../../data/rtoTerms';
 
 // THE METRO PRICE TABLE, and why not one figure on this page is typed.
@@ -228,6 +229,16 @@ const coastAnchorIsLowest =
 const COPY_LAST_REVIEWED = '2026-08-18';
 const pageDateModified =
   tableEffectiveSince.localeCompare(COPY_LAST_REVIEWED) > 0 ? tableEffectiveSince : COPY_LAST_REVIEWED;
+
+// THE SIZE DRIVER, qualitative on purpose and gated on the arithmetic. It used to say a 40ft gives
+// 2x the space "for only ~40-60% more cost": typed, and wrong at every price the site has carried
+// (about 15% on the 2026-10-02 feed, 35% on the July baseline). This page prices by named ZIP, so it
+// prints no national percentage; it states the direction in words, and only while the helpers in
+// src/data/sizeComparison.ts confirm it from the live figures.
+const fortyCheaperPerSqFt = pctCheaperPerSqFt('40ftStandard', '20ftCargo') > 0;
+const fortyDoubleFloor = Math.round(floorRatio('40ftStandard', '20ftCargo')) === 2;
+// "Well under twice" is only said while the 40ft costs under one and a half times the 20ft.
+const fortyUnderTwicePrice = pctMorePrice('40ftStandard', '20ftCargo') < 50;
 ---
 
 <BaseLayout
@@ -410,14 +421,14 @@ const pageDateModified =
           <div class="driver-card guide_comparison_item" style="border-left-color: var(--c4-cost);">
             <h3>1. Size</h3>
             <div class="m guide_comparison_item_meta" style="color: var(--c4-cost); margin-bottom: 12px;">Predictable base</div>
-            <p>Larger units cost more total, but less per square foot. A 40-foot unit provides 2x the space of a 20-foot for only ~40-60% more cost.</p>
+            <p>Larger units cost more in total{fortyCheaperPerSqFt ? ', but less per square foot' : ''}.{fortyDoubleFloor && fortyUnderTwicePrice && <> A 40-foot unit gives you about twice the floor of a 20-foot for well under twice the price.</>}</p>
           </div>
 
           <div class="driver-card guide_comparison_item" style="border-left-color: var(--c2-cond);">
             <h3>2. Condition</h3>
             <div class="m guide_comparison_item_meta" style="color: var(--c2-cond); margin-bottom: 12px;">The biggest variance</div>
             <p>Condition determines much of the price spread. A Wind &amp; Water Tight (used) unit is the best value for most agricultural and equipment storage: weather-tight and structurally sound for far less than new.</p>
-            <div class="who guide_comparison_item_tag" style="background: var(--c2-cond); color: var(--cream);">→ 50% savings vs new</div>
+            <div class="who guide_comparison_item_tag" style="background: var(--c2-cond); color: var(--cream);">→ Costs less than new</div>
           </div>
 
           <div class="driver-card guide_comparison_item" style="border-left-color: var(--c3-deliver);">
@@ -476,7 +487,7 @@ const pageDateModified =
                 </li>
               )}
               <li><strong>Every figure we publish</strong> is a delivered total, priced from a named ZIP and stamped with the date it last changed.</li>
-              <li><strong>Used units</strong> provide equivalent weather protection for 50% less.</li>
+              <li><strong>Used units</strong> provide equivalent weather protection for less than new.</li>
             </ul>
           </div>
 

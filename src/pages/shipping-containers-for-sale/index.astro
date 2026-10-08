@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { containers } from '../../data/containers';
+import { containers, SPEC_WEIGHT_NOTE } from '../../data/containers';
 import { CONDITION } from '../../data/condition';
 import { priceBySlug, formatPrice, asOfLabel, nationalPriceLabel } from '../../data/pricing';
 import { composeRentalStance } from '../../data/rentalStance';
@@ -135,7 +135,7 @@ const faqs: { q: string; a: string; html?: string }[] = [
               {containers.map((c) => <td>{c.specs.cubicCap}</td>)}
             </tr>
             <tr>
-              <th>Payload</th>
+              <th>Payload (typical)</th>
               {containers.map((c) => <td>{c.specs.payload}</td>)}
             </tr>
             <tr>
@@ -145,6 +145,7 @@ const faqs: { q: string; a: string; html?: string }[] = [
           </tbody>
         </table>
       </div>
+      <p class="hub-disclaimer-note">{SPEC_WEIGHT_NOTE}</p>
     </div>
   </section>
 

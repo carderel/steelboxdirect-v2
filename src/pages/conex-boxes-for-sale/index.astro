@@ -27,6 +27,11 @@ const items = [
   { name: '40-Foot Shipping Container', url: 'https://steelboxdirect.com/shipping-containers-for-sale/40-foot-shipping-container/' },
   { name: '40-Foot High Cube Container', url: 'https://steelboxdirect.com/shipping-containers-for-sale/40-foot-high-cube-container/' },
 ];
+import { containerBySlug, CONTAINER_SLUGS, interiorFloorSqFt, formatSqFt } from '../../data/containers';
+// Interior floor area, computed from src/data/containers.ts. This copy used to type about 160 and
+// about 320 sq ft, which is the outside footprint, and on this page it read as floor space.
+const floor20 = formatSqFt(interiorFloorSqFt(containerBySlug(CONTAINER_SLUGS['20ft'])));
+const floor40 = formatSqFt(interiorFloorSqFt(containerBySlug(CONTAINER_SLUGS['40ft'])));
 ---
 
 <BaseLayout
@@ -89,11 +94,11 @@ const items = [
       <div class="cx-size-grid">
         <div class="cx-size-card">
           <h3>20ft Conex Box</h3>
-          <p>20' x 8' x 8'6" externally, about 160 sq ft of floor. Fits a standard driveway or a tight job site with the doors still able to swing, and it is the size most homeowners and single crews land on. <a href="/shipping-containers-for-sale/20-foot-shipping-container/">See the 20ft container</a>.</p>
+          <p>20' x 8' x 8'6" externally, about {floor20} sq ft of floor inside. Fits a standard driveway or a tight job site with the doors still able to swing, and it is the size most homeowners and single crews land on. <a href="/shipping-containers-for-sale/20-foot-shipping-container/">See the 20ft container</a>.</p>
         </div>
         <div class="cx-size-card">
           <h3>40ft Conex Box</h3>
-          <p>Double the floor at about 320 sq ft. The workhorse for farms, commercial properties, and multi-trade job sites where staging room is not the constraint. <a href="/shipping-containers-for-sale/40-foot-shipping-container/">See the 40ft container</a>.</p>
+          <p>Double the floor at about {floor40} sq ft. The workhorse for farms, commercial properties, and multi-trade job sites where staging room is not the constraint. <a href="/shipping-containers-for-sale/40-foot-shipping-container/">See the 40ft container</a>.</p>
         </div>
         <div class="cx-size-card">
           <h3>40ft High Cube Conex</h3>

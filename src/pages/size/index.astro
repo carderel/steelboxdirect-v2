@@ -1,5 +1,27 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { containerBySlug, CONTAINER_SLUGS, dimAxes, interiorFloorSqFt, formatSqFt } from '../../data/containers';
+import { asOfLabel, nationalBasisScope } from '../../data/pricing';
+import { pctCheaperPerCuFt } from '../../data/sizeComparison';
+
+// Every figure on this page is read from src/data/containers.ts or computed from the price feed.
+// The size cards once said "Floor Space ~160 / ~320 sq ft", which is the OUTSIDE footprint; the
+// floor inside is interior length x width. The sidebar once carried two statistics with no source
+// anywhere ("73%", "1 in 3") and a typed per-cubic-foot percentage that the feed had left behind.
+const interiorText = (slug: string) => {
+  const a = dimAxes(containerBySlug(slug).specs.internalDims);
+  return `${a.L} \u00D7 ${a.W} \u00D7 ${a.H}`;
+};
+const floorText = (slug: string) => `~${formatSqFt(interiorFloorSqFt(containerBySlug(slug)))} sq ft`;
+const sizes = {
+  s20:   { interior: interiorText(CONTAINER_SLUGS['20ft']),   floor: floorText(CONTAINER_SLUGS['20ft']) },
+  s40:   { interior: interiorText(CONTAINER_SLUGS['40ft']),   floor: floorText(CONTAINER_SLUGS['40ft']) },
+  s40hc: { interior: interiorText(CONTAINER_SLUGS['40ftHC']), floor: floorText(CONTAINER_SLUGS['40ftHC']) },
+};
+// /size/ is a size page, so a price-derived figure may render here under the pricing policy in
+// CLAUDE.md: computed from pricing.ts, with the as-of date and the average-price disclaimer beside it.
+// Gated on the direction actually holding, so a feed that inverted it would drop the line.
+const cuFtSaving = pctCheaperPerCuFt('40ftStandard', '20ftCargo');
 ---
 
 <BaseLayout
@@ -38,8 +60,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
           <div class="size-card guide_comparison_item" style="border-left-color: var(--c1-size);">
             <h3>20-Foot Container</h3>
             <div class="specs guide_callout_specs">
-              <div class="spec-bit guide_callout_value"><span class="lbl">Interior</span><span class="val">19'4" × 7'8" × 7'10"</span></div>
-              <div class="spec-bit guide_callout_value"><span class="lbl">Floor Space</span><span class="val">~160 sq ft</span></div>
+              <div class="spec-bit guide_callout_value"><span class="lbl">Interior</span><span class="val">{sizes.s20.interior}</span></div>
+              <div class="spec-bit guide_callout_value"><span class="lbl">Floor Space</span><span class="val">{sizes.s20.floor}</span></div>
             </div>
             <p><strong>Perfect for:</strong> One tractor + attachment storage, horse trailers, or a small workshop.</p>
             <div class="tag-row guide_comparison_item_tag"><span class="m">→ Tom · 40-ft primary</span></div>
@@ -48,8 +70,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
           <div class="size-card guide_comparison_item" style="border-left-color: var(--c3-deliver);">
             <h3>40-Foot Container</h3>
             <div class="specs guide_callout_specs">
-              <div class="spec-bit guide_callout_value"><span class="lbl">Interior</span><span class="val">39'5" × 7'8" × 7'10"</span></div>
-              <div class="spec-bit guide_callout_value"><span class="lbl">Floor Space</span><span class="val">~320 sq ft</span></div>
+              <div class="spec-bit guide_callout_value"><span class="lbl">Interior</span><span class="val">{sizes.s40.interior}</span></div>
+              <div class="spec-bit guide_callout_value"><span class="lbl">Floor Space</span><span class="val">{sizes.s40.floor}</span></div>
             </div>
             <p><strong>Perfect for:</strong> Complete farm equipment lineup, multiple vehicles, or business inventory.</p>
           </div>
@@ -57,8 +79,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
           <div class="size-card guide_comparison_item" style="border-left-color: var(--c5-permits);">
             <h3>40-Foot High Cube</h3>
             <div class="specs guide_callout_specs">
-              <div class="spec-bit guide_callout_value"><span class="lbl">Interior</span><span class="val">39'5" × 7'8" × 8'10"</span></div>
-              <div class="spec-bit guide_callout_value"><span class="lbl">Floor Space</span><span class="val">~320 sq ft</span></div>
+              <div class="spec-bit guide_callout_value"><span class="lbl">Interior</span><span class="val">{sizes.s40hc.interior}</span></div>
+              <div class="spec-bit guide_callout_value"><span class="lbl">Floor Space</span><span class="val">{sizes.s40hc.floor}</span></div>
             </div>
             <p><strong>The extra 12" height:</strong> Fits tall equipment like combines or stacked inventory.</p>
           </div>
@@ -71,14 +93,15 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
         </div>
 
         <aside class="sidebar-col guide_sidebar_col">
-          <div class="authority-card guide_callout">
-            <div class="m guide_callout_label">Key Statistics</div>
-            <ul>
-              <li><strong>73%</strong> of farm operations store equipment year-round.</li>
-              <li><strong>1 in 3</strong> buyers initially choose the wrong size.</li>
-              <li><strong>40-ft</strong> costs 30% less per cubic foot than two 20-ft units.</li>
-            </ul>
-          </div>
+          {cuFtSaving > 0 && (
+            <div class="authority-card guide_callout">
+              <div class="m guide_callout_label">Price per Cubic Foot</div>
+              <ul>
+                <li><strong>40-ft</strong> costs about {cuFtSaving}% less per cubic foot than two 20-ft units, at our average starting prices.</li>
+              </ul>
+              <p class="price-basis">Averages across our {nationalBasisScope}, as of {asOfLabel}. These are average starting prices, not quotes; yours may be more or less.</p>
+            </div>
+          )}
 
           <div class="cta-card guide_cta">
             <h4 class="guide_cta_headline">Still unsure?</h4>
@@ -161,6 +184,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     .authority-card ul { list-style: none; padding: 0; margin: 0; }
     .authority-card li { margin-bottom: 16px; font-size: 15px; line-height: 1.45; border-bottom: 1px solid rgba(246,241,231,.1); padding-bottom: 16px; }
     .authority-card li:last-child { border: none; }
+    .authority-card .price-basis { font-family: var(--mono); font-size: 11px; line-height: 1.5; letter-spacing: .03em; opacity: .7; margin: 0; }
 
     .cta-card {
       margin-top: 40px;

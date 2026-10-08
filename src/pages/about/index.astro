@@ -28,6 +28,11 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 
 const crumbs = [{ name: 'Home', path: '/' }, { name: 'About' }];
+import { containerBySlug, CONTAINER_SLUGS, interiorFloorSqFt, formatSqFt } from '../../data/containers';
+// Interior floor area, computed from src/data/containers.ts. This copy used to type about 160 and
+// about 320 sq ft, which is the outside footprint, and on this page it read as floor space.
+const floor20 = formatSqFt(interiorFloorSqFt(containerBySlug(CONTAINER_SLUGS['20ft'])));
+const floor40 = formatSqFt(interiorFloorSqFt(containerBySlug(CONTAINER_SLUGS['40ft'])));
 ---
 
 <BaseLayout
@@ -177,8 +182,8 @@ const crumbs = [{ name: 'Home', path: '/' }, { name: 'About' }];
             all, is spelled out in the <a href="/condition/">condition guide</a>.
           </p>
           <p>
-            Three sizes: 20ft standard (20' x 8' x 8'6", about 160 sq ft), 40ft standard (about
-            320 sq ft), and 40ft high cube (9'6" tall for extra headroom). If you are not sure
+            Three sizes: 20ft standard (20' x 8' x 8'6", about {floor20} sq ft of floor inside), 40ft standard (about
+            {floor40} sq ft of floor), and 40ft high cube (9'6" tall for extra headroom). If you are not sure
             which one fits, the <a href="/size/calculator/">size calculator</a> works it out from
             what you are actually storing.
           </p>

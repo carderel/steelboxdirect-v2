@@ -1,6 +1,12 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SizeCalculator from '../../components/SizeCalculator';
+import { containerBySlug, CONTAINER_SLUGS, interiorFloorSqFt, formatSqFt } from '../../data/containers';
+
+// Interior floor area, computed from src/data/containers.ts. These lines used to read ~160 and
+// ~320 sq ft, the outside footprint, with nothing saying so.
+const floor20 = formatSqFt(interiorFloorSqFt(containerBySlug(CONTAINER_SLUGS['20ft'])));
+const floor40 = formatSqFt(interiorFloorSqFt(containerBySlug(CONTAINER_SLUGS['40ft'])));
 ---
 
 <BaseLayout
@@ -35,8 +41,8 @@ import SizeCalculator from '../../components/SizeCalculator';
           <div class="authority-card">
             <div class="m">Quick Reference</div>
             <ul class="ref-list">
-              <li><strong>20ft:</strong> ~160 sq ft. Fits one tractor.</li>
-              <li><strong>40ft:</strong> ~320 sq ft. Fits tractor + implements.</li>
+              <li><strong>20ft:</strong> ~{floor20} sq ft of floor. Fits one tractor.</li>
+              <li><strong>40ft:</strong> ~{floor40} sq ft of floor. Fits tractor + implements.</li>
               <li><strong>40ft HC:</strong> Same floor, 12" extra height.</li>
             </ul>
           </div>

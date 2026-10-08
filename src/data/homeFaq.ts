@@ -68,7 +68,7 @@ const costAnswerHtml = costAnswer.replace(
 export const homeFaqs: HomeFaqItem[] = [
   {
     q: "Won't it rust out on me?",
-    a: "Corten steel, painted inside and out. On crushed-stone pads with airflow underneath, 25 years is realistic. We'll show you how to prep the site.",
+    a: "Corten steel, painted inside and out. On crushed-stone pads with airflow underneath, it can last for decades. We'll show you how to prep the site.",
   },
   {
     q: 'Can you get it back my driveway?',

@@ -4,7 +4,7 @@ export const prerender = true;
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CallbackForm from '../../components/CallbackForm.astro';
 import { Image } from 'astro:assets';
-import { containers } from '../../data/containers';
+import { containers, SPEC_WEIGHT_NOTE } from '../../data/containers';
 import type { Container } from '../../data/containers';
 import { CONDITION } from '../../data/condition';
 import { priceBySlug, formatPrice, asOfLabel, nationalPriceLabel } from '../../data/pricing';
@@ -141,14 +141,17 @@ const dimRows: { label: string; note: string; axes: Partial<Record<Axis, string>
 // Capacity, payload and tare split into figure and unit so the footer strip can set the numeral
 // at display size and the unit at label size. A value that does not start with a numeral renders
 // whole, which is the honest fallback rather than a throw: nothing is lost, only the styling.
+// Payload and tare are TYPICAL RANGES ("4,920 to 5,180 lbs"), so a range keeps both ends in the
+// numeral, joined by a plain hyphen to fit the strip, and the unit stays the unit.
 function splitFigure(value: string): { n: string; u: string } {
-  const m = value.match(/^([\d,.]+)\s*(.*)$/);
-  return m ? { n: m[1], u: m[2] } : { n: value, u: '' };
+  const m = value.match(/^([\d,.]+)(?:\s+to\s+([\d,.]+))?\s*(.*)$/);
+  if (!m) return { n: value, u: '' };
+  return { n: m[2] ? `${m[1]}-${m[2]}` : m[1], u: m[3] };
 }
 const dimFigures = [
   { k: 'Capacity',    ...splitFigure(c.specs.cubicCap) },
-  { k: 'Payload',     ...splitFigure(c.specs.payload) },
-  { k: 'Tare (empty)', ...splitFigure(c.specs.tare) },
+  { k: 'Payload, typ.', ...splitFigure(c.specs.payload) },
+  { k: 'Tare, typ.',    ...splitFigure(c.specs.tare) },
 ];
 
 // THE CLEARANCE FIGURES, pulled out of the locked sentence rather than typed beside it.
@@ -193,8 +196,8 @@ const compareRows: { label: string; values: Record<string, string> }[] = [
   { label: 'Internal',        values: comparisonColumn((x) => x.specs.internalDims) },
   { label: 'Door opening',    values: comparisonColumn((x) => x.specs.doorOpening) },
   { label: 'Cubic capacity',  values: comparisonColumn((x) => x.specs.cubicCap) },
-  { label: 'Payload',         values: comparisonColumn((x) => x.specs.payload) },
-  { label: 'Tare weight',     values: comparisonColumn((x) => x.specs.tare) },
+  { label: 'Payload (typical)',     values: comparisonColumn((x) => x.specs.payload) },
+  { label: 'Tare weight (typical)', values: comparisonColumn((x) => x.specs.tare) },
   { label: 'Best for',        values: comparisonColumn((x) => x.compareNote.replace(CONDITION.blurb, '').trim()) },
 ];
 
@@ -401,6 +404,7 @@ const plateAria = `Side profile of a tilt bed delivery truck carrying a ${c.shor
                 </div>
               ))}
             </div>
+            <p class="dims-note">{SPEC_WEIGHT_NOTE}</p>
             <a class="dims-jump" href="#size-compare">Compare all three sizes <span>&rarr;</span></a>
           </section>
         </div>
@@ -546,6 +550,7 @@ const plateAria = `Side profile of a tilt bed delivery truck carrying a ${c.shor
           </tbody>
         </table>
       </div>
+      <p class="cmp-weight-note">{SPEC_WEIGHT_NOTE}</p>
       <p class="spec-ref-link">
         Full ISO 668 dimensions for every size are in our
         <a href="/container-reference/#dimensions">Container Reference</a>.
@@ -944,6 +949,7 @@ const plateAria = `Side profile of a tilt bed delivery truck carrying a ${c.shor
   .dims-fig:first-child { border-left: 0; }
   .dims-fig-k { display: block; font-family: var(--mono); font-size: 9.5px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; opacity: .58; margin-bottom: 5px; white-space: nowrap; }
   .dims-fig-v { display: block; font-family: var(--narrow); font-size: 20px; font-weight: 700; line-height: 1; letter-spacing: -.015em; white-space: nowrap; }
+  .dims-note { margin: 0; padding: 8px 13px; border-top: 1.5px solid rgba(11,15,26,.22); font-family: var(--mono); font-size: 10.5px; line-height: 1.5; letter-spacing: .02em; opacity: .75; }
   .dims-fig-v i { font-style: normal; font-family: var(--mono); font-size: 9.5px; font-weight: 500; letter-spacing: .05em; opacity: .6; margin-left: 4px; text-transform: uppercase; }
   /* The jump is the same dark closing bar the delivery block uses, so it reads as this
      block's footer rather than as another call to action. */
@@ -1027,6 +1033,7 @@ const plateAria = `Side profile of a tilt bed delivery truck carrying a ${c.shor
   .cmp thead th.cur, .cmp tbody th.cur { background: var(--ink); color: var(--yellow); }
   .cur a { color: var(--yellow); }
   .cmp a { text-decoration: underline; text-underline-offset: 3px; }
+  .cmp-weight-note { font-family: var(--mono); font-size: 12px; line-height: 1.6; opacity: .75; max-width: 700px; margin: 16px 0 0; }
   .spec-ref-link { margin-top: 20px; font-size: 15px; opacity: .85; }
   .spec-ref-link a { border-bottom: 2px solid var(--yellow-d); font-weight: 600; }
 
@@ -1214,6 +1221,9 @@ const plateAria = `Side profile of a tilt bed delivery truck carrying a ${c.shor
     .dims-rowlab span { font-size: 11px; }
     .dims-fig { padding: 9px; }
     .dims-fig-v { font-size: 17px; }
+    /* Payload and tare are ranges now, so on a phone the unit drops under the figure rather than
+       running into the next cell. */
+    .dims-fig-v i { display: block; margin: 4px 0 0; }
     .prod-3d { padding: 40px 0; }
     .act { padding: 18px 0 16px; border-top-width: 4px; }
     .act-sub { font-size: 11px; margin-top: 9px; }

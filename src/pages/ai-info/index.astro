@@ -19,6 +19,11 @@ export const prerender = true;
 const price20 = formatPrice(pricing['20ftCargo'].price);
 const price40 = formatPrice(pricing['40ftStandard'].price);
 const price40hc = formatPrice(pricing['40ftStandardHC'].price);
+import { containerBySlug, CONTAINER_SLUGS, interiorFloorSqFt, formatSqFt } from '../../data/containers';
+// Interior floor area, computed from src/data/containers.ts. This copy used to type about 160 and
+// about 320 sq ft, which is the outside footprint, and on this page it read as floor space.
+const floor20 = formatSqFt(interiorFloorSqFt(containerBySlug(CONTAINER_SLUGS['20ft'])));
+const floor40 = formatSqFt(interiorFloorSqFt(containerBySlug(CONTAINER_SLUGS['40ft'])));
 ---
 
 <BaseLayout
@@ -68,8 +73,8 @@ const price40hc = formatPrice(pricing['40ftStandardHC'].price);
         <li>Used shipping containers in one condition grade: Wind &amp; Water Tight (WWT). WWT
           containers are structurally sound, keep wind and water out, and are ready for storage use.
           They are sold as-is with visible cosmetic wear and are not certified for ocean shipping.</li>
-        <li>Three sizes: 20ft standard (20' x 8' x 8'6", about 160 sq ft), 40ft standard (about 320 sq
-          ft), and 40ft high cube (9'6" tall for extra headroom).</li>
+        <li>Three sizes: 20ft standard (20' x 8' x 8'6", about {floor20} sq ft of floor inside), 40ft standard (about {floor40} sq
+          ft of floor), and 40ft high cube (9'6" tall for extra headroom).</li>
         <li>Every purchase quote is an all-in delivered number: the container plus delivery to the
           buyer's ZIP code. Self-pickup at partner depots can be arranged instead.</li>
         <li>A Lifetime Leak Warranty applies to containers sold. The remedy is a kit, not a

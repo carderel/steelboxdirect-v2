@@ -9,13 +9,25 @@ import imgLockCompare from '../../../assets/photos/contractors/container-lock-co
 import imgSizes from '../../../assets/photos/contractors/20ft-40ft-jobsite-container-size-comparison.jpg';
 import imgDelivery from '../../../assets/photos/contractors/tilt-bed-container-delivery-jobsite.jpg';
 
+import { DELIVERY_FIGURES } from '../../../data/permitCounties';
+import { containerBySlug, CONTAINER_SLUGS, dimAxis } from '../../../data/containers';
+
+// Delivery figures come from DELIVERY_ACCESS (src/data/permitCounties.ts), the site's one statement
+// of what the truck needs. This page used to type its own "about 50 feet / 70+ feet" approach,
+// half the 100 feet that sentence states, and nothing could notice. The door figures come from
+// the standard 20ft spec block; this page once gave the door width as 7'5", which is its height.
+const ACCESS = DELIVERY_FIGURES;
+const door20 = containerBySlug(CONTAINER_SLUGS['20ft']).specs.doorOpening;
+const doorW = dimAxis(door20, 'W');
+const doorH = dimAxis(door20, 'H');
+
 const crumbs = [{ name: 'Home', path: '/' }, { name: 'Contractors', path: '/for/contractors/' }];
 
 // --- Visible FAQ set (single source of truth → drives both the rendered FAQ and the JSON-LD) ---
 const faqs = [
   {
     q: 'Can a container be delivered directly to an active construction site?',
-    a: "Yes, and it's one of the most common setups we handle. Our delivery truck uses a tilt-bed or boom-off method depending on site conditions. We need enough space to maneuver the truck (typically 50+ feet of clear approach), a stable surface to set the container on, and overhead clearance of at least 14 feet. For tight urban sites, we do a site assessment upfront. Tell us about the site when you request a quote (entry width, surface type, and any overhead obstacles) and we'll confirm feasibility before scheduling.",
+    a: `Yes, and it's one of the most common setups we handle. Our delivery truck uses a tilt-bed or boom-off method depending on site conditions. We need enough space to maneuver the truck (at least ${ACCESS.approach} of straight approach for a tilt-bed delivery), a stable surface to set the container on, and overhead clearance of at least ${ACCESS.overhead}. For tight urban sites, we do a site assessment upfront. Tell us about the site when you request a quote (entry width, surface type, and any overhead obstacles) and we'll confirm feasibility before scheduling.`,
   },
   {
     q: 'What kind of lock works best on a shipping container?',
@@ -23,7 +35,7 @@ const faqs = [
   },
   {
     q: 'How much space does the truck need to deliver a container?',
-    a: "For a 20ft container, the truck needs approximately 50 feet of clear approach with at least 12 feet of width. For a 40ft container, plan for 70+ feet of clear approach. Overhead clearance should be at least 14 feet along the entire approach path. The container will be placed roughly 3-5 feet from where the truck stops. If the site is tight, describe the layout in your quote request; our drivers are experienced with constrained job sites.",
+    a: `For a tilt-bed delivery, the truck needs at least ${ACCESS.approach} of straight approach and ${ACCESS.width} of width clearance at the narrowest point, whether you order a 20ft or a 40ft. Overhead clearance should be at least ${ACCESS.overhead} along the entire approach path. The container will be placed roughly 3-5 feet from where the truck stops. If the site is tight, describe the layout in your quote request; our drivers are experienced with constrained job sites.`,
   },
   {
     q: 'Can you stage containers across the phases of a build?',
@@ -120,7 +132,7 @@ const faqs = [
         <div class="uc-block">
           <h3>Ground-level access, no dock, no ramp</h3>
           <p>Container doors swing open at grade. Tools, materials, scaffold sections, and rolling equipment go straight in and out without a lift gate, dock plate, or pallet hand-off. The floor is a plank deck, typically marine-grade plywood, laid over steel cross-members: the same deck the unit hauled freight on. Whether it takes your loaded pallet jack or your forklift is a capacity question, and the only number that answers it is the one in the manufacturer's specification for that unit. Any load near a limit is a question for the manufacturer or a licensed engineer before your crew drives in. We do not issue load ratings.</p>
-          <p>Interior height is a <a href="https://www.mobilemodularcontainers.com/blog/how-much-does-a-shipping-containers-weigh" target="_blank" rel="noopener">standard 7'10"</a> and the door opening is roughly 7'5" wide by 7'5" tall, so a standard pallet jack and most walk-behind equipment clear it without a fight.</p>
+          <p>Interior height is a <a href="https://www.mobilemodularcontainers.com/blog/how-much-does-a-shipping-containers-weigh" target="_blank" rel="noopener">standard 7'10"</a> and the door opening is roughly {doorW} wide by {doorH} tall, so a standard pallet jack and most walk-behind equipment clear it without a fight.</p>
 
           <!-- IMAGE SLOT 2B: ground-level jobsite access. -->
           <!-- filename: ground-level-jobsite-container-access.jpg -->
@@ -229,7 +241,7 @@ const faqs = [
       <div class="uc-rec-grid">
         <a href="/shipping-containers-for-sale/20-foot-shipping-container/" class="uc-rec" style="border-top-color: var(--c3-deliver);">
           <span class="uc-rec-size">20ft</span>
-          <p class="uc-rec-body"><strong>Best for</strong> single-trade tool storage, tight urban infill sites, and projects with limited staging room. It fits in a standard parking space with the doors still able to swing, which makes it the go-to for downtown work where you're borrowing the curb lane.</p>
+          <p class="uc-rec-body"><strong>Best for</strong> single-trade tool storage, tight urban infill sites, and projects with limited staging room. It is the shortest box we sell, so it fits where a 40ft cannot, though you still need room in front for the doors to swing open, which makes it the go-to for downtown work where you're borrowing the curb lane.</p>
           <span class="uc-rec-link">View 20ft container →</span>
         </a>
         <a href="/shipping-containers-for-sale/40-foot-shipping-container/" class="uc-rec" style="border-top-color: var(--c3-deliver);">
@@ -279,7 +291,7 @@ const faqs = [
         <div class="uc-plan-card">
           <span class="uc-plan-num">01</span>
           <h3>Clear approach</h3>
-          <p>A 20ft unit needs roughly 50 feet of straight, clear approach; a 40ft needs 70+. The container ends up about 3-5 feet from where the truck stops, so plan the drop spot with the truck's path in mind, not just the final footprint.</p>
+          <p>A tilt-bed delivery needs at least {ACCESS.approach} of straight, clear approach, whichever size you order. The container ends up about 3-5 feet from where the truck stops, so plan the drop spot with the truck's path in mind, not just the final footprint.</p>
         </div>
         <div class="uc-plan-card">
           <span class="uc-plan-num">02</span>

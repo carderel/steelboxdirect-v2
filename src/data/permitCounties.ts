@@ -438,3 +438,26 @@ export const DELIVERY_ACCESS = {
   timing:
     'Almost all deliveries take about two weeks, and we will give you an honest window before you commit.',
 } as const;
+
+/**
+ * The bare clearance figures, read OUT of DELIVERY_ACCESS.clearance rather than typed beside it, for
+ * pages that need a figure inside their own sentence. The persona pages used to type their own
+ * approach distance, "about 50 feet", against this sentence's 100, and nothing failed. A rewording
+ * that drops a figure throws here at build time instead of leaving a page on the old number.
+ * Same extraction as the product template's clearanceFigure(), shared so new pages need not copy it.
+ */
+function deliveryFigure(name: string, re: RegExp): string {
+  const m = DELIVERY_ACCESS.clearance.match(re);
+  if (!m || !m[1]) {
+    throw new Error(`DELIVERY_ACCESS.clearance no longer states the ${name} figure in the shape ${re}.`);
+  }
+  return m[1];
+}
+export const DELIVERY_FIGURES = {
+  /** e.g. "100 feet": straight approach for a tilt-bed delivery, whatever the container size. */
+  approach: deliveryFigure('straight approach', /at least ([\d,]+ feet) of straight approach/),
+  /** e.g. "12 feet": width clearance at the narrowest point of the route. */
+  width: deliveryFigure('width clearance', /([\d,]+ feet) of width clearance/),
+  /** e.g. "14 feet": overhead clearance. */
+  overhead: deliveryFigure('overhead clearance', /([\d,]+ feet) of overhead clearance/),
+} as const;

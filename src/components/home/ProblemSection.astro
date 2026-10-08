@@ -11,7 +11,7 @@
     <h2 class="big">Most sellers jump<br>straight to <em>the sale.</em></h2>
     <div class="row problem_row">
       <div class="problem_lede_col">
-        <p class="lede problem_lede">A container is a <mark>25-year investment.</mark> The difference between the right one and the wrong one is years of protection, or a rusted-out headache. Before you sign anything, you deserve to understand what you're buying.</p>
+        <p class="lede problem_lede">A container is a <mark>decades-long investment.</mark> The difference between the right one and the wrong one is years of protection, or a rusted-out headache. Before you sign anything, you deserve to understand what you're buying.</p>
         <div class="warranty-stamp problem_warranty">
           <span class="w-small">Lifetime Leak</span>
           <span class="w-outline">Warranty.<sup class="w-ast">*</sup></span>
@@ -21,7 +21,7 @@
       </div>
       <div class="problem_stats">
         <div class="stat problem_stat">
-          <div class="num c2">25yr</div>
+          <div class="num c2">Decades</div>
           <div class="problem_stat_copy">
             <div class="lbl problem_stat_label">Useful life</div>
             <div class="txt problem_stat_text">A properly-placed steel box outlasts most pole barns for a fraction of the price.</div>
@@ -91,6 +91,10 @@
 
   @media (max-width:720px){
     .big{font-size:clamp(36px,9vw,64px)}
+    /* "Decades" (the useful-life stat, qualitative since the 2026-10-08 facts audit) is wider
+       than the "25yr" it replaced; at phone width the numeral steps down so the copy column keeps
+       a readable measure. */
+    .stat .num{font-size:clamp(40px,11vw,64px)}
     .sh{grid-template-columns:auto 1fr;row-gap:6px}
     .sh .tg{grid-column:1 / -1;text-align:left;opacity:.5}
   }

@@ -10,7 +10,8 @@
 // WHERE THE MONEY COMES FROM. The three figures and the date below are no longer typed here. They
 // are derived at build time from src/data/geoPricing.ts, the generated per metro feed. The split is
 // deliberate: the feed supplies money and dates, and this module supplies identity and geometry,
-// meaning the label and the square footage, which no feed has any business touching.
+// meaning the label and the square footage, which no feed has any business touching. The square
+// footage is itself read from src/data/containers.ts, the one place dimensions live.
 //
 // WHY THE SHAPE IS FROZEN, and it is load bearing. Two consumers enumerate every own key of the
 // pricing object and exclude exactly one of them by name, asOf: the rent-vs-buy calculator at
@@ -32,13 +33,19 @@
 import { geoPricing, geoSkuKeys, type GeoMetroPricing, type GeoSkuKey } from './geoPricing';
 import { nationalBasisCentroids } from './geoCentroids';
 import { countWord } from './numberWords';
+import { containerBySlug, interiorFloorSqFt } from './containers';
 
 export interface ContainerPrice {
   /** Display label for the size/grade. */
   label: string;
   /** Average starting price in USD (whole dollars). See NATIONAL BASIS for what it averages. */
   price: number;
-  /** Usable floor area in square feet. */
+  /**
+   * Usable INTERIOR floor area in square feet, computed from the interior dimensions in
+   * src/data/containers.ts (interior length x interior width). It held the OUTSIDE footprint,
+   * 160 and 320, until the facts audit of 2026-10-08 caught the mismatch with this label; every
+   * per square foot figure derived from it moved up accordingly, which is the honest direction.
+   */
   sqft: number;
 }
 
@@ -151,11 +158,20 @@ export function nationalEffectiveSince(): string {
   return dates.reduce((latest, date) => (date.localeCompare(latest) > 0 ? date : latest));
 }
 
+/** Which product page each SKU is. Geometry is read from that container, never typed here. */
+export const skuSlug: Record<GeoSkuKey, string> = {
+  '20ftCargo': '20-foot-shipping-container',
+  '40ftStandard': '40-foot-shipping-container',
+  '40ftStandardHC': '40-foot-high-cube-container',
+};
+
+const floorOf = (sku: GeoSkuKey): number => interiorFloorSqFt(containerBySlug(skuSlug[sku]));
+
 export const pricing: Pricing = {
   asOf: nationalEffectiveSince(),
-  '20ftCargo': { label: '20ft Cargo', price: nationalPrice('20ftCargo'), sqft: 160 },
-  '40ftStandard': { label: '40ft Standard', price: nationalPrice('40ftStandard'), sqft: 320 },
-  '40ftStandardHC': { label: '40ft Standard HC', price: nationalPrice('40ftStandardHC'), sqft: 320 },
+  '20ftCargo': { label: '20ft Cargo', price: nationalPrice('20ftCargo'), sqft: floorOf('20ftCargo') },
+  '40ftStandard': { label: '40ft Standard', price: nationalPrice('40ftStandard'), sqft: floorOf('40ftStandard') },
+  '40ftStandardHC': { label: '40ft Standard HC', price: nationalPrice('40ftStandardHC'), sqft: floorOf('40ftStandardHC') },
 };
 
 /** Map product-page slugs → the matching price record (single source of truth). */
