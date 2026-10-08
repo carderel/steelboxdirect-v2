@@ -22,6 +22,12 @@ These apply regardless of what the user asks. No exceptions.
 - Update `.claude/projects/.../memory/pending-work.md` whenever the task list changes.
 - Write new feedback memories when the user corrects your approach.
 
+### Fact-check gate (ABSOLUTE)
+- Any new page, blog post, or new factual claim/statistic must be verified BEFORE publish by an agent other than its author, via web research from reputable sources (never memory).
+- Log every check in the append-only `docs/fact-check-ledger.md` (claim, verdict, source URL, grade, date), one `## <slug>` entry per page/post.
+- Enforced by `src/lib/compliance/fact-check-ledger-guard.test.ts`, which the pre-push gate runs; never backdate, re-draft, or weaken it to get past it.
+- Full-site fact sweep every 3 months, logged in the same ledger.
+
 ---
 
 ## HARD STOPS (inline — full list in HARD_STOPS.md)

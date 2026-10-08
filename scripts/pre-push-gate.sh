@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 # PRE-PUSH GATE
 #
-# Wired as a PreToolUse hook on `git push`. Two jobs:
+# Wired as a PreToolUse hook on `git push`. Three jobs:
+#
+#   0. HARD BLOCK on a failing Vitest suite. The compliance guards in src/lib/compliance/ (dash,
+#      HS-003, pricing, fact-check ledger, and the rest) only protect the site if a red suite
+#      stops the push. The fact-check ledger guard (owner rule 2026-10-08) depends on this.
 #
 #   1. HARD BLOCK on hidden text in the built output. That pattern shipped on ~161 pages on
 #      2026-09-16 and only an external tool caught it. It is a Google spam signal and there is no
@@ -18,6 +22,15 @@ set -uo pipefail
 cd "${CLAUDE_PROJECT_DIR:-$(git rev-parse --show-toplevel)}" || exit 0
 
 LOG="$(mktemp -t sbd-seo-scan)"
+
+# Job 0: the full Vitest suite. Any failure blocks the push with the tail of the run attached.
+if ! npx vitest run >"$LOG" 2>&1; then
+  tail -n 60 "$LOG" >"$LOG.tail" && mv "$LOG.tail" "$LOG"
+  jq -Rs '{hookSpecificOutput:{hookEventName:"PreToolUse",permissionDecision:"deny",permissionDecisionReason:("PUSH BLOCKED: the Vitest suite is failing. Compliance guards (including the fact-check ledger guard) must be green before a push. Fix the cause; do not skip or weaken the guard.\n\n" + .)}}' "$LOG"
+  rm -f "$LOG"
+  exit 0
+fi
+
 node scripts/pre-deploy-seo-scan.mjs >"$LOG" 2>&1
 STATUS=$?
 
