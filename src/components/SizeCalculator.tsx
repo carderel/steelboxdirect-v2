@@ -224,6 +224,7 @@ export default function SizeCalculator() {
 
           <p className="result-note">
             This is a starting point based on typical needs. The seller can help you confirm during the quote process.
+            {' '}Weighing a 20ft against a 40ft? <a href="/blog/20ft-vs-40ft-shipping-container/">See the 20ft vs 40ft comparison</a>.
           </p>
 
           <div className="result-actions">
@@ -317,6 +318,7 @@ export default function SizeCalculator() {
         .result-card dd { margin: 0; font-weight: 600; font-size: 15px; }
 
         .result-note { font-size: 14px; opacity: .7; margin-bottom: 24px; font-style: italic; }
+        .result-note a { border-bottom: 2px solid var(--yellow-d); font-weight: 600; font-style: normal; }
 
         .result-actions { display: flex; flex-direction: column; gap: 12px; }
 

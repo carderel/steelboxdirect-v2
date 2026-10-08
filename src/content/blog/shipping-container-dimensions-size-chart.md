@@ -425,7 +425,7 @@ Numbers on a chart are one thing. Here's a plainer way to picture each size.
 
 *A 20ft and a 40ft side by side on the same farm. Seeing the two lengths together is often the fastest way to judge which one fits your plan.*
 
-Want a size picked around your own list of items? Our [size guide](/size/) walks through the decision step by step.
+Want a size picked around your own list of items? Our [size guide](/size/) walks through the decision step by step. If it's down to the two most common lengths, see [20ft vs 40ft compared](/blog/20ft-vs-40ft-shipping-container/).
 
 ## Which sizes does Steel Box Direct actually sell?
 

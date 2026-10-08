@@ -421,7 +421,7 @@ const fortyUnderTwicePrice = pctMorePrice('40ftStandard', '20ftCargo') < 50;
           <div class="driver-card guide_comparison_item" style="border-left-color: var(--c4-cost);">
             <h3>1. Size</h3>
             <div class="m guide_comparison_item_meta" style="color: var(--c4-cost); margin-bottom: 12px;">Predictable base</div>
-            <p>Larger units cost more in total{fortyCheaperPerSqFt ? ', but less per square foot' : ''}.{fortyDoubleFloor && fortyUnderTwicePrice && <> A 40-foot unit gives you about twice the floor of a 20-foot for well under twice the price.</>}</p>
+            <p>Larger units cost more in total{fortyCheaperPerSqFt ? ', but less per square foot' : ''}.{fortyDoubleFloor && fortyUnderTwicePrice && <> A 40-foot unit gives you about twice the floor of a 20-foot for well under twice the price.</>} Run the numbers on <a href="/blog/20ft-vs-40ft-shipping-container/">price per square foot, 20ft vs 40ft</a>.</p>
           </div>
 
           <div class="driver-card guide_comparison_item" style="border-left-color: var(--c2-cond);">
@@ -719,6 +719,7 @@ const fortyUnderTwicePrice = pctMorePrice('40ftStandard', '20ftCargo') < 50;
       margin-top: 40px;
       box-shadow: 8px 8px 0 var(--ink);
     }
+    .driver-card p a { border-bottom: 2px solid var(--yellow-d); font-weight: 600; }
     .driver-card h3 {
       font-family: var(--narrow);
       font-weight: 700;

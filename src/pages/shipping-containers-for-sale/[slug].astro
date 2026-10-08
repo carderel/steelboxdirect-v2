@@ -8,6 +8,9 @@ import { containers, SPEC_WEIGHT_NOTE } from '../../data/containers';
 import type { Container } from '../../data/containers';
 import { CONDITION } from '../../data/condition';
 import { priceBySlug, formatPrice, asOfLabel, nationalPriceLabel, hcBelowStandard } from '../../data/pricing';
+
+/** The 20ft vs 40ft comparison post, linked once from each product page's compare band. */
+const VS_POST = '/blog/20ft-vs-40ft-shipping-container/';
 import { RTO_TERMS, RTO_DOWN_CONDITION } from '../../data/rtoTerms';
 import { DELIVERY_ACCESS } from '../../data/permitCounties';
 
@@ -555,6 +558,17 @@ const plateAria = `Side profile of a tilt bed delivery truck carrying a ${c.shor
         Full ISO 668 dimensions for every size are in our
         <a href="/container-reference/#dimensions">Container Reference</a>.
       </p>
+      {c.slug === '40-foot-shipping-container' && (
+        <p class="spec-ref-link">Weighing it against the shorter box? <a href={VS_POST}>Is a 40ft worth it over a 20ft?</a></p>
+      )}
+      {c.slug === '40-foot-high-cube-container' && (
+        <p class="spec-ref-link">Still choosing a length? Settle <a href={VS_POST}>20ft vs 40ft first</a>, then the extra foot of height.</p>
+      )}
+      {c.slug === '20-foot-shipping-container' && (
+        <div class="vs-card" role="note">
+          <p><strong>Getting harder to find:</strong> our supplier reports fewer one-trip 20ft containers. Do you really need the 20ft? <a href={VS_POST}>Compare 20ft vs 40ft</a></p>
+        </div>
+      )}
     </div>
   </section>
 
@@ -1036,6 +1050,9 @@ const plateAria = `Side profile of a tilt bed delivery truck carrying a ${c.shor
   .cmp-weight-note { font-family: var(--mono); font-size: 12px; line-height: 1.6; opacity: .75; max-width: 700px; margin: 16px 0 0; }
   .spec-ref-link { margin-top: 20px; font-size: 15px; opacity: .85; }
   .spec-ref-link a { border-bottom: 2px solid var(--yellow-d); font-weight: 600; }
+  .vs-card { margin-top: 24px; max-width: 760px; border: 2.5px solid var(--ink); background: var(--cream); box-shadow: 8px 8px 0 var(--yellow); padding: 18px 22px; }
+  .vs-card p { margin: 0; font-size: 16px; line-height: 1.55; }
+  .vs-card a { border-bottom: 2px solid var(--yellow-d); font-weight: 700; white-space: nowrap; }
 
   /* ============================================================================
      02. CONDITION
