@@ -93,3 +93,6 @@ UDO Project/.project-catalog/backups/*
 !UDO Project/.project-catalog/backups/.gitkeep
 UDO Project/.udo/hook-state.json
 # --- end UDO runtime ---
+
+# Local Screaming Frog competitor crawls (scripts/crawl-containerreference.sh)
+competitors/
