@@ -272,7 +272,7 @@ describe('buildPageSchema core', () => {
     expect(quickFacts!.specs[0]).toEqual({ k: 'Delivered price, 20ft', v: `${formatPrice(2040)} for a 20ft to 45404` });
     expect(quickFacts!.specs[1]).toEqual({ k: 'Delivered price, 40ft standard', v: `${formatPrice(2400)} for a 40ft standard to 45404` });
     expect(quickFacts!.specs[2]).toEqual({ k: 'Delivered price, 40ft high cube', v: `${formatPrice(2300)} for a 40ft high cube to 45404` });
-    expect(quickFacts!.specs[3]).toEqual({ k: 'Price in effect since', v: 'August 12' });
+    expect(quickFacts!.specs[3]).toEqual({ k: 'Price in effect since', v: 'August 12, 2026' });
     expect(quickFacts!.specs[3].v).not.toMatch(/\d{4}-\d{2}-\d{2}/);
     expect(quickFacts!.specs.length).toBeLessThanOrEqual(8);
     expect(quickFacts!.showPriceDisclaimer).toBe(true);
@@ -450,7 +450,11 @@ describe('QuickFacts "Serves" cell agrees with areaServed', () => {
  * hold the schema side of it.
  */
 describe('HowTo nodes are dash clean and do not understate the service area', () => {
-  const TOPICS = ['size', 'condition', 'delivery', 'cost', 'permits'] as const;
+  // cost is deliberately absent: its HowTo was dropped on 2026-10-13 because the steps did not
+  // match the visible page (see the note above howtoByTopic in src/lib/schema/howto.ts). The two
+  // 2026-08-18 failures recorded above therefore cannot recur on /cost/, and the test below holds
+  // that the node stays gone; the dash and service-area rules now run over every remaining topic.
+  const TOPICS = ['size', 'condition', 'delivery', 'permits'] as const;
 
   const howtoFor = (topic: (typeof TOPICS)[number]): any => {
     const { graph } = buildPageSchema({
@@ -465,24 +469,29 @@ describe('HowTo nodes are dash clean and do not understate the service area', ()
 
   const stepText = (node: any): string[] => (node.step ?? []).map((s: any) => String(s.text ?? ''));
 
-  it('the /cost/ HowTo carries no em dash and no en dash', () => {
+  it('/cost/ emits no HowTo node, and keeps its Article', () => {
+    const { graph } = buildPageSchema({
+      ...base,
+      url: 'https://steelboxdirect.com/cost/',
+      page: { kind: 'guide', topic: 'cost', title: 'cost', specs: [], faqs: [] },
+    });
+    expect(graph.some((n) => n['@type'] === 'HowTo')).toBe(false);
+    expect(graph.some((n) => n['@type'] === 'Article')).toBe(true);
+  });
+
+  it('no HowTo carries an em dash or an en dash', () => {
     // escaped code points on purpose, so this guard cannot contain what it forbids
-    for (const text of stepText(howtoFor('cost'))) {
-      expect(text).not.toMatch(/[\u2014\u2013]/);
+    for (const topic of TOPICS) {
+      for (const text of stepText(howtoFor(topic))) {
+        expect(text).not.toMatch(/[\u2014\u2013]/);
+      }
     }
   });
 
-  it('the /cost/ delivery step pairs the 250 mi home region with the nationwide capability', () => {
-    const delivery = stepText(howtoFor('cost')).find((t) => /250 mi/i.test(t));
-    expect(delivery, 'no step states the home region radius').toBeDefined();
-    // the radius alone reads as the whole footprint, which the visible price table contradicts
-    expect(delivery!).toMatch(/nationwide/i);
-    expect(delivery!).toMatch(/nationwide[^.]*\b(hub|hubs|network|depot)\b/i);
-    expect(delivery!.search(/250 mi/i)).toBeLessThan(delivery!.search(/nationwide/i));
-    // no state list: naming states implies the unnamed states are excluded
-    expect(delivery!).not.toMatch(/\b(Ohio|Indiana|Kentucky|West Virginia)\b/);
-    // no pricing inside a geography claim
-    expect(delivery!).not.toContain('$');
+  it('the /delivery/ HowTo does not describe a boom the visible page never mentions', () => {
+    for (const text of stepText(howtoFor('delivery'))) {
+      expect(text).not.toMatch(/\bboom\b/i);
+    }
   });
 
   it('no HowTo step anywhere claims a service area the price tables outgrew', () => {

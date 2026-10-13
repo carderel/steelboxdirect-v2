@@ -291,7 +291,9 @@ export function buildPageSchema(args: BuildSchemaArgs): BuiltSchema {
         publisher: { '@id': ORG_ID },
         mainEntityOfPage: { '@id': nodeId(args.url, 'webpage') },
       });
-      if (p.topic) graph.push({ ...howtoByTopic[p.topic], '@id': nodeId(args.url, 'howto') });
+      // A topic with no entry in howtoByTopic (cost, since 2026-10-13) emits no HowTo at all.
+      const howto = p.topic ? howtoByTopic[p.topic] : undefined;
+      if (howto) graph.push({ ...howto, '@id': nodeId(args.url, 'howto') });
       if (p.faqs.length) graph.push(faqNode(args.url, p.faqs));
       graph.push(webPageNode(args, artId, p.faqs.length ? nodeId(args.url, 'faq') : artId));
       quickFacts = { entityTitle: p.title, specs: p.specs, faqs: p.faqs.slice(0, 3), showPriceDisclaimer: false };

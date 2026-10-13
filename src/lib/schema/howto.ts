@@ -1,18 +1,4 @@
-import { CONDITION } from '../../data/condition';
-import { STATS } from '../../data/stats';
 import type { GuideTopic } from './types';
-
-/**
- * ASCII normalizer for typographic dashes, both code points written as escapes so this file cannot
- * contain the characters it removes.
- *
- * WHY. Structured data gets quoted verbatim by assistants, which makes a stray U+2014 or U+2013 a
- * worse instance of T-112 than the same character in body prose: it travels into an answer that the
- * reader never sees this page for. The savings figure is authored with an en dash in
- * src/data/stats.ts, where it is correct for the visible pages that render it, so it is normalized
- * here at the schema boundary rather than changed at the source.
- */
-const ascii = (s: string): string => s.replace(/[\u2014\u2013]/g, '-');
 
 // Size Guide Schema
 const sizeGuideSchema = {
@@ -69,6 +55,18 @@ const conditionGuideSchema = {
 };
 
 // Delivery Guide Schema
+//
+// ALIGNED TO THE VISIBLE /delivery/ PAGE, 2026-10-13. Every step text below is copied from text
+// rendered on src/pages/delivery/index.astro (the "Clearance At A Glance" sidebar and the "week
+// before delivery" and "delivery day" sections), so the machine layer says nothing the reader cannot
+// see. The earlier steps described a "boom extension" and a "boom swing radius"; the visible page
+// describes tilt-bed and crane-set delivery and never mentions a boom, so those steps were replaced
+// rather than reworded. If the page copy changes, change these strings with it.
+//
+// The "delivery takes thirty to forty five minutes" clause was removed on 2026-08-28. No source for
+// the figure existed anywhere in this repository, and an unsourced duration reads as a flat factual
+// claim by the business. Omission is honest; invention is not
+// (src/lib/compliance/fabricated-dates-guard.test.ts).
 const deliveryGuideSchema = {
   '@type': 'HowTo',
   'name': 'How to Prepare Your Property for Container Delivery',
@@ -78,71 +76,31 @@ const deliveryGuideSchema = {
       '@type': 'HowToStep',
       'position': 1,
       'name': 'Verify Site Access',
-      'text': 'Ensure driveway is 12+ feet wide with clearance for delivery truck and boom extension'
+      'text': '12 feet of width, measured at the narrowest pinch on the route. 14 feet overhead, over the lane and over the drop spot. 100+ feet of straight approach for a tilt-bed.'
     },
     {
       '@type': 'HowToStep',
       'position': 2,
       'name': 'Check Ground Conditions',
-      'text': 'Level ground required. Soft ground may need reinforcement. Notify us of challenging terrain.'
+      'text': '30,000 lb is what the ground has to hold. Look at the ground honestly. If the last rain left standing water where the box is going, that is your answer about the surface.'
     },
     {
       '@type': 'HowToStep',
       'position': 3,
-      'name': 'Clear Obstacles',
-      'text': 'Remove trees, power lines, and structures within boom swing radius'
+      'name': 'Walk the Route',
+      'text': 'Walk the route with the pinch points in mind. Trim the branches, move the trailer, ask the neighbor about the truck that parks on the corner.'
     },
     {
       '@type': 'HowToStep',
       'position': 4,
-      'name': 'Schedule Delivery',
-      // The "delivery takes thirty to forty five minutes" clause was removed on 2026-08-28. No
-      // source for the figure existed anywhere in this repository, and PROJECT_HS_003 strips the
-      // attribution that would surround a number in body copy, so an unsourced duration reads as a
-      // flat factual claim by the business. Omission is honest; invention is not
-      // (src/lib/compliance/fabricated-dates-guard.test.ts). The instruction survives intact,
-      // because "be present" is the part of this step that actually changes what a buyer does.
-      'text': 'Coordinate timing with the driver. Be present to direct placement.'
-    }
-  ]
-};
-
-// Pricing Guide Schema
-const pricingGuideSchema = {
-  '@type': 'HowTo',
-  'name': 'Understanding Shipping Container Pricing',
-  'description': 'Guide to container pricing factors, cost drivers, and how to evaluate container quotes',
-  'step': [
-    {
-      '@type': 'HowToStep',
-      'position': 1,
-      'name': 'Container Condition',
-      'text': `Every container we stock is ${CONDITION.label}: weather-tight steel with no holes and doors that seal, for ${ascii(STATS.usedVsNew.phrase)}.`
+      'name': 'Mark the Spot and Door Direction',
+      'text': 'Mark the exact spot. Stakes, spray paint, or cones at the four corners. Decide which way the doors face and mark that too. Changing it later means moving the container again.'
     },
     {
       '@type': 'HowToStep',
-      'position': 2,
-      'name': 'Size',
-      'text': '20-foot containers cost less than 40-foot. Choose based on actual storage needs to avoid overpaying.'
-    },
-    {
-      '@type': 'HowToStep',
-      'position': 3,
-      'name': 'Delivery Distance',
-      // Two clause service area, same shape and same order as SERVICE_AREA_LINE in entities.ts:
-      // the 250 mi home region first, then the nationwide capability qualified as coming from depot
-      // hubs. It replaces a 250 miles from Cincinnati only sentence that the visible page now
-      // contradicts, since /cost/ publishes delivered pricing for fifteen metros, most of them
-      // outside that radius. No state list, for the reason entities.ts gives: naming states implies
-      // the unnamed ones are excluded, which is the contradiction commit e429343 had to undo.
-      'text':
-        'Delivery cost depends on the distance from the depot your container ships from. Our home region reaches 250 miles from Cincinnati, OH, and we deliver nationwide from depot hubs.'
-    },
-    {
-      '@type': 'HowToStep',
-      'position': 4,
-      'name': 'Site Conditions',
-      'text': 'Difficult access, soft ground, or crane delivery increases cost. Factor these into your budget.'
+      'position': 5,
+      'name': 'Be There on Delivery Day',
+      'text': 'Somebody should be on site who can point at the spot and make a decision.'
     }
   ]
 };
@@ -180,10 +138,16 @@ const permitsGuideSchema = {
   ]
 };
 
-export const howtoByTopic: Record<GuideTopic, Record<string, unknown>> = {
+// NO HowTo FOR /cost/, removed 2026-10-13. Its steps (condition, size, delivery distance with a
+// service-area radius, site conditions) did not match the visible page, whose "Four Price Drivers"
+// are size, condition, logistics and market cycles, and two of those visible cards render
+// build-time computed figures and conditional sentences that a static schema string cannot mirror
+// faithfully. The page is a list of price factors, not a procedure, and Google no longer shows HowTo
+// rich results, so the node was dropped rather than forced. The page keeps its Article and FAQPage
+// nodes. A topic absent from this map emits no HowTo (see buildPageSchema.ts).
+export const howtoByTopic: Partial<Record<GuideTopic, Record<string, unknown>>> = {
   size: sizeGuideSchema,
   condition: conditionGuideSchema,
   delivery: deliveryGuideSchema,
-  cost: pricingGuideSchema,
   permits: permitsGuideSchema,
 };
