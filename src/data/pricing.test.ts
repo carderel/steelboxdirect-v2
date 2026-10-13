@@ -298,9 +298,10 @@ describe('the dates the schema publishes', () => {
     expect(Number(priceValidUntil.slice(0, 4))).toBe(Number(today.slice(0, 4)) + 1);
   });
 
-  it('labels a change date to the day, and names the year only when it is not the current one', () => {
+  it('labels a change date to the day, and always names the year', () => {
     const year = new Date().getFullYear();
-    expect(effectiveSinceLabel(`${year}-08-12`)).toBe('August 12');
+    expect(effectiveSinceLabel(`${year}-08-12`)).toBe(`August 12, ${year}`);
     expect(effectiveSinceLabel(`${year - 1}-08-12`)).toBe(`August 12, ${year - 1}`);
+    expect(effectiveSinceLabel('2026-10-13')).toBe('October 13, 2026');
   });
 });

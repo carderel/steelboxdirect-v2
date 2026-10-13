@@ -229,22 +229,23 @@ export const asOfLabel = new Date(pricing.asOf + 'T00:00:00').toLocaleDateString
 
 /**
  * Day precision label for the date a figure came into effect, for the city page copy contract: in
- * effect since August 12.
+ * effect since August 12, 2026.
  *
  * A function of the date being shown rather than a constant, because a city page states the date of
- * ITS metro figure and the national date is a different date. The year is appended only when the
- * date falls outside the current year, so a figure that has held since last summer cannot be read as
- * this summer, while the common case stays the two word form the copy contract asks for.
+ * ITS metro figure and the national date is a different date.
+ *
+ * THE YEAR IS ALWAYS PRINTED, since 2026-10-13. It used to be appended only when the date fell
+ * outside the current year, which kept the common case to two words. But "current year" was the
+ * BUILD year, and the label ships into static HTML, assistants, and caches that outlive the build:
+ * a page reading "in effect since October 13" carries no way to tell which October, and a figure
+ * that has held across a new year silently reads as recent. A dated price claim names its year.
  */
 export function effectiveSinceLabel(isoDate: string): string {
-  const date = new Date(isoDate + 'T00:00:00');
-  const currentYear = date.getFullYear() === new Date().getFullYear();
-  return date.toLocaleDateString(
-    'en-US',
-    currentYear
-      ? { month: 'long', day: 'numeric' }
-      : { month: 'long', day: 'numeric', year: 'numeric' },
-  );
+  return new Date(isoDate + 'T00:00:00').toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  });
 }
 
 /**
