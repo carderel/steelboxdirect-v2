@@ -32,7 +32,7 @@ takeaways:
   - "The 150 miles is measured from the shipping depot, not from any dealer's office, so being a long way from the home region does not by itself put you in the higher tier"
   - "My Container Rental reports that its temporary $99 special in June roughly doubled its sales volume, which is the reason the figure is becoming standard"
   - "Nothing about the process changes: you still submit an application and the decision still belongs to My Container Rental, not to Steel Box Direct"
-  - "Modified and specialty units stay at 20% down whatever the distance, and Steel Box Direct sells only standard containers, so nothing in its catalog sits in that tier"
+  - "Modified and specialty units stay at 20% down whatever the distance. Rent-to-own at Steel Box Direct covers the used Wind and Water Tight containers it stocks, which are standard, unmodified units, so nothing in its catalog sits in that tier"
 faq:
   - q: "How much is the down payment on a rent-to-own shipping container?"
     a: "From September 1, 2026, My Container Rental sets the rent-to-own down payment at $99 on a standard container delivered within 150 miles of the depot the container ships from. Beyond that distance the down payment is 20%. Modified and specialty units are also 20% down whatever the distance. My Container Rental is an independent third party that administers the rent-to-own program, and any agreement remains subject to its approval."
@@ -86,7 +86,7 @@ The monthly payment does not change either. A smaller amount at signing does not
 
 Modified and specialty containers, the side openers and the container offices, stay at 20% down whatever the distance.
 
-For anyone reading this page it is a footnote, and here is the honest reason why: Steel Box Direct stocks one thing, used Wind and Water Tight standard containers. We do not sell modified units. So there is nothing in our catalog that sits in that tier, and if you are buying from us, the specialty rule will never touch your agreement. We are stating it anyway because someone will ask, and a rule you find out about later is worse than a rule you were told.
+For anyone reading this page it is a footnote, and here is the honest reason why: rent-to-own through Steel Box Direct covers the used Wind and Water Tight containers we stock, and those are standard, unmodified units. We do not sell modified units. So there is nothing in our catalog that sits in that tier, and if you are buying from us, the specialty rule will never touch your agreement. We are stating it anyway because someone will ask, and a rule you find out about later is worse than a rule you were told.
 
 ## Should you rent to own at all?
 
@@ -98,6 +98,6 @@ The reason to rent to own is cash timing, not total cost. If you can write the w
 
 ## What to do next
 
-If the down payment was the thing holding you back, it is $99 on a standard container from September 1, inside the distance limit.
+If the down payment was the thing holding you back, it is $99 on a standard container from September 1, inside the distance limit. At Steel Box Direct, that means the used Wind and Water Tight containers we stock.
 
 The full terms, both tiers, and the effective date live on our [rent-to-own page](/rent-to-own/#down-payment). Read that first, then send us your delivery ZIP code and the size you want, and we will tell you which depot serves you and what your numbers actually look like.
