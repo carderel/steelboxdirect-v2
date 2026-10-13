@@ -93,7 +93,7 @@ describe('security headers: build-time Supabase origin', () => {
   it('appends to connect-src only', () => {
     const out = withSupabaseOrigin(headers, 'https://abc.supabase.co');
     const csp = out.match(/Content-Security-Policy: (.*)/)?.[1] ?? '';
-    const connect = csp.split('; ').find((d) => d.startsWith('connect-src')) ?? '';
+    const connect = csp.split('; ').find((d: string) => d.startsWith('connect-src')) ?? '';
     expect(connect.endsWith('https://abc.supabase.co wss://abc.supabase.co')).toBe(true);
     expect(csp.match(/supabase/g)?.length).toBe(2);
   });
