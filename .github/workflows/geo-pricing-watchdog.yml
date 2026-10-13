@@ -48,6 +48,9 @@ jobs:
       - name: Check how long since the harvest last succeeded
         env:
           GH_TOKEN: ${{ github.token }}
+          # No checkout in this job, so gh cannot infer the repo from a .git directory. Without this,
+          # gh label/issue calls die with "fatal: not a git repository" and the alarm never fires.
+          GH_REPO: ${{ github.repository }}
           THRESHOLD_HOURS: ${{ github.event.inputs.threshold_hours || '48' }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           HARVEST_URL: ${{ github.server_url }}/${{ github.repository }}/actions/workflows/geo-pricing-harvest.yml
