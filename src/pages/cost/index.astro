@@ -6,6 +6,7 @@ import { geoPricing, geoSkuKeys, type GeoSkuKey } from '../../data/geoPricing';
 import { pricing, formatPrice, effectiveSinceLabel } from '../../data/pricing';
 import { pctMorePrice, pctCheaperPerSqFt, floorRatio } from '../../data/sizeComparison';
 import { RTO_TERMS, RTO_DOWN_CONDITION, rtoEffectiveDateLabel } from '../../data/rtoTerms';
+import { RTO_MAX_QUANTITY } from '../../lib/rto-eligibility';
 
 // THE METRO PRICE TABLE, and why not one figure on this page is typed.
 //
@@ -226,7 +227,7 @@ const coastAnchorIsLowest =
 // The date this page copy was last reviewed by a human. dateModified takes whichever is later, so a
 // feed that moves tonight advances the page date, and a feed that sits still cannot drag it back
 // behind the review.
-const COPY_LAST_REVIEWED = '2026-08-18';
+const COPY_LAST_REVIEWED = '2026-10-13';
 const pageDateModified =
   tableEffectiveSince.localeCompare(COPY_LAST_REVIEWED) > 0 ? tableEffectiveSince : COPY_LAST_REVIEWED;
 
@@ -239,6 +240,35 @@ const fortyCheaperPerSqFt = pctCheaperPerSqFt('40ftStandard', '20ftCargo') > 0;
 const fortyDoubleFloor = Math.round(floorRatio('40ftStandard', '20ftCargo')) === 2;
 // "Well under twice" is only said while the 40ft costs under one and a half times the 20ft.
 const fortyUnderTwicePrice = pctMorePrice('40ftStandard', '20ftCargo') < 50;
+
+// THE COST FAQ. /cost/ prices by named ZIP only, so no national average appears here (orchestrator
+// ruling 2026-10-13). Figures live in the table, each scoped to its ZIP with its date. These pairs
+// ARE the visible FAQ section AND the FAQPage JSON-LD, so the two can never drift apart. Fact
+// checked in docs/fact-check-ledger.md, entry faq-10ft-size-condition-cost.
+interface Faq { q: string; a: string }
+const faqs: Faq[] = [
+  {
+    q: 'How much does a shipping container cost?',
+    a: 'It depends on where it is going. We price each container as a delivered total for a named ZIP, '
+      + 'and that number moves mostly with how far we deliver and what supply looks like that month. '
+      + (hasCostTable
+        ? 'The table on this page shows a delivered figure for a named ZIP in each metro, with the date it last changed. '
+        : '')
+      + 'Request a quote and we will run the number for your own ZIP.',
+  },
+  {
+    q: 'Does the price include delivery?',
+    a: 'Yes. Every figure we publish is a delivered total: the container, delivery, and placement on flat ground. '
+      + 'A site that needs a crane adds that labor on top. When you compare sellers, ask each one whether their price includes delivery, '
+      + 'because a container price without freight is not the number you will pay.',
+  },
+  {
+    q: 'Do you offer a discount if I buy more than one container?',
+    a: 'Orders of more than one container are priced case by case, so there is no set multi-unit rate to publish. '
+      + 'Choose how many on the quote form and ask; we will tell you what we can do for your ZIP. '
+      + `Rent-to-own covers orders of up to ${RTO_MAX_QUANTITY} containers, and larger orders are quoted separately.`,
+  },
+];
 ---
 
 <BaseLayout
@@ -248,7 +278,7 @@ const fortyUnderTwicePrice = pctMorePrice('40ftStandard', '20ftCargo') < 50;
   description="Understand what affects shipping container pricing. Size, condition, location, delivery, and market factors explained."
   datePublished="2026-05-19"
   dateModified={pageDateModified}
-  schema={{ kind: 'guide', topic: 'cost', title: 'What Does a Shipping Container Cost? Pricing Factors', specs: [], faqs: [] }}
+  schema={{ kind: 'guide', topic: 'cost', title: 'What Does a Shipping Container Cost? Pricing Factors', specs: [], faqs: faqs.map((f) => ({ q: f.q, a: f.a })) }}
 >
   <div class="guide-header guide_header" style="background: var(--c4-cost); color: var(--cream);">
     <div class="wrap">
@@ -772,12 +802,39 @@ const fortyUnderTwicePrice = pctMorePrice('40ftStandard', '20ftCargo') < 50;
       .guide-header { padding: 48px 0; }
       .big { font-size: clamp(48px, 10vw, 80px); }
     }
+    /* FAQ. Markup and styling follow src/pages/delivery/index.astro; the pairs come from the single
+       `faqs` array in the frontmatter, which also feeds the FAQPage JSON-LD. */
+    .cost-faq { padding: 72px 0; background: white; border-top: 2.5px solid var(--ink); }
+    .cost-faq h2 { font-family: var(--narrow); font-weight: 700; font-size: clamp(28px, 4vw, 44px); text-transform: uppercase; line-height: 1.05; margin: 0 0 32px; }
+    .faq-list { border: 2.5px solid var(--ink); }
+    .faq-item { padding: 28px 32px; border-bottom: 1.5px solid rgba(11,15,26,.1); background: var(--cream); }
+    .faq-item:last-child { border-bottom: none; }
+    .faq-item h3 { font-family: var(--narrow); font-size: 20px; text-transform: uppercase; margin-bottom: 10px; }
+    .faq-item p { opacity: .8; line-height: 1.6; max-width: 780px; margin: 0; }
+    @media (max-width: 960px) {
+      .cost-faq { padding: 48px 0; }
+      .faq-item { padding: 22px 20px; }
+    }
     .guide-next { padding: 48px 0; background: var(--ink); border-top: 2px solid rgba(255,255,255,.08); }
     .guide-next-label { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: .1em; color: var(--yellow); margin-bottom: 16px; }
     .guide-next-links { display: flex; flex-wrap: wrap; gap: 20px; }
     .guide-next-links a { font-family: var(--narrow); font-size: 17px; font-weight: 600; color: var(--cream); text-decoration: none; border-bottom: 2px solid rgba(255,255,255,.2); padding-bottom: 2px; }
     .guide-next-links a:hover { color: var(--yellow); border-color: var(--yellow); }
   </style>
+
+  <section class="cost-faq" id="faq">
+    <div class="wrap">
+      <h2>Cost questions, answered</h2>
+      <div class="faq-list">
+        {faqs.map((f) => (
+          <div class="faq-item">
+            <h3>{f.q}</h3>
+            <p>{f.a}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
 
   <section class="guide-next">
     <div class="wrap">

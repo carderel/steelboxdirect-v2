@@ -22,6 +22,30 @@ const sizes = {
 // CLAUDE.md: computed from pricing.ts, with the as-of date and the average-price disclaimer beside it.
 // Gated on the direction actually holding, so a feed that inverted it would drop the line.
 const cuFtSaving = pctCheaperPerCuFt('40ftStandard', '20ftCargo');
+
+// THE SIZE FAQ. These pairs ARE the visible FAQ section AND the FAQPage JSON-LD (mapped into the
+// schema prop below), so the two can never drift apart. Same pattern as src/pages/delivery/index.astro.
+// Every spec figure is interpolated from src/data/containers.ts; none is typed. No price appears:
+// a 10ft is a special request with no listed price (owner ruling 2026-10-13). Fact checked in
+// docs/fact-check-ledger.md, entry faq-10ft-size-condition-cost.
+const c20 = containerBySlug(CONTAINER_SLUGS['20ft']);
+
+interface Faq { q: string; a: string }
+const faqs: Faq[] = [
+  {
+    q: 'What is the smallest shipping container?',
+    a: `The shortest size in the ISO shipping container standard is the 10ft. Smaller 8ft boxes are built too, and sellers market them for storage. `
+      + `The smallest size we stock is the 20ft: ${c20.specs.externalDims} outside, ${sizes.s20.interior} inside, `
+      + `with ${sizes.s20.floor} of floor and ${c20.specs.cubicCap} of space. `
+      + `Need a 10ft? We handle those as a special request, so ask us and we'll tell you what we can find for your ZIP. `
+      + `There's no listed price; we quote each one.`,
+  },
+  {
+    q: 'Can I get a 10ft shipping container?',
+    a: `Yes, as a special request. We stock 20ft, 40ft and 40ft High Cube containers, and a 10ft is something we look for when you ask. `
+      + `Tell us on your quote and we'll tell you what we can find for your ZIP. There's no listed price; we quote each one.`,
+  },
+];
 ---
 
 <BaseLayout
@@ -31,8 +55,8 @@ const cuFtSaving = pctCheaperPerCuFt('40ftStandard', '20ftCargo');
   guideTopic="size"
   floatingSidebar={false}
   datePublished="2026-05-19"
-  dateModified="2026-08-25"
-  schema={{ kind: 'guide', topic: 'size', title: 'What Size Shipping Container Do You Need?', specs: [], faqs: [] }}
+  dateModified="2026-10-13"
+  schema={{ kind: 'guide', topic: 'size', title: 'What Size Shipping Container Do You Need?', specs: [], faqs: faqs.map((f) => ({ q: f.q, a: f.a })) }}
 >
   <div class="guide-header guide_header">
     <div class="wrap">
@@ -55,7 +79,7 @@ const cuFtSaving = pctCheaperPerCuFt('40ftStandard', '20ftCargo');
         <div class="main-col guide_main_col">
           <h2>The Three Standard Sizes</h2>
           <p>Shipping containers were built for international cargo, so dimensions are standardized worldwide. A "20-foot container" is the same size whether it comes from our yard or anywhere else.</p>
-          <p>Shopping for a small shipping container? The 20ft is the smallest container we sell. Smaller ISO sizes like the 10ft exist, and our <a href="/container-reference/#dimensions">Container Reference</a> lists their dimensions for reference only; we do not stock them.</p>
+          <p>Shopping for a small shipping container? The 20ft is the smallest size we stock. Need a 10ft? We handle those as a special request, so <a href="/quote/">ask us</a> and we'll tell you what we can find for your ZIP. There's no listed price; we quote each one. Our <a href="/container-reference/#dimensions">Container Reference</a> lists 10ft dimensions for reference.</p>
 
           <div class="size-card guide_comparison_item" style="border-left-color: var(--c1-size);">
             <h3>20-Foot Container</h3>
@@ -205,12 +229,39 @@ const cuFtSaving = pctCheaperPerCuFt('40ftStandard', '20ftCargo');
       .guide-header { padding: 48px 0; }
       .big { font-size: clamp(48px, 10vw, 80px); }
     }
+    /* FAQ. Markup and styling follow src/pages/delivery/index.astro; the pairs come from the single
+       `faqs` array in the frontmatter, which also feeds the FAQPage JSON-LD. */
+    .size-faq { padding: 72px 0; background: white; border-top: 2.5px solid var(--ink); }
+    .size-faq h2 { font-family: var(--narrow); font-weight: 700; font-size: clamp(28px, 4vw, 44px); text-transform: uppercase; line-height: 1.05; margin: 0 0 32px; }
+    .faq-list { border: 2.5px solid var(--ink); }
+    .faq-item { padding: 28px 32px; border-bottom: 1.5px solid rgba(11,15,26,.1); background: var(--cream); }
+    .faq-item:last-child { border-bottom: none; }
+    .faq-item h3 { font-family: var(--narrow); font-size: 20px; text-transform: uppercase; margin-bottom: 10px; }
+    .faq-item p { opacity: .8; line-height: 1.6; max-width: 780px; margin: 0; }
+    @media (max-width: 960px) {
+      .size-faq { padding: 48px 0; }
+      .faq-item { padding: 22px 20px; }
+    }
     .guide-next { padding: 48px 0; background: var(--ink); border-top: 2px solid rgba(255,255,255,.08); }
     .guide-next-label { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: .1em; color: var(--yellow); margin-bottom: 16px; }
     .guide-next-links { display: flex; flex-wrap: wrap; gap: 20px; }
     .guide-next-links a { font-family: var(--narrow); font-size: 17px; font-weight: 600; color: var(--cream); text-decoration: none; border-bottom: 2px solid rgba(255,255,255,.2); padding-bottom: 2px; }
     .guide-next-links a:hover { color: var(--yellow); border-color: var(--yellow); }
   </style>
+
+  <section class="size-faq" id="faq">
+    <div class="wrap">
+      <h2>Size questions, answered</h2>
+      <div class="faq-list">
+        {faqs.map((f) => (
+          <div class="faq-item">
+            <h3>{f.q}</h3>
+            <p>{f.a}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
 
   <section class="guide-next">
     <div class="wrap">

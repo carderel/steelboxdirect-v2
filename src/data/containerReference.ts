@@ -20,12 +20,15 @@ export interface ReferenceSize {
 
 // Figures per ISO 668:2020 general-purpose containers (fuller precision than the
 // rounded product-page specs. That is intentional; different audiences, no same-page clash).
+// EXCEPTION: the 10ft row. ISO 668 defines the 10ft (1D) at 8'0" tall; the 8'6" 10ft that dealers
+// actually sell is a common trade build, not an ISO 668 size, so its label says so (fact check
+// 2026-10-13, ledger entry faq-10ft-size-condition-cost).
 export const referenceSizes: ReferenceSize[] = [
   {
-    code: '10ft Std', label: '10ft Standard', sold: false,
+    code: '10ft Std', label: '10ft (common trade build, not ISO 668)', sold: false,
     ext: `9'9.75" × 8'0" × 8'6"`, intL: `9'3"`, intW: `7'8.5"`, intH: `7'10.1"`,
     door: `7'8.1" × 7'5.8"`, capacity: '561 cu ft',
-    note: 'Typically one-trip/new only; rarely available used.',
+    note: 'Far fewer 10ft containers are in circulation than 20ft or 40ft, so used ones are hard to find. A 10ft is a special request for us: ask and we will tell you what we can find.',
   },
   {
     code: '20ft Std', label: '20ft Standard', sold: true, productSlug: '20-foot-shipping-container',
