@@ -114,7 +114,7 @@ export const lifecycleFacts: LifecycleFact[] = [
   },
   {
     title: 'Why used units are abundant',
-    body: `North America imports far more containerized freight than it exports, and repositioning empty boxes back overseas costs more than building new ones. So shipping lines sell them off here, which is why a sound used container is widely available and a smart-value buy.`,
+    body: `North America imports far more containerized freight than it exports, and repositioning empty boxes back overseas costs more than building new ones. So shipping lines sell them off here, which is why a good used container is widely available and a smart-value buy.`,
   },
 ];
 

@@ -13,5 +13,5 @@ export const CONDITION = {
   /** Standard marketing tail for body copy / compare notes. */
   blurb: 'Wind & Water Tight (used): no holes, doors that seal, and storage-ready, with honest cosmetic wear from prior service.',
   /** Standard tail for SEO meta descriptions (slightly tighter). */
-  seoTail: 'Wind & Water Tight (used): sound, storage-ready steel.',
+  seoTail: 'Wind & Water Tight (used) steel.',
 } as const;

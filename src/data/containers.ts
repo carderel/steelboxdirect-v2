@@ -170,7 +170,7 @@ export const containers: Container[] = [
     compareNote: `Same footprint as the standard 40ft, but a foot taller, with the most headroom and cubic capacity we offer. ${CONDITION.blurb}`,
     seo: {
       title:       '40-Foot High Cube Shipping & Storage Container for Sale',
-      description: `Buy a 40ft High Cube delivered within 250 miles of Cincinnati: a foot more headroom, ~2,694 cu ft. ${CONDITION.label} steel. Quote in 4 business hours.`,
+      description: `Buy a 40ft High Cube delivered within 250 miles of Cincinnati: a foot more headroom, ~2,694 cu ft. ${CONDITION.seoTail} Quote in 4 business hours.`,
     },
     heroPhoto: INTERIM_HERO_PHOTO,
   },

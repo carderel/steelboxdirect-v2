@@ -117,4 +117,4 @@ Do you see water coming in from a seam, corner, or the roof, right after rain? T
 
 ---
 
-Buying a used container and want the full picture on what "sealed and sound" really covers? [See our condition guide](/condition/), or [get a real quote](/quote/) and we'll walk you through what you're buying.
+Buying a used container and want the full picture on what "Wind & Water Tight" really covers? [See our condition guide](/condition/), or [get a real quote](/quote/) and we'll walk you through what you're buying.

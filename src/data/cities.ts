@@ -134,7 +134,7 @@ export const cities: City[] = [
     },
     content: {
       h2: 'Why Dayton buyers choose Steel Box Direct',
-      intro: 'The "Birthplace of Aviation" knows the value of good engineering. Our containers are Wind & Water Tight: sound, storage-ready steel with the durability Dayton\'s manufacturing sector expects.',
+      intro: 'The "Birthplace of Aviation" knows the value of good engineering. Our containers are Wind & Water Tight: storage-ready steel that keeps out rain, wind, snow and pests, with the durability Dayton\'s manufacturing sector expects.',
       features: [
         { title: 'Manufacturing Storage', body: 'Dayton\'s industrial heritage means businesses often need quick, secure overflow storage. Our units are perfect for parts, tools, and inventory protection.' },
         { title: 'Wright-Patt Proximity', body: 'We understand the specific needs of contractors and personnel near the AFB. Secure, weather-tight storage is non-negotiable, and we deliver exactly that.' },
