@@ -19,6 +19,38 @@
 # A stale or missing dist/ is itself a finding: you cannot review output you have not built.
 
 set -uo pipefail
+
+# Self-filter (owner-approved 2026-10-13). The settings.json `if: Bash(git push:*)` filter also
+# fires on compound commands that never push (for loops, `cd x; npm run build; ...`, heredocs),
+# and a red suite then blocks unrelated work. So the gate decides for itself: read the hook JSON
+# from stdin and exit 0 silently unless the command actually invokes `git push` (including
+# `git -C <dir> push` / `git -c k=v push`) at a command position: start, or after ; & | ( ` $( or
+# a newline. Quoted strings are stripped first so `git commit -m "... git push"` does not trip it.
+# Anything ambiguous (no stdin, unparseable JSON, empty command) falls through to the full gate.
+# The rest of this script never reads stdin, so consuming it here changes nothing downstream.
+if [ ! -t 0 ]; then
+  HOOK_INPUT="$(cat)"
+  CMD=""
+  if command -v jq >/dev/null 2>&1; then
+    CMD="$(printf '%s' "$HOOK_INPUT" | jq -r '.tool_input.command // empty' 2>/dev/null)"
+  elif command -v python3 >/dev/null 2>&1; then
+    CMD="$(printf '%s' "$HOOK_INPUT" | python3 -c 'import json,sys
+try: print(json.load(sys.stdin).get("tool_input",{}).get("command","") or "")
+except Exception: pass' 2>/dev/null)"
+  elif command -v node >/dev/null 2>&1; then
+    CMD="$(printf '%s' "$HOOK_INPUT" | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{try{process.stdout.write(String((JSON.parse(s).tool_input||{}).command||""))}catch(e){}})' 2>/dev/null)"
+  fi
+  if [ -n "$CMD" ]; then
+    # Strip single- and double-quoted strings (newlines first flattened to ';' so multi-line
+    # quotes are handled and line starts count as command positions).
+    STRIPPED="$(printf '%s' "$CMD" | tr '\n' ';' | sed -E "s/'[^']*'/''/g; s/\"([^\"\\\\]|\\\\.)*\"/\"\"/g")"
+    PUSH_RE='(^|[;&|(`]|\$\()[[:space:]]*([A-Za-z_][A-Za-z0-9_]*=[^[:space:]]*[[:space:]]+)*(command[[:space:]]+)?git([[:space:]]+-[Cc][[:space:]]+[^[:space:]]+)*[[:space:]]+push([[:space:]]|$|[;&|)`])'
+    printf '%s' "$STRIPPED" | grep -Eq "$PUSH_RE"
+    # Only a clean "no match" (1) skips the gate; a grep error (2+) falls through and runs it.
+    [ "$?" -eq 1 ] && exit 0
+  fi
+fi
+
 cd "${CLAUDE_PROJECT_DIR:-$(git rev-parse --show-toplevel)}" || exit 0
 
 LOG="$(mktemp -t sbd-seo-scan)"
