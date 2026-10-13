@@ -45,13 +45,13 @@ const sizeGuideSchema = {
 const conditionGuideSchema = {
   '@type': 'HowTo',
   'name': 'Understanding Wind & Water Tight (Used) Shipping Containers',
-  'description': 'What Wind & Water Tight (used) condition means: structurally sound, weather-tight, storage-ready steel at the best value.',
+  'description': 'What Wind & Water Tight (used) condition means: weather-tight, storage-ready steel with no holes and doors that seal, at the best value.',
   'step': [
     {
       '@type': 'HowToStep',
       'position': 1,
       'name': 'Wind & Water Tight (Used)',
-      'text': 'A used container that is wind- and water-tight: it seals out rain, wind, snow, and pests and stays structurally sound for storage and on-site use.'
+      'text': 'A used container that is wind- and water-tight: it keeps out rain, wind, snow, and pests, with no holes and doors that seal, for storage and on-site use.'
     },
     {
       '@type': 'HowToStep',
@@ -117,7 +117,7 @@ const pricingGuideSchema = {
       '@type': 'HowToStep',
       'position': 1,
       'name': 'Container Condition',
-      'text': `Every container we sell is ${CONDITION.label}: structurally sound, weather-tight steel, for ${ascii(STATS.usedVsNew.phrase)}.`
+      'text': `Every container we sell is ${CONDITION.label}: weather-tight steel with no holes and doors that seal, for ${ascii(STATS.usedVsNew.phrase)}.`
     },
     {
       '@type': 'HowToStep',

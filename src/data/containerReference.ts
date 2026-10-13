@@ -135,6 +135,6 @@ export const referenceFaqs: RefFaq[] = [
   },
   {
     q: 'Is surface rust on a used container a problem?',
-    a: `Usually not. Containers are built from Cor-Ten weathering steel that forms a protective patina, so surface rust is typically cosmetic. Every container we sell is Wind & Water Tight: structurally sound and sealed against rain, wind, snow, and pests.`,
+    a: `Usually not. Containers are built from Cor-Ten weathering steel that forms a protective patina, so surface rust is typically cosmetic. Every container we sell is Wind & Water Tight: it keeps out rain, wind, snow, and pests, with no holes and doors that seal.`,
   },
 ];

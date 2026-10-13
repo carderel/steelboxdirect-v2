@@ -16,7 +16,7 @@ heroImageAlt: "A used shipping container in weathered blue paint with surface ru
 author: "Steel Box Direct"
 draft: false
 takeaways:
-  - "What \"Wind & Water Tight\" (WWT) really means: sealed against rain, wind, snow, and pests, and still structurally sound"
+  - "What \"Wind & Water Tight\" (WWT) really means: keeps out rain, wind, snow, and pests, with no holes and doors that seal"
   - "What WWT does NOT mean: it's not certified for ocean shipping, and it's not climate-controlled"
   - "Why a WWT container can still have surface rust, dents, or scuffs, and why that's normal, not a defect"
   - "How WWT fits next to other trade terms like Cargo-Worthy or As-Is, and why WWT isn't an official ISO grade"
@@ -25,14 +25,14 @@ faq:
   - q: "Is \"Wind & Water Tight\" an official container grade?"
     a: "No. It's a widely used trade-market term, not a formal ISO or government classification. There's no single body that certifies a container as WWT, so it's worth asking any seller exactly what condition they mean by it."
   - q: "Can a Wind & Water Tight container still have rust on it?"
-    a: "Yes, and that's expected. WWT means the container is sealed and structurally sound, not cosmetically perfect. Surface rust, small dents, and scuffs from years of cargo service are normal on a WWT unit built from weathering (Cor-Ten) steel."
+    a: "Yes, and that's expected. WWT means the container keeps out the weather, with no holes and doors that seal, not that it is cosmetically perfect. Surface rust, small dents, and scuffs from years of cargo service are normal on a WWT unit built from weathering (Cor-Ten) steel."
   - q: "Does Wind & Water Tight mean the container is climate-controlled?"
     a: "No. WWT means the container keeps out rain, wind, snow, and pests. It says nothing about the air already inside. Any closed steel box, new or used, can still sweat or \"rain\" inside when the temperature swings. That's condensation, not a sealing problem."
   - q: "Can I use a Wind & Water Tight container to ship cargo overseas?"
     a: "No. WWT containers are sold for storage and on-site use, not for international ocean freight. Ocean shipping requires a valid CSC safety-approval plate and current structural certification, which most used storage-grade units no longer carry."
 ---
 
-**"Wind & Water Tight" (WWT) means a used shipping container still keeps out rain, wind, snow, and pests, and its steel frame is still strong.** It's retired from hauling cargo at sea, not worn out. WWT is not a certified ocean-shipping grade, and it's not climate control. It's the honest, working-condition steel that Steel Box Direct sells: one grade, sealed and sound.
+**"Wind & Water Tight" (WWT) means a used shipping container still keeps out rain, wind, snow, and pests, with no holes and doors that seal.** It's retired from hauling cargo at sea, not worn out. WWT is not a certified ocean-shipping grade, and it's not climate control. It's the honest, working-condition steel that Steel Box Direct sells: one grade, sealed and sound.
 
 You've probably seen "WWT" on a listing and wondered what it promises. This guide breaks it down in plain words. You'll learn what WWT covers, what it doesn't, what to expect from the steel, and how to check the claim yourself.
 
@@ -97,7 +97,7 @@ None of that is a defect. It's proof the box has done its job for years and is s
 |---|---|
 | New / One-Trip | Made recently, used for one ocean voyage at most. Near-showroom look. |
 | Cargo-Worthy (CW) | Still certified and fit to carry cargo at sea. Passes a current structural inspection. |
-| Wind & Water Tight (WWT) | Retired from sea service, but sealed against weather and still structurally sound. **This is what Steel Box Direct sells.** |
+| Wind & Water Tight (WWT) | Retired from sea service, but still keeps out rain, wind, snow, and pests, with no holes and doors that seal. **This is what Steel Box Direct sells.** |
 | As-Is | Sold with no promises about sealing or structure. Buyer takes on all the risk. |
 
 **Important honest note: "WWT" is not an official ISO grade.** ISO is the group that sets container sizes and marking rules (ISO 668, ISO 6346). It does not define a "WWT" grade. WWT is a trade term. Sellers across the industry use it to describe used, sealed, sound containers. Most use it the same way this article does. But no standards body polices the label.
