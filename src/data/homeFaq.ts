@@ -80,7 +80,7 @@ export const homeFaqs: HomeFaqItem[] = [
   },
   {
     q: 'Is used actually safe for my equipment?',
-    a: "Every container we sell is Wind & Water Tight (used): weather-tight, with no holes and doors that seal, and surface rust that's purely cosmetic. It keeps rain, wind, and snow off your equipment and holds up for decades on a prepped pad.",
+    a: "Every container we stock is Wind & Water Tight (used): weather-tight, with no holes and doors that seal, and surface rust that's purely cosmetic. It keeps rain, wind, and snow off your equipment and holds up for decades on a prepped pad.",
   },
   {
     q: 'How quickly can you get it here?',

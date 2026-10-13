@@ -18,7 +18,7 @@
 // the population-centroid ZIP in src/data/geoCentroids.ts. Per SKU: the delivered figure, the pickup
 // figure, an approximate pickup distance, an availability flag, and the date that figure last
 // CHANGED. Used Wind and Water Tight is the only grade priced here, which is the only grade this
-// site sells. Nothing else belongs in this file.
+// site stocks. Nothing else belongs in this file.
 //
 // UNIT PRICE BASIS, and the live bug it exists to prevent. Every delivered figure is the DELIVERY
 // unit price plus the base delivery cost, rounded once at the end and never in parts. The feed also

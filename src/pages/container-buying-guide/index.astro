@@ -26,7 +26,8 @@ import { DELIVERY_ACCESS } from '../../data/permitCounties';
  *     spec that disagrees with the product page is impossible rather than merely unlikely.
  *   - Condition: CONDITION.blurb from src/data/condition.ts, the single source of truth for grade
  *     messaging, interpolated verbatim. The one-trip contrast restates what /condition/ already
- *     publishes: we do not sell one-trip today, and this page must not imply otherwise.
+ *     publishes: we stock used WWT, and new (one-trip) and Cargo Worthy are by special request
+ *     only. Never state a price, discount, warranty or guarantee for them on this page.
  *   - Delivery: DELIVERY_ACCESS from src/data/permitCounties.ts, both strings verbatim. That
  *     module's own header calls this locked copy and forbids paraphrasing it per page, and
  *     src/lib/compliance/permit-county-guard.test.ts holds the delivery page to the same strings.
@@ -99,7 +100,7 @@ const checklist: ChecklistItem[] = [
   {
     n: '04',
     title: 'Know exactly what grade you\'re buying',
-    body: `Bait-and-switch grading is one of the most common tactics in this market: a seller quotes a nicer grade, then delivers something worse. Get the exact condition grade in writing before you commit. Steel Box Direct sells one honest grade, Wind & Water Tight (used): no upsell games, no surprise downgrade at delivery. See `,
+    body: `Bait-and-switch grading is one of the most common tactics in this market: a seller quotes a nicer grade, then delivers something worse. Get the exact condition grade in writing before you commit. Steel Box Direct stocks one honest grade, Wind & Water Tight (used): no upsell games, no surprise downgrade at delivery. See `,
     link: { href: '/condition/', label: 'our condition guide' },
   },
   {
@@ -125,7 +126,7 @@ interface RecapRow { check: string; sbd: string }
 const recap: RecapRow[] = [
   { check: 'Real, accountable business', sbd: 'Authorized independent agent of Freedom Conex LLC, an operating company you can verify' },
   { check: 'Warranty in writing', sbd: 'Lifetime Leak Warranty, spelled out in our terms: on a leak claim we send a patch kit you apply yourself' },
-  { check: 'One honest condition grade', sbd: 'Wind & Water Tight (used), the only grade we sell' },
+  { check: 'One honest condition grade', sbd: 'Wind & Water Tight (used), the only grade we stock' },
   { check: 'Real, local delivery', sbd: '~250 miles of Cincinnati, across Ohio, Indiana, Kentucky & western WV' },
   { check: 'Verifiable unit identity', sbd: 'CSC plate & markings you can check yourself; see our reference guide' },
   { check: 'Delivery included in the price', sbd: 'All-in quotes: container, delivery to your ZIP & flat-ground placement, no surprise freight' },
@@ -151,7 +152,7 @@ const faqs: Faq[] = [
   },
   {
     q: 'What condition are the containers?',
-    a: `Every container Steel Box Direct sells is Wind & Water Tight (used): one honest grade, it keeps out rain, wind, snow, and pests, with no holes and doors that seal, for storage and on-site use. We don't sell multiple grades with upsell pressure; what you're quoted is what gets delivered.`,
+    a: `Every container Steel Box Direct stocks is Wind & Water Tight (used): one honest grade, it keeps out rain, wind, snow, and pests, with no holes and doors that seal, for storage and on-site use. New (one-trip) and Cargo Worthy containers are available by special request; ask us and we'll confirm what we can get for your ZIP. We don't push multiple grades with upsell pressure; what you're quoted is what gets delivered.`,
   },
   {
     q: 'Does the container price include delivery?',
@@ -208,7 +209,7 @@ const faqs: Faq[] = [
         <article class="dec-item">
           <span class="dec-n">Decision 02</span>
           <h3>Condition</h3>
-          <p class="dec-body">This one is simpler here than at most sellers, because we sell a single grade. {CONDITION.blurb} What that buys you is the seal: rain, wind, snow, and pests stay out, and what you accept in exchange is the surface rust, scratches, and dents of a working life. The grade above it is one-trip, a container built overseas, loaded once for a single ocean crossing and sold on arrival at a premium, and we do not carry it today. Decide which of the two you need before you shop, because it is the one variable we do not price.</p>
+          <p class="dec-body">This one is simpler here than at most sellers, because we stock a single grade. {CONDITION.blurb} What that buys you is the seal: rain, wind, snow, and pests stay out, and what you accept in exchange is the surface rust, scratches, and dents of a working life. The grade above it is one-trip, a container built overseas, loaded once for a single ocean crossing and sold on arrival at a premium. We do not stock it, but new (one-trip) and Cargo Worthy containers are available by special request; ask us and we'll confirm what we can get for your ZIP. Decide which of the two you need before you shop, because it is the one variable we do not price.</p>
           <a class="dec-more" href="/condition/">What Wind &amp; Water Tight means</a>
         </article>
 
@@ -266,7 +267,7 @@ const faqs: Faq[] = [
       </div>
       <div class="bg-callout">
         <h3>What we won't claim</h3>
-        <p>We sell one condition grade (Wind &amp; Water Tight, used), never presented as new or a higher grade. Permit and zoning requirements are always the buyer's responsibility to confirm locally. And we won't tell you what specific payment method to use here; that's between you and whichever seller you choose to work with. Just apply the buyer-protection check above to anyone you're buying from.</p>
+        <p>We stock one condition grade (Wind &amp; Water Tight, used), never presented as new or a higher grade. Permit and zoning requirements are always the buyer's responsibility to confirm locally. And we won't tell you what specific payment method to use here; that's between you and whichever seller you choose to work with. Just apply the buyer-protection check above to anyone you're buying from.</p>
       </div>
     </div>
   </section>

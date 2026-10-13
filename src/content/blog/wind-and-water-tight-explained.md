@@ -1,6 +1,6 @@
 ---
 title: "Wind & Water Tight Explained: What \"WWT\" Actually Means"
-description: "\"Wind & Water Tight\" is the container grade Steel Box Direct sells. Here's what WWT really promises, what it doesn't, and how to check it yourself."
+description: "\"Wind & Water Tight\" is the container grade Steel Box Direct stocks. Here's what WWT really promises, what it doesn't, and how to check it yourself."
 pubDate: 2026-07-06
 category: "Container Specs & Reference"
 pillar: "Container Knowledge & Terminology"
@@ -32,7 +32,7 @@ faq:
     a: "No. WWT containers are sold for storage and on-site use, not for international ocean freight. Ocean shipping requires a valid CSC safety-approval plate and current structural certification, which most used storage-grade units no longer carry."
 ---
 
-**"Wind & Water Tight" (WWT) means a used shipping container still keeps out rain, wind, snow, and pests, with no holes and doors that seal.** It's retired from hauling cargo at sea, not worn out. WWT is not a certified ocean-shipping grade, and it's not climate control. It's the honest, working-condition steel that Steel Box Direct sells: one grade, sealed and storage-ready.
+**"Wind & Water Tight" (WWT) means a used shipping container still keeps out rain, wind, snow, and pests, with no holes and doors that seal.** It's retired from hauling cargo at sea, not worn out. WWT is not a certified ocean-shipping grade, and it's not climate control. It's the honest, working-condition steel that Steel Box Direct stocks: one grade, sealed and storage-ready.
 
 You've probably seen "WWT" on a listing and wondered what it promises. This guide breaks it down in plain words. You'll learn what WWT covers, what it doesn't, what to expect from the steel, and how to check the claim yourself.
 
@@ -48,7 +48,7 @@ A Wind & Water Tight container:
 
 That's the whole promise. It's not a claim about paint, dents, or how the container looks. It's a claim about whether it's **sealed and storage-ready**. Those are the two things that matter most for storing your stuff.
 
-For the full picture on the grade we sell, see our [condition guide](/condition/). This article goes a bit wider: where WWT sits next to other container terms, and how to check the claim yourself.
+For the full picture on the grade we stock, see our [condition guide](/condition/). This article goes a bit wider: where WWT sits next to other container terms, and how to check the claim yourself.
 
 ![Close-up of a used container's closed cargo doors in winter, snow dusting the locking bars and the black rubber gasket seated tight in the door edge](../../assets/photos/blog/wwt-container-door-seals-winter.jpg)
 
@@ -104,11 +104,11 @@ None of that is a defect. It's proof the box has done its job for years and is s
 
 That's why it's smart to ask a seller what they mean by "WWT" before you buy. And it's why we spell it out in plain words on every page, instead of trusting the term to explain itself.
 
-Steel Box Direct sells one grade only: **Wind & Water Tight (used)**. We don't offer New, Cargo-Worthy, or As-Is units. WWT is the whole lineup. It does the job for almost every storage buyer, without paying for certification you don't need.
+Steel Box Direct stocks one grade: **Wind & Water Tight (used)**. New (one-trip) and Cargo-Worthy containers are available by special request; ask us and we'll confirm what we can get for your ZIP. We don't offer As-Is units. WWT is the grade we stock because it does the job for almost every storage buyer, without paying for certification you don't need.
 
 ## Why WWT Is the Smart-Value Grade
 
-Here's the simple logic behind selling just one grade.
+Here's the simple logic behind stocking just one grade.
 
 A brand-new or Cargo-Worthy container costs more. You're paying for either a fresh box or an active ocean-shipping certificate. If you're storing tools, feed, inventory, or gear on your own property, you don't need that certificate. You need a box that keeps out rain, wind, snow, and pests.
 

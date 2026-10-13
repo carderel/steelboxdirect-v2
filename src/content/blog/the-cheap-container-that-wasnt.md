@@ -90,7 +90,7 @@ If you're shopping for a container, that question is yours to keep: **"Does that
 - **Always ask: "Does that price include delivery?"** It's the fastest way to tell a real price from a teaser.
 - **Steel Box Direct quotes all-in:** container, delivery to your ZIP, and placement on flat ground, so the number you're quoted is the number you pay.
 - **Compare delivered totals, not sticker prices.** A higher sticker with delivery included can cost less than a cheap one once freight is added.
-- **Every container Steel Box Direct sells is Wind & Water Tight (WWT):** one used grade, sealed against rain, wind, and pests.
+- **Every container Steel Box Direct stocks is Wind & Water Tight (WWT):** one used grade, sealed against rain, wind, and pests.
 
 ## If This Sounds Familiar
 

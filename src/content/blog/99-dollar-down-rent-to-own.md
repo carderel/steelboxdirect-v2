@@ -86,7 +86,7 @@ The monthly payment does not change either. A smaller amount at signing does not
 
 Modified and specialty containers, the side openers and the container offices, stay at 20% down whatever the distance.
 
-For anyone reading this page it is a footnote, and here is the honest reason why: Steel Box Direct sells one thing, used Wind and Water Tight standard containers. We do not sell modified units. So there is nothing in our catalog that sits in that tier, and if you are buying from us, the specialty rule will never touch your agreement. We are stating it anyway because someone will ask, and a rule you find out about later is worse than a rule you were told.
+For anyone reading this page it is a footnote, and here is the honest reason why: Steel Box Direct stocks one thing, used Wind and Water Tight standard containers. We do not sell modified units. So there is nothing in our catalog that sits in that tier, and if you are buying from us, the specialty rule will never touch your agreement. We are stating it anyway because someone will ask, and a rule you find out about later is worse than a rule you were told.
 
 ## Should you rent to own at all?
 

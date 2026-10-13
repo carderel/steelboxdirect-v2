@@ -117,7 +117,7 @@ const pricingGuideSchema = {
       '@type': 'HowToStep',
       'position': 1,
       'name': 'Container Condition',
-      'text': `Every container we sell is ${CONDITION.label}: weather-tight steel with no holes and doors that seal, for ${ascii(STATS.usedVsNew.phrase)}.`
+      'text': `Every container we stock is ${CONDITION.label}: weather-tight steel with no holes and doors that seal, for ${ascii(STATS.usedVsNew.phrase)}.`
     },
     {
       '@type': 'HowToStep',

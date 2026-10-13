@@ -42,7 +42,7 @@ Steel walls and a factory-built locking door system give a container a security 
 
 ## Weather resistance
 
-Every container we sell is Wind & Water Tight (used): sealed against rain, wind, snow, and pests out of the gate. A pole barn's weather-tightness depends on the quality of its build and ongoing maintenance of the roof and siding.
+Every container we stock is Wind & Water Tight (used): sealed against rain, wind, snow, and pests out of the gate. A pole barn's weather-tightness depends on the quality of its build and ongoing maintenance of the roof and siding.
 
 ## Permanence and permitting
 

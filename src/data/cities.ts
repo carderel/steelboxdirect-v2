@@ -195,7 +195,7 @@ export const cities: City[] = [
     },
     content: {
       h2: 'Why Columbus buyers choose Steel Box Direct',
-      intro: 'Central Ohio moves freight for a living (the airport authority puts nearly half the U.S. population inside a one-day truck drive of Rickenbacker), and the boxes riding those trucks are the same boxes we sell. We\'re a family-owned operation selling one honest grade: Wind & Water Tight steel, delivered where you need it.',
+      intro: 'Central Ohio moves freight for a living (the airport authority puts nearly half the U.S. population inside a one-day truck drive of Rickenbacker), and the boxes riding those trucks are the same boxes we sell. We\'re a family-owned operation stocking one honest grade: Wind & Water Tight steel, delivered where you need it.',
       features: [
         { title: 'Logistics-Corridor Storage', body: 'Rickenbacker\'s air-freight operation and the Norfolk Southern intermodal terminal next to it anchor a warehousing belt south of the city. A container on your own lot adds secure overflow capacity without signing another lease.' },
         { title: 'Farm & Field Access', body: 'Madison, Union, Pickaway, and Fairfield counties are working farm country. We plan for soft ground and long lane approaches before scheduling, not on delivery day.' },
@@ -381,7 +381,7 @@ export const cities: City[] = [
     },
     content: {
       h2: 'Why Lexington buyers choose Steel Box Direct',
-      intro: 'The Inner Bluegrass is farm country with a manufacturing spine running through it, and both halves need storage that doesn\'t come with a monthly bill. We\'re a family-owned operation selling one honest grade: Wind & Water Tight steel, delivered where you need it.',
+      intro: 'The Inner Bluegrass is farm country with a manufacturing spine running through it, and both halves need storage that doesn\'t come with a monthly bill. We\'re a family-owned operation stocking one honest grade: Wind & Water Tight steel, delivered where you need it.',
       features: [
         { title: 'Farm & Paddock Access', body: 'The Kentucky Geological Survey lists Lexington, Versailles, Paris, Winchester, Georgetown and Nicholasville as cities sitting on karst, and that limestone ground is why the horse farms are here. We plan for soft spots, long farm lanes and gate widths before scheduling, not on delivery day.' },
         { title: 'Manufacturing & Distribution Overflow', body: 'Scott County runs on the Georgetown assembly plant Toyota calls its largest vehicle factory in the world, and the supplier network around it fills a lot of leased square footage. A container on your own lot adds secure overflow capacity without signing another lease.' },
@@ -443,7 +443,7 @@ export const cities: City[] = [
     },
     content: {
       h2: 'Why Huntington buyers choose Steel Box Direct',
-      intro: 'The Ohio River works for a living here. Army Corps waterborne-commerce figures ranked the Huntington tri-state port area the nation\'s busiest inland port in 2019, and the steel boxes riding those same corridors are what we sell. We\'re a family-owned operation selling one honest grade: Wind & Water Tight steel, delivered where you need it.',
+      intro: 'The Ohio River works for a living here. Army Corps waterborne-commerce figures ranked the Huntington tri-state port area the nation\'s busiest inland port in 2019, and the steel boxes riding those same corridors are what we sell. We\'re a family-owned operation stocking one honest grade: Wind & Water Tight steel, delivered where you need it.',
       features: [
         { title: 'River & Rail Corridor Storage', body: 'Coal, gasoline, fuel oil and limestone move through eighteen freight docks along this stretch of the Ohio, and both CSX and Norfolk Southern serve the corridor. A container on your own lot adds secure overflow capacity without signing another lease.' },
         { title: 'Hill-Country Site Planning', body: 'Wayne and Lincoln counties are dissected plateau country, and a lot of the buildable ground is a shelf between a creek and a hillside. We plan for soft ground, tight turns and long lane approaches before scheduling, not on delivery day.' },
@@ -633,7 +633,7 @@ export const cities: City[] = [
     },
     content: {
       h2: 'Why Charleston buyers choose Steel Box Direct',
-      intro: 'The Charleston metro is built around its port (SC Ports ranks the Port of Charleston the 8th-largest U.S. container port), with Boeing and Volvo anchoring the industrial side. Weather-tight storage is a way of life on this coast, and that\'s the only grade we sell.',
+      intro: 'The Charleston metro is built around its port (SC Ports ranks the Port of Charleston the 8th-largest U.S. container port), with Boeing and Volvo anchoring the industrial side. Weather-tight storage is a way of life on this coast, and that\'s the only grade we stock.',
       features: [
         { title: 'Port & Plant Corridor', body: 'From the Cooper River terminals to Boeing North Charleston and the Volvo plant in Ridgeville, the I-26 corridor runs on freight. A container puts secure overflow storage on your own site, right on the corridor.' },
         { title: 'Hurricane-Season Sense', body: 'The state\'s emergency management division publishes evacuation zones and an annual hurricane guide for this coastline. Locals here think about secure, weather-tight storage differently. Wind & Water Tight steel is built for exactly that.' },

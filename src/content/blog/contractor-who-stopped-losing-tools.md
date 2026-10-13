@@ -78,7 +78,7 @@ If your crew keeps losing tools, the fix isn't always more security gear. Someti
 
 ## Facts in This Story
 
-- Every container Steel Box Direct sells is **Wind & Water Tight (WWT)**: used, checked over, and sealed against rain, wind, and pests.
+- Every container Steel Box Direct stocks is **Wind & Water Tight (WWT)**: used, checked over, and sealed against rain, wind, and pests.
 - Containers are a **one-time buy**, not a monthly rental. There are no ongoing fees to keep using one.
 - We deliver and service within roughly **250 miles of Cincinnati**: Ohio, Indiana, Kentucky, and western West Virginia.
 - **Almost all deliveries take about two weeks.** We give you an honest window before you commit.

@@ -437,7 +437,7 @@ Of all the sizes on this chart, Steel Box Direct sells three, all Wind & Water T
 
 These three make up almost all of the used market in our region. The other sizes are harder to source. Smaller 8ft boxes are built too, and sellers market them for storage. Far fewer 10ft containers are in circulation than 20ft or 40ft, so used ones are hard to find. The 20ft High Cube and the 48ft are rare. The 45ft High Cube and the 53ft exist, but they move through different channels, like rail yards. We don't stock any of them. A 10ft is the one we'll look for as a special request, so ask if you need one. The rest are included so this chart is a complete reference, not because they're something we offer.
 
-Every container we sell is checked and sealed against rain, wind, snow, and pests before it reaches you. Our [condition guide](/condition/) explains exactly what that Wind & Water Tight standard covers, and our [plain-English guide to what "Wind & Water Tight" means](/blog/wind-and-water-tight-explained/) breaks the grade down term by term.
+Every container we stock is checked and sealed against rain, wind, snow, and pests before it reaches you. Our [condition guide](/condition/) explains exactly what that Wind & Water Tight standard covers, and our [plain-English guide to what "Wind & Water Tight" means](/blog/wind-and-water-tight-explained/) breaks the grade down term by term.
 
 ## Use the interactive size calculator
 

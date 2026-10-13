@@ -202,7 +202,9 @@ function getPaymentIntentLabel(data: QuoteFormData): string {
 // String.replace() swaps only the FIRST match, so "wind_water_tight" was reaching buyers
 // as "wind water_tight" and "1_3_months" as "1-3_months". Keep these in sync with the
 // <option> values in src/pages/quote/index.astro. Condition stays single-grade on purpose:
-// the site sells Wind and Water Tight used only.
+// the form offers only the stocked grade, Wind and Water Tight used. New (one-trip) and Cargo
+// Worthy are by special request (owner ruling 2026-10-13) and are confirmed by Doug per buyer,
+// not offered as a form option.
 const SIZE_LABELS: Record<string, string> = {
   '20ft': '20ft Standard',
   '40ft': '40ft Standard',

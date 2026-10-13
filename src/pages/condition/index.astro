@@ -6,8 +6,8 @@ import { lifecycleFacts } from '../../data/containerReference';
 // THE CONDITION FAQ. These pairs ARE the visible FAQ section AND the FAQPage JSON-LD (mapped into
 // the schema prop below), so the two can never drift apart. Same pattern as
 // src/pages/delivery/index.astro. Fact checked in docs/fact-check-ledger.md, entry
-// faq-10ft-size-condition-cost. Keep "We do not sell one-trip containers today" until the owner
-// confirms new/one-trip stock.
+// faq-10ft-size-condition-cost. Owner ruling 2026-10-13: we stock used WWT; new (one-trip) and Cargo
+// Worthy are by special request only. Never state a price, discount, warranty or guarantee for them.
 interface Faq { q: string; a: string }
 const faqs: Faq[] = [
   {
@@ -18,7 +18,8 @@ const faqs: Faq[] = [
       + `scratches and dents, but it still keeps out rain, wind, snow and pests, with no holes and doors that seal, for ${STATS.usedVsNew.phrase}. `
       + `If the box has to look sharp on a branded lot or a customer-facing site, new can be worth the premium. `
       + `If the job is keeping things dry and secure, used does that job for less. `
-      + `We sell used Wind & Water Tight containers. We do not sell one-trip containers today.`,
+      + `We stock used Wind & Water Tight containers. New (one-trip) and Cargo Worthy containers are available by special request; `
+      + `ask us and we'll confirm what we can get for your ZIP.`,
   },
 ];
 ---
@@ -27,7 +28,7 @@ const faqs: Faq[] = [
   pageType="guide"
   guideTopic="condition"
   title="Shipping Container Condition Guide: Wind & Water Tight"
-  description="What container condition means. Every box we sell is Wind & Water Tight (used): keeps out rain, wind, snow and pests, with no holes and doors that seal."
+  description="What container condition means. Every box we stock is Wind & Water Tight (used): keeps out rain, wind, snow and pests, with no holes and doors that seal."
   datePublished="2026-05-19"
   dateModified="2026-10-13"
   schema={{ kind: 'guide', topic: 'condition', title: 'Shipping Container Condition Guide: Wind & Water Tight', specs: [], faqs: faqs.map((f) => ({ q: f.q, a: f.a })) }}
@@ -41,7 +42,7 @@ const faqs: Faq[] = [
       </div>
       <h1 class="big guide_headline" style="color: var(--cream);">Used Steel.<br><em>Built to Last.</em></h1>
       <p class="guide-lede guide_lede" style="opacity: .9;">
-        Every container we sell is Wind & Water Tight: used steel that keeps out rain, wind,
+        Every container we stock is Wind & Water Tight: used steel that keeps out rain, wind,
         snow, and pests, with no holes and doors that seal, for {STATS.usedVsNew.phrase}. Here's exactly what that means in practice.
       </p>
     </div>
@@ -52,7 +53,7 @@ const faqs: Faq[] = [
       <div class="row guide_main_row">
         <div class="main-col guide_main_col">
           <h2>What "Wind & Water Tight" Means</h2>
-          <p>Shipping containers are graded by their remaining useful life. Every container we sell is <strong>Wind & Water Tight (used)</strong>, the grade that does everything most buyers need at the best value.</p>
+          <p>Shipping containers are graded by their remaining useful life. Every container we stock is <strong>Wind & Water Tight (used)</strong>, the grade that does everything most buyers need at the best value.</p>
           <p style="font-weight: 600;">Keeps out rain, wind, snow, and pests, with no holes and doors that seal, at a fraction of the cost of new.</p>
 
           <div class="grade-card guide_comparison_item" style="border-left-color: var(--c2-cond);">
@@ -89,7 +90,7 @@ const faqs: Faq[] = [
       <div class="cond-onetrip">
         <h2>One-Trip ("New") vs Wind &amp; Water Tight</h2>
         <p>When people shop for new shipping containers, what the market actually sells is a one-trip unit: a container built overseas, loaded once for its single ocean crossing, and sold on arrival. It is the closest thing to new steel you can buy. Expect original paint, an intact floor, minimal wear, and a premium price to match. For image-sensitive placements, a branded lot or a customer-facing site, one-trip can be worth it.</p>
-        <p>We do not sell one-trip containers today. Everything we sell is used Wind &amp; Water Tight: working steel retired from cargo service that still keeps out rain, wind, snow and pests, with no holes and doors that seal. For storage, that seal is the entire job, and a WWT unit does it at a fraction of the cost of one-trip. The wear you accept is cosmetic (surface rust, scratches, dents), and our Lifetime Leak Warranty stands behind the seal: if it ever leaks, we send you a fiberglass patch kit you apply yourself, which is more than most sellers put in writing at all. If pristine steel matters to your project, buy one-trip from a dealer who carries it. If keeping things dry, secure, and owned is the goal, WWT is the value pick.</p>
+        <p>We stock used Wind &amp; Water Tight containers: working steel retired from cargo service that still keeps out rain, wind, snow and pests, with no holes and doors that seal. For storage, that seal is the entire job, and a WWT unit does it at a fraction of the cost of one-trip. The wear you accept is cosmetic (surface rust, scratches, dents), and on our WWT units the Lifetime Leak Warranty stands behind the seal: if it ever leaks, we send you a fiberglass patch kit you apply yourself, which is more than most sellers put in writing at all. If pristine steel matters to your project, new (one-trip) and Cargo Worthy containers are available by special request; ask us and we'll confirm what we can get for your ZIP. If keeping things dry, secure, and owned is the goal, WWT is the value pick.</p>
       </div>
 
       <div class="cond-lifecycle">

@@ -1,6 +1,6 @@
 // src/data/condition.ts
 // SINGLE SOURCE OF TRUTH for container CONDITION messaging.
-// We sell ONE grade. Change the wording here and it propagates everywhere
+// We stock ONE grade (new/one-trip and Cargo Worthy are special request only, owner 2026-10-13). Change the wording here and it propagates everywhere
 // that imports it, so no more multi-file sweeps when the grade/positioning changes.
 
 export const CONDITION = {
