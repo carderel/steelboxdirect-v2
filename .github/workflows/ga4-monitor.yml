@@ -1,0 +1,54 @@
+name: GA4 monitor
+
+# Daily health check on the lead funnel, owner approved 2026-10-19. Reads GA4 through the Data API
+# with a read only service account and probes production, then raises ONE reused GitHub issue
+# labelled ga4-monitor when something is amiss. Same alert channel as geo-pricing-watchdog.yml.
+#
+# Checks (rules and unit tests: src/lib/monitoring/ga4Monitor.mjs and ga4Monitor.test.ts):
+#   1. no-leads          zero generate_lead and generate_lead_callback on the last two completed weekdays
+#   2. traffic-collapse  latest completed day under 30% of the trailing 28 day same-weekday average
+#   3. silent-events     page_view, generate_lead, form_start, phone_click fired in the prior 28 days, zero for 7
+#   4. smoke             home, /quote/, a city page answer 200; POST {} to /api/submit-quote answers 400
+#
+# DEDUPE. A problem that is already on the open issue posts nothing new; the issue gets a comment only
+# when the set of problems changes, and closes itself on the first run where every check ran green.
+#
+# MISSING SECRETS. Smoke still runs. GA4 checks are reported NOT RUN, the job goes red with one
+# ::error:: line, and no issue is filed for it. Runs on SBD's GitHub only, never n8n or work accounts.
+
+on:
+  schedule:
+    # 13:00 UTC, 8 or 9am Eastern: yesterday is complete in the property timezone by then.
+    - cron: '0 13 * * *'
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: ga4-monitor
+  cancel-in-progress: false
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out main
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      # No npm install: the script uses only Node built ins.
+      - name: Run the monitor
+        env:
+          GA4_SA_KEY: ${{ secrets.GA4_SA_KEY }}
+          GA4_PROPERTY_ID: ${{ vars.GA4_PROPERTY_ID || secrets.GA4_PROPERTY_ID }}
+          GA4_TIMEZONE: ${{ vars.GA4_TIMEZONE || 'America/New_York' }}
+          GITHUB_TOKEN: ${{ github.token }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: node scripts/ga4-monitor.mjs
