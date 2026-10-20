@@ -72,6 +72,11 @@ export function initAttribution(): void {
   if (stored) {
     // Existing session - update pages visited
     data = JSON.parse(stored);
+    if (!data?.session || !Array.isArray(data.session.pagesVisited)) {
+      // Corrupt record: drop it and start fresh on the next page load.
+      localStorage.removeItem(STORAGE_KEY);
+      return;
+    }
 
     // Add current page if not already tracked
     const currentPath = window.location.pathname;
