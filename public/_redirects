@@ -11,6 +11,11 @@
 /~partytown / 301
 /~partytown/* / 301
 
+# AI assistant hallucinated slug (2026-10-19). ChatGPT sends visitors to this
+# URL, which never existed; the real page drops "shipping".
+/portable-storage-vs-buying-a-shipping-container/ /portable-storage-vs-buying-a-container/ 301
+/portable-storage-vs-buying-a-shipping-container /portable-storage-vs-buying-a-container/ 301
+
 # ---- BEGIN generated: retired county permit URLs (2026-09-16, rewritten 2026-09-17) ----
 # The 77 pages at /permits/{state}/{county}/ were folded into the 11 state
 # pages on 2026-09-16, each one keeping the slug its URL ended in as a section
