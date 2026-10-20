@@ -511,6 +511,24 @@ const isProd = import.meta.env.PROD;
       }
     </style>
 
+    <!-- Phone click tracking -->
+    {/*
+      Added 2026-10-19. Every tel: link click pushes ONE clean dataLayer event, phone_click, in the
+      same style as generate_lead and generate_lead_callback. GTM picks it up with a Custom Event
+      trigger on phone_click (see UDO Project/.outputs/strategy/2026-10-19-gtm-phone-click-fix.md).
+
+      Why site side and not a GTM click trigger: the GTM tag built its event name as
+      phone_click>>{{Page Path}}, which is not a valid GA4 event name and splits one event into one
+      name per page, and its All Elements twin missed every tap on the icon or label inside the
+      .call-now link because Click URL is empty there. closest() fixes that here.
+
+      One delegated listener, capture phase, no library. Not gated on isProd: without GTM the push
+      goes nowhere, and leaving it ungated keeps it testable in dev. No PII: the number is ours.
+      CSP: script-src already allows 'unsafe-inline' (src/lib/aeo/securityHeaders.mjs).
+    */}
+    <script is:inline>document.addEventListener('click',function(e){var a=e.target&&e.target.closest&&e.target.closest('a[href^="tel:"]');if(!a)return;window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:'phone_click',link_location:a.closest('footer')?'footer':a.closest('header,nav')?'header':'content'});},true);</script>
+    <!-- End Phone click tracking -->
+
     <!-- Cloudflare Web Analytics -->
     {/*
       Gated on isProd for the same reason the GTM tags above are: an ungated beacon reports every
