@@ -158,11 +158,18 @@ const crumbs = [
 // override allows a figure on a CITY page under four conditions, one of which is a named ZIP. A state
 // is not a ZIP, so there is no honest way to state one here and the page links to /cost/ instead.
 const title = `Shipping Containers in ${entry.state}: Where We Deliver`;
+// Singular wording when the state has one city: "each metro" and "each one" read wrong over a
+// single card.
+const single = entry.cities.length === 1;
 const description =
   mix === 'home'
-    ? `Shipping containers delivered across ${entry.state}, inside our home delivery region. Every ${entry.state} market we cover, with the counties each one reaches.`
+    ? single
+      ? `Shipping containers delivered across ${entry.state}, inside our home delivery region. The ${entry.state} market we cover, with the counties it reaches.`
+      : `Shipping containers delivered across ${entry.state}, inside our home delivery region. Every ${entry.state} market we cover, with the counties each one reaches.`
     : mix === 'depot'
-      ? `Shipping containers delivered in ${entry.state} through our supplier network, from a depot in each metro. Every market we cover, and what each one reaches.`
+      ? single
+        ? `Shipping containers delivered in ${entry.state} through our supplier network, from a depot in the ${entry.cities[0].city} metro. The market we cover, and what it reaches.`
+        : `Shipping containers delivered in ${entry.state} through our supplier network, from a depot in each metro. Every market we cover, and what each one reaches.`
       : `Shipping containers delivered across ${entry.state}. Every market we cover, labelled city by city: home region delivery, or a supplier-network depot.`;
 ---
 
@@ -191,7 +198,7 @@ const description =
       </div>
       <h1 class="ls_headline">Shipping Containers in <em>{entry.state}.</em></h1>
       <p class="ls_lede">
-        {entry.cities.length === 1 ? 'The one' : `All ${entry.cities.length}`} {entry.state} {entry.cities.length === 1 ? 'market' : 'markets'} we deliver to, with how each one is fulfilled written on the card instead of left for you to guess.
+        {single ? 'The one' : `All ${entry.cities.length}`} {entry.state} {single ? 'market' : 'markets'} we deliver to, with how {single ? 'it is' : 'each one is'} fulfilled written on the card instead of left for you to guess.
       </p>
 
       <div class="ls-framing">

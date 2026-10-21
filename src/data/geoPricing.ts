@@ -18,7 +18,7 @@
 // the population-centroid ZIP in src/data/geoCentroids.ts. Per SKU: the delivered figure, the pickup
 // figure, an approximate pickup distance, an availability flag, and the date that figure last
 // CHANGED. Used Wind and Water Tight is the only grade priced here, which is the only grade this
-// site stocks. Nothing else belongs in this file.
+// site sells. Nothing else belongs in this file.
 //
 // UNIT PRICE BASIS, and the live bug it exists to prevent. Every delivered figure is the DELIVERY
 // unit price plus the base delivery cost, rounded once at the end and never in parts. The feed also
@@ -106,7 +106,7 @@ export const geoSkuKeys: GeoSkuKey[] = ['20ftCargo', '40ftStandard', '40ftStanda
  * ISO date of the last successful, fully validated harvest run, or null before the first one.
  * OPERATIONAL ONLY, never rendered on any surface. See rule 4 in the header.
  */
-export const lastVerified: string | null = '2026-10-13';
+export const lastVerified: string | null = '2026-10-21';
 
 /**
  * Metro slug to priced record. Empty until the first harvest run commits, which is why every
@@ -136,6 +136,32 @@ export const geoPricing: Record<string, GeoMetroPricing> = {
         pickupDistanceMiles: 7.3,
         available: true,
         effectiveSince: "2026-09-30"
+      }
+    }
+  },
+  "charlotte-shipping-containers": {
+    zip: "28206",
+    skus: {
+      "20ftCargo": {
+        delivered: 2400,
+        pickup: 1850,
+        pickupDistanceMiles: 7.1,
+        available: true,
+        effectiveSince: "2026-10-21"
+      },
+      "40ftStandard": {
+        delivered: 2880,
+        pickup: 1720,
+        pickupDistanceMiles: 204.2,
+        available: true,
+        effectiveSince: "2026-10-21"
+      },
+      "40ftStandardHC": {
+        delivered: 3070,
+        pickup: 2620,
+        pickupDistanceMiles: 7.1,
+        available: true,
+        effectiveSince: "2026-10-21"
       }
     }
   },

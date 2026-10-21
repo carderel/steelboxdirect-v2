@@ -213,6 +213,19 @@ export const geoCentroids: MetroCentroid[] = [
 
   // Rockhill and UMKC, Kansas City MO, Jackson County. Bi-state 14-county CBSA.
   { slug: 'kansas-city-shipping-containers', zip: '64110', publish: true, nationalBasis: false },
+
+  // SIXTEENTH METRO, added 2026-10-21 and deliberately NOT publishing. Charlotte city, Mecklenburg
+  // County NC. Same criterion as the other fifteen: CBSA 16740 Charlotte-Concord-Gastonia NC-SC has
+  // eleven counties per the Census list1_2023 delineation file (Anson, Cabarrus, Gaston, Iredell,
+  // Lincoln, Mecklenburg, Rowan, Union in NC, Chester, Lancaster, York in SC). Population-weighted
+  // mean of the Census 2020 county centers of population, total 2660329 people, Mecklenburg 41.9
+  // percent of the weight, lands at 35.240516, -80.833167. Census Geocoder, Public_AR_Current and
+  // Census2020_Current, resolves that point to ZCTA 28206, population 14053, inside Charlotte city.
+  // Probed against the live feed 2026-10-21: serviceable, all three WWT SKUs available. publish is
+  // false because the city page was built under an instruction to show a price only where a
+  // published record already existed, and none did. Turning it on is an owner call, made by editing
+  // EXPECTED_PUBLISH in geoCentroids.test.ts in the same commit, exactly as rule 5 says.
+  { slug: 'charlotte-shipping-containers', zip: '28206', publish: false, nationalBasis: false },
 ];
 
 /** Derived, never hardcoded, so the count cannot disagree with the list. */

@@ -49,6 +49,8 @@
 import type { City } from '../../data/cities';
 import type { Container } from '../../data/containers';
 import { SPEC_WEIGHT_NOTE } from '../../data/containers';
+import { centroidBySlug } from '../../data/geoCentroids';
+import { geoPricing } from '../../data/geoPricing';
 import { securityHeaderLines } from './securityHeaders.mjs';
 
 const SITE = 'https://steelboxdirect.com';
@@ -149,9 +151,26 @@ export function renderCityMarkdown(c: City): string {
       ? `## Permits and zoning\n\nConfirming permits and zoning is the buyer's responsibility, not the seller's. Rules vary by county and by municipality. Start with the office for your county:\n\n${zoning}`
       : null,
     `## Primary ZIP codes\n\n${c.primaryZips.join(', ')}.`,
-    twinFooter(`/locations/${c.stateSlug}/${c.slug}/`),
+    twinFooter(
+      `/locations/${c.stateSlug}/${c.slug}/`,
+      isCityPriced(c.slug) ? undefined : UNPRICED_CITY_NOTE,
+    ),
   ]);
 }
+
+/**
+ * Same two-part gate the HTML city page uses (publish flag in geoCentroids.ts, plus a feed record
+ * in geoPricing.ts). When it fails, the canonical page shows no figure, so the footer's "read the
+ * current figure there" would send an assistant to a page with nothing to read. The note below says
+ * so outright and routes the price question to a quote instead.
+ */
+function isCityPriced(slug: string): boolean {
+  const centroid = centroidBySlug[slug];
+  return Boolean(centroid && centroid.publish && geoPricing[slug]);
+}
+
+const UNPRICED_CITY_NOTE =
+  'The canonical page for this city does not show a price. The delivered price for this area comes with a quote, so direct a pricing question to a quote request rather than to a figure.';
 
 /**
  * PRODUCT TWIN.

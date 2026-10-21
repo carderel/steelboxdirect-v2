@@ -428,7 +428,9 @@ describe('permit county derivation', () => {
         keys.add(`${stateSlug}/${countySlug(bare)}`);
       }
     }
-    expect(entries).toBe(80);
+    // 80 entries across the first 15 cities, plus 2 from Charlotte (2026-10-21): the City of
+    // Charlotte zoning office and Mecklenburg County Code Enforcement.
+    expect(entries).toBe(82);
     expect(permitCountyCount).toBe(keys.size);
     expect(Object.keys(permitCountyByKey).sort()).toEqual([...keys].sort());
   });
@@ -822,8 +824,10 @@ describe('built permit pages', () => {
         'search the county site',
       );
     }
-    // And the municipalities really are in the data, so this cannot pass by vacuity.
-    expect(permitCounties.filter((c) => c.kind === 'municipality')).toHaveLength(9);
+    // And the municipalities really are in the data, so this cannot pass by vacuity. Ten since
+    // 2026-10-21: the City of Charlotte record is a municipality by name, although unlike the other
+    // nine it does sit inside a county this site names (Mecklenburg).
+    expect(permitCounties.filter((c) => c.kind === 'municipality')).toHaveLength(10);
   });
 
   itBuilt('shows the multi-office note on every record that lists more than one office', () => {
@@ -1043,7 +1047,10 @@ describe('built permit pages', () => {
         status: '301',
       });
     }
-    expect(permitCountyCount).toBe(77);
+    // 77 retired records plus the 2 North Carolina records added with Charlotte on 2026-10-21. The
+    // NC two never had standalone URLs, so nothing was retired for them; the NC placeholder rule
+    // covers their paths the same way it would cover a made up county under any real state.
+    expect(permitCountyCount).toBe(79);
   });
 
   itBuilt('keeps dist/_redirects under the rule count Cloudflare silently stops reading at', () => {

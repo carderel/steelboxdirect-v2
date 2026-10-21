@@ -28,8 +28,9 @@
 # returned 404, and the break tracked POSITION IN THE FILE rather than anything
 # about the rule. Rule 105 worked and rule 109 did not.
 #
-# So the 154 lines are now 22, one PLACEHOLDER rule per state per slash form,
-# and the whole file is 34 rules. :county is a Cloudflare Pages placeholder: it
+# So the 154 lines became one PLACEHOLDER rule per state per slash form. As of
+# 2026-10-21 that is 24 rules for 12 states (North Carolina added), and the
+# whole file is 32 rules. :county is a Cloudflare Pages placeholder: it
 # matches exactly one path segment and is substituted into the destination,
 # fragment included. Verified by serving a fixture through wrangler pages dev,
 # the same asset runtime Pages itself runs, rather than assumed from the docs:
@@ -71,6 +72,8 @@
 /permits/missouri/:county /permits/missouri/#:county 301
 /permits/new-york/:county/ /permits/new-york/#:county 301
 /permits/new-york/:county /permits/new-york/#:county 301
+/permits/north-carolina/:county/ /permits/north-carolina/#:county 301
+/permits/north-carolina/:county /permits/north-carolina/#:county 301
 /permits/ohio/:county/ /permits/ohio/#:county 301
 /permits/ohio/:county /permits/ohio/#:county 301
 /permits/south-carolina/:county/ /permits/south-carolina/#:county 301

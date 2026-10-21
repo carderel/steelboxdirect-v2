@@ -25,6 +25,8 @@ import { join } from 'node:path';
 import { cities } from '../../data/cities';
 import { containers } from '../../data/containers';
 import { CONDITION } from '../../data/condition';
+import { centroidBySlug } from '../../data/geoCentroids';
+import { geoPricing } from '../../data/geoPricing';
 import {
   renderHeadersFile,
   renderCityMarkdown,
@@ -117,4 +119,19 @@ describe('markdown twin guard: every twin routes pricing questions to the live p
     expect(body).toContain('its effective date');
     expect(body).toContain('average starting price rather than a quote');
   });
+});
+
+describe('markdown twin guard: unpriced metros say so', () => {
+  const unpriced = cities.filter((c) => {
+    const centroid = centroidBySlug[c.slug];
+    return !(centroid && centroid.publish && geoPricing[c.slug]);
+  });
+
+  it.each(unpriced.map((c) => [c.slug, renderCityMarkdown(c)] as [string, string]))(
+    '%s twin says its page shows no price and the price comes with a quote',
+    (_slug, body) => {
+      expect(body).toContain('The canonical page for this city does not show a price.');
+      expect(body).toContain('comes with a quote');
+    },
+  );
 });

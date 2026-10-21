@@ -15,6 +15,7 @@ const DEPOT_SLUGS = [
   'charleston-shipping-containers', 'norfolk-shipping-containers',
   'houston-shipping-containers', 'new-york-shipping-containers',
   'detroit-shipping-containers', 'kansas-city-shipping-containers',
+  'charlotte-shipping-containers',
 ];
 
 describe('cities ground-truth dataset integrity', () => {
@@ -22,16 +23,16 @@ describe('cities ground-truth dataset integrity', () => {
     expect(cities.map((c) => c.slug)).toEqual(expect.arrayContaining(HOME_SLUGS));
   });
 
-  it('has all 8 depot cities', () => {
+  it('has all 9 depot cities', () => {
     expect(cities.map((c) => c.slug)).toEqual(expect.arrayContaining(DEPOT_SLUGS));
   });
 
-  it('has exactly 15 cities with unique slugs', () => {
-    expect(cities).toHaveLength(15);
-    expect(new Set(cities.map((c) => c.slug)).size).toBe(15);
+  it('has exactly 16 cities with unique slugs', () => {
+    expect(cities).toHaveLength(16);
+    expect(new Set(cities.map((c) => c.slug)).size).toBe(16);
   });
 
-  it('marks the 7 home cities region "home" and the 8 depot cities region "depot"', () => {
+  it('marks the 7 home cities region "home" and the 9 depot cities region "depot"', () => {
     for (const c of cities) {
       if (HOME_SLUGS.includes(c.slug)) expect(c.region).toBe('home');
       else expect(c.region).toBe('depot');

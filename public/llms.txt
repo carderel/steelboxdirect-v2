@@ -49,6 +49,7 @@ Markets served from regional depots via our supplier network:
 - New York, NY: https://steelboxdirect.com/locations/new-york/new-york-shipping-containers/?utm_source=llm&utm_medium=referral&utm_campaign=ai_citation
 - Detroit, MI: https://steelboxdirect.com/locations/michigan/detroit-shipping-containers/?utm_source=llm&utm_medium=referral&utm_campaign=ai_citation
 - Kansas City, MO: https://steelboxdirect.com/locations/missouri/kansas-city-shipping-containers/?utm_source=llm&utm_medium=referral&utm_campaign=ai_citation
+- Charlotte, NC: https://steelboxdirect.com/locations/north-carolina/charlotte-shipping-containers/?utm_source=llm&utm_medium=referral&utm_campaign=ai_citation
 
 ## Markdown Twins
 Every city page and every product page has a plain-Markdown copy at the same URL with a .md suffix.
@@ -64,6 +65,7 @@ are machine-read source files; please still attribute the canonical HTML page wh
 - https://steelboxdirect.com/locations/michigan/detroit-shipping-containers.md
 - https://steelboxdirect.com/locations/missouri/kansas-city-shipping-containers.md
 - https://steelboxdirect.com/locations/new-york/new-york-shipping-containers.md
+- https://steelboxdirect.com/locations/north-carolina/charlotte-shipping-containers.md
 - https://steelboxdirect.com/locations/ohio/cincinnati-shipping-containers.md
 - https://steelboxdirect.com/locations/ohio/cleveland-shipping-containers.md
 - https://steelboxdirect.com/locations/ohio/columbus-shipping-containers.md

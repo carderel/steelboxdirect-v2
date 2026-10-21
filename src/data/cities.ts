@@ -978,4 +978,68 @@ export const cities: City[] = [
       description: `Buying a shipping container in Kansas City? We provide ${CONDITION.label} containers with depot-based delivery to Jackson, Clay, and Platte counties.`,
     },
   },
+  // Charlotte, added 2026-10-21. Ground truth: UDO Project/.outputs/research/locations/2026-10-21-charlotte.md
+  // (grade A and B rows only). Depot confirmed by the owner 2026-10-21. Delivery is not limited to the
+  // listed counties (owner, 2026-10-21: "We deliver anywhere."). Mecklenburg County is the county
+  // named in delivery.counties, stats, the headline and the SEO description, and the six Mecklenburg
+  // towns are named only as places that run their own zoning.
+  {
+    slug: 'charlotte-shipping-containers',
+    city: 'Charlotte',
+    state: 'North Carolina',
+    stateSlug: 'north-carolina',
+    region: 'depot',
+    eyebrow: 'Charlotte · Mecklenburg County',
+    saleHeading: 'Shipping containers for sale in Charlotte, 20ft and 40ft.',
+    lede: 'From Uptown to the edges of Mecklenburg County, we deliver used steel containers across Charlotte. Every quote is priced to your ZIP.',
+    delivery: {
+      headline: 'Mecklenburg County',
+      body: 'Delivered from a depot that serves Charlotte, by way of I-77, I-85 and the I-485 loop. We cover Mecklenburg County, and every quote is priced to your ZIP. Almost all deliveries take about two weeks, and we\'ll give you an honest window before you commit. We plan placement and can talk through tight or soft sites before scheduling.',
+      counties: ['Mecklenburg County'],
+    },
+    map: {
+      bbox: '-81.043,35.027,-80.643,35.427',
+      marker: '35.2271,-80.8431',
+      title: 'Charlotte, NC delivery area map',
+    },
+    content: {
+      h2: 'Why Charlotte buyers choose Steel Box Direct',
+      intro: 'Charlotte is growing fast. The U.S. Census Bureau\'s latest estimates show it gained 20,731 residents from 2024 to 2025, more than any other U.S. city. More homes and more building mean more need for safe storage. We stock used Wind & Water Tight containers. New (one-trip) and Cargo Worthy containers are by special request, and so are 10ft sizes.',
+      features: [
+        { title: 'Plan for Red Clay', body: 'The red clay soils common to the Piedmont drain slowly and turn soft and sticky when wet. Plan for a firm, level spot that drains well. You can check your lot on the Charlotte-Mecklenburg flood maps, and the city notes that flooding can happen both inside and outside the mapped floodplains.' },
+        { title: 'Rain in Every Month', body: 'Charlotte gets about 43.6 inches of rain a year, and every month brings at least 3 inches. It also sees about 58 days a year with a low at or below freezing and about 49 days at 90°F or hotter. Weather like that can cause condensation inside any steel box, so plan for it before you load up.' },
+        { title: 'Know Who to Ask', body: 'Inside Charlotte, zoning questions go to the City of Charlotte Planning, Design & Development department. Ask them how Article 17 of the city\'s Unified Development Ordinance applies to your lot and your plans. Mecklenburg County Code Enforcement handles building permits for Charlotte and for the towns of Davidson, Cornelius, Huntersville, Matthews, Mint Hill and Pineville, and those six towns do their own zoning. Permit and zoning requirements are set by your local authority and are the buyer\'s responsibility to confirm before purchasing.' },
+      ],
+    },
+    stats: [
+      { value: '1', label: 'County served' },
+      { value: 'WWT', label: 'One honest grade' },
+      { value: 'Family-owned', label: 'Regional dealer' },
+    ],
+    primaryZips: ['28202', '28204', '28208'],
+    zoning: [
+      { county: 'City of Charlotte', office: 'City of Charlotte Planning, Design & Development, Unified Development Ordinance', url: 'https://charlotteudo.org/articles/' },
+      { county: 'Mecklenburg County', office: 'Mecklenburg County Code Enforcement, Permitting', url: 'https://code.mecknc.gov/permitting' },
+    ],
+    geography: {
+      interstates: ['I-77', 'I-85', 'I-485'],
+      features: ['Lake Norman', 'Mountain Island Lake', 'Lake Wylie'],
+    },
+    areaProfile: 'Charlotte sits in Mecklenburg County, on the North Carolina Piedmont. I-77 and I-85 run through the city, and I-485 is a 67-mile loop around it. The Charlotte Regional Business Alliance names advanced manufacturing, financial services, and logistics and distribution as the key sectors here. Norfolk Southern built its Charlotte Regional Intermodal Facility at Charlotte Douglas International Airport to move containers between trucks and trains. Along the Catawba River, Lake Norman, Mountain Island Lake and Lake Wylie line the county.',
+    commonUses: [
+      { label: 'Overflow storage for logistics and distribution businesses along the I-77 and I-85 corridors', persona: 'businesses' },
+      { label: 'Parts and equipment storage for Charlotte-area manufacturers', persona: 'businesses' },
+      { label: 'Jobsite storage for building projects across fast-growing Mecklenburg County', persona: 'contractors' },
+      { label: 'Home and garage overflow storage (in an HOA neighborhood, check its rules first)', persona: 'homeowners' },
+    ],
+    usesIntro: 'From warehouse lots near the interstates to backyards across Mecklenburg County, here\'s how Charlotte puts a container to work.',
+    cta: {
+      headline: 'Ready for a Charlotte quote?',
+      body: 'Most requests in Mecklenburg County are answered within 4 business hours.',
+    },
+    seo: {
+      title: 'Shipping & Storage Containers for Sale in Charlotte, NC',
+      description: `Shipping containers for sale in Charlotte, NC. ${CONDITION.label} 20ft and 40ft, depot delivery across Mecklenburg County, priced by ZIP.`,
+    },
+  },
 ];
