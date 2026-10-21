@@ -31,7 +31,7 @@ const faqs = [
   },
   {
     q: 'What kind of lock works best on a shipping container?',
-    a: 'The door hasp on most shipping containers accepts a standard discus or puck lock: Abloy, Medeco, or Master Lock "puck" series. These fit inside the lockbox recess on the door handle and are virtually impossible to cut without heavy equipment. Avoid standard padlocks with exposed shackles; they\'re vulnerable to bolt cutters. If you need to key multiple containers to the same lock for a large project, let us know and we can coordinate.',
+    a: 'The door hasp on most shipping containers accepts a standard discus or puck lock: Abloy, Medeco, or Master Lock "puck" series. Where the door has a welded lockbox, these seat inside its recess and are virtually impossible to cut without heavy equipment; not every used unit has one, and a bolt-on steel shroud can be added if yours does not. Avoid standard padlocks with exposed shackles; they\'re vulnerable to bolt cutters. If you need to key multiple containers to the same lock for a large project, let us know and we can coordinate.',
   },
   {
     q: 'How much space does the truck need to deliver a container?',
@@ -39,7 +39,7 @@ const faqs = [
   },
   {
     q: 'Can you stage containers across the phases of a build?',
-    a: "Yes. Phased delivery is one of the main reasons contractors choose us over a rental yard. We can drop multiple units at once for a large early phase, then pull them one at a time as each section closes out, or stagger drops so storage arrives as new trades mobilize. If you need boxes positioned in a specific configuration (side-by-side with doors aligned for a shared staging run, for example), describe the layout in your quote request and we'll sequence the delivery so the footprint works and every door stays accessible. Tie the schedule to your phase plan and we'll match it.",
+    a: "Yes. Phased delivery is one of the main reasons contractors choose us over a rental yard. We can drop multiple units at once for a large early phase, or stagger drops so storage arrives as new trades mobilize. If you need boxes positioned in a specific configuration (side-by-side with doors aligned for a shared staging run, for example), describe the layout in your quote request and we'll sequence the delivery so the footprint works and every door stays accessible. Tie the schedule to your phase plan and we'll match it.",
   },
   {
     q: 'What happens if we need to move the container mid-project?',
@@ -47,7 +47,7 @@ const faqs = [
   },
   {
     q: 'Is a shipping container better than a job-site trailer for tool and material storage?',
-    a: "For securing tools and materials, usually yes. A job-site trailer works as a site office, but it's single-skin with a residential-grade lock and windows, while a container is Cor-Ten steel with a puck-lock hasp in a recessed lockbox and no soft panel to cut. Doors open at grade so you walk or forklift straight in, and a 40ft holds storage for several trades at once. A trailer still wins if you mainly need a place to sit, plan, and run paperwork; the container wins when the priority is keeping gear from walking off overnight.",
+    a: "For securing tools and materials, usually yes. A job-site trailer works as a site office, but it's single-skin with a residential-grade lock and windows, while a container is Cor-Ten steel with no soft panel to cut, and many container doors carry a welded lockbox that shields a puck lock; if yours does not, a bolt-on steel shroud can be added. Doors open at grade so you walk or forklift straight in, and a 40ft holds storage for several trades at once. A trailer still wins if you mainly need a place to sit, plan, and run paperwork; the container wins when the priority is keeping gear from walking off overnight.",
   },
   {
     q: 'Gang box or shipping container: which is better for a job site?',
@@ -55,22 +55,22 @@ const faqs = [
   },
   {
     q: 'Can I get a storage container just for the length of a construction project?',
-    a: "Yes. We sell containers outright, and for job sites we deliver when the site is ready and retrieve the unit when the project wraps, so you're not stuck reselling steel or hauling it yourself once the punch list is done. We can also stage multiple units across phases and pull them one at a time as each section closes out. Tell us your schedule and delivery zip in the quote request and we'll plan the drops and the pickup around your phase plan.",
+    a: "Steel Box Direct does not rent containers. We sell them outright or rent-to-own, and for job sites we deliver when the site is ready. When the punch list is done, the unit is yours to keep for the next job or resell. We can also stage multiple units across phases. Tell us your schedule and delivery zip in the quote request and we'll plan the deliveries around your phase plan.",
   },
 ];
 ---
 
 <BaseLayout
   title="Shipping Containers for Job Sites in OH, IN, KY & Western WV"
-  description="Job site containers delivered across OH/IN/KY and western WV. Ground-level access, theft-resistant lockbox hasp, dropped and picked up when the job's done."
+  description="Job site containers delivered from a depot in your area. Ground-level access, lockable steel doors, and the box is yours when the job's done."
   pageType="guide"
   datePublished="2026-06-04"
-  dateModified="2026-08-25"
+  dateModified="2026-10-21"
   breadcrumbs={crumbs}
   floatingSidebar
   schema={{ kind: 'useCase', audience: 'contractors', title: 'Job Site Storage That Locks and Stays',
     specs: [
-      { k: 'Security', v: 'Puck-lock hasp, Cor-Ten steel, no soft spot to defeat' },
+      { k: 'Security', v: 'Lockable door hasp, Cor-Ten steel, no soft spot to defeat' },
       { k: 'Access', v: 'Ground-level doors, no dock or ramp needed' },
       { k: 'Condition', v: 'Wind & Water Tight (used)' },
       { k: 'Service area', v: 'OH · IN · KY · W. WV' },
@@ -84,9 +84,9 @@ const faqs = [
       <Breadcrumbs items={crumbs} />
       <span class="uc-eyebrow">For Contractors &amp; Construction</span>
       <h1 class="uc-h1">Job Site Storage That <span class="uc-h1-mark">Locks and Stays.</span></h1>
-      <p class="uc-lede">A steel box that bolt cutters can't open, doors that meet you at ground level, and a truck that comes back for it when the job wraps.</p>
-      <p class="uc-lede-support">We drop containers on active sites across Ohio, Indiana, Kentucky, and western West Virginia. No rental contract, no CDL on your end, no forklift to load it.</p>
-      <p class="uc-trust-strip m">Theft-resistant lockbox hasp · Ground-level door access · Delivered &amp; retrieved on your schedule · Quote back within 4 business hours</p>
+      <p class="uc-lede">A steel box that bolt cutters can't open, doors that meet you at ground level, and a box that's yours to keep when the job wraps.</p>
+      <p class="uc-lede-support">We drop containers on active sites, delivered from a depot in your area. No rental contract, no CDL on your end, no forklift to load it.</p>
+      <p class="uc-trust-strip m">Lockable steel doors · Ground-level door access · Delivered on your schedule · Quote back within 4 business hours</p>
     </div>
 
     <!-- IMAGE SLOT 1: hero (full-bleed). filename: jobsite-container-delivery-hero.jpg -->
@@ -143,13 +143,13 @@ const faqs = [
           </figure>
         </div>
         <div class="uc-block">
-          <h3>Delivered and retrieved on your schedule</h3>
-          <p>We deliver within 250 miles of Cincinnati. You call when the site's ready; we drop the box. When the punch list is done, we come pick it up, so you're not stuck reselling steel or hauling it yourself.</p>
-          <p>There's no rental center to visit, no trailer to register, no CDL required on your end, and no monthly meter running while the unit sits idle between phases. The container stays exactly as long as the job does, and not a day of paperwork longer.</p>
+          <h3>Delivered on your schedule</h3>
+          <p>We deliver from a depot in your area. You call when the site's ready; we drop the box. When the punch list is done, the unit is yours to keep for the next job or resell.</p>
+          <p>There's no rental center to visit, no trailer to register, no CDL required on your end, and no monthly meter running while the unit sits idle between phases. The container is yours, so there is no rental term to close out when the job ends.</p>
         </div>
         <div class="uc-block">
           <h3>Flexible for multi-trade and phased projects</h3>
-          <p>One 40ft container holds material and tool storage for several trades at once (electrical, plumbing, framing, finish) without anyone tripping over anyone else's gear. When a new phase opens up and you need a second box, we drop another. When an early phase closes out and you're done with the first, we pull it.</p>
+          <p>One 40ft container holds material and tool storage for several trades at once (electrical, plumbing, framing, finish) without anyone tripping over anyone else's gear. When a new phase opens up and you need a second box, we drop another. When an early phase closes out, the first box is still yours for the next phase or the next job.</p>
           <p>Availability depends on inventory; we confirm timing when you request a quote, so storage keeps pace with the schedule instead of dictating it.</p>
         </div>
       </div>
@@ -170,12 +170,12 @@ const faqs = [
             <tr><th scope="col">On a job site</th><th scope="col">Job-site trailer (rented)</th><th scope="col">Gang box</th><th scope="col">Steel container</th></tr>
           </thead>
           <tbody>
-            <tr><th scope="row">Security</th><td>Single-skin walls, residential-grade lock, windows</td><td>Solid for hand tools, but small and pryable at the lid</td><td>Cor-Ten steel, puck-lock hasp in a recessed lockbox, no soft spot</td></tr>
+            <tr><th scope="row">Security</th><td>Single-skin walls, residential-grade lock, windows</td><td>Solid for hand tools, but small and pryable at the lid</td><td>Cor-Ten steel, lockable door hasp, no soft spot</td></tr>
             <tr><th scope="row">Capacity</th><td>Decent, but tapers and wheel wells eat into it</td><td>Hand tools and small power tools only</td><td>Full crews, materials, and rolling equipment; a 40ft holds several trades</td></tr>
             <tr><th scope="row">Access</th><td>Steps or a small ramp up to the door</td><td>Lift the lid and bend in</td><td>Doors open at grade; walk or forklift straight in</td></tr>
-            <tr><th scope="row">Cost model</th><td>Rented, with a monthly meter that runs between phases</td><td>One-time buy, low cost</td><td>Buy once; we can retrieve it when the job wraps</td></tr>
+            <tr><th scope="row">Cost model</th><td>Rented, with a monthly meter that runs between phases</td><td>One-time buy, low cost</td><td>Buy once; it's yours when the job wraps</td></tr>
             <tr><th scope="row">Weather</th><td>Holds up, but seams and windows can leak</td><td>Basic; not fully weather-sealed</td><td>Wind &amp; Water Tight: sealed against rain, snow, and pests</td></tr>
-            <tr><th scope="row">On &amp; off site</th><td>Towed in and out; needs a hitch and a truck</td><td>Craned or forklifted into a truck bed</td><td>We deliver and retrieve on your schedule, no CDL on your end</td></tr>
+            <tr><th scope="row">On &amp; off site</th><td>Towed in and out; needs a hitch and a truck</td><td>Craned or forklifted into a truck bed</td><td>We deliver on your schedule, no CDL on your end</td></tr>
           </tbody>
         </table>
       </div>
@@ -201,7 +201,7 @@ const faqs = [
         <div class="uc-theft-copy">
           <p class="uc-theft-intro">A container only protects what's inside it as well as the hardware on the door. The good news: the right lock is cheap, and the wrong lock is the only real vulnerability. Here's how crews secure a unit on an active site.</p>
           <ul class="uc-theft-list">
-            <li><span class="uc-theft-num m">01</span><span><strong>Use a puck or discus lock, not a padlock.</strong> A puck lock seats inside the lockbox recess on the door handle, leaving almost no shackle exposed. There's nothing for bolt cutters to bite. A standard padlock with an open shackle is the one thing on the whole box a thief can defeat in seconds.</span></li>
+            <li><span class="uc-theft-num m">01</span><span><strong>Use a puck or discus lock, not a padlock.</strong> A puck lock seats inside the door's lockbox recess where there is one, leaving almost no shackle exposed. There's nothing for bolt cutters to bite. A standard padlock with an open shackle is the one thing on the whole box a thief can defeat in seconds.</span></li>
             <li><span class="uc-theft-num m">02</span><span><strong>Add a lockbox shroud if the unit doesn't have one.</strong> Many container doors already have a welded lockbox; if yours doesn't, a bolt-on steel shroud covers the lock body entirely.</span></li>
             <li><span class="uc-theft-num m">03</span><span><strong>Lock the right-hand door first.</strong> The locking bars on the right door cam behind the left, so securing it last means both doors are pinned shut.</span></li>
             <li><span class="uc-theft-num m">04</span><span><strong>Key multiple units alike on big jobs.</strong> Running several containers across a site? We can coordinate matching locks so your super carries one key instead of a ring of them.</span></li>
@@ -266,7 +266,7 @@ const faqs = [
         <span class="m">Where We Deliver</span>
         <h2 class="uc-h2">Where we deliver</h2>
       </div>
-      <p class="uc-deliver-lede">We run job sites across a 250-mile radius from Cincinnati that covers Ohio, Indiana, Kentucky, and western West Virginia (<a href="/locations/west-virginia/huntington-shipping-containers/">Huntington</a>, Charleston, Parkersburg), and our drivers know the difference between a wide-open subdivision lot and a downtown infill site with a curb lane and a power drop overhead. These are the metros we deliver to most:</p>
+      <p class="uc-deliver-lede">We deliver to job sites across the region, including <a href="/locations/west-virginia/huntington-shipping-containers/">Huntington</a>, Charleston, and Parkersburg, shipped from a depot in your area, and our drivers know the difference between a wide-open subdivision lot and a downtown infill site with a curb lane and a power drop overhead. These are some of the metros we deliver to:</p>
       <div class="uc-city-grid">
         <a href="/locations/ohio/cincinnati-shipping-containers/" class="uc-city"><span class="uc-city-code">CIN</span><span class="uc-city-name">Cincinnati, OH</span><span class="uc-city-arrow">→</span></a>
         <a href="/locations/ohio/dayton-shipping-containers/" class="uc-city"><span class="uc-city-code">DAY</span><span class="uc-city-name">Dayton, OH</span><span class="uc-city-arrow">→</span></a>
