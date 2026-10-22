@@ -2,7 +2,7 @@
 title: "Buying a Shipping Container in Houston After Hurricane Season"
 seoTitle: "Buying a Container in Houston After Hurricane Season"
 description: "Hurricane season ends Nov 30. Here's how to buy a used container in Houston in the calm months: where to set it, what we stock, and which rules to check."
-pubDate: 2026-10-23
+pubDate: 2026-10-22
 category: "Local & Seasonal"
 pillar: "Storage Practice & Site Prep"
 persona: "homeowner"
@@ -17,7 +17,7 @@ keywords:
 heroImage: "blog/houston-container-raised-gravel-pad-after-storm-illustration.jpg"
 heroImageAlt: "Illustration: a blue used shipping container on a gravel pad in a yard with live oaks, puddles and downed branches."
 author: "Steel Box Direct"
-draft: true
+draft: false
 takeaways:
   - "Atlantic hurricane season ends November 30, so the calm months are a good time to set up storage"
   - "A shipping container is storage. It is not a storm shelter."
