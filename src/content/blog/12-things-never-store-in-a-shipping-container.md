@@ -110,7 +110,7 @@ Lithium-ion batteries can catch fire if they are damaged or overheated, and heat
 
 **What the experts say:**
 - **Lithium-ion tool batteries:** STIHL says to store its batteries dry and not outdoors, at a partial charge (not full or empty), between 14°F and 122°F.
-- **Lead-acid batteries:** A Trojan Battery storage guide shows a battery left low on charge can freeze at mild winter temperatures (about 19°F, versus about -92°F fully charged), and that freezing ruins it.
+- **Lead-acid batteries:** A Trojan Battery storage guide shows a battery left low on charge can freeze at about 19°F, a common winter-night low, while a fully charged one holds out to about -92°F. It says freezing usually ruins a battery.
 
 ### 10. Paint, solvents, and other chemicals
 Paint and solvents have real fire and airflow rules. A solvent is a strong liquid that dissolves things, like paint thinner. Whether a storage container is an allowed place for them is a fire-code question, so check with your local fire department first. "It's probably fine" is not a safe answer here.

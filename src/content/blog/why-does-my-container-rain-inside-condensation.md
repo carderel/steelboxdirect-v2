@@ -29,7 +29,7 @@ faq:
     a: "Usually not. Condensation shows up as drops spread across the ceiling and upper walls, often after the temperature drops, even on a dry day. A leak usually shows up in one spot, like a seam, corner, door edge, or the roof, right after rain. If you find a real leak in a Wind & Water Tight container from Steel Box Direct, its limited Lifetime Leak Warranty sends a fiberglass patch kit you apply yourself."
   - q: "Where does the water inside a closed container come from?"
     a: "Mostly from what is inside it. The German insurers' cargo service (GDV) says the largest sources of condensation in closed containers are the cargo, its packaging, and the wooden floor. Anything that goes in damp brings water with it. When the steel cools, that water comes out of the air as drops."
-  - q: "What humidity should I keep inside a storage container?"
+  - q: "How do I keep humidity down inside a storage container?"
     a: "The EPA says to keep indoor humidity low to help prevent mold, and that wet things should dry within 24 to 48 hours. A low-cost hygrometer (a small humidity meter) set inside the container shows you where you stand."
   - q: "Will leaving the doors open stop condensation?"
     a: "It can help for a little while by letting damp air out. But it also lets damp outside air in, and the container is unlocked while the doors are open. Loading dry, keeping things off the floor, and using desiccants all keep working while the doors stay shut and locked."
@@ -129,7 +129,7 @@ We sell every container as-is. We don't add vents, insulation, power, or anythin
 
 If the no-tools steps aren't enough for what you store, these are the usual add-ons. Each one is a change to the container, so it's a job for a container modification shop, an insulation contractor, or a licensed electrician. Any change you make is your call and your responsibility.
 
-![Two louvered vents installed high and low on the corrugated side wall of a weathered gray used container, with moisture beads on the surrounding steel](../../assets/photos/blog/container-louver-vent-airflow-fix.jpg)
+![Two shop-installed louvered vents high and low on the corrugated side wall of a weathered gray used container, added by a modification shop, with moisture beads on the surrounding steel](../../assets/photos/blog/container-louver-vent-airflow-fix.jpg)
 
 *Louvered vents like these are installed by a modification shop. We sell our containers as-is and don't add vents.*
 
