@@ -33,7 +33,7 @@ export const SCHEMA_VERSION = 1;
 
 /** Repo relative source module path to ISO date of its last commit. Sorted by path. */
 export const routeLastmod = {
-  'src/content/blog/12-things-never-store-in-a-shipping-container.md': '2026-08-20T15:56:43-04:00',
+  'src/content/blog/12-things-never-store-in-a-shipping-container.md': '2026-10-23T17:00:54-04:00',
   'src/content/blog/20ft-vs-40ft-shipping-container.md': '2026-10-08T17:01:45-04:00',
   'src/content/blog/99-dollar-down-rent-to-own.md': '2026-10-13T15:02:16-04:00',
   'src/content/blog/are-shipping-containers-airtight.md': '2026-10-21T17:09:37-04:00',
@@ -49,7 +49,7 @@ export const routeLastmod = {
   'src/content/blog/shipping-container-dimensions-size-chart.md': '2026-10-13T14:48:49-04:00',
   'src/content/blog/the-cheap-container-that-wasnt.md': '2026-10-13T14:48:49-04:00',
   'src/content/blog/west-virginia-deer-camp-container.md': '2026-10-21T17:09:37-04:00',
-  'src/content/blog/why-does-my-container-rain-inside-condensation.md': '2026-10-13T12:27:20-04:00',
+  'src/content/blog/why-does-my-container-rain-inside-condensation.md': '2026-10-23T17:00:54-04:00',
   'src/content/blog/wind-and-water-tight-explained.md': '2026-10-13T15:02:16-04:00',
   'src/pages/404.astro': '2026-10-06T14:03:12-04:00',
   'src/pages/about/index.astro': '2026-10-21T16:15:57-04:00',
@@ -74,7 +74,7 @@ export const routeLastmod = {
   'src/pages/for/businesses/index.astro': '2026-10-21T16:32:43-04:00',
   'src/pages/for/contractors/index.astro': '2026-10-21T16:32:43-04:00',
   'src/pages/for/farmers/index.astro': '2026-10-13T14:48:49-04:00',
-  'src/pages/for/homeowners/index.astro': '2026-10-13T12:21:17-04:00',
+  'src/pages/for/homeowners/index.astro': '2026-10-23T17:00:54-04:00',
   'src/pages/index.astro': '2026-10-06T15:07:27-04:00',
   'src/pages/iso-6346-check-digit-calculator/index.astro': '2026-10-06T13:57:08-04:00',
   'src/pages/locations/[state]/[citySlug].astro': '2026-09-30T17:01:57-04:00',
