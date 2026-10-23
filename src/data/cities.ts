@@ -111,7 +111,7 @@ export const cities: City[] = [
     },
     seo: {
       title: 'Shipping & Storage Containers for Sale in Cincinnati, OH',
-      description: `Buying a shipping container in Cincinnati? ${CONDITION.label} containers delivered to Hamilton, Clermont, and Warren counties, priced by distance.`,
+      description: `Storage containers for sale in Cincinnati: ${CONDITION.label} 20ft and 40ft to own, not rent, delivered to Hamilton County and surrounding areas.`,
     },
   },
   {
@@ -172,7 +172,7 @@ export const cities: City[] = [
     },
     seo: {
       title: 'Shipping & Storage Containers for Sale in Dayton, OH',
-      description: `Looking for a shipping container in Dayton? ${CONDITION.label} containers delivered to Montgomery, Greene, and Miami counties, priced by distance.`,
+      description: `Storage containers for sale in Dayton: ${CONDITION.label} 20ft and 40ft to own, not rent, delivered to Montgomery County and surrounding areas.`,
     },
   },
   {
@@ -236,7 +236,7 @@ export const cities: City[] = [
     },
     seo: {
       title: 'Shipping & Storage Containers for Sale in Columbus, OH',
-      description: `Buying a shipping container in Columbus? ${CONDITION.label} containers delivered to Franklin, Delaware, and Licking counties, priced by distance.`,
+      description: `Storage containers for sale in Columbus: ${CONDITION.label} 20ft and 40ft to own, not rent, delivered to Franklin County and surrounding areas.`,
     },
   },
   {
