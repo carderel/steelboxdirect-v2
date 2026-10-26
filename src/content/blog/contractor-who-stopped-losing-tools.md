@@ -28,7 +28,7 @@ faq:
 
 > **This is an illustrative scenario**, a common pattern we see across our Ohio, Indiana, and Kentucky service area. It is not an account of one real customer.
 
-A remodeling contractor near Dayton kept losing tools out of his truck. Twice in one summer, someone broke in overnight and took his gear. He didn't buy cameras or an alarm. Instead, he moved his tools into a locked steel shipping container, parked right at the job. It's one of the simplest fixes we see. It shows why a locked box often beats a pile of extra security gear.
+A remodeling contractor [near Dayton](/locations/ohio/dayton-shipping-containers/) kept losing tools out of his truck. Twice in one summer, someone broke in overnight and took his gear. He didn't buy cameras or an alarm. Instead, he moved his tools into a locked steel shipping container, parked right at the job. It's one of the simplest fixes we see. It shows why a locked box often beats a pile of extra security gear.
 
 ## The Truck Kept Getting Robbed
 
@@ -54,13 +54,13 @@ He looked at three ways to fix it.
 
 **Keep locking tools in the truck, but add more security.** A steering-wheel lock and a truck alarm helped a little. But someone with a few quiet minutes could still get in.
 
-**Rent a storage unit across town.** A storage facility meant driving tools back and forth each day. It also meant working around the facility's own gate hours. That ate time he didn't have. It was also a bill that never stopped, as long as he kept renting.
+**Rent a storage unit across town.** A storage facility meant driving tools back and forth each day. It also meant working around the facility's own gate hours. That ate time he didn't have. It was also [a bill that never stopped](/container-rent-vs-buy-calculator/), as long as he kept renting.
 
-**Buy a container and keep it on-site.** A Wind & Water Tight (WWT) used shipping container is a steel box with a strong, built-in locking door. No separate alarm needed. It's a one-time buy, not a monthly bill. And it moves with the job, instead of the job moving to it.
+**Buy a container and keep it on-site.** A [Wind & Water Tight (WWT)](/blog/wind-and-water-tight-explained/) used shipping container is a steel box with a strong, built-in locking door. No separate alarm needed. It's a one-time buy, not a monthly bill. And it moves with the job, instead of the job moving to it.
 
 ## The Locked Box on the Jobsite
 
-He chose the container. It got delivered straight to the job. It sat in a spot the homeowner agreed to, out of the way of the work itself.
+He chose the container. It got [delivered straight to the job](/delivery/). It sat in a spot the homeowner agreed to, out of the way of the work itself.
 
 From there, every tool, cord, and box of screws had one home. Not three. At the end of the day, everything went into the box. The doors closed. The puck lock went on. No tailgate lock box. No half-empty truck bed. No gear split between the cab and a garage corner.
 
@@ -68,7 +68,7 @@ From there, every tool, cord, and box of screws had one home. Not three. At the 
 
 *A puck lock on solid steel doors is a harder target than the lock box on a typical truck.*
 
-Before the container went in, he checked with the property owner and the local building office about any rules on placing it. That's the same step we tell every buyer to take. Permit and zoning rules depend on your city or county. It's always the buyer's call to check, not ours.
+Before the container went in, he checked with the property owner and [the local building office](/permits/) about any rules on placing it. That's the same step we tell every buyer to take. Permit and zoning rules depend on your city or county. It's always the buyer's call to check, not ours.
 
 ## The Lesson
 

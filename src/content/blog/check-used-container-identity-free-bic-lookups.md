@@ -216,9 +216,9 @@ That list is not a gap in the tools. It is the reason 49 CFR 452.3 requires exam
 
 ## Where Steel Box Direct sits on this
 
-We stock used Wind & Water Tight containers for storage and domestic use across Ohio, Indiana, Kentucky and western West Virginia. Those boxes are not certified for shipping, and we do not tell anyone their storage container needs certifying, because it does not. Our [condition guide](/condition/) explains what WWT means and what it does not.
+[We stock used Wind & Water Tight containers for storage](/shipping-containers-for-sale/) and domestic use across Ohio, Indiana, Kentucky and western West Virginia. Those boxes are [not certified for shipping](/blog/wind-and-water-tight-explained/), and we do not tell anyone their storage container needs certifying, because it does not. Our [condition guide](/condition/) explains what WWT means and what it does not.
 
-If your box will hold tools, feed, inventory or equipment on your own property, you can do all four of these lookups purely out of curiosity, get nothing back from three of them, and be perfectly fine. The one we would actually recommend to every used-container buyer is step 3: make the free BoxTech account and run the number for a Stolen or Lost alert before you hand over money. That is two minutes of work with a real downside if you skip it.
+If your box will hold tools, feed, inventory or equipment on your own property, you can do all four of these lookups purely out of curiosity, get nothing back from three of them, and be perfectly fine. The one we would actually recommend to every used-container buyer is step 3: make the free BoxTech account and run the number for a Stolen or Lost alert before you hand over money. That is two minutes of work with a real downside if you skip it. The lookups check the box; [our seven-point checklist for vetting the seller](/container-buying-guide/#checklist) checks the business selling it.
 
 Everything else on this page is provenance, not compliance. Know the difference and you will not get talked into paying for either one.
 

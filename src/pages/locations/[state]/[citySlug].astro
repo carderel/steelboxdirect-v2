@@ -10,6 +10,7 @@ import { geoPricing, geoSkuKeys, type GeoSkuKey } from '../../../data/geoPricing
 import { pricing, formatPrice, effectiveSinceLabel } from '../../../data/pricing';
 import RtoDownPaymentCta from '../../../components/RtoDownPaymentCta.astro';
 import { countiesForCity } from '../../../data/permitCounties';
+import { postsLinkingTo } from '../../../lib/postsLinkingTo';
 
 export function getStaticPaths() {
   return cities.map((c) => ({ params: { state: c.stateSlug, citySlug: c.slug }, props: { city: c } }));
@@ -68,7 +69,16 @@ const SIZE_DISPLAY: Record<string, string> = {
   '40ftStandardHC': '40ft high cube',
 };
 
+// The product page each priced size links to, so the size label in a price line is also the path
+// to that size's specs. Keyed like SIZE_DISPLAY; a SKU with no entry renders its label unlinked.
+const SIZE_PAGE: Record<string, { href: string; anchor: string }> = {
+  '20ftCargo': { href: '/shipping-containers-for-sale/20-foot-shipping-container/', anchor: '20ft standard container' },
+  '40ftStandard': { href: '/shipping-containers-for-sale/40-foot-shipping-container/', anchor: '40ft standard container' },
+  '40ftStandardHC': { href: '/shipping-containers-for-sale/40-foot-high-cube-container/', anchor: '40ft high cube' },
+};
+
 interface PriceLine {
+  key: string;
   label: string;
   delivered: number;
   pickup: number | null;
@@ -83,6 +93,7 @@ const priceLines: PriceLine[] = metroPrices
       .map((k: GeoSkuKey) => {
         const sku = metroPrices.skus[k];
         return {
+          key: k,
           label: SIZE_DISPLAY[k] ?? pricing[k].label,
           delivered: sku.delivered,
           pickup: sku.pickup,
@@ -169,6 +180,12 @@ const pickupLines = priceLines.filter(
 // and be missing from the other.
 const permitPages = countiesForCity(c.slug);
 
+// READING FOR THIS CITY. Published posts that already link to this page; the rules (strict draft
+// filter, no hand-kept list, empty means no block) live in src/lib/postsLinkingTo.ts, shared with the
+// state index.
+const cityPath = `/locations/${c.stateSlug}/${c.slug}/`;
+const cityReads = await postsLinkingTo(cityPath);
+
 // THE AREA PROFILE, and why it is here at all.
 //
 // `areaProfile` and `geography` have been in cities.ts since the records were written, and until
@@ -243,7 +260,9 @@ const cityPrice = showPrice
               {priceLines.map((line) => (
                 <li class="local_price_line">
                   <span class="local_price_figure">{formatPrice(line.delivered)}</span>
-                  <span class="local_price_scope">delivered to {priceZip} for a {line.label}</span>
+                  <span class="local_price_scope">delivered to {priceZip} for a {SIZE_PAGE[line.key]
+                    ? <a class="local_price_size_link" href={SIZE_PAGE[line.key].href}>{SIZE_PAGE[line.key].anchor}</a>
+                    : line.label}</span>
                 </li>
               ))}
             </ul>
@@ -477,6 +496,19 @@ const cityPrice = showPrice
     </div>
   </section>
 
+  {cityReads.length > 0 && (
+    <section class="local-reads">
+      <div class="wrap">
+        <div class="m local_reads_label">Reading for {c.city} buyers</div>
+        <ul class="local_reads_list">
+          {cityReads.map((p) => (
+            <li><a href={`/blog/${p.slug}/`}>{p.data.title}</a></li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
   <section class="cta-section">
     <div class="wrap">
       <div class="cta-box local_cta_box">
@@ -648,6 +680,15 @@ const cityPrice = showPrice
   .zoning-permit-links a { font-family: var(--narrow); font-weight: 600; font-size: 16px; border-bottom: 2px solid var(--yellow); }
   .zoning-permit-links a:hover { background: var(--yellow); }
   .local_zoning_zips { font-family: var(--mono); font-size: 12px; opacity: .7; }
+
+  .local_price_size_link { color: inherit; border-bottom: 1.5px solid currentColor; }
+  .local_price_size_link:hover { background: var(--yellow); }
+
+  .local-reads { padding: 56px 0; background: white; border-top: 1.5px solid rgba(11,15,26,.1); }
+  .local_reads_label { margin-bottom: 16px; }
+  .local_reads_list { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; max-width: 860px; }
+  .local_reads_list a { font-family: var(--narrow); font-weight: 600; font-size: 18px; border-bottom: 2px solid var(--yellow); }
+  .local_reads_list a:hover { background: var(--yellow); }
 
   @media (max-width: 768px) {
     .local-price { padding: 48px 0 0; }

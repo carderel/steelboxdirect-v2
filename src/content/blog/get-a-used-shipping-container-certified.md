@@ -39,7 +39,7 @@ Open the left-hand door and look for the metal CSC plate riveted near the bottom
 
 - **Is the plate there at all?** It usually is; it stays with the box for life.
 - **Is there an NED decal with a future date?** NED means Next Examination Date. A future date means the examination status is current. Rare on a used box, but check.
-- **Is there an ACEP marking instead?** A marking like ACEP/USA followed by a year means the box was covered by a fleet owner's continuous examination program. Here is the catch: the program belonged to the fleet, not the box. When the line sold the container, it removed the box from the program, and the coverage ended. Per the Container Owners Association's guidance (COA TG03), the buyer inherits responsibility for CSC maintenance from that point on.
+- **Is there an [ACEP marking](/blog/check-used-container-identity-free-bic-lookups/) instead?** A marking like ACEP/USA followed by a year means the box was covered by a fleet owner's continuous examination program. Here is the catch: the program belonged to the fleet, not the box. When the line sold the container, it removed the box from the program, and the coverage ended. Per the Container Owners Association's guidance (COA TG03), the buyer inherits responsibility for CSC maintenance from that point on.
 
 So the usual answer for a used box is: plate present, examination status lapsed. That is normal. It is not damage and not a defect. It just means the box is retired from ocean work until someone re-examines it. Our [container reference](/container-reference/) shows where every marking lives if you want help reading yours.
 
@@ -47,7 +47,7 @@ So the usual answer for a used box is: plate present, examination status lapsed.
 
 Stop here and answer honestly, because this step ends the project for most readers.
 
-CSC certification applies to international transport only. If your container will store equipment, sit on a job site, or move by truck anywhere inside the United States, you need nothing. No survey, no decal, no paperwork. A lapsed examination status has zero effect on domestic use. People pay for surveys they never needed because a listing said "expired" and it sounded urgent. It is not. If you are not putting this box on a ship, you are done. Enjoy the container.
+CSC certification applies to international transport only. If your container will store equipment, [sit on a job site](/for/contractors/), or move by truck anywhere inside the United States, you need nothing. No survey, no decal, no paperwork. A lapsed examination status has zero effect on domestic use. People pay for surveys they never needed because a listing said "expired" and it sounded urgent. It is not. If you are not putting this box on a ship, you are done. Enjoy the container.
 
 Still here? Then you have a real booking ahead. Continue.
 
@@ -79,7 +79,7 @@ One honest caveat: the carrier still decides. A survey report is evidence, not a
 
 Surveys fail on real structural findings: cracked castings, bent rails, corroded cross members, floor damage. Repairs to survey standard are steel work by qualified hands, and on an older box they can cost more than the box justifies. There is no shame in the math.
 
-The alternative is usually smarter: buy a cargo worthy (CW) container from a depot, tell the seller it is for export, and have it surveyed at booking, since carriers want a fresh certificate for shipper-owned boxes anyway. One warning from our [condition guide](/condition/) applies here too: a dealer grade is not a certification. Even a box sold as cargo worthy needs its own valid examination before a carrier takes it.
+The alternative is usually smarter: buy a [cargo worthy (CW) container](/blog/wind-and-water-tight-explained/) from a depot, tell the seller it is for export, and have it surveyed at booking, since carriers want a fresh certificate for shipper-owned boxes anyway. One warning from our [condition guide](/condition/) applies here too: a dealer grade is not a certification. Even a box sold as cargo worthy needs its own valid examination before a carrier takes it.
 
 ## What it costs
 

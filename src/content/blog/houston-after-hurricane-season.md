@@ -37,7 +37,7 @@ faq:
     a: "Pick a spot that is firm, level, and a little higher than the ground around it, so rain drains away instead of pooling under the box. A gravel pad or solid blocks under the corners help. Leave room for the doors to swing open and for the delivery truck to reach the spot."
 ---
 
-Houston knows storms. So it makes sense to want a strong place to keep your things. A steel box in the yard can hold tools, patio furniture, cleanup gear, or extra stock for a shop.
+Houston knows storms. So it makes sense to want a strong place to keep your things. A steel box in the yard can hold tools, [patio furniture](/for/homeowners/), cleanup gear, or [extra stock for a shop](/for/businesses/).
 
 The best time to set one up is not in a June rush. It is in the calm months, when you can take your time. This guide shows you how to buy a used container in Greater Houston, where to set it, and what to check first.
 
@@ -68,7 +68,7 @@ Thinking about tying the box down? That is a fair question on the Gulf Coast. Ta
 
 ## How a Houston order works
 
-You do not need to drive to the port or hunt through a yard. Your container is **delivered from a depot serving Greater Houston**. Your price is quoted to your ZIP code.
+You do not need to drive to the port or hunt through a yard. Your container is **delivered from a depot serving Greater Houston**. Your price is [quoted to your ZIP code](/blog/the-cheap-container-that-wasnt/).
 
 That means the depot, the roads, and your drop spot all shape the quote. It is why we ask for your ZIP first.
 

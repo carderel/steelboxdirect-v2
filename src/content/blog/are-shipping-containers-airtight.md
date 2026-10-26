@@ -117,7 +117,7 @@ Two easy habits help. Open the doors and let hot air out before you go in. And d
 
 ## Winter storage: what works and what to watch
 
-Winter is a good time to use a container. Patio furniture, holiday decorations, garden tools, and building supplies all store well. A few things to plan for:
+Winter is a good time to use a container. Patio furniture, holiday decorations, garden tools, and [building supplies](/for/contractors/) all store well. A few things to plan for:
 
 **Condensation.** When warm, damp air meets cold steel, it turns into water drops on the ceiling. It's not a leak. We cover the why and the fixes in [why a container "rains" inside](/blog/why-does-my-container-rain-inside-condensation/), so we won't repeat it here.
 
@@ -140,7 +140,7 @@ Vents, heat, insulation, power, and windows are all modifications. We sell conta
 
 Permit requirements vary by place and use. Confirming them with your local authority before you buy or modify a container is the buyer's job. We don't determine, advise on, or guarantee permit outcomes. Our [permits page](/permits/) lists general references to start with.
 
-One more note on what we cover. Our containers come with a limited Lifetime Leak Warranty. It's about water getting in. If you find a leak, we send a patch kit you apply yourself. It does not cover air quality, heating, or anything you add to the box.
+One more note on what we cover. Our containers come with [a limited Lifetime Leak Warranty](/terms/#lifetime-leak-warranty). It's about water getting in. If you find a leak, we send a patch kit you apply yourself. It does not cover air quality, heating, or anything you add to the box.
 
 ## The short version
 

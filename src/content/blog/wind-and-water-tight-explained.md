@@ -62,7 +62,7 @@ Two mix-ups come up a lot. Let's clear both up.
 
 A container hauling cargo at sea needs a valid **CSC plate**. That's a metal tag required by a global safety rule. It proves the box passed a real structural test not long ago. Once a container retires from sea duty, that CSC status usually lapses.
 
-A WWT container is still strong. It's just not *currently certified* to go back on a ship. That's fine. You're not putting it on a ship. You're using it to store things on solid ground. Our [container reference](/container-reference/#markings) page walks through the CSC plate and the container's ID markings in more detail, and our guide to [reading a container's ID number and CSC plate](/blog/how-to-read-container-id-number-iso-6346/) shows you how to decode both, line by line.
+A WWT container is still strong. It's just not [*currently certified* to go back on a ship](/blog/get-a-used-shipping-container-certified/). That's fine. You're not putting it on a ship. You're using it to store things on solid ground. Our [container reference](/container-reference/#markings) page walks through the CSC plate and the container's ID markings in more detail, and our guide to [reading a container's ID number and CSC plate](/blog/how-to-read-container-id-number-iso-6346/) shows you how to decode both, line by line.
 
 ### It's not climate-controlled
 
@@ -104,13 +104,13 @@ None of that is a defect. It's proof the box has done its job for years and is s
 
 That's why it's smart to ask a seller what they mean by "WWT" before you buy. And it's why we spell it out in plain words on every page, instead of trusting the term to explain itself.
 
-Steel Box Direct stocks one grade: **Wind & Water Tight (used)**. New (one-trip) and Cargo Worthy containers are available by special request; ask us and we'll confirm what we can get for your ZIP. We don't offer As-Is units. WWT is the grade we stock because it does the job for almost every storage buyer, without paying for certification you don't need.
+[Steel Box Direct stocks one grade](/shipping-containers-for-sale/): **Wind & Water Tight (used)**. New (one-trip) and Cargo Worthy containers are available by special request; ask us and we'll confirm what we can get for your ZIP. We don't offer As-Is units. WWT is the grade we stock because it does the job for almost every storage buyer, without paying for certification you don't need.
 
 ## Why WWT Is the Smart-Value Grade
 
 Here's the simple logic behind stocking just one grade.
 
-A brand-new or Cargo Worthy container costs more. You're paying for either a fresh box or an active ocean-shipping certificate. If you're storing tools, feed, inventory, or gear on your own property, you don't need that certificate. You need a box that keeps out rain, wind, snow, and pests.
+A brand-new or Cargo Worthy container costs more. You're paying for either a fresh box or an active ocean-shipping certificate. If you're storing [tools](/for/contractors/), [feed](/for/farmers/), [inventory](/for/businesses/), or gear on your own property, you don't need that certificate. You need a box that keeps out rain, wind, snow, and pests.
 
 A WWT container gives you exactly that. It's sealed, storage-ready weathering steel built to last for decades, with no shipping certificate you'll never use. It sits right in the middle. It's far more reliable than a rough As-Is unit, and it costs less than New or Cargo Worthy.
 

@@ -56,7 +56,7 @@ Here's the size gap in plain numbers. These are the inside measurements, the one
 
 The width and height are the same. Only the length changes. So the 40ft is really two 20fts worth of floor, end to end.
 
-Price doesn't double the same way. Part of what you pay for any container is fixed: the steel doors, the corner posts, the end walls, the trip to your property. A longer box adds floor and side wall, not a second set of all that.
+Price doesn't double the same way. Part of what you pay for any container is fixed: the steel doors, the corner posts, the end walls, [the trip to your property](/blog/the-cheap-container-that-wasnt/). A longer box adds floor and side wall, not a second set of all that.
 
 That's why the price per square foot drops as you go up in size. For most buyers, the 40ft is the better deal on every foot of floor you actually use.
 
@@ -100,7 +100,7 @@ Measure the spot where the box will sit, not just the yard. A 40ft needs a level
 
 Our 20ft fits most suburban lots and standard driveways. If your spot is a side yard, the back of a small lot, or a corner of a shop yard, the 20ft may be the only box that fits.
 
-If a local rule limits what you can place, like a setback or a size cap, that decides it for you. Permit and zoning rules vary by place and use. Checking them with your local office before you buy is the buyer's job. We don't determine or guarantee them.
+If a local rule limits what you can place, like a setback or a size cap, that decides it for you. [Permit and zoning rules](/permits/) vary by place and use. Checking them with your local office before you buy is the buyer's job. We don't determine or guarantee them.
 
 ### Delivery access is tight
 
@@ -112,9 +112,9 @@ Every delivery still needs the basics: a straight approach, enough width and ove
 
 ### The site needs the box out of the way
 
-On a job site, a 40ft can block a lane, a staging area, or a turn for other trucks. The 20ft fits most job sites where a 40ft would get in the way.
+On a job site, a 40ft can block a lane, a staging area, or a turn for other trucks. The 20ft fits most [job sites](/for/contractors/) where a 40ft would get in the way.
 
-If the container is a tool lockup, not a warehouse, the shorter box is often the smarter fit.
+If the container is a [tool lockup](/blog/contractor-who-stopped-losing-tools/), not a warehouse, the shorter box is often the smarter fit.
 
 ### Your load is small and heavy
 

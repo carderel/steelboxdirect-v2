@@ -73,9 +73,9 @@ If any step takes longer than you think, the early start is what saves you.
 
 The two main choices are a 20ft and a 40ft. The width and height are the same. Only the length changes.
 
-- **20ft:** about 148 square feet of floor inside. It fits a small spot behind a building, a corner of a lot, or a tight loading zone.
-- **40ft:** about 302 square feet of floor inside. That is about twice the room, and it is usually the better value per square foot when you have space for it.
-- **40ft High Cube:** same footprint as a 40ft, but one foot taller inside. Pick it if you stack high or plan to add your own shelves.
+- **[20ft](/shipping-containers-for-sale/20-foot-shipping-container/):** about 148 square feet of floor inside. It fits a small spot behind a building, a corner of a lot, or a tight loading zone.
+- **[40ft](/shipping-containers-for-sale/40-foot-shipping-container/):** about 302 square feet of floor inside. That is about twice the room, and it is usually the better value per square foot when you have space for it.
+- **[40ft High Cube](/shipping-containers-for-sale/40-foot-high-cube-container/):** same footprint as a 40ft, but one foot taller inside. Pick it if you stack high or plan to add your own shelves.
 
 Two things to know before you choose:
 
@@ -86,7 +86,7 @@ Here is a good rule. Storage fills up whatever space you give it. If the spot fi
 
 ## What we sell
 
-We keep it simple. We stock one grade: **used Wind and Water Tight (WWT)**.
+We keep it simple. We stock one grade: **[used Wind and Water Tight (WWT)](/blog/wind-and-water-tight-explained/)**.
 
 WWT means the box keeps out rain, wind, snow and pests. The doors seal. There are no holes. It will not look new. You may see some rust, dents or scuffs from its years at sea. That is normal. Our [condition guide](/condition/) shows what to expect.
 
@@ -94,7 +94,7 @@ WWT means the box keeps out rain, wind, snow and pests. The doors seal. There ar
 - **We do not sell or install heaters.**
 - **We do not make changes to the box.** No added doors, windows or shelves. You get a plain steel container.
 
-We deliver anywhere. If the box you need sits at another depot, it ships depot to depot. Your quote is based on your ZIP code.
+We deliver anywhere. If the box you need sits at another depot, it ships depot to depot. Your quote is [based on your ZIP code](/blog/the-cheap-container-that-wasnt/).
 
 ## Check your lot before the truck comes
 

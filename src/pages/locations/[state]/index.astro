@@ -5,6 +5,7 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import { cities, type City } from '../../../data/cities';
 import { permitStates } from '../../../data/permitCounties';
+import { postsLinkingTo } from '../../../lib/postsLinkingTo';
 
 interface LocationState {
   state: string;
@@ -50,6 +51,10 @@ const { entry } = Astro.props;
 const homeCities = entry.cities.filter((c) => c.region === 'home');
 const depotCities = entry.cities.filter((c) => c.region === 'depot');
 const orderedCities = [...homeCities, ...depotCities];
+
+// READING FOR THIS STATE. Published posts linking to this state page or any city inside it (prefix
+// match); same helper and rules as the city pages. An empty list renders no block.
+const stateReads = await postsLinkingTo(`/locations/${entry.stateSlug}/`);
 
 /**
  * THE WHOLE POINT OF THIS PAGE, so it is derived and never asserted.
@@ -252,6 +257,19 @@ const description =
     </div>
   </section>
 
+  {stateReads.length > 0 && (
+    <section class="ls-reads">
+      <div class="wrap">
+        <p class="m ls_reads_label">Reading for {entry.state} buyers</p>
+        <ul class="ls_reads_list">
+          {stateReads.map((p) => (
+            <li><a href={`/blog/${p.slug}/`}>{p.data.title}</a></li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
   <section class="ls-next">
     <div class="wrap">
       <p class="ls_next_label">Where to go next</p>
@@ -302,6 +320,12 @@ const description =
     .ls_permit_note { font-size: 15px; line-height: 1.6; max-width: 760px; margin: 32px 0 0; opacity: .8; }
     .ls_permit_note a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
     .ls_permit_note a:hover { color: var(--c5-permits); }
+
+    .ls-reads { padding: 56px 0; background: white; border-top: 1.5px solid rgba(11,15,26,.1); }
+    .ls_reads_label { margin: 0 0 16px; }
+    .ls_reads_list { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; max-width: 860px; }
+    .ls_reads_list a { font-family: var(--narrow); font-weight: 600; font-size: 18px; border-bottom: 2px solid var(--yellow); }
+    .ls_reads_list a:hover { background: var(--yellow); }
 
     .ls-next { padding: 48px 0; background: var(--ink); border-top: 2px solid rgba(255,255,255,.08); }
     .ls_next_label { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: .1em; color: var(--yellow); margin-bottom: 16px; }

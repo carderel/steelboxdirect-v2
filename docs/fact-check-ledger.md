@@ -681,3 +681,95 @@ Status of page: live page, uncommitted seo.description change in src/data/cities
 |---|---|---|---|---|---|---|
 | 1 | "Storage containers for sale in Columbus: Wind & Water Tight (used) 20ft and 40ft to own, not rent" | SITE-DATA | As Dayton #1 and #2 | src/data/condition.ts ; src/data/rentalStance.ts | site data | 2026-10-23 |
 | 2 | "delivered to Franklin County and surrounding areas" | SITE-DATA | Columbus record counties include Franklin; owner rulings as Dayton #3. 150 characters | src/data/cities.ts | owner, internal | 2026-10-23 |
+
+### Addendum to why-does-my-container-rain-inside-condensation and 12-things-never-store-in-a-shipping-container (2026-10-23): plain-wording swap for percentage figures
+Checked by: data-auditor, independent of author: yes. Published text in 6f0ed81 (src unchanged since) replaced the percentage figures in the rows below with plain wording because spec-claims-guard blocks unregistered percentages. All four sources were refetched today. Freshness: LOC FAQ live, undated; EPA Brief Guide last updated 2026-02-18; STIHL page live, undated; Trojan PDF (c) 2012, table from BCI (c) 1995 (physical property, accepted). The source figures stay in the original rows as evidence. Only the on-page wording changed.
+
+| # | Claim (as published) | Verdict | Correct value / note | Source (URL) | Grade | Accessed |
+|---|---|---|---|---|---|---|
+| condensation #19a | "The EPA says to keep indoor humidity low to help prevent mold" (body, FAQ 3, Sources line) | VERIFIED | EPA exact: "If possible, keep indoor humidity below 60 percent (ideally between 30 and 50 percent) relative humidity." "Low" is a fair, weaker paraphrase that does not overstate. Editorial note, not a blocker: FAQ 3 asks "What humidity should I keep" and now gives no target | https://www.epa.gov/mold/brief-guide-mold-moisture-and-your-home | A | 2026-10-23 |
+| 12-things #8a | LOC: paper keeps best "cool (room temperature or below) and fairly dry, with steady conditions"; avoid attics, basements, leak risk, environmental extremes (item 1, FAQ 5) | VERIFIED | LOC exact: "A cool (room temperature or below), relatively dry (about 35-50% relative humidity), clean, and stable environment" plus the avoid list. "Fairly dry" = "relatively dry"; "steady" = "stable". Does not overstate | https://ask.loc.gov/preservation/faq/445765 | A | 2026-10-23 |
+| 12-things #28a | STIHL: store "at a partial charge (not full or empty), between 14°F and 122°F", dry, not outdoors | VERIFIED | STIHL exact: "do not store STIHL batteries fully charged, but with two green LEDs - 40-60% charged"; "between -10°C and 50°C"; "Store the battery in a dry place"; "Outdoor storage is not recommended". "Not empty" is inferred from the 40-60 range and is fair. 14°F and 122°F recomputed | https://stihl.ca/en/project-guides/power-tool-maintenance/battery-care/battery-storage | B | 2026-10-23 |
+| 12-things #29a | Trojan: "a battery left low on charge can freeze at mild winter temperatures (about 19°F, versus about -92°F fully charged), and that freezing ruins it" | CORRECTED | Table 1 recomputed: SG 1.100 / 20 / +19.0°F; SG 1.280 / 100 / -92.0°F. "Low on charge" for 20 is fair. Two overstatements: (1) "mild" is not in the source and is not fair for 19°F (-7°C). NWS ILN gives Cincinnati's January normal low as about 23°F, so 19°F is a common cold winter night in the service area, not a mild one; (2) Trojan says freezing "usually results in irreparable damage", so "ruins it" drops "usually". Use: "A Trojan Battery storage guide shows a battery left low on charge can freeze at about 19°F, a common winter-night low, while a fully charged one holds out to about -92°F. It says freezing usually ruins a battery." Fix pending | https://ressupply.com/documents/trojan_battery/Deep_Cycle_Battery_Storage_Guide.pdf ; https://weather.gov/media/iln/climo_webpage/CVG_Jan.pdf | B | 2026-10-23 |
+
+Addendum totals: VERIFIED 3, CORRECTED 1. Publish blocker: 12-things #29a wording.
+
+## home — 2026-10-26
+Checked by: data-auditor, independent of author: yes
+Status of page: live page, uncommitted internal-linking pass (new src/data/homeReads.ts, src/components/home/ReadsSection.astro, state line in src/components/home/PriceSection.astro). Three sentences were reworded by this check and are recorded below in their corrected form.
+Freshness: checked 2026-10-26. pricing.ts feed asOf 2026-10-13 (13 days old; the claim checked is directional with a wide margin, no figure renders). Vendor delivery pages (Caru, Conexwest) returned 403 to direct fetch; seen via search snippets only. Eveon page dated 2026-06-16.
+
+| # | Claim (as written) | Verdict | Correct value / note | Source (URL) | Grade | Accessed |
+|---|---|---|---|---|---|---|
+| 1 | Reads card blurb, 20ft-vs-40ft: "Why the bigger box usually gives you more for your money, and the short list of jobs where the smaller one is still the right call." | SITE-DATA | Post: "We'll show why the 40ft usually wins on value"; "That list is short"; H2 "When the 20ft is still the right call". Recomputed from pricing.ts today: 40ft = 1.17x the 20ft price for 302 vs 148 sq ft ($13.38 vs $7.68 per sq ft; HC $7.88). Ledger 20ft-vs-40ft #6 and #8 hold. "Jobs" loosely covers the post's site, route and load conditions; acceptable | src/data/pricing.ts ; src/content/blog/20ft-vs-40ft-shipping-container.md | site data | 2026-10-26 |
+| 2 | Reads card blurb, the-cheap-container-that-wasnt: "A low sticker price often leaves out delivery." | CORRECTED | The post says it, but the post (pubDate 2026-08-28) has no ledger rows, and no A/B source quantifies "often" (Angi's cost range includes delivery; the remaining support is vendor pages and SEO guides). One vendor FAQ says its webshop prices exclude delivery, so the possibility is supported. Now reads: "A low sticker price can leave out delivery. The one question that tells you whether a price is real." The second sentence is the post's own framing (OPINION). Flag: the post's own "often" and "almost never" remain unsourced; due at the quarterly sweep | https://www.carucontainers.com/en-be/faq/how-much-does-a-shipping-container-cost ; https://www.eveoncontainers.com/en-US/how-much-does-a-shipping-container-cost ; https://angi.com/articles/shipping-container-cost.htm | C | 2026-10-26 |
+| 3 | Reads card blurb, 12-things: "A sealed steel box keeps out rain, not heat, cold, or moisture swings. What not to store inside, and the easy fixes." | VERIFIED | Restates the post takeaways ("A container blocks rain and wind, but not heat, cold, or moisture swings inside"; "Most problems have an easy fix") and ledger 12-things #1, #2, #4, #20. Temperature swing support refetched: GDV "condense ... on the cold container walls and ceilings (due to overnight cooling)" | https://www.tis-gdv.de/tis_e/containe/klima/klima.htm ; https://container-news.com/rain-in-a-box-is-precipitation-with-a-cost/ | B | 2026-10-26 |
+| 4 | Reads headline: "Three reads that save buyers money." | CORRECTED | An unhedged outcome promise for every reader. Now reads "Three reads that can save buyers money." (each post concerns avoiding cost: value per sq ft, delivery left out of a price, damaged goods) | - | - | 2026-10-26 |
+| 5 | Price section: "Local pages by state: Ohio, Indiana, Kentucky, West Virginia, or every state we serve." | CORRECTED | All five links resolve (cities.ts has OH, IN, KY, WV records; production returns 200 for each). "Every state we serve" overstated the list: owner ruling is "we deliver anywhere", so /locations/ lists states with pages, not every state served. Now reads "... or all our state pages." | src/data/cities.ts ; https://steelboxdirect.com/locations/ | site data | 2026-10-26 |
+
+## rent-to-own — 2026-10-26
+Checked by: data-auditor, independent of author: yes
+Status of page: live page, one uncommitted sentence.
+
+| # | Claim (as written) | Verdict | Correct value / note | Source (URL) | Grade | Accessed |
+|---|---|---|---|---|---|---|
+| 1 | "For the details, read what changed in the September 2026 down-payment reset." | SITE-DATA | RTO_TERMS.effectiveDate = '2026-09-01'; the linked post's description uses "resets the rent-to-own down payment ... from September 1, 2026". No figure in the sentence; the condition sits in the lede above it | src/data/rtoTerms.ts ; src/content/blog/99-dollar-down-rent-to-own.md | site data | 2026-10-26 |
+
+## container-rent-vs-buy-calculator — 2026-10-26
+Checked by: data-auditor, independent of author: yes
+Status of page: live page, one uncommitted link.
+
+| # | Claim (as written) | Verdict | Correct value / note | Source (URL) | Grade | Accessed |
+|---|---|---|---|---|---|---|
+| 1 | Link text "What changed on September 1" to the down-payment post | SITE-DATA | effectiveDate '2026-09-01' matches. The link text carries no figure; it sits in the same paragraph as RTO_DOWN_CONDITION, so no unconditioned down payment is added | src/data/rtoTerms.ts | site data | 2026-10-26 |
+
+## container-buying-guide — 2026-10-26
+Checked by: data-auditor, independent of author: yes
+Status of page: live page, one uncommitted sentence in checklist item 03.
+
+| # | Claim (as written) | Verdict | Correct value / note | Source (URL) | Grade | Accessed |
+|---|---|---|---|---|---|---|
+| 1 | "Before you pay, you can also run four free lookups on the container's ID." | VERIFIED | The linked post walks four tools. Each refetched: BIC check digit calculator ("FREE online check digit calculator", no login); BIC Code Register search form public on the page, no login; BoxTech "Free, non-profit, operated by BIC" (free account needed, which the post states); Global ACEP Database app routes search-by-container-prefix with no route guard (bundle inspected), so the lookup is public and keyed on the ID prefix | https://www.bic-code.org/check-digit-calculator/ ; https://www.bic-code.org/bic-codes/ ; https://www.bic-code.org/ ; https://www.bic-acep.org/ | A | 2026-10-26 |
+
+## container-certification-guide — 2026-10-26
+Checked by: data-auditor, independent of author: yes
+Status of page: live page, one uncommitted sentence.
+
+| # | Claim (as written) | Verdict | Correct value / note | Source (URL) | Grade | Accessed |
+|---|---|---|---|---|---|---|
+| 1 | "If you are taking a box through one, follow our step-by-step recertification walkthrough." | SITE-DATA | Linked post is published (draft: false), described as "The step-by-step path to getting a used container recertified", with Steps 1 to 5; production 200 | src/content/blog/get-a-used-shipping-container-certified.md | site data | 2026-10-26 |
+
+## check-used-container-identity-free-bic-lookups — 2026-10-26
+Checked by: data-auditor, independent of author: yes
+Status of page: live post (pubDate 2026-08-27, pre-gate), one uncommitted sentence plus link-only changes. This entry covers only the new sentence.
+
+| # | Claim (as written) | Verdict | Correct value / note | Source (URL) | Grade | Accessed |
+|---|---|---|---|---|---|---|
+| 1 | "The lookups check the box; our seven-point checklist for vetting the seller checks the business selling it." | SITE-DATA | Buying guide checklist has exactly seven items (01 to 07), intro "Seven things to check before you send anyone a deposit"; #checklist anchor exists. Note: item 03 checks the unit, so "checks the business" is a simplification; acceptable | src/pages/container-buying-guide/index.astro | site data | 2026-10-26 |
+
+## shipping-containers-for-sale/[slug] — 2026-10-26
+Checked by: data-auditor, independent of author: yes
+Status of page: live product pages, two uncommitted sentences.
+
+| # | Claim (as written) | Verdict | Correct value / note | Source (URL) | Grade | Accessed |
+|---|---|---|---|---|---|---|
+| 1 | "Searching for a conex box instead? Same steel, different name: conex boxes for sale" | VERIFIED | Marine Insight (modified 2024-04-26): "Whether we call them shipping containers or storage containers, Conex or Conex boxes, or ISO boxes, they all mean the same thing." Wikipedia: the term is a catch-all for ISO containers in popular use (corroboration only). /conex-boxes-for-sale/ returns 200 | https://www.marineinsight.com/guidelines/conex-containers-history-dimensions-features-and-uses/ ; https://en.wikipedia.org/wiki/Conex_box | B | 2026-10-26 |
+| 2 | "Water on the ceiling is often condensation, not a leak." | VERIFIED | GDV refetched: vapour condenses "on the cold container walls and ceilings (due to overnight cooling)"; "Condensation is most severe on the container ceilings"; "the water drips from the ceiling down onto the cargo." Weaker than ledger condensation #1 ("usually"); "not a leak" is inference from the mechanism | https://www.tis-gdv.de/tis_e/containe/klima/klima.htm | B | 2026-10-26 |
+
+## how-to-read-container-id-number-iso-6346 — 2026-10-26
+Checked by: data-auditor, independent of author: yes
+Status of page: live post (pre-gate), one uncommitted sentence. This entry covers only that sentence.
+
+| # | Claim (as written) | Verdict | Correct value / note | Source (URL) | Grade | Accessed |
+|---|---|---|---|---|---|---|
+| 1 | "Our check digit calculator runs it for you." | VERIFIED | /iso-6346-check-digit-calculator/ runs analyzeContainerNumber from src/lib/iso6346.ts. Recomputed with an independent implementation (letter values skip multiples of 11, weights 2^0 to 2^9, mod 11, 10 becomes 0): CSQU305438 = 3, KEIU900079 = 8; the site module returns the same in validate and calculate modes | src/lib/iso6346.ts ; https://www.bic-code.org/check-digit-calculator/ | A | 2026-10-26 |
+
+## shipping-containers-for-sale — 2026-10-26
+Checked by: data-auditor, independent of author: yes
+Status of page: live page, uncommitted state links. Other added prose in this pass (persona links, footer, reads labels, city size-link anchors, link-only blog edits) adds no factual claim; anchor targets checked to exist (terms #lifetime-leak-warranty, /for/* pages, /container-rental-guide/, /permits/, /delivery/).
+
+| # | Claim (as written) | Verdict | Correct value / note | Source (URL) | Grade | Accessed |
+|---|---|---|---|---|---|---|
+| 1 | "or browse by state: Ohio, Indiana, Kentucky, West Virginia." | SITE-DATA | All four state pages generated from cities.ts and return 200 in production; no exclusivity claimed | src/data/cities.ts | site data | 2026-10-26 |
+
+Totals for 2026-10-26: VERIFIED 5, CORRECTED 3, SITE-DATA 6. Edits applied: homeReads.ts blurb 2, ReadsSection headline, PriceSection state line.

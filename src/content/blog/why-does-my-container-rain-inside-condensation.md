@@ -125,7 +125,7 @@ The doors close against rubber gaskets. Gaskets wear over time. GDV notes that w
 
 ## What a pro adds (and what to ask)
 
-We sell every container as-is. We don't add vents, insulation, power, or anything else. Every container we stock is used Wind & Water Tight. New (one-trip) and Cargo Worthy containers are available by special request, and so is a 10ft. But no grade changes the physics: a new steel box can sweat too.
+We sell every container as-is. We don't add vents, insulation, power, or anything else. [Every container we stock](/shipping-containers-for-sale/) is used Wind & Water Tight. New (one-trip) and Cargo Worthy containers are available by special request, and so is a 10ft. But no grade changes the physics: a new steel box can sweat too.
 
 If the no-tools steps aren't enough for what you store, these are the usual add-ons. Each one is a change to the container, so it's a job for a container modification shop, an insulation contractor, or a licensed electrician. Any change you make is your call and your responsibility.
 

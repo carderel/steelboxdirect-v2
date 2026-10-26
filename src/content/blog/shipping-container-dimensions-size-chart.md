@@ -415,8 +415,8 @@ That extra foot matters most for pallets stacked two-high, hung shelving, or tal
 Numbers on a chart are one thing. Here's a plainer way to picture each size.
 
 - **10ft**: about the size of a single-car garage stall, but not as tall. Fits a small vehicle or a modest amount of gear, with little room to spare. Rare used; mostly built new as a storage box.
-- **20ft**: a little longer than one standard parking space. Fits one tractor and its attachments, a motorcycle collection, seasonal gear, or a compact workshop.
-- **40ft**: about twice the length of a 20ft, roughly two parking spaces end to end. Fits a full equipment lineup, several vehicles, or a season's worth of business inventory.
+- **20ft**: a little longer than one standard parking space. Fits [one tractor and its attachments](/for/farmers/), a motorcycle collection, [seasonal gear](/for/homeowners/), or a compact workshop.
+- **40ft**: about twice the length of a 20ft, roughly two parking spaces end to end. Fits a full equipment lineup, several vehicles, or a season's worth of [business inventory](/for/businesses/).
 - **40ft High Cube**: the same footprint as a 40ft standard, with a foot more headroom. Good for stacked pallets, tall shelving, or equipment with height, like a combine.
 - **20ft High Cube and 45ft High Cube**: reference sizes, not commonly found used. The 45ft is the largest ISO size. Moving one usually calls for an oversize permit and a special trailer. Checking on permits is the buyer's job, with the local permitting office.
 - **8ft, 48ft, and 53ft**: specialty sizes. The 8ft is a small new-build storage box. The 48ft is a rare leftover from an older trucking fleet. The 53ft is a domestic rail box, sold regionally near rail hubs.

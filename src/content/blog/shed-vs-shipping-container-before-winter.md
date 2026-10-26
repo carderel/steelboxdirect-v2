@@ -120,7 +120,7 @@ A container is built for a hard life on ships and docks. Here is where it shines
 - **Steel all around.** Steel walls, steel floor frame, and steel doors you can lock with a strong padlock.
 - **Weather and pests.** We stock **used Wind and Water Tight (WWT)** containers. WWT means the box keeps out rain, wind, snow, and pests. The doors seal and there are no holes. Expect some surface rust, dents, or scuffs. That is normal. Our [condition guide](/condition/) shows what to expect.
 - **No build.** No kit, no crew, no concrete, no waiting for dry weekends.
-- **Room.** A 20ft or a 40ft holds a lot of stuff. Our [size guide](/size/) helps you pick.
+- **Room.** A [20ft](/shipping-containers-for-sale/20-foot-shipping-container/) or a [40ft](/shipping-containers-for-sale/40-foot-shipping-container/) holds a lot of stuff. Our [size guide](/size/) helps you pick.
 - **It can move.** A container is not fixed to the ground, so it can be moved by truck later if your plans change.
 
 What we sell, plainly:

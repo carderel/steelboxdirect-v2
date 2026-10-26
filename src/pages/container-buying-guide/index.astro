@@ -78,7 +78,14 @@ const breadcrumbs = [
   { name: 'Container Buying Guide' },
 ];
 
-interface ChecklistItem { n: string; title: string; body: string; link?: { href: string; label: string } }
+interface ChecklistItem {
+  n: string;
+  title: string;
+  body: string;
+  link?: { href: string; label: string };
+  // An optional second sentence with its own link, rendered after the first link's full stop.
+  more?: { before: string; href: string; label: string; after: string };
+}
 
 const checklist: ChecklistItem[] = [
   {
@@ -96,6 +103,7 @@ const checklist: ChecklistItem[] = [
     title: 'Verify the actual unit, not stock photos',
     body: `Scam listings often reuse photos scraped from real container yards to sell units that don't exist. Ask for photos of the specific container you're buying, including its CSC Safety Approval Plate, the stamped ID that proves the unit is real and traceable. Here's `,
     link: { href: '/container-reference/#markings', label: 'how to read a container\'s markings & CSC plate' },
+    more: { before: 'Before you pay, you can also ', href: '/blog/check-used-container-identity-free-bic-lookups/', label: 'run four free lookups on the container\'s ID', after: '.' },
   },
   {
     n: '04',
@@ -242,7 +250,7 @@ const faqs: Faq[] = [
             <span class="check-n">{c.n}</span>
             <div class="check-body">
               <h3>{c.title}</h3>
-              <p>{c.body}{c.link && <a href={c.link.href}>{c.link.label}</a>}{c.link ? '.' : ''}</p>
+              <p>{c.body}{c.link && <a href={c.link.href}>{c.link.label}</a>}{c.link ? '.' : ''}{c.more && <> {c.more.before}<a href={c.more.href}>{c.more.label}</a>{c.more.after}</>}</p>
             </div>
           </div>
         ))}

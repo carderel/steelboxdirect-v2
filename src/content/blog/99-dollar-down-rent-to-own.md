@@ -86,13 +86,13 @@ The monthly payment does not change either. A smaller amount at signing does not
 
 Modified and specialty containers, the side openers and the container offices, stay at 20% down whatever the distance.
 
-For anyone reading this page it is a footnote, and here is the honest reason why: rent-to-own through Steel Box Direct covers the used Wind and Water Tight containers we stock, and those are standard, unmodified units. We do not sell modified units. So there is nothing in our catalog that sits in that tier, and if you are buying from us, the specialty rule will never touch your agreement. We are stating it anyway because someone will ask, and a rule you find out about later is worse than a rule you were told.
+For anyone reading this page it is a footnote, and here is the honest reason why: rent-to-own through Steel Box Direct covers [the used Wind and Water Tight containers we stock](/shipping-containers-for-sale/), and those are standard, unmodified units. We do not sell modified units. So there is nothing in our catalog that sits in that tier, and if you are buying from us, the specialty rule will never touch your agreement. We are stating it anyway because someone will ask, and a rule you find out about later is worse than a rule you were told.
 
 ## Should you rent to own at all?
 
 Lower down payment or not, this is still a choice between shapes, not a discount.
 
-Buying outright is one number, paid once, finished. Rent-to-own is a smaller number now and a fixed run of monthly payments with a last one already on the calendar, ending with you owning the container. Monthly storage is a payment that climbs forever and ends with you owning nothing.
+Buying outright is one number, paid once, finished. Rent-to-own is a smaller number now and a fixed run of monthly payments with a last one already on the calendar, ending with you owning the container. [Monthly storage](/container-rental-guide/) is a payment that climbs forever and ends with you owning nothing.
 
 The reason to rent to own is cash timing, not total cost. If you can write the whole check comfortably today, write it. If you cannot, and the alternative you are actually weighing is a storage unit, then the arithmetic is worth doing properly: our [rent vs buy calculator](/container-rent-vs-buy-calculator/) will find your break-even month from your own figures rather than from an average we picked.
 
@@ -100,4 +100,4 @@ The reason to rent to own is cash timing, not total cost. If you can write the w
 
 If the down payment was the thing holding you back, it is $99 on a standard container from September 1, inside the distance limit. At Steel Box Direct, that means the used Wind and Water Tight containers we stock.
 
-The full terms, both tiers, and the effective date live on our [rent-to-own page](/rent-to-own/#down-payment). Read that first, then send us your delivery ZIP code and the size you want, and we will tell you which depot serves you and what your numbers actually look like.
+The full terms, both tiers, and the effective date live on our [rent-to-own page](/rent-to-own/#down-payment). Read that first, then [send us your delivery ZIP code and the size you want](/quote/), and we will tell you which depot serves you and what your numbers actually look like.

@@ -1,0 +1,83 @@
+---
+// Curated "Before you buy" reads. Slugs and blurbs live in src/data/homeReads.ts; the title and
+// category come from the post itself. Static links only: no client JS, no images, no dates.
+//
+// The draft filter is the strict one, not the PROD-only pattern the blog pages use, so the dev
+// server renders exactly what production renders. A slug that is missing or still a draft fails the
+// build loudly rather than leaving a hole or a 404 on the homepage.
+import { getCollection } from 'astro:content';
+import { homeReads } from '../../data/homeReads';
+
+const published = await getCollection('blog', ({ data }) => data.draft !== true);
+const bySlug = new Map(published.map((p) => [p.slug, p]));
+
+const reads = homeReads.map((r) => {
+  const post = bySlug.get(r.slug);
+  if (!post) {
+    throw new Error(
+      `homeReads: "${r.slug}" is not a published blog post (missing or draft: true). `
+      + 'Fix src/data/homeReads.ts before building.',
+    );
+  }
+  return { href: `/blog/${post.slug}/`, title: post.data.title, category: post.data.category, blurb: r.blurb };
+});
+---
+<!-- ============ §06 READS ============ -->
+<section class="reads" id="reads">
+  <div class="wrap reads_wrap">
+    <div class="sh">
+      <span class="idx">§ 06</span>
+      <span class="nm">Before you buy</span>
+      <span class="tg">Buying guides &amp; field stories</span>
+    </div>
+    <h2 class="big reads_headline">Three reads that<br><em>can save buyers money.</em></h2>
+
+    <ul class="reads_grid">
+      {reads.map((r) => (
+        <li>
+          <a class="reads_card" href={r.href}>
+            <span class="reads_card_eyebrow">{r.category}</span>
+            <h3 class="reads_card_title">{r.title}</h3>
+            <p class="reads_card_blurb">{r.blurb}</p>
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <p class="reads_all"><a href="/blog/">All buying guides and field stories</a></p>
+  </div>
+</section>
+
+<style>
+  /* Sections Shared */
+  .sh{display:grid;grid-template-columns:auto 1fr auto;gap:20px;align-items:center;padding:18px 0;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);margin-bottom:48px}
+  .sh .idx{font-family:var(--mono);font-size:var(--t-meta);letter-spacing:.08em;text-transform:uppercase}
+  .sh .nm{font-family:var(--narrow);font-weight:700;font-size:22px;text-transform:uppercase;letter-spacing:-.01em}
+  .sh .tg{font-family:var(--mono);font-size:var(--t-meta);letter-spacing:.08em;text-transform:uppercase;opacity:.55;text-align:right}
+  .big{font-family:var(--narrow);font-weight:700;font-size:var(--t-big);line-height:.9;letter-spacing:-.02em;text-transform:uppercase;margin:0}
+  .big em{font-style:italic;color:var(--c5-permits);font-weight:700}
+
+  /* Reads */
+  .reads{background:var(--cream);padding:2.5em 0;border-bottom:2.5px solid var(--ink)}
+  .reads_headline{margin-bottom:40px}
+  .reads_grid{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(3,1fr);gap:24px;align-items:stretch}
+  .reads_grid li{display:flex}
+  .reads_card{display:flex;flex-direction:column;gap:12px;width:100%;background:white;border:2.5px solid var(--ink);padding:24px;box-shadow:6px 6px 0 var(--ink);text-decoration:none;color:var(--ink);transition:transform .15s,box-shadow .15s}
+  .reads_card:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--yellow)}
+  .reads_card_eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;opacity:.6}
+  .reads_card_title{font-family:var(--narrow);font-weight:700;font-size:22px;line-height:1.05;text-transform:uppercase;letter-spacing:-.01em;margin:0}
+  .reads_card_blurb{font-size:15px;line-height:1.5;margin:0;opacity:.85}
+  .reads_all{margin:32px 0 0;font-family:var(--mono);font-size:13px;letter-spacing:.04em;text-transform:uppercase;font-weight:700}
+  .reads_all a{color:var(--ink);border-bottom:2px solid var(--yellow);text-decoration:none}
+  .reads_all a:hover{background:var(--yellow)}
+
+  @media (max-width:960px){
+    .reads_grid{grid-template-columns:1fr;gap:16px}
+  }
+
+  @media (max-width:720px){
+    .big{font-size:clamp(36px,9vw,64px)}
+    .sh{grid-template-columns:auto 1fr;row-gap:6px}
+    .sh .tg{grid-column:1 / -1;text-align:left;opacity:.5}
+  }
+</style>

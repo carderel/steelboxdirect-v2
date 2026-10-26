@@ -56,7 +56,7 @@ A container is a steel box with a floor and two big doors. It is plain. That is 
 - Trail cameras between uses
 - Tarps, buckets and plastic totes of camp gear
 
-For most camps, a 20-foot box is plenty. It fits on a smaller flat spot and holds plenty. A 40-foot box gives you more room if your group is big. Not sure? Our [20ft vs 40ft guide](/blog/20ft-vs-40ft-shipping-container/) walks through it. A 10-foot container is a special request. Ask us and we will see what we can do.
+For most camps, [a 20-foot box is plenty](/shipping-containers-for-sale/20-foot-shipping-container/). It fits on a smaller flat spot and holds plenty. [A 40-foot box gives you more room](/shipping-containers-for-sale/40-foot-shipping-container/) if your group is big. Not sure? Our [20ft vs 40ft guide](/blog/20ft-vs-40ft-shipping-container/) walks through it. A 10-foot container is a special request. Ask us and we will see what we can do.
 
 Everything we stock is used and Wind and Water Tight (WWT). That means it keeps out rain, wind and snow. It may have dents and rust spots. It will not look new. Our [condition guide](/condition/) shows what WWT covers.
 

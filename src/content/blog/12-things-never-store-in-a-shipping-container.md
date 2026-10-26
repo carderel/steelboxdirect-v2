@@ -37,7 +37,7 @@ faq:
     a: "Never with anything that burns fuel. The CDC says carbon monoxide is made any time you burn fuel, and calls it an odorless, colorless gas that kills without warning. The UK's Health and Safety Executive calls freight containers confined spaces, with limited or no ventilation, where hazardous air can build up. So never run a fuel-burning heater, generator, or engine inside a closed container. Steel Box Direct does not sell or install heaters. For any heat at all, talk to an HVAC pro, and have a licensed electrician handle any power."
 ---
 
-A shipping container is a great storage tool. It has steel walls and lockable doors. A Wind and Water Tight container also keeps out rain, wind, snow, and pests. Seals wear, so check them. But keeping out rain is not the same as controlling heat and cold inside. That gap causes most storage mistakes. Here are 12 things that don't belong in a container.
+A shipping container is a great storage tool. It has steel walls and lockable doors. A [Wind and Water Tight container](/blog/wind-and-water-tight-explained/) also keeps out rain, wind, snow, and pests. Seals wear, so check them. But keeping out rain is not the same as controlling heat and cold inside. That gap causes most storage mistakes. Here are 12 things that don't belong in a container.
 
 ## Why a Sealed Container Still Isn't Safe for Everything
 

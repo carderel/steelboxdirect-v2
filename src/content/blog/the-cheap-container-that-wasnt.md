@@ -56,7 +56,7 @@ That was the moment the deal changed shape. The eight or nine hundred dollars wa
 
 Here's the part a low sticker price hides. A shipping container is big and heavy. You can't toss it on a regular trailer. You can't set it down by hand.
 
-It takes a special truck, usually a tilt-bed or a crane. It takes a trained driver who knows how to place it. It takes fuel and time. And the farther that box has to travel to reach you, the more that trip costs.
+It takes a special truck, usually [a tilt-bed or a crane](/delivery/). It takes a trained driver who knows how to place it. It takes fuel and time. And the farther that box has to travel to reach you, the more that trip costs.
 
 None of that is a trick. It's just real work by real people. Moving a heavy steel box the right way costs money, no matter who does it. So when a price leaves delivery out, it isn't the true price. It's only half of it.
 
@@ -72,7 +72,7 @@ That's why the sticker price alone can fool you. Two sellers can list very diffe
 
 There's a simple way to protect yourself. Don't compare sticker prices. Compare **delivered totals**.
 
-Ask every seller the same thing: *What's the one price to get this container to my address, set on the ground?* One number. Container plus delivery to your ZIP. That's the only fair match-up.
+Ask every seller the same thing: *What's the one price to get this container to my address, set on the ground?* One number. Container plus [delivery to your ZIP](/locations/). That's the only fair match-up.
 
 A price that looks higher up front can be the cheaper deal once you add it all up. The only way to know is to compare the same thing, side by side: delivered-to-you against delivered-to-you.
 
@@ -90,7 +90,7 @@ If you're shopping for a container, that question is yours to keep: **"Does that
 - **Always ask: "Does that price include delivery?"** It's the fastest way to tell a real price from a teaser.
 - **Steel Box Direct quotes all-in:** container, delivery to your ZIP, and placement on flat ground, so the number you're quoted is the number you pay.
 - **Compare delivered totals, not sticker prices.** A higher sticker with delivery included can cost less than a cheap one once freight is added.
-- **Every container Steel Box Direct stocks is Wind & Water Tight (WWT):** one used grade, sealed against rain, wind, and pests.
+- **Every container Steel Box Direct stocks is [Wind & Water Tight (WWT)](/blog/wind-and-water-tight-explained/):** one used grade, sealed against rain, wind, and pests.
 
 ## If This Sounds Familiar
 

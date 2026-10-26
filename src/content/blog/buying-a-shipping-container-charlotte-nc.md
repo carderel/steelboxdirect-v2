@@ -37,7 +37,7 @@ faq:
     a: "Pick a spot on higher ground where rain runs away, not a low corner where water collects. Make the spot level side to side so the container doors open and close well. A gravel pad or solid blocks under the four corners help keep the steel off wet clay. On new-build lots, the soil is often packed down by heavy equipment, which can make drainage worse, so a local grading or landscape contractor can help with bigger jobs."
 ---
 
-A steel container can give a Charlotte home, shop or jobsite a lot of dry, locked space. The box itself is the easy part. The real work is in three places: your rules, your ground, and the road in.
+A steel container can give a Charlotte [home](/for/homeowners/), [shop](/for/businesses/) or [jobsite](/for/contractors/) a lot of dry, locked space. The box itself is the easy part. The real work is in three places: your rules, your ground, and the road in.
 
 This post is a checklist for all three. It goes one step at a time. If you want to see sizes, stock and our delivery area first, start with our page on [shipping containers for sale in Charlotte](/locations/north-carolina/charlotte-shipping-containers/). Then come back here to plan.
 
@@ -53,7 +53,7 @@ A few things are special request only:
 
 We sell plain storage containers. We do not sell or install heaters, and we do not modify boxes.
 
-Our standard sizes are 20ft and 40ft. A 40ft has about twice the floor space, but it needs a much bigger spot and a longer path for the truck. Our [20ft vs 40ft guide](/blog/20ft-vs-40ft-shipping-container/) helps you choose.
+Our standard sizes are [20ft](/shipping-containers-for-sale/20-foot-shipping-container/) and [40ft](/shipping-containers-for-sale/40-foot-shipping-container/). A 40ft has about twice the floor space, but it needs a much bigger spot and a longer path for the truck. Our [20ft vs 40ft guide](/blog/20ft-vs-40ft-shipping-container/) helps you choose.
 
 ## Step 2: Read your HOA papers first
 
