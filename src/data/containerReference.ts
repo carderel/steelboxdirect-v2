@@ -137,4 +137,114 @@ export const referenceFaqs: RefFaq[] = [
     q: 'Is surface rust on a used container a problem?',
     a: `Usually not. Containers are built from Cor-Ten weathering steel that forms a protective patina, so surface rust is typically cosmetic. Every container we stock is Wind & Water Tight: it keeps out rain, wind, snow, and pests, with no holes and doors that seal.`,
   },
+  // Added 2026-10-27 (T-220). Wording checked against the calculator page and the ISO 6346 post
+  // FAQs so no question repeats theirs.
+  {
+    q: 'Can the check digit catch a wrong container number?',
+    a: `Usually, yes. Each of the first 10 characters becomes a number and is weighted by its position. The total is divided by 11, and the remainder is the check digit, with a remainder of 10 written as 0. Most typos change the result, so the number stops matching.`,
+  },
+  {
+    q: 'What does 45G1 mean on a shipping container?',
+    a: `It is the size and type code. The 4 means 40ft long. The 5 means 9'6" high, which is a high cube. G1 means general purpose with passive vents. So 45G1 is a standard 40ft high cube.`,
+  },
+  {
+    q: 'What is the difference between max gross, tare, and payload?',
+    a: `Max gross is the most the container and its cargo may weigh together. Tare is the weight of the empty container. Payload is max gross minus tare: the cargo weight marked for that unit when it ships.`,
+  },
+  {
+    q: 'What if a used container has no CSC plate?',
+    a: `For storage, it does not matter. The CSC plate is required for containers in international transport. It is not needed for storage or for a truck delivery that stays within the United States. If you plan to ship a box overseas, ask about the plate before you buy.`,
+  },
+];
+
+// ---------------------------------------------------------------------------------------------
+// Markings expansion (T-220, owner approved 2026-10-27). Additions only: above this block, only
+// four FAQs were appended to referenceFaqs. Plain, short sentences. No owner names from BIC data, no weights, no prices.
+// ---------------------------------------------------------------------------------------------
+
+export const ISO6346_CALCULATOR_PATH = '/iso-6346-check-digit-calculator/';
+export const BIC_REGISTER_URL = 'https://www.bic-code.org/bic-codes/';
+export const BIC_SIZE_TYPE_URL = 'https://www.bic-code.org/size-type-code/';
+export const CSC_GUIDE_PLATE_PATH = '/container-certification-guide/#plate';
+export const BIC_LOOKUPS_POST_PATH = '/blog/check-used-container-identity-free-bic-lookups/';
+
+// Product pages linked from the markings tables (T-220 internal-linking pass).
+const PRODUCT_20_STD = '/shipping-containers-for-sale/20-foot-shipping-container/';
+const PRODUCT_40_STD = '/shipping-containers-for-sale/40-foot-shipping-container/';
+const PRODUCT_40_HC = '/shipping-containers-for-sale/40-foot-high-cube-container/';
+
+// Optional in-text link: linkText must appear verbatim inside the row's meaning; the page wraps
+// that substring and fails the build if it is missing, so copy edits cannot silently drop a link.
+export interface InlineLink { href: string; linkText: string }
+
+// Short body copy for the markings section. Linked sentences are split into lead / link / tail so
+// the page can wrap only the link text and the sentence still reads as one line of copy.
+export interface LinkedLine { lead: string; link: string; tail: string }
+
+export const markingsCopy = {
+  calculator: { lead: 'Have a container number? Check it in seconds with our ', link: 'free check digit calculator', tail: '.' } as LinkedLine,
+  calculatorButton: 'Check a container number',
+  ownerLookup: { lead: 'To see who owns a prefix, ', link: 'search the BIC register', tail: '.' } as LinkedLine,
+  bicGuide: { lead: 'Our guide to ', link: 'free BIC lookups for a used container', tail: ' walks through it.' } as LinkedLine,
+  exampleH: 'A worked example: CSQU 305438 3, 45G1',
+  exampleIntro: 'Here is one full set of markings, read part by part. The ID is a widely used example number. We paired it with a 45G1 code to show both parts together.',
+  exampleOutro: { lead: 'Want to see the check digit math? Run this number through the ', link: 'check digit calculator', tail: ' for the full arithmetic.' } as LinkedLine,
+  commonCodesH: 'Common full size and type codes',
+  commonCodesIntro: 'You will see these full codes most often. Each one reads left to right, using the parts above.',
+  commonCodesSource: { lead: 'These codes come from ISO 6346. The BIC publishes the code parts on its ', link: 'size and type code page', tail: '.' } as LinkedLine,
+  weightH: 'Weight and capacity markings',
+  weightIntro: 'Most containers also show weight and volume markings on the doors.',
+  weightBuyer: 'For a buyer, tare is usually the number to know. It is what the empty box weighs on the delivery truck. Payload is the cargo limit marked for shipping.',
+  cscFieldsIntro: 'The plate records:',
+  cscScope: 'The plate is about international shipping. Our used Wind & Water Tight containers are sold for storage and are not certified for ocean shipping.',
+  cscGuide: { lead: 'For more on the plate and who needs one, see our ', link: 'container certification guide', tail: '.' } as LinkedLine,
+};
+
+// The worked example. The ID is the widely cited ISO 6346 example (Wikipedia); its check digit is
+// asserted at build time against src/lib/iso6346.ts by the page, so the copy cannot drift.
+export interface ExampleRow { chars: string; part: string; meaning: string; link?: InlineLink }
+
+export const workedExample = {
+  id: 'CSQU3054383',
+  display: 'CSQU 305438 3',
+  sizeType: '45G1',
+  rows: [
+    { chars: 'CSQ', part: 'Owner code', meaning: 'The 3-letter prefix registered with BIC.' },
+    { chars: 'U', part: 'Category', meaning: 'U means a freight container.' },
+    { chars: '305438', part: 'Serial number', meaning: "This unit's number in the owner's fleet." },
+    { chars: '3', part: 'Check digit', meaning: 'Worked out from the 10 characters before it. It is shown in a box.' },
+    { chars: '4', part: 'Length', meaning: '40ft long.' },
+    { chars: '5', part: 'Height', meaning: `9'6" high, which is a high cube.`, link: { href: PRODUCT_40_HC, linkText: 'high cube' } },
+    { chars: 'G1', part: 'Type', meaning: 'General purpose, with passive vents.' },
+  ] as ExampleRow[],
+};
+
+// Common full size/type codes. Each meaning is assembled from the code parts above.
+export const commonSizeTypeCodes: (SizeTypeCode & { link?: InlineLink })[] = [
+  { code: '22G1', meaning: `20ft standard, 8'6" high, general purpose with vents`, link: { href: PRODUCT_20_STD, linkText: '20ft standard' } },
+  { code: '42G1', meaning: `40ft standard, 8'6" high, general purpose with vents`, link: { href: PRODUCT_40_STD, linkText: '40ft standard' } },
+  { code: '45G1', meaning: `40ft high cube, 9'6" high, general purpose with vents`, link: { href: PRODUCT_40_HC, linkText: '40ft high cube' } },
+  { code: 'L5G1', meaning: `45ft high cube, 9'6" high, general purpose with vents` },
+  { code: '22U1', meaning: '20ft open top' },
+  { code: '22P1', meaning: '20ft flat rack with fixed ends' },
+  { code: '22R1', meaning: '20ft refrigerated container (reefer)' },
+];
+
+// Door weight and capacity markings. Deliberately no figures: weights differ by unit.
+export const weightMarkings: SizeTypeCode[] = [
+  { code: 'MAX GROSS', meaning: 'The most the container and its cargo may weigh together.' },
+  { code: 'TARE', meaning: 'The weight of the empty container.' },
+  { code: 'PAYLOAD (or NET)', meaning: 'The cargo weight marked for that unit when it ships. It equals max gross minus tare.' },
+  { code: 'CU. CAP.', meaning: 'The inside volume, usually shown in cubic meters and cubic feet.' },
+];
+
+// What the CSC Safety Approval Plate records (IMO CSC 1972, Annex I).
+export const cscPlateFields: string[] = [
+  'The country of approval and the approval reference',
+  'The date of manufacture',
+  "The manufacturer's identification number for the container",
+  'The maximum operating gross mass',
+  'The allowable stacking load',
+  'The transverse racking test load',
+  'An examination date, or an ACEP number if the container is on an approved continuous examination program',
 ];

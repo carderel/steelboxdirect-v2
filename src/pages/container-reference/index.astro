@@ -5,7 +5,27 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import {
   referenceSizes, bicIdParts, lengthCodes, heightWidthCodes, typeCodes,
   lifecycleFacts, referenceFaqs,
+  ISO6346_CALCULATOR_PATH, BIC_REGISTER_URL, BIC_SIZE_TYPE_URL, CSC_GUIDE_PLATE_PATH, BIC_LOOKUPS_POST_PATH,
+  markingsCopy, workedExample, commonSizeTypeCodes, weightMarkings, cscPlateFields,
 } from '../../data/containerReference';
+import type { InlineLink } from '../../data/containerReference';
+import { analyzeContainerNumber } from '../../lib/iso6346';
+
+// The worked example's ID must pass the same module the calculator uses. A typo in the data file
+// fails the build instead of publishing a wrong check digit.
+const exampleCheck = analyzeContainerNumber(workedExample.id);
+if (!exampleCheck.valid) {
+  throw new Error(`container-reference: worked example ${workedExample.id} fails the ISO 6346 check digit`);
+}
+
+// Splits a meaning around its in-text link. A missing linkText fails the build rather than
+// publishing a row that silently lost its link.
+function splitLink(meaning: string, link?: InlineLink): [string, string] | null {
+  if (!link) return null;
+  const i = meaning.indexOf(link.linkText);
+  if (i < 0) throw new Error(`container-reference: link text "${link.linkText}" not found in "${meaning}"`);
+  return [meaning.slice(0, i), meaning.slice(i + link.linkText.length)];
+}
 
 const breadcrumbs = [
   { name: 'Home', path: '/' },
@@ -19,7 +39,7 @@ const breadcrumbs = [
   title="Container Reference: Dimensions, Markings & Lifecycle"
   description="Shipping container dimensions (ISO 668), markings and ISO 6346 codes, and what a used Wind & Water Tight container really is, explained in plain English."
   datePublished="2026-07-02"
-  dateModified="2026-10-13"
+  dateModified="2026-10-27"
   breadcrumbs={breadcrumbs}
   schema={{ kind: 'guide', title: 'Container Reference: Dimensions, Markings & Lifecycle', specs: [], faqs: referenceFaqs.map((f) => ({ q: f.q, a: f.a })) }}
 >
@@ -99,6 +119,11 @@ const breadcrumbs = [
           </tbody>
         </table>
       </div>
+      <div class="ref-tool-line">
+        <p>{markingsCopy.calculator.lead}<a href={ISO6346_CALCULATOR_PATH}>{markingsCopy.calculator.link}</a>{markingsCopy.calculator.tail}</p>
+        <a class="ref-tool-btn" href={ISO6346_CALCULATOR_PATH}>{markingsCopy.calculatorButton} →</a>
+      </div>
+      <p class="ref-small">{markingsCopy.ownerLookup.lead}<a href={BIC_REGISTER_URL} target="_blank" rel="noopener">{markingsCopy.ownerLookup.link}</a>{markingsCopy.ownerLookup.tail} {markingsCopy.bicGuide.lead}<a href={BIC_LOOKUPS_POST_PATH}>{markingsCopy.bicGuide.link}</a>{markingsCopy.bicGuide.tail}</p>
 
       <h3 class="ref-h3">The 4-character size &amp; type code</h3>
       <div class="code-grid">
@@ -116,9 +141,68 @@ const breadcrumbs = [
         </div>
       </div>
 
+      <h3 class="ref-h3" id="worked-example">{markingsCopy.exampleH}</h3>
+      <p class="ref-body">{markingsCopy.exampleIntro}</p>
+      <div class="ref-example">
+        <p class="ref-example-stamp">
+          <span>{workedExample.display.slice(0, -2)}</span> <span class="ref-example-box">{workedExample.display.slice(-1)}</span>
+          <br><span>{workedExample.sizeType}</span>
+        </p>
+        <div class="table-wrap">
+          <table class="ref-table ref-table-compact">
+            <thead><tr><th>Characters</th><th>Part</th><th>What it means</th></tr></thead>
+            <tbody>
+              {workedExample.rows.map((r) => {
+                const parts = splitLink(r.meaning, r.link);
+                return (
+                <tr><th scope="row"><code>{r.chars}</code></th><td>{r.part}</td><td>{parts ? <>{parts[0]}<a href={r.link!.href}>{r.link!.linkText}</a>{parts[1]}</> : r.meaning}</td></tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <p class="ref-small">{markingsCopy.exampleOutro.lead}<a href={ISO6346_CALCULATOR_PATH}>{markingsCopy.exampleOutro.link}</a>{markingsCopy.exampleOutro.tail}</p>
+
+      <h3 class="ref-h3" id="size-type-codes">{markingsCopy.commonCodesH}</h3>
+      <p class="ref-body">{markingsCopy.commonCodesIntro}</p>
+      <div class="table-wrap">
+        <table class="ref-table ref-table-compact">
+          <thead><tr><th>Code</th><th>What it means</th></tr></thead>
+          <tbody>
+            {commonSizeTypeCodes.map((c) => {
+              const parts = splitLink(c.meaning, c.link);
+              return (
+              <tr><th scope="row"><code>{c.code}</code></th><td>{parts ? <>{parts[0]}<a href={c.link!.href}>{c.link!.linkText}</a>{parts[1]}</> : c.meaning}</td></tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+      <p class="ref-small">{markingsCopy.commonCodesSource.lead}<a href={BIC_SIZE_TYPE_URL} target="_blank" rel="noopener">{markingsCopy.commonCodesSource.link}</a>{markingsCopy.commonCodesSource.tail}</p>
+
+      <h3 class="ref-h3" id="weight-markings">{markingsCopy.weightH}</h3>
+      <p class="ref-body">{markingsCopy.weightIntro}</p>
+      <div class="table-wrap">
+        <table class="ref-table ref-table-compact">
+          <thead><tr><th>Marking</th><th>What it means</th></tr></thead>
+          <tbody>
+            {weightMarkings.map((w) => (
+              <tr><th scope="row"><code>{w.code}</code></th><td>{w.meaning}</td></tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="ref-small ref-buyer">{markingsCopy.weightBuyer}</p>
+
       <div class="ref-callout">
-        <h4>The CSC Safety Approval Plate</h4>
+        <h4 id="csc-plate">The CSC Safety Approval Plate</h4>
         <p>Required under the IMO International Convention for Safe Containers, the CSC plate is the container’s “passport”: it records structural approval and inspection history and stays with the unit into the used market.</p>
+        <p>{markingsCopy.cscFieldsIntro}</p>
+        <ul class="ref-callout-list">
+          {cscPlateFields.map((f) => <li>{f}</li>)}
+        </ul>
+        <p>{markingsCopy.cscScope} {markingsCopy.cscGuide.lead}<a href={CSC_GUIDE_PLATE_PATH}>{markingsCopy.cscGuide.link}</a>{markingsCopy.cscGuide.tail}</p>
         <p>Want to decode the rest of the stampings? Here’s <a href="/blog/how-to-read-container-id-number-iso-6346/">how to read the full ID number and run the check digit yourself</a>.</p>
       </div>
     </div>
@@ -193,7 +277,8 @@ const breadcrumbs = [
   .ref-spokes { background: var(--cream); }
   .section-title { font-family: var(--narrow); font-size: 36px; text-transform: uppercase; margin-bottom: 12px; }
   .section-intro { font-size: 17px; line-height: 1.6; max-width: 760px; opacity: .8; margin-bottom: 32px; }
-  .ref-h3 { font-family: var(--narrow); font-size: 22px; text-transform: uppercase; margin: 36px 0 16px; }
+  .ref-h3 { font-family: var(--narrow); font-size: 22px; text-transform: uppercase; margin: 36px 0 16px; scroll-margin-top: 120px; }
+  .ref-table td a { border-bottom: 2px solid var(--yellow-d); font-weight: 600; }
 
   .table-wrap { overflow-x: auto; border: 2.5px solid var(--ink); background: white; }
   .ref-table { width: 100%; border-collapse: collapse; min-width: 720px; }
@@ -216,8 +301,26 @@ const breadcrumbs = [
   .code-col li b { font-family: var(--mono); background: var(--yellow); padding: 1px 6px; margin-right: 8px; }
 
   .ref-callout { margin-top: 32px; background: var(--ink); color: var(--cream); padding: 32px; border: 2.5px solid var(--ink); }
-  .ref-callout h4 { font-family: var(--narrow); font-size: 22px; text-transform: uppercase; margin-bottom: 10px; color: var(--yellow); }
+  .ref-callout h4 { font-family: var(--narrow); font-size: 22px; text-transform: uppercase; margin-bottom: 10px; color: var(--yellow); scroll-margin-top: 120px; }
   .ref-callout p { line-height: 1.6; opacity: .85; max-width: 760px; }
+  .ref-callout p + p { margin-top: 12px; }
+  .ref-callout a { color: var(--yellow); border-bottom: 2px solid var(--yellow); }
+  .ref-callout-list { margin: 10px 0 0; padding-left: 20px; max-width: 760px; }
+  .ref-callout-list li { line-height: 1.6; opacity: .85; font-size: 15px; }
+
+  .ref-body { font-size: 16px; line-height: 1.6; max-width: 760px; opacity: .8; margin-bottom: 16px; }
+  .ref-small { font-size: 15px; line-height: 1.6; max-width: 760px; margin-top: 14px; }
+  .ref-small a, .ref-tool-line a:not(.ref-tool-btn) { border-bottom: 2px solid var(--yellow-d); font-weight: 600; }
+  .ref-buyer { font-weight: 600; }
+  .ref-tool-line { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 24px; margin-top: 20px; padding: 18px 22px; background: var(--yellow); border: 2.5px solid var(--ink); }
+  .ref-tool-line p { font-size: 16px; line-height: 1.5; flex: 1 1 320px; }
+  .ref-tool-btn { font-family: var(--mono); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; background: var(--ink); color: var(--yellow); padding: 10px 16px; white-space: nowrap; }
+  .ref-tool-btn:hover { background: var(--cream); color: var(--ink); }
+  .ref-table-compact { min-width: 0; }
+  .ref-table code { font-family: var(--mono); background: var(--yellow); padding: 1px 6px; }
+  .ref-example { display: grid; grid-template-columns: auto 1fr; gap: 24px; align-items: start; }
+  .ref-example-stamp { font-family: var(--mono); font-size: 22px; font-weight: 700; line-height: 1.5; background: var(--ink); color: var(--cream); padding: 20px 24px; border: 2.5px solid var(--ink); white-space: nowrap; }
+  .ref-example-box { border: 2px solid var(--cream); padding: 0 6px; }
 
   .life-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
   .life-card { border-left: 4px solid var(--yellow); padding-left: 22px; }
@@ -240,8 +343,8 @@ const breadcrumbs = [
   .cta-box p { font-size: 17px; opacity: .8; margin-bottom: 32px; }
 
   @media (max-width: 960px) {
-    .code-grid, .life-grid { grid-template-columns: 1fr; }
-    .ref-section { scroll-margin-top: 240px; }
+    .code-grid, .life-grid, .ref-example { grid-template-columns: 1fr; }
+    .ref-section, .ref-h3, .ref-callout h4 { scroll-margin-top: 240px; }
   }
   @media (max-width: 768px) {
     .ref-section { padding: 56px 0; }

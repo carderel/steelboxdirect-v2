@@ -91,7 +91,7 @@ This is the step that justifies the whole exercise, and it is the one with a sig
 
 You need the complete, valid container number, not just the prefix. BIC's docs are explicit: "You can only search for valid and complete container numbers in BoxTech." That is why step 1 comes first.
 
-A hit returns factory technical data: manufacture date, manufacturer, tare weight, maximum gross mass, allowable stacking load, racking values, ISO size and type, one-door-off information, and full internal, external and door dimensions.
+A hit returns factory technical data: manufacture date, manufacturer, [tare weight](/container-reference/#weight-markings), maximum gross mass, allowable stacking load, racking values, ISO size and type, one-door-off information, and full internal, external and door dimensions.
 
 ### The four alerts
 

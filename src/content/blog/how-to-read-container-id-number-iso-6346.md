@@ -102,6 +102,8 @@ Right under the ID, every container carries a 4-character code (**45G1** in our 
 - **2nd character (height):** `5` = 9'6" tall, a "high cube," one foot taller than standard. (2 = 8'6" standard, 0 = 8'0".)
 - **3rd-4th characters (type):** `G1` = a general-purpose dry box with small passive vents that let it breathe. (G0 = no vents; U codes = open-top; P codes = flat rack.)
 
+See the [full list of common size and type codes](/container-reference/#size-type-codes).
+
 So **45G1** reads as: a 40ft, 9'6"-tall, general-purpose dry container with vents. That's a real, checkable claim about the box, not marketing copy.
 
 ### Why this code matters more than it looks
@@ -116,7 +118,7 @@ Anyone can type "40ft high cube" into a listing. The code on the door is the con
 
 The ID number and size/type code are painted on. A few feet away, usually near the door hinge, there's also a riveted metal plate: the **CSC plate**. Think of it as the container's safety report card. It's required under the IMO's International Convention for Safe Containers. It records the box's maximum gross weight, its stacking limit, its racking test load (a side-to-side frame-strength test), and its last structural exam date.
 
-The two markings do different jobs. The ID number says *which* container this is. The CSC plate says *what it's rated to do*. Some CSC plates repeat the size/type code, so that's a second place to cross-check it. We cover [how to read the CSC plate and markings](/container-reference/#markings) in more detail on our reference hub.
+The two markings do different jobs. The ID number says *which* container this is. The CSC plate says *what it's rated to do*. Some CSC plates repeat the size/type code, so that's a second place to cross-check it. We cover [how to read the CSC plate and markings](/container-reference/#csc-plate) in more detail on our reference hub.
 
 ## Using the ID number when buying a used container
 
