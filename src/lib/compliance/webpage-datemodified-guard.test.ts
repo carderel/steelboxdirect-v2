@@ -29,6 +29,17 @@
  * blog Article route through the same function as WebPage, and this file asserts that every
  * dateModified in a built page is one identical string. datePublished stays as the caller passed it.
  *
+ * SERVER RENDERED ROUTES (added 2026-10-31 with /price/). A page module that declares
+ * `export const prerender = false` runs in the worker per request, so the build writes no
+ * dist/<path>/index.html for it and the built output half has nothing to read. Those URLs, and only
+ * those, are exempt there. Detection is from the page source, never a typed URL list, so the next
+ * SSR page is handled without editing this file. A prerendered URL with no HTML still fails. The
+ * exempt routes are instead held by the source level block below: each must render through
+ * BaseLayout, which calls buildPageSchema with the request URL, pass no dateModified of its own,
+ * have a committed table entry, and produce, through the same builder, a WebPage dateModified equal
+ * to the sitemap's lastmod. A real render test was not used: vitest here runs without the Astro
+ * Vite plugin, so it cannot compile an .astro module.
+ *
  * WHY THE BUILT OUTPUT HALF SKIPS WITHOUT dist/. It compares HTML to XML that only a build writes.
  * Run npm run build first; a stale dist from before a change will fail here until rebuilt, which is
  * the same convention blog-category-indexing-guard.test.ts follows.
@@ -40,6 +51,7 @@ import { join } from 'node:path';
 import { buildPageSchema } from '../schema/buildPageSchema';
 import type { BuildSchemaArgs } from '../schema/types';
 import { lastmodFor, buildLastmodIndex } from '../seo/sitemapLastmod.mjs';
+import { lastmodIn, resolvePageFileIn, PAGES_DIR } from '../seo/lastmodResolve.mjs';
 import lastmodIndex from 'virtual:route-lastmod-index';
 import { routeLastmod } from '../../data/routeLastmod.mjs';
 
@@ -289,6 +301,75 @@ describe('webpage dateModified guard: never the clock', () => {
   });
 });
 
+/* ------------------------------------------------------- server rendered routes */
+
+/** True when a page module opts out of prerendering, so the build writes no HTML for it. */
+const SSR_DECLARATION = /^\s*export\s+const\s+prerender\s*=\s*false\b/m;
+const isServerRendered = (pageFile: string) => SSR_DECLARATION.test(read(pageFile));
+
+/** Every route producing module the lastmod index knows that renders per request. */
+const SSR_PAGE_FILES: string[] = (lastmodIndex.pageFiles as string[]).filter(isServerRendered);
+
+/** The module that renders a sitemap URL, by the very walk the lastmod resolver uses. */
+function pageFileFor(loc: string): string | null {
+  const segments = new URL(loc).pathname.split('/').filter(Boolean);
+  if (segments.length === 0) return `${PAGES_DIR}/index.astro`;
+  return resolvePageFileIn(lastmodIndex.pageFiles, PAGES_DIR, segments);
+}
+
+/** src/pages/a/b/index.astro to /a/b/, and src/pages/a.astro to /a/. Null for a [param] route. */
+function staticPathOf(pageFile: string): string | null {
+  const rel = pageFile.slice(PAGES_DIR.length + 1).replace(/\.(astro|md|mdx)$/, '');
+  if (/\[/.test(rel)) return null;
+  const route = rel === 'index' ? '' : rel.replace(/\/?index$/, '');
+  return route ? `/${route}/` : '/';
+}
+
+describe('webpage dateModified guard: server rendered routes take the same path as prerendered ones', () => {
+  const layout = read('src/layouts/BaseLayout.astro');
+
+  it('finds /price/ as server rendered, so the detection is known to work', () => {
+    expect(SSR_PAGE_FILES).toContain('src/pages/price/index.astro');
+    expect(SSR_PAGE_FILES, 'a prerendered page must not be detected as SSR').not.toContain('src/pages/index.astro');
+  });
+
+  it('BaseLayout builds the graph with buildPageSchema from the request URL', () => {
+    expect(layout).toMatch(/import \{ buildPageSchema \} from '\.\.\/lib\/schema'/);
+    expect(layout).toMatch(/buildPageSchema\(\{[\s\S]*?url: Astro\.url\.href,/);
+  });
+
+  it('every SSR page renders through BaseLayout, passes no dateModified and hand writes no JSON-LD', () => {
+    for (const file of SSR_PAGE_FILES) {
+      const src = read(file);
+      expect(src, `${file} must import BaseLayout`).toMatch(/import BaseLayout from '[./]+\/layouts\/BaseLayout\.astro'/);
+      expect(src, `${file} must render <BaseLayout>`).toMatch(/<BaseLayout\b/);
+      expect(src, `${file} must not pass dateModified; the table states it`).not.toMatch(/\bdateModified\s*=/);
+      expect(src, `${file} must not call the schema builder directly`).not.toMatch(/buildPageSchema/);
+      expect(src, `${file} must not emit its own JSON-LD`).not.toMatch(/application\/ld\+json/);
+    }
+  });
+
+  it('every SSR page has a table entry, and the builder states exactly that date for its URL', () => {
+    for (const file of SSR_PAGE_FILES) {
+      const path = staticPathOf(file);
+      expect(path, `${file} is a [param] SSR route; add a sampled URL for it here`).not.toBeNull();
+      const url = `${SITE}${path}`;
+      expect(pageFileFor(url), `${url} must route back to ${file}`).toBe(file);
+      const committed = (routeLastmod as Record<string, string>)[file];
+      expect(committed, `${file} needs a committed lastmod entry`).toBeTruthy();
+      expect(lastmodIn(lastmodIndex, url)).toBe(committed);
+      expect(lastmodFor(url), 'the sitemap reads the same entry').toBe(committed);
+      // A query string, as a submitted form produces, resolves to the same date.
+      const withQuery = buildPageSchema({ url: `${url}?zip=45202`, title: 'T', description: 'd', page: { kind: 'excluded' } });
+      for (const graph of [build(path as string).graph, withQuery.graph]) {
+        const stated = webPageOf(graph).dateModified;
+        expect(stated, url).toBe(asSitemapWrites(committed));
+        expect(Date.parse(stated), url).toBeLessThanOrEqual(NEWEST_TABLE_INSTANT);
+      }
+    }
+  });
+});
+
 /* ------------------------------------------------------------ built output */
 
 /** Every JSON-LD node in one HTML file, flattened across all ld+json blocks. */
@@ -348,8 +429,18 @@ describe('webpage dateModified guard: the built pages agree with the built sitem
     const dated = entries.filter((e) => e.lastmod);
     expect(dated.length, 'the sitemap should date most of the site').toBeGreaterThan(40);
     const mismatches: string[] = [];
+    const exempt: string[] = [];
     for (const { loc, lastmod } of dated) {
       const file = htmlFor(loc);
+      // EXEMPTION, SSR ONLY. A module declaring `export const prerender = false` renders per
+      // request in the worker, so the build writes no HTML here to compare. Its date is held by the
+      // 'server rendered routes' block above (BaseLayout, buildPageSchema, the shared table). Any
+      // prerendered URL without HTML still falls through and fails.
+      const module = pageFileFor(loc);
+      if (!existsSync(file) && module && SSR_PAGE_FILES.includes(module)) {
+        exempt.push(loc);
+        continue;
+      }
       if (!existsSync(file)) {
         mismatches.push(`  ${loc}  (no HTML at ${file})`);
         continue;
@@ -361,6 +452,8 @@ describe('webpage dateModified guard: the built pages agree with the built sitem
     }
     expect(mismatches, ['', 'sitemap <lastmod> and WebPage dateModified disagree:', ...mismatches].join('\n'))
       .toEqual([]);
+    // The exemption must stay narrow: only a handful of SSR URLs, never a silent bulk skip.
+    expect(exempt.length, `exempted ${exempt.join(', ')}`).toBeLessThanOrEqual(SSR_PAGE_FILES.length);
   });
 
   it.skipIf(!hasDist)('the homepage and the Cincinnati page, by name, carry their sitemap date', () => {
