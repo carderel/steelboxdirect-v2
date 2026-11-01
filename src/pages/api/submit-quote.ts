@@ -265,7 +265,7 @@ async function sendBuyerConfirmation(data: QuoteFormData): Promise<string | null
       from: 'Steel Box Direct <noreply@steelboxdirect.com>',
       to: data.email,
       subject: 'We received your quote request',
-      text: `Hi ${data.name},\n\nWe received your request for a shipping container quote.\n\nYour request summary:\n- Size: ${getOptionLabel(SIZE_LABELS, data.size_preference)}\n- Condition: ${getOptionLabel(CONDITION_LABELS, data.condition_preference)}\n- ${data.receive_method === 'pickup' ? 'Self pick-up near' : 'Delivery to'}: ${data.delivery_zip}\n- Timeline: ${getOptionLabel(TIMELINE_LABELS, data.timeline)}${rtoSummaryLine}\n\nWhat happens next:\nA seller will review your request and contact you within 1 business day with pricing and availability for your area.\n\n${allInLine}${rtoHeadsUp}\n\nNo action needed from you. If you have questions, reply to this email.\n\n---\nSteel Box Direct`,
+      text: `Hi ${data.name},\n\nWe received your request for a shipping container quote.\n\nYour request summary:\n- Size: ${getOptionLabel(SIZE_LABELS, data.size_preference)}\n- Condition: ${getOptionLabel(CONDITION_LABELS, data.condition_preference)}\n- ${data.receive_method === 'pickup' ? 'Self pick-up near' : 'Delivery to'}: ${data.delivery_zip}\n- Timeline: ${getOptionLabel(TIMELINE_LABELS, data.timeline)}${rtoSummaryLine}\n\nWhat happens next:\nA seller will review your request and contact you within 4 business hours with pricing and availability for your area.\n\n${allInLine}${rtoHeadsUp}\n\nNo action needed from you. If you have questions, reply to this email.\n\n---\nSteel Box Direct`,
     });
     if (error) {
       console.error('Email send error:', error);

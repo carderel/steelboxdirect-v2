@@ -1,0 +1,325 @@
+---
+// /price/ : instant delivered price by ZIP (owner approved 2026-10-31).
+//
+// SERVER RENDERED, on purpose. Every other page on this site is prerendered. This one answers a
+// question whose answer depends on the request, so it runs in the worker. There is NO client script
+// and no lazy loading: the form is a plain GET to this same URL.
+//
+// THREE WAYS IN, and what each one renders.
+//   1. ?zip= present. The explicit ZIP always wins. Bad shape or outside the service area renders a
+//      plain message and the quote link, with no upstream call at all. Inside the area, one cached
+//      or live lookup through src/lib/pricing/zipPrice.ts.
+//   2. No zip param, and the request location gives a US 5 digit postal code inside the area. That
+//      ZIP is priced and labelled as our best guess, with the form right above it. The guessed value
+//      is never logged or stored; only the per ZIP feed result is cached, exactly as for case 1.
+//   3. Anything else, including every crawler arriving from a data center outside the area and the
+//      dev server: the plain intro and form, indexable, with no word about location. If a guessed
+//      lookup fails, it also falls back to this view rather than showing an error about a ZIP the
+//      visitor never typed.
+//
+// INDEXING. The bare URL is indexable and canonical to itself, including when it shows a guessed
+// price. Any query string makes the page noindex,follow; the canonical is always /price/ because
+// BaseLayout builds it from the pathname.
+//
+// CACHING. The bare URL varies per visitor now (case 2), so it is private, no-store. An explicit
+// ZIP result is public for whatever is left of its 12 hour cache life. Transient errors are no-store.
+//
+// SCHEMA. The minimal WebPage graph (the excluded kind). No Offer and no Product node: a live per ZIP
+// figure is not a published offer.
+//
+// PRICE RULES. No figure on this page is typed. Every one comes from the live feed through the shared
+// validator, scoped to the named ZIP, dated with the day it was checked (America/New_York), and shown
+// with the same disclaimer sentence QuickFacts renders. The supplier is never named.
+export const prerender = false;
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { formatPrice } from '../../data/pricing';
+import {
+  PRICE_DISCLAIMER,
+  SIZE_LABEL,
+  SIZE_PAGE,
+  SIZE_PARAM,
+  cacheFromRuntime,
+  dateLabel,
+  guessZipFromCf,
+  lookupZipPrice,
+  normalizeZip,
+  serviceState,
+  type LookupOutcome,
+  type ZipSku,
+} from '../../lib/pricing/zipPrice';
+
+const crumbs = [{ name: 'Home', path: '/' }, { name: 'Instant price' }];
+
+const params = Astro.url.searchParams;
+const hasQuery = Astro.url.search.length > 1;
+const rawZip = params.get('zip');
+const rawSize = params.get('size') ?? '';
+const selectedSku: ZipSku | null = SIZE_PARAM[rawSize] ?? null;
+
+// The adapter puts the Cloudflare runtime on locals. In dev it may be a proxy, or absent.
+const runtime = (Astro.locals as { runtime?: { cf?: unknown; caches?: unknown; ctx?: { waitUntil?: (p: Promise<unknown>) => void } } }).runtime;
+
+type View = 'intro' | 'invalid' | 'out-of-area' | 'result' | 'not-serviceable' | 'error';
+let view: View = 'intro';
+let zip = '';
+let guessed = false;
+let outcome: LookupOutcome | null = null;
+
+if (rawZip !== null) {
+  const normal = normalizeZip(rawZip);
+  if (!normal) {
+    view = 'invalid';
+  } else if (!serviceState(normal)) {
+    view = 'out-of-area';
+    zip = normal;
+  } else {
+    zip = normal;
+  }
+} else {
+  const guess = guessZipFromCf(runtime?.cf);
+  if (guess) {
+    zip = guess;
+    guessed = true;
+  }
+}
+
+if (zip && view === 'intro') {
+  const waitUntil = runtime?.ctx?.waitUntil;
+  outcome = await lookupZipPrice(zip, {
+    cache: cacheFromRuntime(runtime),
+    waitUntil: typeof waitUntil === 'function' ? (p) => waitUntil.call(runtime?.ctx, p) : undefined,
+  });
+  if (outcome.status === 'ok') view = 'result';
+  else if (guessed) {
+    // A guess that cannot be priced falls back to the plain form, silently.
+    zip = '';
+    guessed = false;
+    outcome = null;
+  } else view = outcome.status === 'not-serviceable' ? 'not-serviceable' : 'error';
+}
+
+const result = outcome && outcome.status === 'ok' ? outcome.result : null;
+const lines = result ? result.lines.filter((l) => !selectedSku || l.sku === selectedSku) : [];
+const pickupLines = lines.filter((l) => l.pickup !== null);
+const selectedUnavailable = Boolean(result && selectedSku && result.unavailable.includes(selectedSku));
+const unavailableLabels = result
+  ? result.unavailable.filter((s) => !selectedSku || s === selectedSku).map((s) => SIZE_LABEL[s])
+  : [];
+
+// Cache-Control, per the rules in the header.
+let cacheControl = 'private, no-store';
+if (rawZip !== null) {
+  if (view === 'result' || view === 'not-serviceable') {
+    const left = outcome && outcome.status !== 'error' ? outcome.maxAgeSeconds : 0;
+    cacheControl = left > 0 ? `public, max-age=${left}` : 'no-store';
+  } else if (view === 'invalid' || view === 'out-of-area') {
+    cacheControl = 'public, max-age=3600';
+  } else {
+    cacheControl = 'no-store';
+  }
+}
+Astro.response.headers.set('Cache-Control', cacheControl);
+
+const sizeOptions: { value: string; label: string }[] = [
+  { value: '', label: 'All sizes' },
+  { value: '20', label: '20ft' },
+  { value: '40', label: '40ft standard' },
+  { value: '40hc', label: '40ft high cube' },
+];
+const inputZip = zip || (view === 'invalid' ? (rawZip ?? '').slice(0, 10) : '');
+---
+
+<BaseLayout
+  title="Instant Shipping Container Price by ZIP | Steel Box Direct"
+  description="Enter your ZIP to see the delivered price for a used 20ft, 40ft standard or 40ft high cube container in Ohio, Indiana, Kentucky or West Virginia."
+  pageType="tool"
+  breadcrumbs={crumbs}
+  schema={{ kind: 'excluded' }}
+>
+  {hasQuery && <meta slot="head" name="robots" content="noindex,follow" />}
+
+  <section class="zp-hero">
+    <div class="wrap">
+      <Breadcrumbs items={crumbs} />
+      <div class="sh zp_hero_eyebrow">
+        <span class="idx">Price</span>
+        <span class="nm">Instant price by ZIP</span>
+        <span class="tg">Used, Wind and Water Tight</span>
+      </div>
+      <h1 class="big zp_hero_headline">What a container costs <em>at your ZIP.</em></h1>
+      <p class="lede zp_hero_lede">
+        Enter the ZIP where the container is going and see the delivered price for each size we stock
+        right here. No quote form and no phone call needed.
+      </p>
+
+      <form class="zp-form" method="get" action="/price/">
+        <div class="zp_form_field">
+          <label class="zp_form_label" for="zp-zip">Delivery ZIP</label>
+          <input
+            class="zp_form_input"
+            id="zp-zip"
+            name="zip"
+            type="text"
+            inputmode="numeric"
+            pattern="[0-9]{5}"
+            maxlength="5"
+            autocomplete="postal-code"
+            placeholder="e.g. 45202"
+            required
+            value={inputZip}
+          />
+        </div>
+        <div class="zp_form_field">
+          <label class="zp_form_label" for="zp-size">Size (optional)</label>
+          <select class="zp_form_input" id="zp-size" name="size">
+            {sizeOptions.map((o) => (
+              <option value={o.value} selected={o.value === rawSize}>{o.label}</option>
+            ))}
+          </select>
+        </div>
+        <button class="btn zp_form_submit" type="submit">Show my price</button>
+      </form>
+      <p class="zp_form_note">Instant prices cover ZIP codes in Ohio, Indiana, Kentucky and West Virginia.</p>
+    </div>
+  </section>
+
+  {view === 'result' && result && (
+    <section class="zp-result" aria-labelledby="zp-result-h">
+      <div class="wrap">
+        <div class="m zp_result_label">Delivered price</div>
+        <h2 class="zp_result_headline" id="zp-result-h">
+          Prices delivered to {result.zip}
+        </h2>
+        {guessed && (
+          <p class="zp_result_guess">
+            Prices for ZIP {result.zip} (our best guess from your location). Not your ZIP? Enter yours above.
+          </p>
+        )}
+
+        {lines.length > 0 ? (
+          <ul class="zp-lines">
+            {lines.map((line) => (
+              <li class="zp_line">
+                <span class="zp_line_figure">{formatPrice(line.delivered)}</span>
+                <span class="zp_line_scope">
+                  for a used <a class="zp_line_size" href={SIZE_PAGE[line.sku]}>{SIZE_LABEL[line.sku]}</a> delivered to {result.zip}
+                </span>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p class="zp_result_none">
+            {selectedUnavailable
+              ? <>The {SIZE_LABEL[selectedSku as ZipSku]} is not showing as available for delivery to {result.zip} right now.</>
+              : <>No size is showing as available for delivery to {result.zip} right now.</>}
+            {' '}Request a quote or call and we will check what we can get to you.
+          </p>
+        )}
+
+        {lines.length > 0 && unavailableLabels.length > 0 && (
+          <p class="zp_result_unavail">Not available for delivery to {result.zip} right now: {unavailableLabels.join(', ')}.</p>
+        )}
+
+        {lines.length > 0 && (
+          <>
+            <p class="zp_result_included">
+              Included: the container, delivery to your ZIP, and flat-ground placement.
+            </p>
+            <p class="zp_result_checked">Price checked {dateLabel(result.checkedOn)}.</p>
+            <p class="zp_result_disc">{PRICE_DISCLAIMER}</p>
+          </>
+        )}
+
+        {pickupLines.length > 0 && (
+          <details class="zp-pickup">
+            <summary>Would you rather pick it up yourself?</summary>
+            <div class="zp_pickup_body">
+              <p>
+                Pickup is priced on its own, and it can come from a different yard than delivery, so
+                here are both numbers side by side.
+              </p>
+              <ul class="zp-pickup-lines">
+                {pickupLines.map((line) => (
+                  <li class="zp_pickup_line">
+                    {formatPrice(line.pickup as number)} for a used {SIZE_LABEL[line.sku]} collected from a yard
+                    {line.pickupMiles !== null ? <> about {line.pickupMiles} miles from {result.zip}</> : <> near {result.zip}</>},
+                    or {formatPrice(line.delivered)} delivered.
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </details>
+        )}
+
+        <div class="zp_result_cta">
+          <a class="btn" href="/quote/">Get my quote</a>
+          <a class="btn-ghost" href="tel:+15135462543">Or call (513) 546-2543</a>
+        </div>
+      </div>
+    </section>
+  )}
+
+  {(view === 'invalid' || view === 'out-of-area' || view === 'not-serviceable' || view === 'error') && (
+    <section class="zp-result zp-msg" aria-live="polite">
+      <div class="wrap">
+        <p class="zp_msg_text">
+          {view === 'invalid' && <>That does not look like a 5 digit ZIP code. Check it and try again.</>}
+          {view === 'out-of-area' && <>We do not show instant prices for {zip}. Instant prices cover Ohio, Indiana, Kentucky and West Virginia. For any other ZIP, request a quote and we will price it for you.</>}
+          {view === 'not-serviceable' && <>We cannot show an instant price for delivery to {zip}. Request a quote and we will price it for you.</>}
+          {view === 'error' && <>We could not get a price for {zip} right now. Request a quote or call and we will price it for you.</>}
+        </p>
+        <div class="zp_result_cta">
+          <a class="btn" href="/quote/">Request a quote</a>
+          <a class="btn-ghost" href="tel:+15135462543">Or call (513) 546-2543</a>
+        </div>
+      </div>
+    </section>
+  )}
+</BaseLayout>
+
+<style>
+  .big { font-family: var(--narrow); font-weight: 700; font-size: clamp(44px, 9vw, 76px); line-height: .9; letter-spacing: -.02em; text-transform: uppercase; margin: 0; }
+  .big em { font-style: italic; font-weight: 700; }
+  .sh { display: grid; grid-template-columns: auto 1fr auto; gap: 20px; align-items: center; padding: 18px 0; border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink); margin-bottom: 56px; }
+  .sh .idx { font-family: var(--mono); font-size: var(--t-meta); letter-spacing: .08em; text-transform: uppercase; }
+  .sh .nm { font-family: var(--narrow); font-weight: 700; font-size: 22px; text-transform: uppercase; letter-spacing: -.01em; }
+  .sh .tg { font-family: var(--mono); font-size: var(--t-meta); letter-spacing: .08em; text-transform: uppercase; opacity: .55; text-align: right; }
+  .lede { font-size: 22px; line-height: 1.4; max-width: 800px; margin-top: 28px; font-weight: 500; }
+
+  .zp-hero { padding: 80px 0 56px; background: var(--yellow); border-bottom: 2.5px solid var(--ink); }
+  .zp-form { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 16px; margin-top: 36px; }
+  .zp_form_field { display: flex; flex-direction: column; gap: 6px; }
+  .zp_form_label { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
+  .zp_form_input { font-family: var(--narrow); font-weight: 700; font-size: 22px; padding: 14px 16px; border: 2.5px solid var(--ink); background: var(--cream); color: var(--ink); min-width: 180px; border-radius: 0; }
+  .zp_form_note { font-family: var(--mono); font-size: 12px; letter-spacing: .04em; margin: 16px 0 0; opacity: .75; }
+
+  .zp-result { padding: 64px 0 72px; background: white; }
+  .zp_result_label { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 12px; }
+  .zp_result_headline { font-family: var(--narrow); font-weight: 700; font-size: clamp(30px, 5vw, 44px); text-transform: uppercase; letter-spacing: -.01em; line-height: .95; margin: 0 0 20px; }
+  .zp_result_guess { font-size: 17px; line-height: 1.5; margin: 0 0 24px; border-left: 4px solid var(--yellow); padding-left: 16px; max-width: 760px; }
+  .zp-lines { list-style: none; padding: 0; margin: 0 0 24px; border-top: 2.5px solid var(--ink); max-width: 880px; }
+  .zp_line { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 18px; padding: 16px 0; border-bottom: 1.5px solid rgba(11,15,26,.15); }
+  .zp_line_figure { font-family: var(--narrow); font-weight: 700; font-size: 40px; line-height: 1; letter-spacing: -.02em; }
+  .zp_line_scope { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; opacity: .8; }
+  .zp_line_size { text-decoration: underline; }
+  .zp_result_none, .zp_result_unavail { font-size: 17px; line-height: 1.5; margin: 0 0 16px; max-width: 760px; }
+  .zp_result_included { font-size: 18px; line-height: 1.5; font-weight: 500; margin: 0 0 8px; }
+  .zp_result_checked { font-size: 16px; margin: 0 0 8px; }
+  .zp_result_disc { font-family: var(--mono); font-size: 12px; color: #5a5a52; margin: 0; }
+  .zp-pickup { margin-top: 28px; border-left: 4px solid var(--yellow); padding-left: 20px; max-width: 760px; }
+  .zp-pickup summary { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; }
+  .zp_pickup_body { margin-top: 14px; }
+  .zp_pickup_body p { font-size: 15px; line-height: 1.6; opacity: .85; margin: 0 0 14px; }
+  .zp-pickup-lines { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; font-size: 15px; line-height: 1.5; }
+  .zp_result_cta { display: flex; flex-wrap: wrap; align-items: center; gap: 20px 28px; margin-top: 36px; }
+  .zp_msg_text { font-size: 20px; line-height: 1.5; font-weight: 500; margin: 0; max-width: 760px; }
+
+  @media (max-width: 640px) {
+    .sh { grid-template-columns: 1fr; gap: 6px; }
+    .sh .tg { text-align: left; }
+    .zp-form { flex-direction: column; align-items: stretch; }
+    .zp_form_input { min-width: 0; width: 100%; }
+  }
+</style>

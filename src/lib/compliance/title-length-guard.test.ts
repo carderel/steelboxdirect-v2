@@ -18,6 +18,7 @@ const PAGES = [
   'src/pages/container-certification-guide/index.astro',
   'src/pages/for/homeowners/index.astro',
   'src/pages/locations/index.astro',
+  'src/pages/price/index.astro',
 ];
 
 describe('page titles fit in 60 characters', () => {

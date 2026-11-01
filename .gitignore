@@ -96,3 +96,6 @@ UDO Project/.udo/hook-state.json
 
 # Local Screaming Frog competitor crawls (scripts/crawl-containerreference.sh)
 competitors/
+
+# Local image staging for the directory site (owner 2026-10-29), never commit
+unused/

@@ -33,6 +33,9 @@ export default defineConfig({
   adapter: cloudflare({
     routes: {
       extend: {
+        // /price/ is server rendered. The adapter emits only the bare /price form, and the site
+        // serves the trailing slash form, so both go to the worker explicitly.
+        include: [{ pattern: '/price/*' }],
         exclude: [
           { pattern: '/sitemap-index.xml' },
           { pattern: '/sitemap-0.xml' },
@@ -96,6 +99,11 @@ export default defineConfig({
     // changefreq and priority stay off. Google has said publicly it ignores both, and unlike
     // lastmod neither can be derived from anything this repository actually knows.
     sitemap({
+      // Server rendered routes are invisible to the sitemap integration, which only lists the pages
+      // it saw prerendered. /price/ (src/pages/price/index.astro, prerender = false) is the one
+      // indexable server rendered page, so it is named here. Its query string variants are noindex
+      // and are never listed.
+      customPages: ['https://steelboxdirect.com/price/'],
       filter: (page) => {
         // /admin/ is Disallowed in robots.txt and is never advertised, under any condition.
         if (page.includes('/admin/')) return false;

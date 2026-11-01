@@ -61,6 +61,60 @@ import { readFileSync, writeFileSync, renameSync, existsSync, mkdirSync, rmSync 
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+/*
+ * The feed contract constants, the text hygiene patterns and the pure row helpers live in
+ * src/lib/pricing/feedRow.mjs since 2026-10-31, so the live per ZIP lookup behind /price/ applies
+ * exactly the same arithmetic and bounds as this harvest. They are re exported here unchanged, so
+ * every importer of this script, its test suite included, sees the same names and values as before.
+ */
+import {
+  ENDPOINT,
+  GRADE,
+  SKU_KEYS,
+  SIZE_ID_BY_SKU,
+  UNIT_PRICE_BASIS,
+  MIN_OF_TWO_FIELD,
+  FIGURE_MIN,
+  FIGURE_MAX,
+  PICKUP_MIN,
+  DASHES,
+  PRINTABLE_ASCII,
+  SUPPLIER,
+  UUID,
+  isFiniteNumber,
+  roundToTen,
+  deliveredPrice,
+  pickupFigure,
+  selectWwt,
+  rowForSize,
+  withinBounds,
+  pickupWithinBounds,
+} from '../src/lib/pricing/feedRow.mjs';
+
+export {
+  ENDPOINT,
+  GRADE,
+  SKU_KEYS,
+  SIZE_ID_BY_SKU,
+  UNIT_PRICE_BASIS,
+  MIN_OF_TWO_FIELD,
+  FIGURE_MIN,
+  FIGURE_MAX,
+  PICKUP_MIN,
+  DASHES,
+  PRINTABLE_ASCII,
+  SUPPLIER,
+  UUID,
+  isFiniteNumber,
+  roundToTen,
+  deliveredPrice,
+  pickupFigure,
+  selectWwt,
+  rowForSize,
+  withinBounds,
+  pickupWithinBounds,
+};
+
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = resolve(HERE, '..');
 
@@ -69,64 +123,12 @@ const REPO_ROOT = resolve(HERE, '..');
 /** Shape version of the generated module. Must match feedVersion in the template below. */
 export const FEED_VERSION = 1;
 
-export const ENDPOINT = 'https://www.freedomconex.com/api/pricing';
-
 /**
  * A descriptive agent string. This is a public endpoint a partner has agreed to, and an identified
  * daily reader is a better thing to be than an anonymous one.
  */
 export const USER_AGENT =
   'SteelBoxDirect-GeoPricingHarvest/1.0 (+https://steelboxdirect.com; daily price feed)';
-
-/** The only grade this site sells and the literal string the feed returns for it. */
-export const GRADE = 'WWT';
-
-/** The SKU keys of src/data/pricing.ts minus its date key, in render order. */
-export const SKU_KEYS = ['20ftCargo', '40ftStandard', '40ftStandardHC'];
-
-/** SKU key to the feed size identifier. The feed keys rows by grade and size, so both are needed. */
-export const SIZE_ID_BY_SKU = {
-  '20ftCargo': '20-std',
-  '40ftStandard': '40-std',
-  '40ftStandardHC': '40-hc',
-};
-
-/** The feed field that is summed. One value, named once, so a later reader cannot swap it by accident. */
-export const UNIT_PRICE_BASIS = 'deliveryUnitPrice';
-
-/**
- * The lower field that reads like a unit price and holds the smaller of the pickup and the delivery
- * unit prices. Named so it can be read for provenance and so that reading it is searchable. It is
- * never summed into a figure and never serialised.
- */
-export const MIN_OF_TWO_FIELD = 'fromPrice';
-
-/**
- * Absolute bounds on a DELIVERED figure, inclusive. From the Feed Sanity section of the spec. The
- * floor catches a unit only response or a zeroed delivery; the ceiling catches a decimal shift, which
- * on a real figure would land above 20000.
- */
-export const FIGURE_MIN = 1200;
-export const FIGURE_MAX = 6000;
-
-/**
- * Floor on a PICKUP figure, which is a different quantity and needs a different floor. The delivered
- * floor bounds a total, unit plus delivery. A pickup figure is the bare unit price with no delivery in
- * it, so the delivered floor is too high for it by roughly the cost of a delivery, and it rejected a
- * real one: on 2026-08-18 the live feed returned a savannah 20ft pickup unit price of 1183.35, which
- * rounds to 1180, and the shared floor of 1200 withheld it, so that metro would have shipped with no
- * pickup disclosure for a legitimate figure.
- *
- * Derived from the same live run rather than picked. Two steps. First, decomposition: subtracting the
- * smallest base delivery cost in the fifteen metro set, 250 at charleston, from the delivered floor of
- * 1200 gives 950 as the equivalent bound on a bare unit price. Second, move headroom: a figure is
- * allowed to move by up to the run ceiling of 20 percent, and the lowest live pickup figure is 1180,
- * so any floor above 944 can reject a legal one run move. 900 is the nearest whole hundred that clears
- * both, and it still catches everything a floor exists for, since the lowest live unit price read as
- * cents lands at 11.83, a decimal shift lands at 118.34, and a zeroed or missing field lands at 0, all
- * an order of magnitude below it. The ceiling is shared: the highest live pickup figure is 2160.
- */
-export const PICKUP_MIN = 900;
 
 /** Day over day move ceiling on a delivered or a pickup figure, as a fraction of the committed one. */
 export const MOVE_CEILING = 0.2;
@@ -149,12 +151,6 @@ export const DEFAULT_PATHS = {
 
 /* ------------------------------------------------------- text hygiene patterns */
 
-/** HS-OUT-001. Both code points as escapes, so this file cannot contain what it forbids. */
-export const DASHES = /[\u2014\u2013]/;
-/** One pattern that no mistyped escape can defeat: it forbids both dashes and all other non ASCII. */
-export const PRINTABLE_ASCII = /^[\x20-\x7E\n]*$/;
-export const SUPPLIER = /freedom\s*conex/i;
-export const UUID = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i;
 export const ISO_DATE = /^[0-9]{4}-[0-9]{2}-[0-9]{2}$/;
 
 /** Feed fields that may never appear as a data key in the generated module. */
@@ -293,58 +289,6 @@ export const geoPricing: Record<string, GeoMetroPricing> = __GEO_PRICING__;
 `;
 
 /* --------------------------------------------------------------- pure helpers */
-
-export function isFiniteNumber(v) {
-  return typeof v === 'number' && Number.isFinite(v);
-}
-
-/** Rounds to the nearest ten dollars. Identical by construction to the guard in geoPricing.test.ts. */
-export function roundToTen(n) {
-  return Math.round(n / 10) * 10;
-}
-
-/**
- * The published figure: the DELIVERY unit price plus the base delivery cost, rounded once. Reads two
- * fields and no others. Throws rather than coercing, because a silent NaN here becomes a published
- * number.
- */
-export function deliveredPrice(row) {
-  const unit = row?.[UNIT_PRICE_BASIS];
-  const delivery = row?.baseDeliveryCost;
-  if (!isFiniteNumber(unit) || !isFiniteNumber(delivery)) {
-    throw new TypeError('deliveredPrice needs a finite delivery unit price and a finite delivery cost');
-  }
-  return roundToTen(unit + delivery);
-}
-
-/** The pickup figure, rounded, or null when the feed reported no usable pickup unit price. */
-export function pickupFigure(row) {
-  const unit = row?.pickupUnitPrice;
-  if (!isFiniteNumber(unit) || unit <= 0) return null;
-  return roundToTen(unit);
-}
-
-/** Keeps only the rows the site sells. A payload of nothing but the out of scope grade yields none. */
-export function selectWwt(payload) {
-  const byKey = payload?.byKey;
-  if (!byKey || typeof byKey !== 'object') return [];
-  return Object.values(byKey).filter((row) => row && row.grade === GRADE);
-}
-
-/** The single WWT row for one feed size identifier, or null when the feed returned none. */
-export function rowForSize(rows, sizeId) {
-  const matches = rows.filter((row) => row.sizeId === sizeId);
-  return matches.length === 1 ? matches[0] : null;
-}
-
-export function withinBounds(v) {
-  return isFiniteNumber(v) && v >= FIGURE_MIN && v <= FIGURE_MAX;
-}
-
-/** Bounds on a pickup figure. Same ceiling, lower floor, because it carries no delivery. See PICKUP_MIN. */
-export function pickupWithinBounds(v) {
-  return isFiniteNumber(v) && v >= PICKUP_MIN && v <= FIGURE_MAX;
-}
 
 /**
  * Whether a figure moved further than the ceiling allows. A metro with no committed figure has
