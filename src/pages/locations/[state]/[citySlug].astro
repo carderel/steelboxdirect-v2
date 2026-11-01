@@ -10,6 +10,7 @@ import { geoPricing, geoSkuKeys, type GeoSkuKey } from '../../../data/geoPricing
 import { pricing, formatPrice, effectiveSinceLabel } from '../../../data/pricing';
 import RtoDownPaymentCta from '../../../components/RtoDownPaymentCta.astro';
 import { countiesForCity } from '../../../data/permitCounties';
+import { serviceState } from '../../../lib/pricing/zipPrice';
 import { postsLinkingTo } from '../../../lib/postsLinkingTo';
 
 export function getStaticPaths() {
@@ -160,6 +161,9 @@ const priceEffectiveSince = metroPrices
 // the call path that metro keeps is the header, the footer and the facts strip, every one of which
 // carries the same number on every page of the site.
 const priceZip = centroid ? centroid.zip : '';
+// The /price/ tool prices any ZIP in Ohio, Indiana, Kentucky and West Virginia, so the callout offers it
+// beside the phone only where the priced ZIP is inside that area. A depot metro keeps the phone alone.
+const offersInstantPrice = Boolean(priceZip && serviceState(priceZip));
 
 // Pickup is a different quantity, not the delivered figure with the delivery taken back off: the
 // live feed returns pickup unit prices that are sometimes HIGHER than the delivery unit price for
@@ -323,6 +327,9 @@ const cityPrice = showPrice
               <span class="callout-act-num">(513) 546-2543</span>
             </span>
           </a>
+          {offersInstantPrice && (
+            <a class="callout-alt" href="/price/">Or enter your ZIP for an instant price</a>
+          )}
         </div>
         <div class="callout-hazard" aria-hidden="true"></div>
       </div>
@@ -582,6 +589,7 @@ const cityPrice = showPrice
   .callout-act:hover { background: var(--yellow); color: var(--ink); box-shadow: 8px 8px 0 var(--ink); transform: translate(-2px,-2px); }
   .callout-act:active { transform: translate(2px,2px); box-shadow: 2px 2px 0 var(--ink); }
   .callout-act:focus-visible { outline: 4px solid var(--ink); outline-offset: 4px; }
+  .callout-alt { flex-basis: 100%; font-family: var(--mono); font-weight: 700; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; text-decoration: underline; text-underline-offset: 4px; color: var(--ink); }
   .callout-ico { width: 26px; height: 26px; stroke: currentColor; stroke-width: 2.2; fill: none; flex-shrink: 0; }
   .callout-act-text { display: grid; gap: 4px; }
   .callout-act-lab { font-family: var(--mono); font-weight: 700; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; line-height: 1.35; text-wrap: balance; }

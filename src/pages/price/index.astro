@@ -148,7 +148,7 @@ const inputZip = zip || (view === 'invalid' ? (rawZip ?? '').slice(0, 10) : '');
         <span class="nm">Instant price by ZIP</span>
         <span class="tg">Used, Wind and Water Tight</span>
       </div>
-      <h1 class="big zp_hero_headline">What a container costs <em>at your ZIP.</em></h1>
+      <h1 class="big zp_hero_headline">Shipping container price <em>by ZIP.</em></h1>
       <p class="lede zp_hero_lede">
         Enter the ZIP where the container is going and see the delivered price for each size we stock
         right here. No quote form and no phone call needed.
@@ -277,6 +277,31 @@ const inputZip = zip || (view === 'invalid' ? (rawZip ?? '').slice(0, 10) : '');
       </div>
     </section>
   )}
+
+  <!-- Static context, rendered in every view so the bare URL is never thin for a crawler outside the
+       area. Every sentence reuses wording the site already publishes (ai-info, /cost/, the city pages);
+       fact checked in docs/fact-check-ledger.md before publish. -->
+  <section class="zp-about" aria-labelledby="zp-about-h">
+    <div class="wrap">
+      <h2 class="zp_about_headline" id="zp-about-h">What the price covers</h2>
+      <p>
+        Each price is a delivered total for a used Wind and Water Tight container: the container,
+        delivery to your ZIP, and flat-ground placement. Wind and Water Tight containers keep out rain,
+        wind, snow, and pests, with no holes and doors that seal. We stock three sizes: 20ft standard,
+        40ft standard, and 40ft high cube. A site that needs a crane adds that labor on top.
+      </p>
+      <p>
+        Instant prices cover ZIP codes in Ohio, Indiana, Kentucky and West Virginia. For any other ZIP,
+        request a quote and we will price it for you. The confirmed quote comes from Doug, who handles
+        every quote personally, and most quote requests are answered within 4 business hours.
+      </p>
+      <p>
+        To see what moves a delivered total, read the <a href="/cost/">cost guide</a>. To find your
+        city, browse <a href="/locations/">our locations</a>. Ready to buy?
+        <a href="/quote/">Request a quote</a>.
+      </p>
+    </div>
+  </section>
 </BaseLayout>
 
 <style>
@@ -314,6 +339,10 @@ const inputZip = zip || (view === 'invalid' ? (rawZip ?? '').slice(0, 10) : '');
   .zp_pickup_body p { font-size: 15px; line-height: 1.6; opacity: .85; margin: 0 0 14px; }
   .zp-pickup-lines { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; font-size: 15px; line-height: 1.5; }
   .zp_result_cta { display: flex; flex-wrap: wrap; align-items: center; gap: 20px 28px; margin-top: 36px; }
+  .zp-about { padding: 56px 0 72px; background: var(--cream); border-top: 2.5px solid var(--ink); }
+  .zp_about_headline { font-family: var(--narrow); font-weight: 700; font-size: clamp(26px, 4vw, 36px); text-transform: uppercase; letter-spacing: -.01em; line-height: .95; margin: 0 0 20px; }
+  .zp-about p { font-size: 17px; line-height: 1.6; margin: 0 0 14px; max-width: 760px; }
+  .zp-about a { text-decoration: underline; }
   .zp_msg_text { font-size: 20px; line-height: 1.5; font-weight: 500; margin: 0; max-width: 760px; }
 
   @media (max-width: 640px) {
