@@ -52,7 +52,7 @@ export const routeLastmod = {
   'src/content/blog/why-does-my-container-rain-inside-condensation.md': '2026-10-26T18:34:41-04:00',
   'src/content/blog/wind-and-water-tight-explained.md': '2026-10-26T18:34:41-04:00',
   'src/pages/404.astro': '2026-10-06T14:03:12-04:00',
-  'src/pages/about/index.astro': '2026-10-21T16:15:57-04:00',
+  'src/pages/about/index.astro': '2026-10-31T21:43:37-04:00',
   'src/pages/admin/dashboard.astro': '2026-10-06T13:57:08-04:00',
   'src/pages/admin/login.astro': '2026-10-06T13:57:08-04:00',
   'src/pages/admin/reset.astro': '2026-10-06T13:57:08-04:00',
