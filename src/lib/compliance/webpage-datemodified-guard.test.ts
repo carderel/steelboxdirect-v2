@@ -333,9 +333,12 @@ describe('webpage dateModified guard: server rendered routes take the same path 
     expect(SSR_PAGE_FILES, 'a prerendered page must not be detected as SSR').not.toContain('src/pages/index.astro');
   });
 
-  it('BaseLayout builds the graph with buildPageSchema from the request URL', () => {
+  it('BaseLayout builds the graph with buildPageSchema from the canonical host and the request pathname', () => {
     expect(layout).toMatch(/import \{ buildPageSchema \} from '\.\.\/lib\/schema'/);
-    expect(layout).toMatch(/buildPageSchema\(\{[\s\S]*?url: Astro\.url\.href,/);
+    expect(layout).toMatch(/buildPageSchema\(\{[\s\S]*?url: `https:\/\/steelboxdirect\.com\$\{Astro\.url\.pathname\}`,/);
+    expect(layout, 'the schema url must not carry the query string').not.toMatch(/url: Astro\.url\.href/);
+    // The canonical tag builds its href from the same host and pathname.
+    expect(layout).toMatch(/<link rel="canonical" href=\{`https:\/\/steelboxdirect\.com\$\{Astro\.url\.pathname\}`\} \/>/);
   });
 
   it('every SSR page renders through BaseLayout, passes no dateModified and hand writes no JSON-LD', () => {
@@ -359,8 +362,15 @@ describe('webpage dateModified guard: server rendered routes take the same path 
       expect(committed, `${file} needs a committed lastmod entry`).toBeTruthy();
       expect(lastmodIn(lastmodIndex, url)).toBe(committed);
       expect(lastmodFor(url), 'the sitemap reads the same entry').toBe(committed);
-      // A query string, as a submitted form produces, resolves to the same date.
-      const withQuery = buildPageSchema({ url: `${url}?zip=45202`, title: 'T', description: 'd', page: { kind: 'excluded' } });
+      // A query string, as a submitted form produces, is dropped: BaseLayout passes the canonical
+      // host plus the pathname, so the WebPage url and @id carry no query and state the same date.
+      const requested = new URL(`${url}?zip=45202`);
+      const layoutUrl = `${SITE}${requested.pathname}`;
+      const withQuery = buildPageSchema({ url: layoutUrl, title: 'T', description: 'd', page: { kind: 'excluded' } });
+      const wpWithQuery = webPageOf(withQuery.graph);
+      expect(wpWithQuery.url, 'the WebPage url must carry no query string').toBe(url);
+      expect(String(wpWithQuery.url)).not.toContain('?');
+      expect(wpWithQuery['@id']).toBe(`${url}#webpage`);
       for (const graph of [build(path as string).graph, withQuery.graph]) {
         const stated = webPageOf(graph).dateModified;
         expect(stated, url).toBe(asSitemapWrites(committed));

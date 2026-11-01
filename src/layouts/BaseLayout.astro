@@ -57,7 +57,7 @@ const showFloatingSidebar = floatingSidebar ?? !noSidebarPageTypes.includes(page
 
 const built = buildPageSchema({
   page: schema,
-  url: Astro.url.href,
+  url: `https://steelboxdirect.com${Astro.url.pathname}`,
   title,
   description,
   breadcrumbs,
