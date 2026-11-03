@@ -215,6 +215,31 @@ export function renderContainerMarkdown(k: Container, conditionNote: string): st
 }
 
 /**
+ * PAGES.DEV NOINDEX (added 2026-11-03, T-230). The Cloudflare Pages project host
+ * steelboxdirect-v2.pages.dev served the full production site with HTTP 200 and nothing telling
+ * crawlers to stay away, so it competed with steelboxdirect.com as a duplicate host. These two
+ * stanzas are the exact forms in Cloudflare's Pages `_headers` docs ("Prevent your pages.dev URLs
+ * showing in search results"): `:project` matches the production pages.dev host, and
+ * `:version.:project` matches branch and commit preview hosts. A placeholder never matches across a
+ * period, so neither rule can match steelboxdirect.com. Per the same docs, a request matching
+ * several rules inherits ALL of their headers, so the pages.dev host still gets the `/*` security
+ * stanza and the twin Link headers; these rules add to it and replace nothing.
+ *
+ * `_headers` does not apply to worker (server rendered) responses such as /price/ and /api/*.
+ * Those are covered by src/middleware.ts, which 301s the pages.dev host to steelboxdirect.com. The
+ * dashboard Bulk Redirect is the primary fix; this file and the middleware are the code-side backup.
+ * Held in place by src/lib/compliance/security-headers-guard.test.ts.
+ */
+export const PAGES_DEV_NOINDEX_STANZAS = [
+  '',
+  '# Keep the pages.dev hosts out of search results. Production is https://steelboxdirect.com.',
+  'https://:project.pages.dev/*',
+  '  X-Robots-Tag: noindex',
+  'https://:version.:project.pages.dev/*',
+  '  X-Robots-Tag: noindex',
+];
+
+/**
  * THE CLOUDFLARE `_headers` FILE, generated from the same two data modules as the twins.
  *
  * Emits one stanza per commercial page advertising its Markdown twin:
@@ -268,6 +293,7 @@ export function renderHeadersFile(cityList: City[], containerList: Container[]):
         `/shipping-containers-for-sale/${k.slug}.md`,
       ),
     ),
+    ...PAGES_DEV_NOINDEX_STANZAS,
     '',
   ].join('\n');
 }

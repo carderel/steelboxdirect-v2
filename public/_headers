@@ -47,3 +47,9 @@
   Link: </shipping-containers-for-sale/40-foot-shipping-container.md>; rel="alternate"; type="text/markdown"
 /shipping-containers-for-sale/40-foot-high-cube-container/
   Link: </shipping-containers-for-sale/40-foot-high-cube-container.md>; rel="alternate"; type="text/markdown"
+
+# Keep the pages.dev hosts out of search results. Production is https://steelboxdirect.com.
+https://:project.pages.dev/*
+  X-Robots-Tag: noindex
+https://:version.:project.pages.dev/*
+  X-Robots-Tag: noindex
