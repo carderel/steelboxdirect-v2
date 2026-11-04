@@ -35,7 +35,10 @@ import {
   rowForSize,
   withinBounds,
   pickupWithinBounds,
+  moveWithinCeiling,
 } from './feedRow.mjs';
+import { geoCentroids, type MetroCentroid } from '../../data/geoCentroids';
+import { geoPricing, type GeoMetroPricing } from '../../data/geoPricing';
 
 export type ZipSku = '20ftCargo' | '40ftStandard' | '40ftStandardHC';
 
@@ -76,8 +79,11 @@ export const UPSTREAM_TIMEOUT_MS = 4000;
 /** How long a validated per ZIP result is reused, in seconds. 12 hours. */
 export const CACHE_TTL_SECONDS = 12 * 60 * 60;
 
-/** Bump to orphan every cached entry after a shape change. */
-export const CACHE_VERSION = 1;
+/**
+ * Bump to orphan every cached entry after a shape change. 2 since 2026-11-04 (T-234): entries written
+ * before the committed metro ceiling existed are orphaned so none of them is read again.
+ */
+export const CACHE_VERSION = 2;
 
 export const ZIP_USER_AGENT =
   'SteelBoxDirect-ZipPrice/1.0 (+https://steelboxdirect.com/price/; per visitor price lookup)';
@@ -253,6 +259,75 @@ export function validateZipPayload(payload: unknown, zip: string, checkedOn: str
   return { ok: true, result };
 }
 
+/* --------------------------------------------------- committed metro ceiling */
+
+// WHY THIS EXISTS (T-234, 2026-11-04). The feed began routing delivery for some metros through a yard
+// that does not serve them, which inflated live delivered figures by twenty percent and more. The
+// daily harvest already refuses to commit a figure that moved more than MOVE_CEILING from the
+// committed one. This applies the same rule, with the same function, to the live per ZIP answer: a
+// size whose live delivered figure is more than MOVE_CEILING away, in either direction, from the
+// committed figure of the metro the ZIP belongs to is withheld, and the page sends the visitor to the
+// quote form for it. The committed figure is NEVER shown in its place, because it is priced for the
+// centroid ZIP of that metro, not for the ZIP the visitor typed.
+//
+// WHICH METRO A ZIP BELONGS TO. The only ZIP to metro source in this repository is the centroid
+// module. A ZIP that equals a centroid belongs to that metro. Otherwise it belongs to the metro whose
+// centroid shares its first three digits, the USPS sectional center the centroid sits in. No two
+// centroids share a prefix, and zipPrice.test.ts would see one that did, because the match is then
+// ambiguous and maps nothing. A ZIP that maps to no metro, or to a metro with no committed record, is
+// left exactly as before.
+
+/** The committed delivered figures of one metro, available sizes only. */
+export interface CommittedMetro {
+  slug: string;
+  /** The centroid ZIP the committed figures were priced for. Never rendered. */
+  zip: string;
+  delivered: Partial<Record<ZipSku, number>>;
+}
+
+/** The metro whose committed figures a ZIP is checked against, or null when none applies. */
+export function committedMetroForZip(
+  zip: string,
+  centroids: ReadonlyArray<MetroCentroid> = geoCentroids,
+  pricing: Record<string, GeoMetroPricing> = geoPricing,
+): CommittedMetro | null {
+  if (!/^[0-9]{5}$/.test(zip)) return null;
+  let hits = centroids.filter((c) => c.zip === zip);
+  if (hits.length === 0) hits = centroids.filter((c) => c.zip.slice(0, 3) === zip.slice(0, 3));
+  if (hits.length !== 1) return null;
+  const metro = hits[0];
+  const record = pricing[metro.slug];
+  if (!record || !record.skus) return null;
+  const delivered: Partial<Record<ZipSku, number>> = {};
+  for (const sku of ZIP_SKUS) {
+    const committed = record.skus[sku];
+    if (committed && committed.available === true && withinBounds(committed.delivered)) {
+      delivered[sku] = committed.delivered;
+    }
+  }
+  return { slug: metro.slug, zip: metro.zip, delivered };
+}
+
+/**
+ * Drops every line whose delivered figure is more than MOVE_CEILING away from the committed figure
+ * for its size, and names those sizes as withheld. A size with no committed figure is kept as is.
+ * Pure: the input result is not modified, and no committed figure is copied into the output.
+ */
+export function applyCommittedCeiling(
+  result: ZipPriceResult,
+  committed: CommittedMetro | null,
+): { result: ZipPriceResult; withheld: ZipSku[] } {
+  if (!committed) return { result, withheld: [] };
+  const withheld: ZipSku[] = [];
+  const lines = result.lines.filter((line) => {
+    const previous = committed.delivered[line.sku];
+    if (moveWithinCeiling(line.delivered, previous)) return true;
+    withheld.push(line.sku);
+    return false;
+  });
+  return { result: { ...result, lines }, withheld };
+}
+
 /* --------------------------------------------------------------- transport */
 
 export type FetchLike = (input: string, init?: RequestInit) => Promise<Response>;
@@ -314,7 +389,15 @@ export function parseStored(text: string, zip: string, nowMs: number): Stored | 
 }
 
 export type LookupOutcome =
-  | { status: 'ok'; result: ZipPriceResult; fromCache: boolean; maxAgeSeconds: number }
+  | {
+      status: 'ok';
+      /** Lines withheld by the committed metro ceiling are already removed from this result. */
+      result: ZipPriceResult;
+      /** Sizes available at this ZIP whose live figure was withheld by the committed metro ceiling. */
+      withheld: ZipSku[];
+      fromCache: boolean;
+      maxAgeSeconds: number;
+    }
   | { status: 'not-serviceable'; fromCache: boolean; maxAgeSeconds: number }
   | { status: 'error'; reason: ValidationFailure | 'transport' | 'timeout' };
 
@@ -325,6 +408,8 @@ export interface LookupDeps {
   timeoutMs?: number;
   /** Lets the cache write finish after the response is sent. Optional. */
   waitUntil?: (p: Promise<unknown>) => void;
+  /** The committed metro figures for a ZIP. Defaults to committedMetroForZip; injected in tests. */
+  committedFor?: (zip: string) => CommittedMetro | null;
 }
 
 /**
@@ -335,6 +420,10 @@ export interface LookupDeps {
  */
 export async function lookupZipPrice(zip: string, deps: LookupDeps = {}): Promise<LookupOutcome> {
   const now = deps.now ?? (() => new Date());
+  const committedFor = deps.committedFor ?? ((z: string) => committedMetroForZip(z));
+  // Applied on every ok answer, cached or fresh, so the cache holds what the feed said and the
+  // ceiling always reads the committed figures of the current deploy.
+  const guarded = (result: ZipPriceResult) => applyCommittedCeiling(result, committedFor(zip));
   const cache = deps.cache ?? null;
   const key = cacheKey(zip);
 
@@ -347,7 +436,7 @@ export async function lookupZipPrice(zip: string, deps: LookupDeps = {}): Promis
         if (s) {
           const left = Math.max(0, CACHE_TTL_SECONDS - Math.floor((nowMs - s.storedAt) / 1000));
           return s.kind === 'ok'
-            ? { status: 'ok', result: s.result, fromCache: true, maxAgeSeconds: left }
+            ? { status: 'ok', ...guarded(s.result), fromCache: true, maxAgeSeconds: left }
             : { status: 'not-serviceable', fromCache: true, maxAgeSeconds: left };
         }
       }
@@ -369,7 +458,7 @@ export async function lookupZipPrice(zip: string, deps: LookupDeps = {}): Promis
   let outcome: LookupOutcome;
   if (v.ok) {
     stored = { v: CACHE_VERSION, kind: 'ok', storedAt: fetchedAt.getTime(), result: v.result };
-    outcome = { status: 'ok', result: v.result, fromCache: false, maxAgeSeconds: CACHE_TTL_SECONDS };
+    outcome = { status: 'ok', ...guarded(v.result), fromCache: false, maxAgeSeconds: CACHE_TTL_SECONDS };
   } else if (v.reason === 'not-serviceable') {
     stored = { v: CACHE_VERSION, kind: 'not-serviceable', storedAt: fetchedAt.getTime(), zip };
     outcome = { status: 'not-serviceable', fromCache: false, maxAgeSeconds: CACHE_TTL_SECONDS };

@@ -5,6 +5,10 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import {
   CACHE_TTL_SECONDS,
+  CACHE_VERSION,
+  applyCommittedCeiling,
+  committedMetroForZip,
+  type CommittedMetro,
   PRICE_DISCLAIMER,
   UPSTREAM_TIMEOUT_MS,
   cacheFromRuntime,
@@ -350,7 +354,7 @@ describe('zipPrice: lookup, cache and transport', () => {
   it('rejects a tampered or mismatched cache entry', () => {
     const nowMs = NOW.getTime();
     const good = {
-      v: 1,
+      v: CACHE_VERSION,
       kind: 'ok',
       storedAt: nowMs,
       result: { zip: '43219', checkedOn: '2026-10-31', lines: [{ sku: '20ftCargo', delivered: 2090, pickup: null, pickupMiles: null }], unavailable: [] },
@@ -364,7 +368,11 @@ describe('zipPrice: lookup, cache and transport', () => {
   });
 
   it('keys the cache by ZIP only', () => {
-    expect(cacheKey('43219').url).toBe('https://steelboxdirect.com/__zip-price-cache/v1/43219');
+    expect(cacheKey('43219').url).toBe(`https://steelboxdirect.com/__zip-price-cache/v${CACHE_VERSION}/43219`);
+  });
+
+  it('is on cache version 2 or later, so answers cached before the committed ceiling guard are orphaned', () => {
+    expect(CACHE_VERSION).toBeGreaterThanOrEqual(2);
   });
 
   it('reads caches.default from the runtime when present and null otherwise', () => {
@@ -372,5 +380,168 @@ describe('zipPrice: lookup, cache and transport', () => {
     expect(cacheFromRuntime({ caches: { default: c } })).toBe(c);
     expect(cacheFromRuntime(undefined)).toBeNull();
     expect(cacheFromRuntime({ caches: {} })).toBeNull();
+  });
+});
+
+/* ------------------------------------------------- committed metro ceiling (T-234) */
+
+// A payload whose WWT rows deliver exactly the given figures. delivered = unit + 500, and every
+// figure below is a multiple of ten, so rounding cannot move it.
+function payloadDelivering(zip: string, d20: number, d40: number, d40hc: number) {
+  return payload(zip, {
+    byKey: {
+      'used:20-std': row('20-std', d20 - 500, 500),
+      'used:40-std': row('40-std', d40 - 500, 500),
+      'used:40-hc': row('40-hc', d40hc - 500, 500),
+    },
+  });
+}
+
+// Fixture committed figures, the values in src/data/geoPricing.ts on 2026-11-04. Injected so these
+// tests do not move when the daily harvest commits a new figure.
+const COMMITTED: Record<string, CommittedMetro> = {
+  louisville: { slug: 'louisville-shipping-containers', zip: '40205', delivered: { '20ftCargo': 2050, '40ftStandard': 2340, '40ftStandardHC': 2370 } },
+  lexington: { slug: 'lexington-shipping-containers', zip: '40502', delivered: { '20ftCargo': 1960, '40ftStandard': 2250, '40ftStandardHC': 2320 } },
+  indianapolis: { slug: 'indianapolis-shipping-containers', zip: '46218', delivered: { '20ftCargo': 1910, '40ftStandard': 2340, '40ftStandardHC': 2380 } },
+  cincinnati: { slug: 'cincinnati-shipping-containers', zip: '45237', delivered: { '20ftCargo': 1950, '40ftStandard': 2250, '40ftStandardHC': 2320 } },
+};
+const BY_PREFIX: Record<string, CommittedMetro> = {
+  '402': COMMITTED.louisville,
+  '405': COMMITTED.lexington,
+  '462': COMMITTED.indianapolis,
+  '452': COMMITTED.cincinnati,
+};
+const committedFor = (zip: string) => BY_PREFIX[zip.slice(0, 3)] ?? null;
+
+describe('zipPrice: which committed metro a ZIP is checked against', () => {
+  it('maps a centroid ZIP to its own metro', () => {
+    expect(committedMetroForZip('40205')?.slug).toBe('louisville-shipping-containers');
+    expect(committedMetroForZip('40502')?.slug).toBe('lexington-shipping-containers');
+    expect(committedMetroForZip('46218')?.slug).toBe('indianapolis-shipping-containers');
+  });
+
+  it('maps another ZIP to the metro whose centroid shares its first three digits', () => {
+    expect(committedMetroForZip('40207')?.slug).toBe('louisville-shipping-containers');
+    expect(committedMetroForZip('45202')?.slug).toBe('cincinnati-shipping-containers');
+    expect(committedMetroForZip('43215')?.slug).toBe('columbus-shipping-containers');
+  });
+
+  it('maps nothing for a ZIP whose prefix holds no centroid', () => {
+    expect(committedMetroForZip('47901')).toBeNull();
+    expect(committedMetroForZip('26101')).toBeNull();
+    expect(committedMetroForZip('43001')).toBeNull();
+  });
+
+  it('reads committed delivered figures from geoPricing, never a typed number', () => {
+    const m = committedMetroForZip('40205');
+    expect(m?.zip).toBe('40205');
+    for (const v of Object.values(m?.delivered ?? {})) expect(typeof v).toBe('number');
+  });
+
+  it('skips a committed size that is not available, so it is never guarded against', () => {
+    const centroids = [{ slug: 'x-shipping-containers', zip: '45237', publish: true, nationalBasis: true }];
+    const pricing = {
+      'x-shipping-containers': {
+        zip: '45237',
+        skus: {
+          '20ftCargo': { delivered: 1950, pickup: null, pickupDistanceMiles: null, available: false, effectiveSince: '2026-10-01' },
+          '40ftStandard': { delivered: 2250, pickup: null, pickupDistanceMiles: null, available: true, effectiveSince: '2026-10-01' },
+          '40ftStandardHC': { delivered: 2320, pickup: null, pickupDistanceMiles: null, available: true, effectiveSince: '2026-10-01' },
+        },
+      },
+    };
+    const m = committedMetroForZip('45202', centroids, pricing);
+    expect(m?.delivered).toEqual({ '40ftStandard': 2250, '40ftStandardHC': 2320 });
+  });
+
+  it('no two centroids share a three digit prefix, and a shared one would map nothing', async () => {
+    const { geoCentroids } = await import('../../data/geoCentroids');
+    const prefixes = geoCentroids.map((c) => c.zip.slice(0, 3));
+    expect(new Set(prefixes).size).toBe(prefixes.length);
+    const twin = [
+      { slug: 'a-shipping-containers', zip: '45237', publish: true, nationalBasis: true },
+      { slug: 'b-shipping-containers', zip: '45299', publish: true, nationalBasis: true },
+    ];
+    const rec = { zip: '45237', skus: {} } as never;
+    expect(committedMetroForZip('45202', twin, { 'a-shipping-containers': rec, 'b-shipping-containers': rec })).toBeNull();
+  });
+
+  it('maps nothing for a centroid with no committed record', () => {
+    const centroids = [{ slug: 'x-shipping-containers', zip: '45237', publish: true, nationalBasis: true }];
+    expect(committedMetroForZip('45202', centroids, {})).toBeNull();
+  });
+});
+
+describe('zipPrice: a live figure more than twenty percent off the committed metro figure is withheld', () => {
+  const NOW = new Date('2026-11-04T15:00:00Z');
+  const figures = (out: Awaited<ReturnType<typeof lookupZipPrice>>) =>
+    out.status === 'ok' ? Object.fromEntries(out.result.lines.map((l) => [l.sku, l.delivered])) : null;
+
+  it('Louisville 40205: every size jumped more than twenty percent, so no figure is shown', async () => {
+    const fetchImpl = vi.fn(async () => jsonResponse(payloadDelivering('40205', 2560, 2950, 3050)));
+    const out = await lookupZipPrice('40205', { fetchImpl, now: () => NOW, committedFor });
+    expect(out.status).toBe('ok');
+    if (out.status !== 'ok') return;
+    expect(out.result.lines).toEqual([]);
+    expect(out.withheld).toEqual(['20ftCargo', '40ftStandard', '40ftStandardHC']);
+    expect(out.result.unavailable).toEqual([]);
+  });
+
+  it('Lexington 40502: every size withheld', async () => {
+    const fetchImpl = vi.fn(async () => jsonResponse(payloadDelivering('40502', 2470, 2860, 2960)));
+    const out = await lookupZipPrice('40502', { fetchImpl, now: () => NOW, committedFor });
+    expect(figures(out)).toEqual({});
+    if (out.status === 'ok') expect(out.withheld).toHaveLength(3);
+  });
+
+  it('Indianapolis 46218: only the 40ft high cube is withheld, the other sizes still show', async () => {
+    const fetchImpl = vi.fn(async () => jsonResponse(payloadDelivering('46218', 1910, 2340, 2880)));
+    const out = await lookupZipPrice('46218', { fetchImpl, now: () => NOW, committedFor });
+    expect(figures(out)).toEqual({ '20ftCargo': 1910, '40ftStandard': 2340 });
+    if (out.status === 'ok') expect(out.withheld).toEqual(['40ftStandardHC']);
+  });
+
+  it('Cincinnati 45202: within the ceiling on every size, so all three show', async () => {
+    const fetchImpl = vi.fn(async () => jsonResponse(payloadDelivering('45202', 1980, 2370, 2470)));
+    const out = await lookupZipPrice('45202', { fetchImpl, now: () => NOW, committedFor });
+    expect(figures(out)).toEqual({ '20ftCargo': 1980, '40ftStandard': 2370, '40ftStandardHC': 2470 });
+    if (out.status === 'ok') expect(out.withheld).toEqual([]);
+  });
+
+  it('an unmapped ZIP is unchanged, whatever the figure', async () => {
+    const fetchImpl = vi.fn(async () => jsonResponse(payloadDelivering('47901', 2560, 2950, 3050)));
+    const out = await lookupZipPrice('47901', { fetchImpl, now: () => NOW, committedFor });
+    expect(figures(out)).toEqual({ '20ftCargo': 2560, '40ftStandard': 2950, '40ftStandardHC': 3050 });
+    if (out.status === 'ok') expect(out.withheld).toEqual([]);
+  });
+
+  it('guards a drop of more than twenty percent too, matching the harvest', async () => {
+    const fetchImpl = vi.fn(async () => jsonResponse(payloadDelivering('40205', 1500, 2340, 2370)));
+    const out = await lookupZipPrice('40205', { fetchImpl, now: () => NOW, committedFor });
+    expect(figures(out)).toEqual({ '40ftStandard': 2340, '40ftStandardHC': 2370 });
+    if (out.status === 'ok') expect(out.withheld).toEqual(['20ftCargo']);
+  });
+
+  it('guards a cache hit as well as a fresh answer', async () => {
+    const cache = new MemoryCache();
+    const fetchImpl = vi.fn(async () => jsonResponse(payloadDelivering('40205', 2560, 2340, 2370)));
+    await lookupZipPrice('40205', { cache, fetchImpl, now: () => NOW, committedFor });
+    const hit = await lookupZipPrice('40205', { cache, fetchImpl, now: () => NOW, committedFor });
+    expect(fetchImpl).toHaveBeenCalledTimes(1);
+    expect(hit).toMatchObject({ status: 'ok', fromCache: true, withheld: ['20ftCargo'] });
+    expect(figures(hit)).toEqual({ '40ftStandard': 2340, '40ftStandardHC': 2370 });
+  });
+
+  it('applyCommittedCeiling never substitutes the committed figure for a withheld one', () => {
+    const result = {
+      zip: '40205',
+      checkedOn: '2026-11-04',
+      lines: [{ sku: '20ftCargo' as const, delivered: 2560, pickup: 2100, pickupMiles: 120 }],
+      unavailable: [],
+    };
+    const out = applyCommittedCeiling(result, COMMITTED.louisville);
+    expect(out.result.lines).toEqual([]);
+    expect(out.withheld).toEqual(['20ftCargo']);
+    expect(JSON.stringify(out)).not.toContain('2050');
   });
 });

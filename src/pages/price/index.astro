@@ -107,6 +107,13 @@ const selectedUnavailable = Boolean(result && selectedSku && result.unavailable.
 const unavailableLabels = result
   ? result.unavailable.filter((s) => !selectedSku || s === selectedSku).map((s) => SIZE_LABEL[s])
   : [];
+// Sizes the feed priced but the committed metro ceiling withheld (T-234). Their lines are already
+// gone from result.lines. No figure is shown for them, not even the committed one: that figure is
+// for the centroid ZIP of the metro, not for this ZIP.
+const withheldLabels =
+  outcome && outcome.status === 'ok'
+    ? outcome.withheld.filter((s) => !selectedSku || s === selectedSku).map((s) => SIZE_LABEL[s])
+    : [];
 
 // Cache-Control, per the rules in the header.
 let cacheControl = 'private, no-store';
@@ -209,12 +216,24 @@ const inputZip = zip || (view === 'invalid' ? (rawZip ?? '').slice(0, 10) : '');
               </li>
             ))}
           </ul>
+        ) : withheldLabels.length > 0 ? (
+          <p class="zp_result_none zp_result_withheld">
+            We cannot show an instant price for delivery to {result.zip} right now.
+            {' '}<a href="/quote/">Request a quote</a> and we will price it for you.
+          </p>
         ) : (
           <p class="zp_result_none">
             {selectedUnavailable
               ? <>The {SIZE_LABEL[selectedSku as ZipSku]} is not showing as available for delivery to {result.zip} right now.</>
               : <>No size is showing as available for delivery to {result.zip} right now.</>}
             {' '}Request a quote or call and we will check what we can get to you.
+          </p>
+        )}
+
+        {lines.length > 0 && withheldLabels.length > 0 && (
+          <p class="zp_result_unavail zp_result_withheld">
+            We cannot show an instant price for delivery to {result.zip} right now for: {withheldLabels.join(', ')}.
+            {' '}<a href="/quote/">Request a quote</a> and we will price it for you.
           </p>
         )}
 
@@ -330,6 +349,7 @@ const inputZip = zip || (view === 'invalid' ? (rawZip ?? '').slice(0, 10) : '');
   .zp_line_scope { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; opacity: .8; }
   .zp_line_size { text-decoration: underline; }
   .zp_result_none, .zp_result_unavail { font-size: 17px; line-height: 1.5; margin: 0 0 16px; max-width: 760px; }
+  .zp_result_withheld a { text-decoration: underline; }
   .zp_result_included { font-size: 18px; line-height: 1.5; font-weight: 500; margin: 0 0 8px; }
   .zp_result_checked { font-size: 16px; margin: 0 0 8px; }
   .zp_result_disc { font-family: var(--mono); font-size: 12px; color: #5a5a52; margin: 0; }

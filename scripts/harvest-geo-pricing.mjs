@@ -89,6 +89,8 @@ import {
   rowForSize,
   withinBounds,
   pickupWithinBounds,
+  MOVE_CEILING,
+  moveWithinCeiling,
 } from '../src/lib/pricing/feedRow.mjs';
 
 export {
@@ -113,6 +115,8 @@ export {
   rowForSize,
   withinBounds,
   pickupWithinBounds,
+  MOVE_CEILING,
+  moveWithinCeiling,
 };
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -130,8 +134,8 @@ export const FEED_VERSION = 1;
 export const USER_AGENT =
   'SteelBoxDirect-GeoPricingHarvest/1.0 (+https://steelboxdirect.com; daily price feed)';
 
-/** Day over day move ceiling on a delivered or a pickup figure, as a fraction of the committed one. */
-export const MOVE_CEILING = 0.2;
+/* MOVE_CEILING and moveWithinCeiling live in src/lib/pricing/feedRow.mjs since 2026-11-04 (T-234),
+ * shared with the live lookup behind /price/, and are re exported above unchanged. */
 
 export const HTTP_TIMEOUT_MS = 20000;
 export const HTTP_ATTEMPTS = 3;
@@ -290,15 +294,6 @@ export const geoPricing: Record<string, GeoMetroPricing> = __GEO_PRICING__;
 
 /* --------------------------------------------------------------- pure helpers */
 
-/**
- * Whether a figure moved further than the ceiling allows. A metro with no committed figure has
- * nothing to move from, so the check is skipped rather than failed: that is the first run and every
- * newly added metro.
- */
-export function moveWithinCeiling(next, previous) {
-  if (!isFiniteNumber(previous) || previous <= 0) return true;
-  return Math.abs(next - previous) / previous <= MOVE_CEILING;
-}
 
 /**
  * Feed Sanity 12. Two consecutive unavailable observations before a suppression takes effect. The

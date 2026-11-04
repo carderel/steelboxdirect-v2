@@ -133,3 +133,19 @@ export function withinBounds(v) {
 export function pickupWithinBounds(v) {
   return isFiniteNumber(v) && v >= PICKUP_MIN && v <= FIGURE_MAX;
 }
+
+/**
+ * Move ceiling on a delivered or a pickup figure, as a fraction of the committed one. Moved here from
+ * the harvest on 2026-11-04 (T-234) so the live lookup behind /price/ withholds a figure on exactly
+ * the same rule the daily harvest refuses to commit one.
+ */
+export const MOVE_CEILING = 0.2;
+
+/**
+ * Whether a figure moved no further than the ceiling allows, in either direction. With no committed
+ * figure there is nothing to move from, so the check is skipped rather than failed.
+ */
+export function moveWithinCeiling(next, previous) {
+  if (!isFiniteNumber(previous) || previous <= 0) return true;
+  return Math.abs(next - previous) / previous <= MOVE_CEILING;
+}

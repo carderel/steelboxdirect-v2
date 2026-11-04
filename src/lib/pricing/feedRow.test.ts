@@ -7,12 +7,14 @@ import {
   DASHES,
   FIGURE_MAX,
   FIGURE_MIN,
+  MOVE_CEILING,
   PICKUP_MIN,
   PRINTABLE_ASCII,
   SIZE_ID_BY_SKU,
   SKU_KEYS,
   UNIT_PRICE_BASIS,
   deliveredPrice,
+  moveWithinCeiling,
   pickupFigure,
   pickupWithinBounds,
   roundToTen,
@@ -81,6 +83,21 @@ describe('feedRow: row selection', () => {
   it('maps every SKU to a feed size', () => {
     expect(SKU_KEYS).toEqual(['20ftCargo', '40ftStandard', '40ftStandardHC']);
     for (const k of SKU_KEYS) expect(SIZE_ID_BY_SKU[k as keyof typeof SIZE_ID_BY_SKU]).toBeTruthy();
+  });
+});
+
+describe('feedRow: the move ceiling is shared with the harvest', () => {
+  it('is twenty percent and lives in the shared module so the worker can import it', () => {
+    expect(MOVE_CEILING).toBe(0.2);
+    expect(harvest.MOVE_CEILING).toBe(MOVE_CEILING);
+    expect(harvest.moveWithinCeiling).toBe(moveWithinCeiling);
+  });
+  it('rejects a move of more than twenty percent in either direction and skips with nothing committed', () => {
+    expect(moveWithinCeiling(2508, 2090)).toBe(true);
+    expect(moveWithinCeiling(2560, 2050)).toBe(false);
+    expect(moveWithinCeiling(1600, 2090)).toBe(false);
+    expect(moveWithinCeiling(2090, null)).toBe(true);
+    expect(moveWithinCeiling(2090, 0)).toBe(true);
   });
 });
 
