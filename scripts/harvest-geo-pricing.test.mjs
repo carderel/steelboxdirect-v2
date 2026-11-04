@@ -635,8 +635,14 @@ test('inspectSerialised rejects a figure that is not a whole ten in bounds and a
 /* -------------------------------------------------------------- module readers */
 
 test('parseCentroids reads every hand written metro and its ZIP', () => {
-  const centroids = parseCentroids(readFileSync(CENTROIDS, 'utf8'));
-  assert.equal(centroids.length, 15);
+  const text = readFileSync(CENTROIDS, 'utf8');
+  const centroids = parseCentroids(text);
+  // Expected count derived from the source by a deliberately looser count than the parser uses, so a
+  // metro the strict pattern fails to read shows up as a mismatch, and adding a metro (charlotte made
+  // it sixteen on 2026-10-21) never needs this number edited again.
+  const declared = [...text.matchAll(/^\s*\{\s*slug:\s*'/gm)].length;
+  assert.ok(declared > 0);
+  assert.equal(centroids.length, declared);
   const dayton = centroids.find((c) => c.slug === 'dayton-shipping-containers');
   assert.equal(dayton.zip, '45404');
   assert.equal(dayton.publish, true);

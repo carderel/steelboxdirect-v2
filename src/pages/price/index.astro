@@ -45,6 +45,7 @@ import {
   guessZipFromCf,
   lookupZipPrice,
   normalizeZip,
+  resultHeading,
   serviceState,
   type LookupOutcome,
   type ZipSku,
@@ -197,7 +198,7 @@ const inputZip = zip || (view === 'invalid' ? (rawZip ?? '').slice(0, 10) : '');
       <div class="wrap">
         <div class="m zp_result_label">Delivered price</div>
         <h2 class="zp_result_headline" id="zp-result-h">
-          Prices delivered to {result.zip}
+          {resultHeading(result.zip, lines.length)}
         </h2>
         {guessed && (
           <p class="zp_result_guess">

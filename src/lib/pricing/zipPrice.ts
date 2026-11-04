@@ -39,6 +39,7 @@ import {
 } from './feedRow.mjs';
 import { geoCentroids, type MetroCentroid } from '../../data/geoCentroids';
 import { geoPricing, type GeoMetroPricing } from '../../data/geoPricing';
+import { CENTROID_POINTS, PREFIX_CENTERS, PREFIXES_WITHOUT_ZCTA } from '../../data/zipPrefixCenters';
 
 export type ZipSku = '20ftCargo' | '40ftStandard' | '40ftStandardHC';
 
@@ -133,6 +134,14 @@ export function guessZipFromCf(cf: unknown): string | null {
   if (country !== 'US') return null;
   if (typeof postalCode !== 'string' || !/^[0-9]{5}$/.test(postalCode)) return null;
   return serviceState(postalCode) ? postalCode : null;
+}
+
+/**
+ * The result heading. It promises prices only when at least one is on the page. When every size is
+ * withheld or unavailable it names the delivery ZIP and nothing more.
+ */
+export function resultHeading(zip: string, shownCount: number): string {
+  return shownCount > 0 ? `Prices delivered to ${zip}` : `Delivery to ${zip}`;
 }
 
 /* ------------------------------------------------------------------- dates */
@@ -270,12 +279,70 @@ export function validateZipPayload(payload: unknown, zip: string, checkedOn: str
 // quote form for it. The committed figure is NEVER shown in its place, because it is priced for the
 // centroid ZIP of that metro, not for the ZIP the visitor typed.
 //
-// WHICH METRO A ZIP BELONGS TO. The only ZIP to metro source in this repository is the centroid
-// module. A ZIP that equals a centroid belongs to that metro. Otherwise it belongs to the metro whose
-// centroid shares its first three digits, the USPS sectional center the centroid sits in. No two
-// centroids share a prefix, and zipPrice.test.ts would see one that did, because the match is then
-// ambiguous and maps nothing. A ZIP that maps to no metro, or to a metro with no committed record, is
-// left exactly as before.
+// WHICH METRO A ZIP BELONGS TO, revised 2026-11-04 (T-234 gap). A ZIP that equals a centroid belongs
+// to that metro. Otherwise its three digit prefix belongs to the metro centroid NEAREST the center of
+// that prefix, by great circle distance, when that centroid is within GUARD_RADIUS_MILES. The first
+// version matched only the prefix the centroid itself sits in, which left suburbs one prefix over
+// (40047 Mount Washington, 40356 Nicholasville, 46032 Carmel, 46143 Greenwood) unguarded and showing
+// wrong yard figures live. Prefix centers and centroid points are Census 2020 ZCTA internal points,
+// cited in src/data/zipPrefixCenters.ts. No ZIP level coordinate source exists in this repository
+// and the feed returns neither coordinates nor a delivery distance, so the prefix is the unit.
+//
+// WHY 120 MILES. Measured 2026-11-04 by querying the live feed once per served prefix: ZIPs the feed
+// routes through the right yard stay inside the ceiling well out from their metro (Fort Wayne at 107
+// miles from the Indianapolis centroid moved 18 percent, Youngstown at 56 miles from Cleveland 16,
+// every Cincinnati, Dayton and Columbus prefix 6 or less), so a flat ceiling does not hide correct
+// far prices inside the radius. Beyond roughly 120 miles a different yard legitimately takes over
+// (Chicago for Gary and South Bend, Nashville and St. Louis for western Kentucky, Baltimore for the
+// eastern panhandle), and a figure from another yard cannot be judged against this metro at all.
+// Beyond the radius nothing is guarded, which is the behavior before this guard existed.
+//
+// WHY THE CEILING DOES NOT SCALE WITH DISTANCE. The feed returns no delivery distance, only the
+// distance to a pickup yard, so delivery cannot be separated from the unit price per ZIP. The same
+// measurement shows correctly routed figures inside the radius fit under the flat ceiling, and a
+// ceiling that widened with distance would admit exactly the wrong yard figures this exists to stop.
+//
+// The nearest centroid is chosen among every centroid, and a ZIP whose nearest metro has no committed
+// record maps to nothing rather than to the next nearest, which would be judging it against a metro
+// that does not serve it. zipPrice.test.ts asserts every served prefix maps or is named unguarded.
+
+/** Prefix centers farther than this from every metro centroid are not guarded. See WHY 120 MILES. */
+export const GUARD_RADIUS_MILES = 120;
+
+/** Great circle distance in statute miles between two [latitude, longitude] points. */
+export function haversineMiles(a: readonly [number, number], b: readonly [number, number]): number {
+  const R = 3958.8;
+  const rad = (d: number) => (d * Math.PI) / 180;
+  const dLat = rad(b[0] - a[0]);
+  const dLng = rad(b[1] - a[1]);
+  const h = Math.sin(dLat / 2) ** 2 + Math.cos(rad(a[0])) * Math.cos(rad(b[0])) * Math.sin(dLng / 2) ** 2;
+  return 2 * R * Math.asin(Math.sqrt(h));
+}
+
+export type PrefixAssignment =
+  | { slug: string; miles: number; reason?: undefined }
+  | { slug?: undefined; miles?: number; reason: string };
+
+/** The metro centroid nearest a three digit prefix center, within the radius, or why there is none. */
+export function prefixAssignment(
+  prefix: string,
+  centroids: ReadonlyArray<MetroCentroid> = geoCentroids,
+): PrefixAssignment {
+  const center = PREFIX_CENTERS[prefix];
+  if (!center) return { reason: PREFIXES_WITHOUT_ZCTA[prefix] ?? 'no prefix center' };
+  let best: { slug: string; miles: number } | null = null;
+  for (const c of centroids) {
+    const point = CENTROID_POINTS[c.zip];
+    if (!point) continue;
+    const miles = haversineMiles(center, point);
+    if (!best || miles < best.miles) best = { slug: c.slug, miles };
+  }
+  if (!best) return { reason: 'no centroid point' };
+  if (best.miles > GUARD_RADIUS_MILES) {
+    return { miles: best.miles, reason: `nearest centroid is beyond ${GUARD_RADIUS_MILES} miles` };
+  }
+  return best;
+}
 
 /** The committed delivered figures of one metro, available sizes only. */
 export interface CommittedMetro {
@@ -292,10 +359,15 @@ export function committedMetroForZip(
   pricing: Record<string, GeoMetroPricing> = geoPricing,
 ): CommittedMetro | null {
   if (!/^[0-9]{5}$/.test(zip)) return null;
-  let hits = centroids.filter((c) => c.zip === zip);
-  if (hits.length === 0) hits = centroids.filter((c) => c.zip.slice(0, 3) === zip.slice(0, 3));
-  if (hits.length !== 1) return null;
-  const metro = hits[0];
+  const exact = centroids.filter((c) => c.zip === zip);
+  let metro: MetroCentroid | undefined;
+  if (exact.length === 1) {
+    metro = exact[0];
+  } else if (exact.length === 0) {
+    const slug = prefixAssignment(zip.slice(0, 3), centroids).slug;
+    metro = slug ? centroids.find((c) => c.slug === slug) : undefined;
+  }
+  if (!metro) return null;
   const record = pricing[metro.slug];
   if (!record || !record.skus) return null;
   const delivered: Partial<Record<ZipSku, number>> = {};
