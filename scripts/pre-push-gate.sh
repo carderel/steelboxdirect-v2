@@ -51,18 +51,90 @@ except Exception: pass' 2>/dev/null)"
   fi
 fi
 
-cd "${CLAUDE_PROJECT_DIR:-$(git rev-parse --show-toplevel)}" || exit 0
+# Output helpers. Every decision goes through emit(), which JSON-encodes a heading plus the
+# contents of a file. jq is preferred; python3 and node are fallbacks so a host without jq (a
+# bare Linux sandbox) still gets a real decision instead of an empty, silently-allowing reply.
+# If no encoder exists at all, a fixed deny is printed: the gate fails closed, never open.
+#   emit deny    "<heading>" <file>
+#   emit context "<heading>" <file>
+emit() {
+  local mode="$1" head="$2" file="$3" out=""
+  if command -v jq >/dev/null 2>&1; then
+    if [ "$mode" = deny ]; then
+      out="$(jq -Rs --arg head "$head" '{hookSpecificOutput:{hookEventName:"PreToolUse",permissionDecision:"deny",permissionDecisionReason:($head + "\n\n" + .)}}' "$file" 2>/dev/null)"
+    else
+      out="$(jq -Rs --arg head "$head" '{hookSpecificOutput:{hookEventName:"PreToolUse",additionalContext:($head + "\n\n" + .)}}' "$file" 2>/dev/null)"
+    fi
+  fi
+  if [ -z "$out" ] && command -v python3 >/dev/null 2>&1; then
+    out="$(python3 -c 'import json,sys
+mode,head,path=sys.argv[1:4]
+try: body=open(path,encoding="utf-8",errors="replace").read()
+except Exception: body=""
+key="permissionDecisionReason" if mode=="deny" else "additionalContext"
+o={"hookEventName":"PreToolUse",key:head+"\n\n"+body}
+if mode=="deny": o["permissionDecision"]="deny"
+print(json.dumps({"hookSpecificOutput":o}))' "$mode" "$head" "$file" 2>/dev/null)"
+  fi
+  if [ -z "$out" ] && command -v node >/dev/null 2>&1; then
+    out="$(node -e 'const [mode,head,path]=process.argv.slice(1);let body="";try{body=require("fs").readFileSync(path,"utf8")}catch(e){}
+const key=mode==="deny"?"permissionDecisionReason":"additionalContext";const o={hookEventName:"PreToolUse",[key]:head+"\n\n"+body};
+if(mode==="deny")o.permissionDecision="deny";process.stdout.write(JSON.stringify({hookSpecificOutput:o}))' "$mode" "$head" "$file" 2>/dev/null)"
+  fi
+  if [ -z "$out" ]; then
+    out='{"hookSpecificOutput":{"hookEventName":"PreToolUse","permissionDecision":"deny","permissionDecisionReason":"PUSH BLOCKED: the pre-push gate itself errored: no JSON encoder (jq, python3 or node) is available to report its result. This is a gate error, not a test result. Install jq and retry."}}'
+  fi
+  printf '%s\n' "$out"
+}
 
-LOG="$(mktemp -t sbd-seo-scan)"
+# The gate itself broke (setup, missing tool, unwritable temp dir). Say so plainly: reporting
+# this as "the Vitest suite is failing" sent the 2026-11-02 cloud routine chasing a green suite.
+# It still denies the push; an unrun gate is not a passed gate.
+gate_error() {
+  local msg_file
+  msg_file="$(mktemp "${TMPDIR:-/tmp}/sbd-gate-err.XXXXXX" 2>/dev/null)" || msg_file=""
+  if [ -n "$msg_file" ]; then
+    printf '%s\n' "$1" >"$msg_file"
+    emit deny "PUSH BLOCKED: the pre-push gate itself errored before it could run its checks. This is a gate error, NOT a test or scan result. Fix the gate environment and retry; do not bypass the gate." "$msg_file"
+    rm -f "$msg_file"
+  else
+    emit deny "PUSH BLOCKED: the pre-push gate itself errored before it could run its checks (and could not create a temp file to report details). This is a gate error, NOT a test or scan result. Error: $1" /dev/null
+  fi
+  exit 0
+}
+
+PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(git rev-parse --show-toplevel 2>/dev/null)}"
+[ -n "$PROJECT_DIR" ] || gate_error "Could not determine the project directory (CLAUDE_PROJECT_DIR unset and git rev-parse --show-toplevel failed)."
+cd "$PROJECT_DIR" 2>/dev/null || gate_error "Could not cd into project directory: $PROJECT_DIR"
+
+for tool in npx node; do
+  command -v "$tool" >/dev/null 2>&1 || gate_error "Required tool not found on PATH: $tool"
+done
+
+# Portable temp file: an explicit template with trailing X's works on both BSD (macOS) and GNU
+# (Linux) mktemp. `mktemp -t name` without X's is BSD-only; GNU rejects it with "too few X's".
+MKTEMP_ERR="$(mktemp "${TMPDIR:-/tmp}/sbd-seo-scan.XXXXXX" 2>&1)"
+MKTEMP_STATUS=$?
+if [ "$MKTEMP_STATUS" -ne 0 ] || [ -z "$MKTEMP_ERR" ] || [ ! -f "$MKTEMP_ERR" ] || [ ! -w "$MKTEMP_ERR" ]; then
+  gate_error "mktemp failed (exit $MKTEMP_STATUS, TMPDIR=${TMPDIR:-<unset>}): $MKTEMP_ERR"
+fi
+LOG="$MKTEMP_ERR"
 
 # Job 0: the full Vitest suite. Any failure blocks the push with the tail of the run attached.
 # SPEC_GUARD_DIST=require makes the spec claims guard (src/lib/compliance/spec-claims-guard.test.ts)
 # check the BUILT HTML and fail when there is none, so its rendered-output pass can never be a
 # silent skip at the one gate that matters. It catches figures interpolated at build time that a
 # source scan cannot see: percentages, square and cubic feet, weights and door dimensions.
-if ! SPEC_GUARD_DIST=require npx vitest run >"$LOG" 2>&1; then
-  tail -n 60 "$LOG" >"$LOG.tail" && mv "$LOG.tail" "$LOG"
-  jq -Rs '{hookSpecificOutput:{hookEventName:"PreToolUse",permissionDecision:"deny",permissionDecisionReason:("PUSH BLOCKED: the Vitest suite is failing. Compliance guards (including the fact-check ledger guard) must be green before a push. Fix the cause; do not skip or weaken the guard.\n\n" + .)}}' "$LOG"
+SPEC_GUARD_DIST=require npx vitest run >"$LOG" 2>&1
+VITEST_STATUS=$?
+if [ "$VITEST_STATUS" -ne 0 ]; then
+  tail -n 60 "$LOG" >"$LOG.tail" 2>/dev/null && mv "$LOG.tail" "$LOG"
+  if [ "$VITEST_STATUS" -eq 126 ] || [ "$VITEST_STATUS" -eq 127 ]; then
+    # Shell could not execute vitest at all: still a block, but name it for what it is.
+    emit deny "PUSH BLOCKED: the pre-push gate could not launch Vitest (exit $VITEST_STATUS). This is a gate error, not a test result; the suite did not run. Fix the environment (npm install?) and retry." "$LOG"
+  else
+    emit deny "PUSH BLOCKED: the Vitest suite is failing (exit $VITEST_STATUS). Compliance guards (including the fact-check ledger guard) must be green before a push. Fix the cause; do not skip or weaken the guard." "$LOG"
+  fi
   rm -f "$LOG"
   exit 0
 fi
@@ -71,9 +143,7 @@ node scripts/pre-deploy-seo-scan.mjs >"$LOG" 2>&1
 STATUS=$?
 
 deny() {
-  jq -Rs --arg head "$1" \
-    '{hookSpecificOutput:{hookEventName:"PreToolUse",permissionDecision:"deny",permissionDecisionReason:($head + "\n\n" + .)}}' \
-    "$LOG"
+  emit deny "$1" "$LOG"
   rm -f "$LOG"
   exit 0
 }
@@ -82,12 +152,21 @@ if [ "$STATUS" -eq 2 ]; then
   deny "PUSH BLOCKED: there is no build to review. Run npm run build, then re-run the SEO review before pushing."
 fi
 
+if [ "$STATUS" -eq 126 ] || [ "$STATUS" -eq 127 ]; then
+  deny "PUSH BLOCKED: the pre-push gate could not launch the SEO scan (exit $STATUS). This is a gate error, not a scan result; the scan did not run."
+fi
+
 if [ "$STATUS" -ne 0 ]; then
   deny "PUSH BLOCKED: hidden text found in the built output. This is the defect that shipped site-wide on 2026-09-16. Remove it. Do not reimplement it with visibility:hidden, off-screen positioning, display:none or 1px text."
 fi
 
 # Clean enough to proceed. Hand the judgement calls to the review rather than pretending the scan
 # settled them.
-jq -Rs '{hookSpecificOutput:{hookEventName:"PreToolUse",additionalContext:("STANDING RULE, rendered-output review before push.\nThe mechanical scan found no hidden text. It does NOT clear the push on its own.\nBefore this push, an SEO agent must have reviewed the RENDERED output in dist/ for: hidden or cloaked text, above-the-fold images that are lazy-loaded, titles/H1/canonical correctness, and structured data that claims more than the visible page.\nIf that review has not happened for the current build, dispatch it now and push afterwards.\n\nScan output follows.\n\n" + .)}}' "$LOG"
+emit context "STANDING RULE, rendered-output review before push.
+The mechanical scan found no hidden text. It does NOT clear the push on its own.
+Before this push, an SEO agent must have reviewed the RENDERED output in dist/ for: hidden or cloaked text, above-the-fold images that are lazy-loaded, titles/H1/canonical correctness, and structured data that claims more than the visible page.
+If that review has not happened for the current build, dispatch it now and push afterwards.
+
+Scan output follows." "$LOG"
 rm -f "$LOG"
 exit 0
