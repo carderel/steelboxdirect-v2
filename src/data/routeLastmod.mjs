@@ -83,7 +83,7 @@ export const routeLastmod = {
   'src/pages/permits/[state]/index.astro': '2026-10-21T16:15:57-04:00',
   'src/pages/permits/index.astro': '2026-10-06T13:57:08-04:00',
   'src/pages/portable-storage-vs-buying-a-container/index.astro': '2026-10-13T12:21:17-04:00',
-  'src/pages/price/index.astro': '2026-10-31T21:35:51-04:00',
+  'src/pages/price/index.astro': '2026-11-04T16:36:24-05:00',
   'src/pages/privacy.astro': '2026-10-06T14:03:12-04:00',
   'src/pages/quote/index.astro': '2026-10-31T21:15:14-04:00',
   'src/pages/rent-to-own/index.astro': '2026-10-26T18:34:41-04:00',
