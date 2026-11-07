@@ -1069,10 +1069,11 @@ describe('built permit pages', () => {
   });
 
   itBuilt('leaves every non permit redirect resolving, including the four flat city URLs', () => {
-    // The permit placeholders sit in the same file as the rules that predate them, above the block
-    // the adapter appends, and a placeholder that matched too much or a rule that fell below the
-    // ceiling would break these without breaking anything above. Stated as URL in, URL out, from
-    // the same resolver, so the check is what Cloudflare serves rather than what the file says.
+    // The permit placeholders sit in public/_redirects alongside every other redirect the site
+    // has (nothing is generated from astro.config.mjs any more), and a placeholder that matched
+    // too much or a rule that fell below the ceiling would break these without breaking anything
+    // above. Stated as URL in, URL out, from the same resolver, so the check is what Cloudflare
+    // serves rather than what the file says.
     const rules = parseRedirects();
     const expected: Array<[string, string]> = [
       // Since 2026-11-07 every one of these lives in public/_redirects and lands on the trailing
