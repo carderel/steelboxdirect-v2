@@ -1,10 +1,17 @@
-# Trailing slash variants of the old flat city URLs. Google indexed the
-# slash forms and the adapter generated rules in astro.config.mjs only
-# cover the no slash forms, so those slash URLs were returning 404.
+# Old flat city URLs (moved under /locations/{state}/ 2026-07-31), both slash
+# forms. All redirects live here, never in astro.config.mjs (moved 2026-11-07).
 /cincinnati-shipping-containers/ /locations/ohio/cincinnati-shipping-containers/ 301
+/cincinnati-shipping-containers /locations/ohio/cincinnati-shipping-containers/ 301
 /dayton-shipping-containers/ /locations/ohio/dayton-shipping-containers/ 301
+/dayton-shipping-containers /locations/ohio/dayton-shipping-containers/ 301
 /indianapolis-shipping-containers/ /locations/indiana/indianapolis-shipping-containers/ 301
+/indianapolis-shipping-containers /locations/indiana/indianapolis-shipping-containers/ 301
 /louisville-shipping-containers/ /locations/kentucky/louisville-shipping-containers/ 301
+/louisville-shipping-containers /locations/kentucky/louisville-shipping-containers/ 301
+/admin /admin/login/ 301
+/admin/ /admin/login/ 301
+/shipping-containers-for-sale/40-foot-one-trip-container /shipping-containers-for-sale/40-foot-high-cube-container/ 301
+/shipping-containers-for-sale/40-foot-one-trip-container/ /shipping-containers-for-sale/40-foot-high-cube-container/ 301
 
 # Leftover Partytown asset paths from the removed integration. Google
 # flagged them, so send everything under that prefix home with a 301.

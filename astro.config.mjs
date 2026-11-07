@@ -54,19 +54,6 @@ export default defineConfig({
     // the header in src/lib/seo/sitemapLastmod.mjs.
     plugins: [routeLastmodIndexPlugin()],
   },
-  redirects: {
-    '/admin': '/admin/login',
-    '/shipping-containers-for-sale/40-foot-one-trip-container': '/shipping-containers-for-sale/40-foot-high-cube-container',
-    // City pages moved under /locations/{state}/ (2026-07-31). The Cloudflare
-    // adapter emits these into dist/_redirects as real HTTP 301s (same
-    // mechanism as the proven 40ft slug redirect above).
-    '/cincinnati-shipping-containers': '/locations/ohio/cincinnati-shipping-containers',
-    '/dayton-shipping-containers': '/locations/ohio/dayton-shipping-containers',
-    '/indianapolis-shipping-containers': '/locations/indiana/indianapolis-shipping-containers',
-    '/louisville-shipping-containers': '/locations/kentucky/louisville-shipping-containers',
-    // The 77 retired county permit URLs are NOT here. They are 22 placeholder rules in
-    // public/_redirects; see the block comment above.
-  },
   integrations: [
     react(),
     // Adds the Supabase origin to the CSP in dist/_headers when PUBLIC_SUPABASE_URL is available.

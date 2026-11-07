@@ -1075,18 +1075,25 @@ describe('built permit pages', () => {
     // the same resolver, so the check is what Cloudflare serves rather than what the file says.
     const rules = parseRedirects();
     const expected: Array<[string, string]> = [
-      ['/admin', '/admin/login'],
+      // Since 2026-11-07 every one of these lives in public/_redirects and lands on the trailing
+      // slash form, so each is one 301 to a 200 rather than a 301 then a Cloudflare 308.
+      ['/admin', '/admin/login/'],
+      ['/admin/', '/admin/login/'],
       [
         '/shipping-containers-for-sale/40-foot-one-trip-container',
-        '/shipping-containers-for-sale/40-foot-high-cube-container',
+        '/shipping-containers-for-sale/40-foot-high-cube-container/',
       ],
-      ['/cincinnati-shipping-containers', '/locations/ohio/cincinnati-shipping-containers'],
+      [
+        '/shipping-containers-for-sale/40-foot-one-trip-container/',
+        '/shipping-containers-for-sale/40-foot-high-cube-container/',
+      ],
+      ['/cincinnati-shipping-containers', '/locations/ohio/cincinnati-shipping-containers/'],
       ['/cincinnati-shipping-containers/', '/locations/ohio/cincinnati-shipping-containers/'],
-      ['/dayton-shipping-containers', '/locations/ohio/dayton-shipping-containers'],
+      ['/dayton-shipping-containers', '/locations/ohio/dayton-shipping-containers/'],
       ['/dayton-shipping-containers/', '/locations/ohio/dayton-shipping-containers/'],
-      ['/indianapolis-shipping-containers', '/locations/indiana/indianapolis-shipping-containers'],
+      ['/indianapolis-shipping-containers', '/locations/indiana/indianapolis-shipping-containers/'],
       ['/indianapolis-shipping-containers/', '/locations/indiana/indianapolis-shipping-containers/'],
-      ['/louisville-shipping-containers', '/locations/kentucky/louisville-shipping-containers'],
+      ['/louisville-shipping-containers', '/locations/kentucky/louisville-shipping-containers/'],
       ['/louisville-shipping-containers/', '/locations/kentucky/louisville-shipping-containers/'],
       ['/~partytown', '/'],
       ['/~partytown/debug/partytown-sandbox-sw.js', '/'],
