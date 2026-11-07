@@ -156,3 +156,117 @@ jobs:
           fi
           echo "::error::${reason}${note}. Alarm raised on the pricing-feed issue."
           exit 1
+
+  # ---------------------------------------------------------------------------------------------------
+  # GOOGLE REVIEW FIGURE AGE. A second, independent job on the same daily cron, added 2026-11-07.
+  # It shares nothing with the pricing check above except the schedule.
+  #
+  # The site hides the Google review count once src/data/googleReviews.json is 25+ days old, but that
+  # rule runs at BUILD time, so a site nobody pushes to would keep serving the old build, and the old
+  # number, past the 30 day storage limit in the Business Profile API policy. This job closes that gap:
+  #   - 10+ days old: comment on the "Weekly Google review count check" issue (on a spaced cadence,
+  #     see watchdogNotifyToday in src/lib/reviews/googleReviewsRules.mjs, so the issue is not muted).
+  #   - 22 to 29 days old: POST the Cloudflare Pages deploy hook, IF the CF_PAGES_DEPLOY_HOOK secret
+  #     exists. A rebuild on day 25 or later is what actually hides the figure. Without the secret it
+  #     only flags, and says so in the comment.
+  # It never edits the data file and never pushes.
+  # Design: UDO Project/.outputs/research/2026-11-07-google-review-count-plan.md, sections 6.3 and 6.6.
+  # ---------------------------------------------------------------------------------------------------
+  google-reviews-age:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read   # read the committed data file
+      issues: write    # comment on the tracking issue
+    env:
+      ISSUE_TITLE: Weekly Google review count check
+      ISSUE_LABEL: google-reviews
+      HAS_DEPLOY_HOOK: ${{ secrets.CF_PAGES_DEPLOY_HOOK != '' }}
+    steps:
+      - name: Check out main
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Measure the age of the Google review figure
+        id: age
+        run: |
+          set -euo pipefail
+          node scripts/update-google-reviews.mjs --report-age > "${RUNNER_TEMP}/reviews-age.json"
+          cat "${RUNNER_TEMP}/reviews-age.json"
+          node -e '
+            const s = JSON.parse(require("node:fs").readFileSync(process.argv[1], "utf8"));
+            const out = [
+              `checkedAt=${s.checkedAt ?? "missing"}`,
+              `ageDays=${s.ageDays ?? "unknown"}`,
+              `showable=${s.showable}`,
+              `flag=${s.flag}`,
+              `notifyToday=${s.notifyToday}`,
+              `rebuild=${s.rebuild}`,
+            ];
+            require("node:fs").appendFileSync(process.env.GITHUB_OUTPUT, out.join("\n") + "\n");
+          ' "${RUNNER_TEMP}/reviews-age.json"
+
+      - name: Ask Cloudflare for a rebuild so the build time stale rule runs
+        id: rebuild
+        if: steps.age.outputs.rebuild == 'true' && env.HAS_DEPLOY_HOOK == 'true'
+        env:
+          DEPLOY_HOOK: ${{ secrets.CF_PAGES_DEPLOY_HOOK }}
+        run: |
+          set -uo pipefail
+          # The hook URL is a secret. curl prints nothing of it, and Actions masks it regardless.
+          if curl -fsS -o /dev/null -X POST "${DEPLOY_HOOK}"; then
+            echo "triggered=true" >> "${GITHUB_OUTPUT}"
+            echo "Cloudflare rebuild requested."
+          else
+            echo "triggered=false" >> "${GITHUB_OUTPUT}"
+            echo "::error::the Cloudflare deploy hook call failed."
+            exit 1
+          fi
+
+      - name: Flag the age on the tracking issue
+        if: always() && steps.age.outputs.flag == 'true' && (steps.age.outputs.notifyToday == 'true' || steps.rebuild.outcome == 'failure')
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CHECKED_AT: ${{ steps.age.outputs.checkedAt }}
+          AGE_DAYS: ${{ steps.age.outputs.ageDays }}
+          SHOWABLE: ${{ steps.age.outputs.showable }}
+          REBUILD_DUE: ${{ steps.age.outputs.rebuild }}
+          REBUILD_OUTCOME: ${{ steps.rebuild.outcome }}
+          WORKFLOW_URL: ${{ github.server_url }}/${{ github.repository }}/actions/workflows/google-reviews.yml
+        run: |
+          set -uo pipefail
+          body="${RUNNER_TEMP}/reviews-age-body.md"
+          {
+            echo "Daily watchdog, $(date -u +%Y-%m-%d): the Google review figure was last checked on **${CHECKED_AT}**, **${AGE_DAYS} days** ago."
+            echo ""
+            if [ "${SHOWABLE}" = "true" ]; then
+              echo "It is still inside the 24 day display window, so the site may still show it."
+            else
+              echo "It is past the 24 day display window. Any build made now hides it."
+            fi
+            echo ""
+            if [ "${REBUILD_DUE}" = "true" ]; then
+              if [ "${HAS_DEPLOY_HOOK}" != "true" ]; then
+                echo "A rebuild is due so the live site drops the number before day 30, but no CF_PAGES_DEPLOY_HOOK secret exists, so NOTHING was rebuilt. Push any commit, run the entry workflow, or add the secret."
+              elif [ "${REBUILD_OUTCOME}" = "success" ]; then
+                echo "A Cloudflare rebuild was requested through the deploy hook."
+              else
+                echo "The Cloudflare deploy hook call FAILED. Check the run log."
+              fi
+              echo ""
+            fi
+            echo "Fix: run ${WORKFLOW_URL} with the current stars and count from the Google profile."
+          } > "${body}"
+          gh label create "${ISSUE_LABEL}" --color FBCA04 --description "Google review count on the site" >/dev/null 2>&1 || true
+          existing=$(gh issue list --repo "${GITHUB_REPOSITORY}" --label "${ISSUE_LABEL}" --state open --limit 20 --json number,title \
+            --jq "[.[] | select(.title == \"${ISSUE_TITLE}\")][0].number // empty" 2>/dev/null || true)
+          if [ -n "${existing}" ]; then
+            gh issue comment "${existing}" --body-file "${body}"
+          else
+            gh issue create --title "${ISSUE_TITLE}" --label "${ISSUE_LABEL}" --body-file "${body}"
+          fi
+          echo "::warning::Google review figure is ${AGE_DAYS} days old (checked ${CHECKED_AT})."

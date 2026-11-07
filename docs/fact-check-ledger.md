@@ -843,3 +843,18 @@ Freshness: supplier feed queried live 2026-10-31 for ZIPs 46204, 47708 (IN), 402
 | 12 | /ai-info/: "Quotes are free and carry no obligation." | SITE-DATA | /contact/ index.astro:93 "Quotes are free and carry no obligation."; /quote/ :142 and :161 "No obligation". Note: the /quote/ page itself says "No obligation" but does not say "free" | src/pages/contact/index.astro ; src/pages/quote/index.astro | site data | 2026-10-31 |
 
 Totals for price-site-wide-copy: VERIFIED 3, SITE-DATA 9, CORRECTED 0, REMOVED 0. No copy edits required. Flags for owner: WV home-region wording (#5), privacy "checkout process" (#11), optional "container price" tightening on /cost/ (#8).
+
+---
+
+## google-review-count — 2026-11-07
+Checked by: PENDING (independent fact-check agent to fill; the implementer did not self-verify), independent of author: pending
+Status of page: draft (committed locally 2026-11-07, not pushed)
+Verdict: PENDING-INDEPENDENT-CHECK
+Data: SITE-DATA from src/data/googleReviews.json (source "owner-manual", averageStars 5.0, reviewCount 11, checkedAt 2026-11-07), read at build time through src/data/googleReviews.ts. Written only by .github/workflows/google-reviews.yml (manual entry, stopgap until Google Business Profile API access). Design: UDO Project/.outputs/research/2026-11-07-google-review-count-plan.md.
+Freshness and expiry rule: the figure renders only while checkedAt is 0 to 24 days old at build time; from day 25 it is hidden and every surface falls back to plain "Rate us on Google" / profile link copy. The daily job google-reviews-age in .github/workflows/geo-pricing-watchdog.yml flags the tracking issue from day 10 and requests a Cloudflare rebuild on days 22 to 29 when CF_PAGES_DEPLOY_HOOK exists. Weekly value changes through the workflow are not new claims (same rule as the pricing feed); the quarterly sweep re-confirms the stored value against the profile.
+
+| # | Claim (as written) | Verdict | Correct value / note | Source (URL) | Grade | Accessed |
+|---|---|---|---|---|---|---|
+| 1 | Footer review band (every page), homepage hero line, /about/ proof section, /ai-info/ "Third-party proof" and "Key strengths": "5.0 stars from 11 Google reviews, checked November 7, 2026" | PENDING-INDEPENDENT-CHECK | Module: src/data/googleReviews.json via src/data/googleReviews.ts. Checker: confirm 5.0 stars and 11 reviews on the live profile and record what you see | https://www.google.com/maps?cid=16337072236475848136 | pending | pending |
+| 2 | Replaces the hand-typed "5.0 stars from 11 Google reviews, as of August 2026" (/about/) and the two /ai-info/ sentences ("as of August 2026") with the data-driven sentence above | PENDING-INDEPENDENT-CHECK | Checker: confirm the built pages carry the new sentence and no hand-typed count remains (src/lib/compliance/review-count-guard.test.ts enforces the source side) | src/pages/about/index.astro ; src/pages/ai-info/index.astro | pending | pending |
+| 3 | Profile link https://maps.google.com/?cid=16337072236475848136 and leave-a-review link https://g.page/r/CcgVCj2k8LjiEBM/review belong to the Steel Box Direct listing | PENDING-INDEPENDENT-CHECK | Both links were already live on the site (footer, schema hasMap) before this change | https://maps.google.com/?cid=16337072236475848136 ; https://g.page/r/CcgVCj2k8LjiEBM/review | pending | pending |

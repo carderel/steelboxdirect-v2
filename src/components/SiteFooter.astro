@@ -1,3 +1,10 @@
+---
+// Review band: the Google figure comes from src/data/googleReviews.ts, decided at build time. When the
+// data is stale (25+ days) or invalid, show is false and the band falls back to the plain
+// Rate us on Google eyebrow. Never hand type a count here (review-count-guard.test.ts).
+import { reviewsDisplay } from '../data/googleReviews';
+const reviews = reviewsDisplay();
+---
 <footer class="site">
   <div class="wrap">
     <div class="inner">
@@ -82,7 +89,14 @@
     </div>
     <div class="review-band">
       <div class="review-copy">
-        <span class="review-eyebrow">★★★★★ &nbsp;Rate us on Google</span>
+        {reviews.show ? (
+          <p class="review-eyebrow review-proof">
+            <span aria-hidden="true">{reviews.starGlyphs}</span>&nbsp;
+            <a class="review-proof-link" href={reviews.profileUrl} target="_blank" rel="noopener noreferrer">{reviews.sentence}</a>
+          </p>
+        ) : (
+          <span class="review-eyebrow">★★★★★ &nbsp;Rate us on Google</span>
+        )}
         <p class="review-head">Bought a box from us?<br><em>Tell the neighbors.</em></p>
         <p class="review-sub">A 30-second review helps the next OH · IN · KY · Western WV buyer find an honest container source.</p>
         <a class="review-link" href="https://g.page/r/CcgVCj2k8LjiEBM/review" target="_blank" rel="noopener noreferrer">Leave a review →</a>
@@ -165,6 +179,12 @@
     display: inline-block; font-family: var(--mono); font-size: 11px; letter-spacing: .14em;
     text-transform: uppercase; color: var(--yellow); margin-bottom: 14px;
   }
+  footer.site .review-proof { display: block; line-height: 1.6; margin: 0 0 14px; }
+  footer.site .review-proof-link {
+    display: inline; padding: 0; font-size: inherit; font-weight: inherit; color: inherit; opacity: 1;
+    text-decoration: underline; text-underline-offset: 3px;
+  }
+  footer.site .review-proof-link:hover { color: var(--cream); }
   .review-head {
     font-family: var(--narrow); font-weight: 700; font-size: clamp(28px, 3.4vw, 42px);
     line-height: .95; letter-spacing: -.02em; text-transform: uppercase; margin: 0;

@@ -1,6 +1,11 @@
 ---
 import { Image } from 'astro:assets';
 import containerHero from '../../assets/photos/40ft-container-hero-reduced2.png';
+import { reviewsDisplay } from '../../data/googleReviews';
+// Google review line beside the main call to action. Built at build time from
+// src/data/googleReviews.json; when the data is 25+ days old or invalid the line is not rendered at
+// all (no placeholder, no zero). Never hand type a count here.
+const reviews = reviewsDisplay();
 ---
 <!-- ============ HERO ============ -->
 <section class="hero">
@@ -35,6 +40,9 @@ import containerHero from '../../assets/photos/40ft-container-hero-reduced2.png'
         <a href="/size/" class="hz5-btn">Start: What Size? &rarr;</a>
         <a href="/shipping-containers-for-sale/" class="hz5-link">Browse Containers</a>
         <a href="/quote/" class="hz5-link">Skip ahead &middot; Just send me a quote</a>
+        {reviews.show && (
+          <p class="hz5-reviews"><span aria-hidden="true">{reviews.starGlyphs}</span> <a href={reviews.profileUrl} target="_blank" rel="noopener noreferrer">{reviews.sentence}</a></p>
+        )}
       </div>
     </div>
   </div>
@@ -97,6 +105,9 @@ import containerHero from '../../assets/photos/40ft-container-hero-reduced2.png'
   .hz5-btn{display:inline-flex;align-items:center;background:var(--ink);color:var(--cream);font-family:var(--mono);font-size:clamp(11px,1.8cqi,15px);font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:14px 20px;text-decoration:none;white-space:nowrap}
   .hz5-link{font-family:var(--mono);font-size:clamp(10px,1.4cqi,12px);font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--ink);text-decoration:none;border-bottom:1.5px solid var(--ink);padding-bottom:2px}
   .hz5-link::before{content:'→  '}
+  .hz5-reviews{font-family:var(--mono);font-size:clamp(10px,1.3cqi,12px);font-weight:600;letter-spacing:.04em;line-height:1.5;margin:4px 0 0;color:var(--ink)}
+  .hz5-reviews span{letter-spacing:.08em;margin-right:4px}
+  .hz5-reviews a{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
 
   /* Ticker */
   .ticker{background:var(--ink);color:var(--yellow);border-top:2.5px solid var(--ink);border-bottom:2.5px solid var(--ink);overflow:hidden;white-space:nowrap;padding:14px 0;font-family:var(--narrow);font-weight:700;font-size:20px;text-transform:uppercase;letter-spacing:-.01em}

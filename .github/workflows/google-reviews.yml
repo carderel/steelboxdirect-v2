@@ -1,0 +1,307 @@
+name: Google reviews
+
+# Keeps src/data/googleReviews.json (the Google star average, review count and the date someone
+# checked them) current. The site reads that file at BUILD time and hides the figure once checkedAt is
+# 25 or more days old, so a stale number is never shown, but it only goes away on a rebuild. The daily
+# age check that forces that rebuild lives in geo-pricing-watchdog.yml, job google-reviews-age.
+#
+# Design: UDO Project/.outputs/research/2026-11-07-google-review-count-plan.md, section 6.3.
+#
+# CURRENT MODE: STOPGAP, MANUAL ENTRY. Google Business Profile API access is pending (owner applies).
+# Until it is approved:
+#   - workflow_dispatch takes stars and count typed in by the owner from his own profile. That is SBD
+#     stating facts about itself, not storing API content.
+#   - The Monday schedule does NOT invent or scrape anything. It opens or updates ONE tracking issue,
+#     "Weekly Google review count check", asking the owner to run this workflow, and reports the age of
+#     the committed data.
+#
+# LOAD BEARING, copied from geo-pricing-harvest.yml. Do not simplify any of them away.
+#   1. The branch is read from the one line JSON summary the writer prints on stdout
+#      (scripts/update-google-reviews.mjs), never from a diff.
+#   2. EXPLICIT PATHSPEC. git add -A is forbidden in this repository: it carries dozens of
+#      deliberately unstaged deletions and a large untracked tree. Only src/data/googleReviews.json is
+#      ever added, a guard refuses to go on if the writer touched anything else, and a second guard
+#      refuses to commit if anything else is staged.
+#   3. The production build and the full test suite run BEFORE the push, and a red one means no
+#      commit. The build comes first because several suites read dist/ and fail without it.
+#      The tsc type check gate from the pricing workflow is NOT copied yet: as of 2026-11-07 main has
+#      two pre-existing type errors in src/lib/pricing/zipPrice.test.ts, and copying the gate would
+#      block every weekly entry on an unrelated file. Add it here once tsc --noEmit is clean.
+#   4. Validation happens before any write: count a whole number of at least 1, stars 1.0 to 5.0, and
+#      a drop of more than 3 against the committed count is refused. A refusal writes nothing.
+#
+# Inputs reach the shell only through env, never through ${{ }} interpolation inside a run block, so a
+# crafted input cannot become shell code.
+
+on:
+  workflow_dispatch:
+    inputs:
+      stars:
+        description: Star average shown on the Google profile, for example 5.0
+        required: true
+        type: string
+      count:
+        description: Number of Google reviews shown on the profile, for example 11
+        required: true
+        type: string
+  schedule:
+    # Mondays 11:00 UTC.
+    - cron: '0 11 * * 1'
+
+permissions:
+  contents: write   # push the updated data file to main
+  issues: write     # the single tracking issue
+
+concurrency:
+  group: google-reviews
+  cancel-in-progress: false
+
+env:
+  ISSUE_TITLE: Weekly Google review count check
+  ISSUE_LABEL: google-reviews
+
+jobs:
+  manual-entry:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out main
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Validate and write the entry
+        id: entry
+        env:
+          IN_STARS: ${{ inputs.stars }}
+          IN_COUNT: ${{ inputs.count }}
+        run: |
+          set -uo pipefail
+          summary="${RUNNER_TEMP}/reviews-summary.json"
+          echo "summary=${summary}" >> "${GITHUB_OUTPUT}"
+          # set +e on purpose: a non zero exit is a validation refusal, which is data, not a crash.
+          set +e
+          node scripts/update-google-reviews.mjs --stars "${IN_STARS}" --count "${IN_COUNT}" > "${summary}"
+          code=$?
+          set -e
+          if [ ! -s "${summary}" ]; then
+            echo "::error::the writer exited ${code} with no summary, so it crashed before it could report."
+            echo "status=crashed" >> "${GITHUB_OUTPUT}"
+            exit 1
+          fi
+          reader='
+            const { readFileSync } = require("node:fs");
+            const s = JSON.parse(readFileSync(process.argv[1], "utf8").trim().split("\n").pop());
+            process.stdout.write(String(s[process.argv[2]] ?? ""));
+          '
+          status=$(node -e "${reader}" "${summary}" status)
+          reason=$(node -e "${reader}" "${summary}" reason)
+          echo "status=${status}" >> "${GITHUB_OUTPUT}"
+          {
+            echo "### Google reviews entry"
+            echo ""
+            echo "status: \`${status}\`, exit code: \`${code}\`"
+            if [ -n "${reason}" ]; then echo ""; echo "reason: ${reason}"; fi
+          } >> "${GITHUB_STEP_SUMMARY}"
+          if [ "${code}" -ne 0 ] || [ "${status}" = "failed" ]; then
+            echo "::error::entry refused: ${reason}. Nothing was written; the committed figure still stands."
+            exit 1
+          fi
+          case "${status}" in
+            unchanged) echo "Same numbers, already checked today. Nothing to commit." ;;
+            written|date-only) echo "Entry accepted (${status}). The gates below decide whether it ships." ;;
+            *) echo "::error::unexpected writer status ${status}."; exit 1 ;;
+          esac
+
+      - name: Prove a refused entry left the tree untouched
+        if: failure() && steps.entry.outputs.status == 'failed'
+        run: |
+          if ! git diff --quiet -- src/data/googleReviews.json; then
+            echo "::error::the writer refused the entry but the data file changed. That is a writer bug."
+            exit 1
+          fi
+          echo "Confirmed: src/data/googleReviews.json is byte identical to main."
+
+      - name: Guard the change set before any gate runs
+        if: steps.entry.outputs.status == 'written' || steps.entry.outputs.status == 'date-only'
+        run: |
+          set -euo pipefail
+          unexpected=$(git status --porcelain | awk '{ print $2 }' | grep -v '^src/data/googleReviews\.json$' || true)
+          if [ -n "${unexpected}" ]; then
+            echo "::error::the writer touched paths it does not own, so nothing will be committed: ${unexpected}"
+            exit 1
+          fi
+          if git diff --quiet -- src/data/googleReviews.json; then
+            echo "::error::the writer reported a change and the data file is unmodified. Contradiction, stopping."
+            exit 1
+          fi
+          git --no-pager diff -- src/data/googleReviews.json
+
+      - name: Install dependencies
+        if: steps.entry.outputs.status == 'written' || steps.entry.outputs.status == 'date-only'
+        run: npm ci
+
+      - name: Gate, production build
+        if: steps.entry.outputs.status == 'written' || steps.entry.outputs.status == 'date-only'
+        run: npm run build
+
+      - name: Gate, full test suite
+        if: steps.entry.outputs.status == 'written' || steps.entry.outputs.status == 'date-only'
+        # Runs against the dist/ built above, including review-count-guard.test.ts, which checks the
+        # built footer, homepage, /about/ and /ai-info/ carry the new sentence and its checked date.
+        run: npm test
+
+      - name: Commit and push the entry
+        if: steps.entry.outputs.status == 'written' || steps.entry.outputs.status == 'date-only'
+        env:
+          SUMMARY_PATH: ${{ steps.entry.outputs.summary }}
+        run: |
+          set -euo pipefail
+          git config user.name "google-reviews-entry"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # EXPLICIT PATHSPEC. Never git add -A in here.
+          git add -- src/data/googleReviews.json
+          staged=$(git diff --cached --name-only)
+          if [ "${staged}" != "src/data/googleReviews.json" ]; then
+            echo "::error::something other than the data file is staged, so this run refuses to commit: ${staged}"
+            exit 1
+          fi
+          msg=$(node -e '
+            const { readFileSync } = require("node:fs");
+            const s = JSON.parse(readFileSync(process.argv[1], "utf8").trim().split("\n").pop());
+            const prev = s.previousCount;
+            const tail = prev !== null && prev !== s.count ? `count ${prev} -> ${s.count}` : `${s.stars} x ${s.count}`;
+            process.stdout.write(`chore(reviews): Google reviews checked ${s.checkedAt}, ${tail}`);
+          ' "${SUMMARY_PATH}")
+          git commit -m "${msg}" \
+            -m "Entered by hand through .github/workflows/google-reviews.yml (stopgap until Business Profile API access). Build and full test suite passed before this commit."
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+          echo "Pushed. Cloudflare will deploy it." >> "${GITHUB_STEP_SUMMARY}"
+
+      - name: Record the result on the tracking issue
+        if: always() && steps.entry.outputs.status != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          OUTCOME: ${{ job.status }}
+          STATUS: ${{ steps.entry.outputs.status }}
+          SUMMARY_PATH: ${{ steps.entry.outputs.summary }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -uo pipefail
+          body="${RUNNER_TEMP}/issue-body.md"
+          line=$(tail -n 1 "${SUMMARY_PATH}" 2>/dev/null || echo '{}')
+          if [ "${OUTCOME}" = "success" ]; then
+            echo "Entry recorded (${STATUS}) at $(date -u +%Y-%m-%dT%H:%M:%SZ). Summary: \`${line}\`. Run: ${RUN_URL}" > "${body}"
+          else
+            {
+              echo "Manual review entry FAILED at $(date -u +%Y-%m-%dT%H:%M:%SZ). Nothing was pushed, so the"
+              echo "committed figure still stands (and still hides on its own once it is 25 days old)."
+              echo ""
+              echo "Summary: \`${line}\`"
+              echo ""
+              echo "Run log: ${RUN_URL}"
+            } > "${body}"
+          fi
+          gh label create "${ISSUE_LABEL}" --color FBCA04 --description "Google review count on the site" >/dev/null 2>&1 || true
+          existing=$(gh issue list --label "${ISSUE_LABEL}" --state open --limit 20 --json number,title \
+            --jq "[.[] | select(.title == \"${ISSUE_TITLE}\")][0].number // empty" 2>/dev/null || true)
+          if [ -n "${existing}" ]; then
+            gh issue comment "${existing}" --body-file "${body}"
+          elif [ "${OUTCOME}" != "success" ]; then
+            gh issue create --title "${ISSUE_TITLE}" --label "${ISSUE_LABEL}" --body-file "${body}"
+          fi
+
+  weekly-check:
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      # True only once the Business Profile API secrets exist. Secret VALUES never reach a log.
+      GBP_API_READY: ${{ secrets.GBP_OAUTH_REFRESH_TOKEN != '' && secrets.GBP_OAUTH_CLIENT_ID != '' && secrets.GBP_OAUTH_CLIENT_SECRET != '' && secrets.GBP_ACCOUNT_ID != '' && secrets.GBP_LOCATION_ID != '' }}
+    steps:
+      - name: Check out main
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Read the age of the committed figure
+        id: age
+        run: |
+          set -euo pipefail
+          node scripts/update-google-reviews.mjs --report-age > "${RUNNER_TEMP}/age.json"
+          cat "${RUNNER_TEMP}/age.json"
+          node -e '
+            const s = JSON.parse(require("node:fs").readFileSync(process.argv[1], "utf8"));
+            const out = [`checkedAt=${s.checkedAt ?? "missing"}`, `ageDays=${s.ageDays ?? "unknown"}`, `showable=${s.showable}`];
+            require("node:fs").appendFileSync(process.env.GITHUB_OUTPUT, out.join("\n") + "\n");
+          ' "${RUNNER_TEMP}/age.json"
+
+      # TODO(GBP API): once Business Profile API access is approved and the five GBP_* secrets exist,
+      # replace this stub with the fetch described in the design doc, section 6.2:
+      #   1. exchange GBP_OAUTH_REFRESH_TOKEN at https://oauth2.googleapis.com/token
+      #   2. GET mybusiness.googleapis.com/v4/accounts/{GBP_ACCOUNT_ID}/locations/{GBP_LOCATION_ID}/reviews?pageSize=1
+      #   3. pass averageRating and totalReviewCount to scripts/update-google-reviews.mjs with
+      #      source google-business-profile-api, then run the SAME guard, build, test, commit and push
+      #      steps as the manual-entry job above (factor them into a composite action at that point).
+      # Never log the token or the response body, only the two numbers. Until then this step fails loudly
+      # if the secrets appear, so nobody mistakes configured secrets for a working fetch.
+      - name: Fetch from the Business Profile API (not implemented yet)
+        if: env.GBP_API_READY == 'true'
+        run: |
+          echo "::error::GBP API secrets are configured but the API fetch is still a TODO stub in .github/workflows/google-reviews.yml. Implement it (design doc section 6.2) or keep entering the numbers by hand."
+          exit 1
+
+      - name: Ask the owner for this week's numbers
+        if: env.GBP_API_READY != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CHECKED_AT: ${{ steps.age.outputs.checkedAt }}
+          AGE_DAYS: ${{ steps.age.outputs.ageDays }}
+          SHOWABLE: ${{ steps.age.outputs.showable }}
+          WORKFLOW_URL: ${{ github.server_url }}/${{ github.repository }}/actions/workflows/google-reviews.yml
+          PROFILE_URL: https://maps.google.com/?cid=16337072236475848136
+        run: |
+          set -uo pipefail
+          body="${RUNNER_TEMP}/weekly-body.md"
+          if [ "${SHOWABLE}" = "true" ]; then
+            state="The site is showing it now. It hides by itself once the data is 25 days old."
+          else
+            state="The site is NOT showing a count right now (the data is 25+ days old or invalid). The footer shows the plain Rate us on Google band until a new entry lands."
+          fi
+          {
+            echo "Weekly check, $(date -u +%Y-%m-%d)."
+            echo ""
+            echo "The committed Google review figure was last checked on **${CHECKED_AT}**, which is **${AGE_DAYS} days** ago. ${state}"
+            echo ""
+            echo "To update it (about a minute):"
+            echo ""
+            echo "1. Open the Google profile and read the star average and the review count: ${PROFILE_URL}"
+            echo "2. Open ${WORKFLOW_URL}, click Run workflow, enter the two numbers, run it."
+            echo "3. Enter them even if nothing changed. That moves the checked date the site prints."
+            echo ""
+            echo "The run refuses a count of 0, stars outside 1.0 to 5.0, and a drop of more than 3, and writes nothing in that case."
+            echo ""
+            echo "This issue is reused every week. It stops once Business Profile API access is approved and the fetch is wired."
+          } > "${body}"
+          gh label create "${ISSUE_LABEL}" --color FBCA04 --description "Google review count on the site" >/dev/null 2>&1 || true
+          existing=$(gh issue list --label "${ISSUE_LABEL}" --state open --limit 20 --json number,title \
+            --jq "[.[] | select(.title == \"${ISSUE_TITLE}\")][0].number // empty" 2>/dev/null || true)
+          if [ -n "${existing}" ]; then
+            echo "Commenting on the open tracking issue #${existing}."
+            gh issue comment "${existing}" --body-file "${body}"
+          else
+            gh issue create --title "${ISSUE_TITLE}" --label "${ISSUE_LABEL}" --body-file "${body}"
+          fi
+          {
+            echo "### Weekly Google review check"
+            echo ""
+            echo "checkedAt ${CHECKED_AT}, age ${AGE_DAYS} days, showable ${SHOWABLE}. Owner asked on the tracking issue."
+          } >> "${GITHUB_STEP_SUMMARY}"

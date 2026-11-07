@@ -26,6 +26,11 @@ export const prerender = true;
 
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { reviewsDisplay } from '../../data/googleReviews';
+
+// Google review figure, from src/data/googleReviews.json at build time. Hidden when 25+ days old or
+// invalid, and the sentence then falls back to a plain link. Never hand type a count on this page.
+const reviews = reviewsDisplay();
 
 const crumbs = [{ name: 'Home', path: '/' }, { name: 'About' }];
 import { containerBySlug, CONTAINER_SLUGS, interiorFloorSqFt, formatSqFt } from '../../data/containers';
@@ -285,7 +290,7 @@ const floor40 = formatSqFt(interiorFloorSqFt(containerBySlug(CONTAINER_SLUGS['40
       <span class="m ab-kicker">Third-party proof</span>
       <h2 class="ab-h2" id="proof-h">Do not take our word for it</h2>
       <p class="ab-sub">
-        5.0 stars from 11 Google reviews, as of August 2026. Read them, or leave one, on our
+        {reviews.show ? `${reviews.sentence}. Read them, or leave one, on our` : 'Read our Google reviews, or leave one, on our'}
         <a href="https://maps.google.com/?cid=16337072236475848136" rel="noopener noreferrer" target="_blank">Google Business Profile</a>.
       </p>
       <p class="ab-sub">

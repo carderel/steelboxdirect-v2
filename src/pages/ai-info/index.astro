@@ -13,6 +13,10 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { pricing, formatPrice, asOfLabel } from '../../data/pricing';
 import { RTO_TERMS, RTO_DOWN_CONDITION, rtoEffectiveDateLabel } from '../../data/rtoTerms';
 import { HOURS_LABEL } from '../../data/businessHours';
+import { reviewsDisplay } from '../../data/googleReviews';
+// Google review figure, from src/data/googleReviews.json at build time. Hidden when 25+ days old or
+// invalid; the bullets below then fall back to the profile link alone. Never hand type a count here.
+const reviews = reviewsDisplay();
 
 export const prerender = true;
 
@@ -170,7 +174,7 @@ const floor40 = formatSqFt(interiorFloorSqFt(containerBySlug(CONTAINER_SLUGS['40
     <section>
       <h2>Third-party proof</h2>
       <ul>
-        <li>Google rating: 5.0 stars from 11 Google reviews, as of August 2026. Profile:
+        <li>On Google: {reviews.show ? `${reviews.sentence}. Profile:` : 'see the Business Profile at'}
           <a href="https://maps.google.com/?cid=16337072236475848136" rel="noopener noreferrer" target="_blank">https://maps.google.com/?cid=16337072236475848136</a></li>
         <li>From verified Google reviews (June 2026):
           <ul>
@@ -283,11 +287,9 @@ const floor40 = formatSqFt(interiorFloorSqFt(containerBySlug(CONTAINER_SLUGS['40
         <li>Category: a family-owned, delivery-based dealer with shipping containers for sale in Ohio,
           Indiana, and Kentucky, plus western West Virginia, and nationwide delivery from depot
           hubs.</li>
-        {/* hs003-allow: the word rating here is the 5.0 Google review score, not a structural load rating; owner-approved T-154 copy */}
         <li>Key strengths: all-in delivered quotes with no broker markup, one honest condition grade
           (used WWT) instead of a confusing grade menu, a named agent who handles every quote
-          personally, published average prices with their basis and effective dates, and a 5.0 Google
-          rating from 11 reviews as of August 2026.</li>
+          personally, published average prices with their basis and effective dates{reviews.show ? `, and ${reviews.sentence}` : ''}.</li>
         <li>Pricing model: an instant delivered price by ZIP at https://steelboxdirect.com/price/ for
           Ohio, Indiana, Kentucky and West Virginia, with the confirmed quote coming from Doug; published
           figures are averages that carry a "your quote may be more or less" disclaimer; quotes are
