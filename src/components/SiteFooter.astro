@@ -91,8 +91,7 @@ const reviews = reviewsDisplay();
       <div class="review-copy">
         {reviews.show ? (
           <p class="review-eyebrow review-proof">
-            <span aria-hidden="true">{reviews.starGlyphs}</span>&nbsp;
-            <a class="review-proof-link" href={reviews.profileUrl} target="_blank" rel="noopener noreferrer">{reviews.sentence}</a>
+            <span class="review-proof-stars" aria-hidden="true">{reviews.starGlyphs}</span> <a class="review-proof-link" href={reviews.profileUrl} target="_blank" rel="noopener noreferrer">{reviews.sentence}</a>
           </p>
         ) : (
           <span class="review-eyebrow">★★★★★ &nbsp;Rate us on Google</span>
@@ -180,6 +179,7 @@ const reviews = reviewsDisplay();
     text-transform: uppercase; color: var(--yellow); margin-bottom: 14px;
   }
   footer.site .review-proof { display: block; line-height: 1.6; margin: 0 0 14px; }
+  footer.site .review-proof-stars { letter-spacing: 0; margin-right: .15em; }
   footer.site .review-proof-link {
     display: inline; padding: 0; font-size: inherit; font-weight: inherit; color: inherit; opacity: 1;
     text-decoration: underline; text-underline-offset: 3px;
