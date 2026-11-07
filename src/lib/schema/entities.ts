@@ -4,6 +4,8 @@ export const SITE_URL = 'https://steelboxdirect.com';
 export const ORG_ID = `${SITE_URL}/#organization`;
 export const LOCALBUSINESS_ID = `${SITE_URL}/#localbusiness`;
 export const WEBSITE_ID = `${SITE_URL}/#website`;
+/** The Organization node's name, shared with the Product Brand object so the two cannot drift. */
+export const ORG_NAME = 'Steel Box Direct';
 
 const SAME_AS = [
   'https://maps.google.com/?cid=16337072236475848136',
@@ -93,7 +95,7 @@ export function globalNodes(): Record<string, unknown>[] {
   const organization = {
     '@type': 'Organization',
     '@id': ORG_ID,
-    name: 'Steel Box Direct',
+    name: ORG_NAME,
     url: `${SITE_URL}/`,
     logo: `${SITE_URL}/logo.png`,
     description:

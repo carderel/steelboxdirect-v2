@@ -1,5 +1,5 @@
 import type { BuildSchemaArgs, BuiltSchema, QuickFacts, QuickFaq } from './types';
-import { globalNodes, ORG_ID, LOCALBUSINESS_ID, WEBSITE_ID, SITE_URL, SERVICE_AREA_LINE } from './entities';
+import { globalNodes, ORG_ID, ORG_NAME, LOCALBUSINESS_ID, WEBSITE_ID, SITE_URL, SERVICE_AREA_LINE } from './entities';
 import { pricing, priceValidUntil, formatPrice, effectiveSinceLabel } from '../../data/pricing';
 import { howtoByTopic } from './howto';
 import { lastmodIn } from '../seo/lastmodResolve.mjs';
@@ -128,7 +128,10 @@ export function buildPageSchema(args: BuildSchemaArgs): BuiltSchema {
         name: p.container.name,
         description: p.container.seo.description,
         image: args.image ?? `${SITE_URL}/logo.png`,
-        brand: { '@id': ORG_ID },
+        // A Brand object, not an @id reference. Google's Merchant listings report rejected the
+        // reference to the Organization node ("Invalid object type for field 'brand'", GSC URL
+        // Inspection 2026-11-07). Same name the Organization node carries, read from it.
+        brand: { '@type': 'Brand', name: ORG_NAME },
         category: 'Shipping Containers',
         offers: {
           '@type': 'Offer',
