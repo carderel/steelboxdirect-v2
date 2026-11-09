@@ -14,6 +14,7 @@ import {
   ZIP_SKUS,
   resultHeading,
   type CommittedMetro,
+  type ZipSku,
   PRICE_DISCLAIMER,
   UPSTREAM_TIMEOUT_MS,
   cacheFromRuntime,
@@ -278,7 +279,8 @@ describe('zipPrice: lookup, cache and transport', () => {
 
   it('fetches once on a miss, then serves from cache with no second fetch', async () => {
     const cache = new MemoryCache();
-    const fetchImpl = vi.fn(async () => jsonResponse(payload()));
+    // Declare the FetchLike parameters so mock.calls is typed with the requested URL.
+    const fetchImpl = vi.fn(async (_input: string, _init?: RequestInit) => jsonResponse(payload()));
     const first = await lookupZipPrice('43219', { cache, fetchImpl, now: () => NOW });
     expect(first.status).toBe('ok');
     expect(fetchImpl).toHaveBeenCalledTimes(1);
@@ -626,7 +628,9 @@ describe('zipPrice: a live figure more than twenty percent off the committed met
     if (out.status !== 'ok') return;
     expect(out.withheld).toEqual(withheld);
     const shown = out.result.lines.map((l) => l.delivered);
-    for (const inflated of [d20, d40, d40hc].filter((_, i) => withheld.includes(ZIP_SKUS[i]))) {
+    // Widen the const tuple so includes() accepts any ZipSku.
+    const withheldSkus: readonly ZipSku[] = withheld;
+    for (const inflated of [d20, d40, d40hc].filter((_, i) => withheldSkus.includes(ZIP_SKUS[i]))) {
       expect(shown).not.toContain(inflated);
     }
   });
