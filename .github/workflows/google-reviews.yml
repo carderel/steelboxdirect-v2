@@ -24,9 +24,9 @@ name: Google reviews
 #      refuses to commit if anything else is staged.
 #   3. The production build and the full test suite run BEFORE the push, and a red one means no
 #      commit. The build comes first because several suites read dist/ and fail without it.
-#      The tsc type check gate from the pricing workflow is NOT copied yet: as of 2026-11-07 main has
-#      two pre-existing type errors in src/lib/pricing/zipPrice.test.ts, and copying the gate would
-#      block every weekly entry on an unrelated file. Add it here once tsc --noEmit is clean.
+#      The tsc type check gate from the pricing workflow runs after the tests (added 2026-11-09, once
+#      commit cd237da cleared the two type errors in src/lib/pricing/zipPrice.test.ts). It gates on the
+#      exit code, so any new type error anywhere in the repository blocks the entry.
 #   4. Validation happens before any write: count a whole number of at least 1, stars 1.0 to 5.0, and
 #      a drop of more than 3 against the committed count is refused. A refusal writes nothing.
 #
@@ -156,6 +156,21 @@ jobs:
         # built footer, homepage, /about/ and /ai-info/ carry the new sentence and its checked date.
         run: npm test
 
+      - name: Gate, type check
+        if: steps.entry.outputs.status == 'written' || steps.entry.outputs.status == 'date-only'
+        # Gated on the exit code, not on an error count, same as geo-pricing-harvest.yml.
+        #
+        # `astro sync` IS LOAD BEARING, DO NOT DROP IT. It writes .astro/types.d.ts, which is the
+        # only source of `astro:content`, `ImportMeta.env`, `ImportMeta.glob`, `ImageMetadata` and
+        # the per file image module declarations. `.astro/` is gitignored, so on a fresh runner those
+        # types do not exist and `tsc --noEmit` alone reports errors that are all
+        # missing-generated-types, none of which are real defects (verified 2026-09-03 for the pricing
+        # workflow: 20 errors without sync, 0 with). The build above may already have left .astro/
+        # behind, but do not rely on that: sync explicitly so this step stands on its own.
+        run: |
+          npx astro sync
+          npx tsc --noEmit
+
       - name: Commit and push the entry
         if: steps.entry.outputs.status == 'written' || steps.entry.outputs.status == 'date-only'
         env:
@@ -269,7 +284,11 @@ jobs:
           WORKFLOW_URL: ${{ github.server_url }}/${{ github.repository }}/actions/workflows/google-reviews.yml
           PROFILE_URL: https://maps.google.com/?cid=16337072236475848136
         run: |
-          set -uo pipefail
+          # -e on purpose: a failed gh issue comment or create must turn this step red, otherwise the
+          # owner never gets asked and the run still looks green. The label create and the issue
+          # lookup keep their own `|| true`, so an existing label or an empty lookup (no issue yet,
+          # which falls through to create) does not trip -e.
+          set -euo pipefail
           body="${RUNNER_TEMP}/weekly-body.md"
           if [ "${SHOWABLE}" = "true" ]; then
             state="The site is showing it now. It hides by itself once the data is 25 days old."
