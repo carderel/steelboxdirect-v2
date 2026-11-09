@@ -45,8 +45,8 @@ on:
         required: true
         type: string
   schedule:
-    # Mondays 11:00 UTC.
-    - cron: '0 11 * * 1'
+    # Mondays 13:23 UTC. Off the hour on purpose: GitHub delays or drops top-of-hour schedules (0 11 never fired on 2026-11-09).
+    - cron: '23 13 * * 1'
 
 permissions:
   contents: write   # push the updated data file to main
