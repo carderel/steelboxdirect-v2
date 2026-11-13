@@ -71,9 +71,8 @@ const FIGURE_MAX = 6000;
 //
 // 900 is derived from the same live run in two steps. Decomposition first: taking the smallest base
 // delivery cost in the fifteen metro set, 250 at charleston, off the delivered floor of 1200 gives 950
-// as the equivalent bound on a bare unit price. Move headroom second: a figure may move by up to the
-// run ceiling of 20 percent, and the lowest live pickup figure is 1180, so any floor above 944 can
-// reject a legal one run move. 900 is the nearest whole hundred clearing both, and it still catches
+// as the equivalent bound on a bare unit price. 900 is the nearest whole hundred below that, and it
+// clears the lowest live pickup figure of 1180 with room to spare. It still catches
 // what a floor is for, since that same unit price read as cents lands at 11.83, a decimal shift lands
 // at 118.34 and a zeroed field lands at 0, each an order of magnitude below it. The ceiling is shared:
 // the highest live pickup figure is 2160.
@@ -270,8 +269,6 @@ describe('geoPricing generated module: values', () => {
     expect(PICKUP_MIN).toBeLessThan(FIGURE_MIN);
     // The measured rejection this floor exists for: 1183.35 rounds to 1180 and must survive.
     expect(1180).toBeGreaterThanOrEqual(PICKUP_MIN);
-    // And it must survive a legal one run move of the ceiling, 20 percent, from that same figure.
-    expect(Math.round(1180 * 0.8)).toBeGreaterThanOrEqual(PICKUP_MIN);
     // It still has to catch what a floor is for: a cents reading, a decimal shift and a zero.
     for (const corrupt of [0, 11.83, 118.34]) expect(corrupt).toBeLessThan(PICKUP_MIN);
   });

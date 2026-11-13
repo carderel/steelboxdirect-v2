@@ -6,15 +6,11 @@ import { join } from 'node:path';
 import {
   CACHE_TTL_SECONDS,
   CACHE_VERSION,
-  applyCommittedCeiling,
-  committedMetroForZip,
-  GUARD_RADIUS_MILES,
-  prefixAssignment,
-  SERVICE_PREFIXES,
+  applySanityCheck,
+  deliveredMedians,
   ZIP_SKUS,
   resultHeading,
-  type CommittedMetro,
-  type ZipSku,
+  type SizeMedians,
   PRICE_DISCLAIMER,
   UPSTREAM_TIMEOUT_MS,
   cacheFromRuntime,
@@ -30,9 +26,7 @@ import {
   validateZipPayload,
   type CacheLike,
 } from './zipPrice';
-import { geoCentroids } from '../../data/geoCentroids';
 import { geoPricing } from '../../data/geoPricing';
-import { CENTROID_POINTS } from '../../data/zipPrefixCenters';
 
 const REPO_ROOT = import.meta.dirname ? join(import.meta.dirname, '..', '..', '..') : process.cwd();
 
@@ -381,7 +375,7 @@ describe('zipPrice: lookup, cache and transport', () => {
     expect(cacheKey('43219').url).toBe(`https://steelboxdirect.com/__zip-price-cache/v${CACHE_VERSION}/43219`);
   });
 
-  it('is on cache version 2 or later, so answers cached before the committed ceiling guard are orphaned', () => {
+  it('is on cache version 2 or later, so answers cached before the first guard are orphaned', () => {
     expect(CACHE_VERSION).toBeGreaterThanOrEqual(2);
   });
 
@@ -393,7 +387,12 @@ describe('zipPrice: lookup, cache and transport', () => {
   });
 });
 
-/* ------------------------------------------------- committed metro ceiling (T-234) */
+/* ------------------------------------------------------------- sanity check */
+
+// 2026-11-13, owner decision option A: the feed is trusted. The committed metro ceiling, which
+// withheld a live figure more than twenty percent off its nearest metro, is gone. A live figure is
+// withheld only when it fails the shared sanity check against the median committed figure for its
+// size across every metro.
 
 // A payload whose WWT rows deliver exactly the given figures. delivered = unit + 500, and every
 // figure below is a multiple of ten, so rounding cannot move it.
@@ -407,266 +406,110 @@ function payloadDelivering(zip: string, d20: number, d40: number, d40hc: number)
   });
 }
 
-// Fixture committed figures, the values in src/data/geoPricing.ts on 2026-11-04. Injected so these
-// tests do not move when the daily harvest commits a new figure.
-const COMMITTED: Record<string, CommittedMetro> = {
-  louisville: { slug: 'louisville-shipping-containers', zip: '40205', delivered: { '20ftCargo': 2050, '40ftStandard': 2340, '40ftStandardHC': 2370 } },
-  lexington: { slug: 'lexington-shipping-containers', zip: '40502', delivered: { '20ftCargo': 1960, '40ftStandard': 2250, '40ftStandardHC': 2320 } },
-  indianapolis: { slug: 'indianapolis-shipping-containers', zip: '46218', delivered: { '20ftCargo': 1910, '40ftStandard': 2340, '40ftStandardHC': 2380 } },
-  cincinnati: { slug: 'cincinnati-shipping-containers', zip: '45237', delivered: { '20ftCargo': 1950, '40ftStandard': 2250, '40ftStandardHC': 2320 } },
-};
-const BY_PREFIX: Record<string, CommittedMetro> = {
-  '402': COMMITTED.louisville,
-  '405': COMMITTED.lexington,
-  '462': COMMITTED.indianapolis,
-  '452': COMMITTED.cincinnati,
-};
-const committedFor = (zip: string) => BY_PREFIX[zip.slice(0, 3)] ?? null;
+// Fixture medians, injected so these tests do not move when the daily harvest commits a new figure.
+const MEDIANS: SizeMedians = { '20ftCargo': 1950, '40ftStandard': 2300, '40ftStandardHC': 2370 };
 
-describe('zipPrice: which committed metro a ZIP is checked against', () => {
-  it('maps a centroid ZIP to its own metro', () => {
-    expect(committedMetroForZip('40205')?.slug).toBe('louisville-shipping-containers');
-    expect(committedMetroForZip('40502')?.slug).toBe('lexington-shipping-containers');
-    expect(committedMetroForZip('46218')?.slug).toBe('indianapolis-shipping-containers');
-  });
-
-  // T-234 gap, found live 2026-11-04: these suburbs sit in a prefix next to the centroid prefix, so
-  // the old same prefix rule left them unguarded. Each must map to its NEAREST metro centroid.
-  it.each([
-    ['40047', 'louisville-shipping-containers'],
-    ['40014', 'louisville-shipping-containers'],
-    ['40207', 'louisville-shipping-containers'],
-    ['40356', 'lexington-shipping-containers'],
-    ['40383', 'lexington-shipping-containers'],
-    ['46032', 'indianapolis-shipping-containers'],
-    ['46143', 'indianapolis-shipping-containers'],
-    ['45202', 'cincinnati-shipping-containers'],
-    ['45040', 'cincinnati-shipping-containers'],
-    ['45420', 'dayton-shipping-containers'],
-    ['43081', 'columbus-shipping-containers'],
-    ['43215', 'columbus-shipping-containers'],
-    ['43001', 'columbus-shipping-containers'],
-  ])('maps %s to its nearest committed metro, %s', (zip, slug) => {
-    expect(committedMetroForZip(zip)?.slug).toBe(slug);
-  });
-
-  it('maps nothing beyond the guard radius, so a far ZIP behaves exactly as before', () => {
-    expect(GUARD_RADIUS_MILES).toBe(120);
-    // Paducah KY, Morgantown WV, Martinsburg WV: every prefix center is over 120 miles from any centroid.
-    expect(committedMetroForZip('42001')).toBeNull();
-    expect(committedMetroForZip('26501')).toBeNull();
-    expect(committedMetroForZip('25401')).toBeNull();
-  });
-
-  it('maps nothing for a served prefix with no 2020 ZCTA', () => {
-    expect(committedMetroForZip('45999')).toBeNull();
-    expect(committedMetroForZip('41999')).toBeNull();
-  });
-
-  it('every served prefix maps to a metro within the radius or is explicitly unguarded with a reason', () => {
-    const seen: string[] = [];
-    for (const r of SERVICE_PREFIXES) {
-      for (let p = r.lo; p <= r.hi; p++) {
-        const prefix = String(p).padStart(3, '0');
-        const a = prefixAssignment(prefix);
-        seen.push(prefix);
-        if (a.slug) {
-          expect(a.miles).toBeLessThanOrEqual(GUARD_RADIUS_MILES);
-          expect(geoCentroids.some((c) => c.slug === a.slug)).toBe(true);
-        } else {
-          expect(a.reason, `prefix ${prefix}`).toMatch(/\S/);
-        }
-      }
+describe('zipPrice: medians come from the committed module', () => {
+  it('has a positive median for every size, read from geoPricing, never a typed number', () => {
+    const m = deliveredMedians();
+    for (const sku of ZIP_SKUS) {
+      expect(typeof m[sku], sku).toBe('number');
+      expect(m[sku] as number).toBeGreaterThan(0);
     }
-    expect(seen).toHaveLength(100);
-    // The far prefixes, named, so widening or narrowing the radius is a visible diff here.
-    const unguarded = seen.filter((p) => !prefixAssignment(p).slug);
-    expect(unguarded).toEqual(['459', '463', '464', '466', '419', '420', '254', '262', '263', '264', '265', '267', '268']);
+    expect(deliveredMedians(geoPricing)).toEqual(m);
   });
 
-  it('every centroid ZIP has a point and maps to its own metro', () => {
-    for (const c of geoCentroids) {
-      expect(CENTROID_POINTS[c.zip], c.slug).toBeDefined();
-      if (geoPricing[c.slug]) expect(committedMetroForZip(c.zip)?.slug).toBe(c.slug);
+  it('the nearest metro mapping and its coordinate table are gone', async () => {
+    const mod = (await import('./zipPrice')) as Record<string, unknown>;
+    for (const name of ['applyCommittedCeiling', 'committedMetroForZip', 'prefixAssignment', 'GUARD_RADIUS_MILES', 'haversineMiles']) {
+      expect(mod[name], name).toBeUndefined();
     }
-  });
-
-  it('a centroid prefix maps to its own metro', () => {
-    expect(prefixAssignment('402').slug).toBe('louisville-shipping-containers');
-    expect(prefixAssignment('405').slug).toBe('lexington-shipping-containers');
-    expect(prefixAssignment('462').slug).toBe('indianapolis-shipping-containers');
-    expect(prefixAssignment('452').slug).toBe('cincinnati-shipping-containers');
-    expect(prefixAssignment('454').slug).toBe('dayton-shipping-containers');
-    expect(prefixAssignment('432').slug).toBe('columbus-shipping-containers');
-    expect(prefixAssignment('257').slug).toBe('huntington-shipping-containers');
-  });
-
-  it('reads committed delivered figures from geoPricing, never a typed number', () => {
-    const m = committedMetroForZip('40205');
-    expect(m?.zip).toBe('40205');
-    for (const v of Object.values(m?.delivered ?? {})) expect(typeof v).toBe('number');
-  });
-
-  it('skips a committed size that is not available, so it is never guarded against', () => {
-    const centroids = [{ slug: 'x-shipping-containers', zip: '45237', publish: true, nationalBasis: true }];
-    const pricing = {
-      'x-shipping-containers': {
-        zip: '45237',
-        skus: {
-          '20ftCargo': { delivered: 1950, pickup: null, pickupDistanceMiles: null, available: false, effectiveSince: '2026-10-01' },
-          '40ftStandard': { delivered: 2250, pickup: null, pickupDistanceMiles: null, available: true, effectiveSince: '2026-10-01' },
-          '40ftStandardHC': { delivered: 2320, pickup: null, pickupDistanceMiles: null, available: true, effectiveSince: '2026-10-01' },
-        },
-      },
-    };
-    const m = committedMetroForZip('45202', centroids, pricing);
-    expect(m?.delivered).toEqual({ '40ftStandard': 2250, '40ftStandardHC': 2320 });
-  });
-
-  it('a prefix whose nearest centroid has no committed record maps nothing, never the next nearest', () => {
-    const centroids = [
-      { slug: 'near-shipping-containers', zip: '40205', publish: true, nationalBasis: true },
-      { slug: 'far-shipping-containers', zip: '40502', publish: true, nationalBasis: true },
-    ];
-    const rec = { zip: '40502', skus: { '40ftStandard': { delivered: 2250, pickup: null, pickupDistanceMiles: null, available: true, effectiveSince: '2026-10-01' } } } as never;
-    expect(committedMetroForZip('40047', centroids, { 'far-shipping-containers': rec })).toBeNull();
-  });
-
-  it('maps nothing for a centroid with no committed record', () => {
-    const centroids = [{ slug: 'x-shipping-containers', zip: '45237', publish: true, nationalBasis: true }];
-    expect(committedMetroForZip('45202', centroids, {})).toBeNull();
+    const src = readFileSync(join(REPO_ROOT, 'src/lib/pricing/zipPrice.ts'), 'utf8');
+    expect(src).not.toMatch(/zipPrefixCenters|wrong yard/i);
   });
 });
 
-describe('zipPrice: a live figure more than twenty percent off the committed metro figure is withheld', () => {
-  const NOW = new Date('2026-11-04T15:00:00Z');
+describe('zipPrice: the feed is trusted, and only an insane figure is withheld', () => {
+  const NOW = new Date('2026-11-13T15:00:00Z');
   const figures = (out: Awaited<ReturnType<typeof lookupZipPrice>>) =>
     out.status === 'ok' ? Object.fromEntries(out.result.lines.map((l) => [l.sku, l.delivered])) : null;
 
-  it('Louisville 40205: every size jumped more than twenty percent, so no figure is shown', async () => {
-    const fetchImpl = vi.fn(async () => jsonResponse(payloadDelivering('40205', 2560, 2950, 3050)));
-    const out = await lookupZipPrice('40205', { fetchImpl, now: () => NOW, committedFor });
-    expect(out.status).toBe('ok');
-    if (out.status !== 'ok') return;
-    expect(out.result.lines).toEqual([]);
-    expect(out.withheld).toEqual(['20ftCargo', '40ftStandard', '40ftStandardHC']);
-    expect(out.result.unavailable).toEqual([]);
-  });
-
-  it('Lexington 40502: every size withheld', async () => {
-    const fetchImpl = vi.fn(async () => jsonResponse(payloadDelivering('40502', 2470, 2860, 2960)));
-    const out = await lookupZipPrice('40502', { fetchImpl, now: () => NOW, committedFor });
-    expect(figures(out)).toEqual({});
-    if (out.status === 'ok') expect(out.withheld).toHaveLength(3);
-  });
-
-  it('Indianapolis 46218: only the 40ft high cube is withheld, the other sizes still show', async () => {
-    const fetchImpl = vi.fn(async () => jsonResponse(payloadDelivering('46218', 1910, 2340, 2880)));
-    const out = await lookupZipPrice('46218', { fetchImpl, now: () => NOW, committedFor });
-    expect(figures(out)).toEqual({ '20ftCargo': 1910, '40ftStandard': 2340 });
-    if (out.status === 'ok') expect(out.withheld).toEqual(['40ftStandardHC']);
-  });
-
-  it('Cincinnati 45202: within the ceiling on every size, so all three show', async () => {
-    const fetchImpl = vi.fn(async () => jsonResponse(payloadDelivering('45202', 1980, 2370, 2470)));
-    const out = await lookupZipPrice('45202', { fetchImpl, now: () => NOW, committedFor });
-    expect(figures(out)).toEqual({ '20ftCargo': 1980, '40ftStandard': 2370, '40ftStandardHC': 2470 });
+  // Live feed figures on 2026-11-04 that the old twenty percent guard withheld. Each is now shown.
+  it.each([
+    ['40205', 2560, 2950, 3050],
+    ['40502', 2470, 2860, 2960],
+    ['40047', 2640, 3030, 3130],
+    ['40356', 2540, 2930, 3030],
+    ['46218', 1910, 2340, 2880],
+    ['46032', 2000, 2610, 2940],
+  ] as const)('%s: a figure from a farther yard is shown on every size', async (zip, d20, d40, d40hc) => {
+    const fetchImpl = vi.fn(async () => jsonResponse(payloadDelivering(zip, d20, d40, d40hc)));
+    const out = await lookupZipPrice(zip, { fetchImpl, now: () => NOW, medians: MEDIANS });
+    expect(figures(out)).toEqual({ '20ftCargo': d20, '40ftStandard': d40, '40ftStandardHC': d40hc });
     if (out.status === 'ok') expect(out.withheld).toEqual([]);
   });
 
-  it('an unmapped ZIP is unchanged, whatever the figure', async () => {
-    const fetchImpl = vi.fn(async () => jsonResponse(payloadDelivering('47901', 2560, 2950, 3050)));
-    const out = await lookupZipPrice('47901', { fetchImpl, now: () => NOW, committedFor });
-    expect(figures(out)).toEqual({ '20ftCargo': 2560, '40ftStandard': 2950, '40ftStandardHC': 3050 });
-    if (out.status === 'ok') expect(out.withheld).toEqual([]);
-  });
-
-  it('guards a drop of more than twenty percent too, matching the harvest', async () => {
-    const fetchImpl = vi.fn(async () => jsonResponse(payloadDelivering('40205', 1500, 2340, 2370)));
-    const out = await lookupZipPrice('40205', { fetchImpl, now: () => NOW, committedFor });
-    expect(figures(out)).toEqual({ '40ftStandard': 2340, '40ftStandardHC': 2370 });
+  it('withholds a size more than three times its median, and only that size', async () => {
+    // Inside the absolute bounds, so only the sanity check can catch it.
+    const fetchImpl = vi.fn(async () => jsonResponse(payloadDelivering('40205', 5900, 2950, 3050)));
+    const out = await lookupZipPrice('40205', { fetchImpl, now: () => NOW, medians: MEDIANS });
+    expect(figures(out)).toEqual({ '40ftStandard': 2950, '40ftStandardHC': 3050 });
     if (out.status === 'ok') expect(out.withheld).toEqual(['20ftCargo']);
   });
 
-  it('guards a cache hit as well as a fresh answer', async () => {
+  it('withholds a size under a third of its median', async () => {
+    const fetchImpl = vi.fn(async () => jsonResponse(payloadDelivering('43215', 1940, 2320, 2430)));
+    const out = await lookupZipPrice('43215', {
+      fetchImpl,
+      now: () => NOW,
+      medians: { ...MEDIANS, '40ftStandardHC': 7400 },
+    });
+    expect(figures(out)).toEqual({ '20ftCargo': 1940, '40ftStandard': 2320 });
+    if (out.status === 'ok') expect(out.withheld).toEqual(['40ftStandardHC']);
+  });
+
+  it('checks a cache hit as well as a fresh answer', async () => {
     const cache = new MemoryCache();
-    const fetchImpl = vi.fn(async () => jsonResponse(payloadDelivering('40205', 2560, 2340, 2370)));
-    await lookupZipPrice('40205', { cache, fetchImpl, now: () => NOW, committedFor });
-    const hit = await lookupZipPrice('40205', { cache, fetchImpl, now: () => NOW, committedFor });
+    const fetchImpl = vi.fn(async () => jsonResponse(payloadDelivering('40205', 5900, 2340, 2370)));
+    await lookupZipPrice('40205', { cache, fetchImpl, now: () => NOW, medians: MEDIANS });
+    const hit = await lookupZipPrice('40205', { cache, fetchImpl, now: () => NOW, medians: MEDIANS });
     expect(fetchImpl).toHaveBeenCalledTimes(1);
     expect(hit).toMatchObject({ status: 'ok', fromCache: true, withheld: ['20ftCargo'] });
     expect(figures(hit)).toEqual({ '40ftStandard': 2340, '40ftStandardHC': 2370 });
   });
 
-  // T-234 gap. The real ZIP to metro mapping, with the fixture committed figures above, so the test
-  // checks the nearest centroid rule end to end without moving when the harvest commits.
-  const FIXTURE_BY_SLUG: Record<string, CommittedMetro> = Object.fromEntries(
-    Object.values(COMMITTED).map((m) => [m.slug, m]),
-  );
-  FIXTURE_BY_SLUG['dayton-shipping-containers'] = { slug: 'dayton-shipping-containers', zip: '45404', delivered: { '20ftCargo': 1940, '40ftStandard': 2250, '40ftStandardHC': 2320 } };
-  FIXTURE_BY_SLUG['columbus-shipping-containers'] = { slug: 'columbus-shipping-containers', zip: '43219', delivered: { '20ftCargo': 1940, '40ftStandard': 2300, '40ftStandardHC': 2370 } };
-  const realMapping = (zip: string) => {
-    const slug = committedMetroForZip(zip)?.slug;
-    return slug ? FIXTURE_BY_SLUG[slug] ?? null : null;
-  };
-
-  // Live feed figures for these ZIPs on 2026-11-04, routed through a yard that does not serve them.
-  // 40014 20ft sits at exactly twenty percent over the committed Louisville figure, which the
-  // unchanged MOVE_CEILING admits, so only its two 40ft sizes are withheld. Indianapolis suburbs are
-  // wrong on the high cube only, as at the centroid.
-  it.each([
-    ['40047', 2640, 3030, 3130, ['20ftCargo', '40ftStandard', '40ftStandardHC']],
-    ['40014', 2460, 2850, 2950, ['40ftStandard', '40ftStandardHC']],
-    ['40356', 2540, 2930, 3030, ['20ftCargo', '40ftStandard', '40ftStandardHC']],
-    ['40383', 2520, 2910, 3010, ['20ftCargo', '40ftStandard', '40ftStandardHC']],
-    ['46032', 2000, 2610, 2940, ['40ftStandardHC']],
-    ['46143', 2000, 2730, 2970, ['40ftStandardHC']],
-  ] as const)('%s: the inflated wrong yard figures are withheld', async (zip, d20, d40, d40hc, withheld) => {
-    const fetchImpl = vi.fn(async () => jsonResponse(payloadDelivering(zip, d20, d40, d40hc)));
-    const out = await lookupZipPrice(zip, { fetchImpl, now: () => NOW, committedFor: realMapping });
-    expect(out.status).toBe('ok');
-    if (out.status !== 'ok') return;
-    expect(out.withheld).toEqual(withheld);
-    const shown = out.result.lines.map((l) => l.delivered);
-    // Widen the const tuple so includes() accepts any ZipSku.
-    const withheldSkus: readonly ZipSku[] = withheld;
-    for (const inflated of [d20, d40, d40hc].filter((_, i) => withheldSkus.includes(ZIP_SKUS[i]))) {
-      expect(shown).not.toContain(inflated);
-    }
-  });
-
-  // Live feed figures on 2026-11-04 for correctly routed Cincinnati, Dayton and Columbus ZIPs.
-  it.each([
-    ['45202', 1980, 2370, 2470],
-    ['45040', 1940, 2320, 2430],
-    ['45420', 1940, 2320, 2430],
-    ['43081', 1940, 2320, 2430],
-    ['43215', 1940, 2320, 2430],
-  ] as const)('%s: a correct price inside the ceiling stays visible on every size', async (zip, d20, d40, d40hc) => {
-    const fetchImpl = vi.fn(async () => jsonResponse(payloadDelivering(zip, d20, d40, d40hc)));
-    const out = await lookupZipPrice(zip, { fetchImpl, now: () => NOW, committedFor: realMapping });
-    expect(figures(out)).toEqual({ '20ftCargo': d20, '40ftStandard': d40, '40ftStandardHC': d40hc });
-    if (out.status === 'ok') expect(out.withheld).toEqual([]);
-  });
-
-  it('a far ZIP outside the radius is unchanged by the real mapping, whatever the figure', async () => {
-    const fetchImpl = vi.fn(async () => jsonResponse(payloadDelivering('42001', 2560, 2950, 3050)));
-    const out = await lookupZipPrice('42001', { fetchImpl, now: () => NOW, committedFor: realMapping });
+  it('defaults to the committed medians when none are injected', async () => {
+    const fetchImpl = vi.fn(async () => jsonResponse(payloadDelivering('40205', 2560, 2950, 3050)));
+    const out = await lookupZipPrice('40205', { fetchImpl, now: () => NOW });
     expect(figures(out)).toEqual({ '20ftCargo': 2560, '40ftStandard': 2950, '40ftStandardHC': 3050 });
-    if (out.status === 'ok') expect(out.withheld).toEqual([]);
   });
 
-  it('applyCommittedCeiling never substitutes the committed figure for a withheld one', () => {
+  it('applySanityCheck is pure and never substitutes another figure for a withheld one', () => {
     const result = {
       zip: '40205',
-      checkedOn: '2026-11-04',
-      lines: [{ sku: '20ftCargo' as const, delivered: 2560, pickup: 2100, pickupMiles: 120 }],
+      checkedOn: '2026-11-13',
+      lines: [
+        { sku: '20ftCargo' as const, delivered: 5900, pickup: 2100, pickupMiles: 120 },
+        { sku: '40ftStandard' as const, delivered: 2950, pickup: null, pickupMiles: null },
+      ],
       unavailable: [],
     };
-    const out = applyCommittedCeiling(result, COMMITTED.louisville);
-    expect(out.result.lines).toEqual([]);
+    const copy = JSON.parse(JSON.stringify(result));
+    const out = applySanityCheck(result, MEDIANS);
+    expect(result).toEqual(copy);
+    expect(out.result.lines.map((l) => l.sku)).toEqual(['40ftStandard']);
     expect(out.withheld).toEqual(['20ftCargo']);
-    expect(JSON.stringify(out)).not.toContain('2050');
+    expect(JSON.stringify(out)).not.toContain('1950');
+  });
+
+  it('with no median for a size, only the finite and positive check applies', () => {
+    const result = {
+      zip: '40205',
+      checkedOn: '2026-11-13',
+      lines: [{ sku: '20ftCargo' as const, delivered: 5900, pickup: null, pickupMiles: null }],
+      unavailable: [],
+    };
+    expect(applySanityCheck(result, { '20ftCargo': null }).withheld).toEqual([]);
   });
 });
 

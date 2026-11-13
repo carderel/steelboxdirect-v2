@@ -39,7 +39,8 @@ import {
   diffPricing,
   inspectSerialised,
   main,
-  moveWithinCeiling,
+  SANITY_FACTOR,
+  passesSanity,
   orderForOutput,
   parseArgs,
   parseCentroids,
@@ -250,33 +251,108 @@ test('a delivered figure above the ceiling fails the metro, which is what a deci
   assert.equal(result.errors[0].rejected, 15520);
 });
 
-/* ------------------------------------------------------------- move ceiling */
+/* ------------------------------------------------------------- sanity check */
 
-test('moveWithinCeiling allows a normal move and rejects a twenty percent one in either direction', () => {
-  assert.equal(moveWithinCeiling(2100, 2090), true);
-  assert.equal(moveWithinCeiling(2508, 2090), true);
-  assert.equal(moveWithinCeiling(2600, 2090), false);
-  assert.equal(moveWithinCeiling(1672, 2090), true);
-  assert.equal(moveWithinCeiling(1600, 2090), false);
+// 2026-11-13, owner decision option A: the feed is trusted. A metro priced from a farther yard is an
+// inventory routing fact, not a feed fault, so a large move from the committed figure is published.
+// The only per figure check left beyond the absolute bounds is the sanity check: finite, above zero,
+// and within SANITY_FACTOR of the median committed figure for the same size across every metro.
+
+const MEDIANS = {
+  delivered: { '20ftCargo': 2000, '40ftStandard': 2400, '40ftStandardHC': 2400 },
+  pickup: { '20ftCargo': 1450, '40ftStandard': 1800, '40ftStandardHC': 1700 },
+};
+
+test('the harvest uses the shared sanity check, not a copy', () => {
+  assert.equal(SANITY_FACTOR, 3);
+  assert.equal(passesSanity(2090, 2000), true);
+  assert.equal(passesSanity(6010, 2000), false);
+  assert.equal(passesSanity(660, 2000), false);
 });
 
-test('moveWithinCeiling is skipped for a metro with nothing committed to move from', () => {
-  assert.equal(moveWithinCeiling(2090, undefined), true);
-  assert.equal(moveWithinCeiling(2090, null), true);
-  assert.equal(moveWithinCeiling(2090, 0), true);
-});
-
-test('a delivered figure that moved too far fails the metro and reports both values', () => {
+test('a delivered figure that moved far from the committed one is published, not failed', () => {
+  // The T-234 shape: committed 4000, feed now 2090, a move of nearly half. Trusted.
   const committedMetro = metroFixture('45404', {
     '20ftCargo': 4000,
-    '40ftStandard': 2400,
+    '40ftStandard': 1500,
     '40ftStandardHC': 2300,
   });
-  const result = validateMetro({ ...baseArgs, payload: daytonPayload(), committedMetro });
+  const result = validateMetro({ ...baseArgs, payload: daytonPayload(), committedMetro, medians: MEDIANS });
+  assert.deepEqual(result.errors, []);
+  assert.equal(result.record.skus['20ftCargo'].delivered, 2090);
+  assert.equal(result.record.skus['40ftStandard'].delivered, 2400);
+  assert.equal(result.record.skus['20ftCargo'].effectiveSince, TODAY);
+});
+
+test('a delivered figure more than three times the median fails the metro and reports the median', () => {
+  const medians = { ...MEDIANS, delivered: { ...MEDIANS.delivered, '20ftCargo': 690 } };
+  const result = validateMetro({ ...baseArgs, payload: daytonPayload(), medians });
   assert.equal(result.record, null);
-  assert.equal(result.errors[0].check, 'delivered-move-ceiling');
-  assert.equal(result.errors[0].committed, 4000);
+  assert.equal(result.errors.length, 1);
+  assert.equal(result.errors[0].check, 'delivered-sanity');
+  assert.equal(result.errors[0].sku, '20ftCargo');
+  assert.equal(result.errors[0].median, 690);
   assert.equal(result.errors[0].rejected, 2090);
+});
+
+test('a delivered figure under a third of the median fails the metro', () => {
+  const medians = { ...MEDIANS, delivered: { ...MEDIANS.delivered, '40ftStandard': 7300 } };
+  const result = validateMetro({ ...baseArgs, payload: daytonPayload(), medians });
+  assert.equal(result.record, null);
+  assert.equal(result.errors[0].check, 'delivered-sanity');
+  assert.equal(result.errors[0].sku, '40ftStandard');
+});
+
+test('with no medians the comparison is skipped and a clean metro passes', () => {
+  const result = validateMetro({ ...baseArgs, payload: daytonPayload() });
+  assert.deepEqual(result.errors, []);
+});
+
+test('a pickup figure outside the sanity range is withheld with a warning and delivered still ships', () => {
+  const medians = { ...MEDIANS, pickup: { ...MEDIANS.pickup, '20ftCargo': 400 } };
+  const result = validateMetro({ ...baseArgs, payload: daytonPayload(), medians });
+  assert.deepEqual(result.errors, []);
+  assert.equal(result.record.skus['20ftCargo'].pickup, null);
+  assert.equal(result.record.skus['20ftCargo'].delivered, 2090);
+  assert.ok(result.warnings.some((w) => w.check === 'pickup-sanity' && w.sku === '20ftCargo'));
+  assert.equal(result.record.skus['40ftStandard'].pickup, 1800);
+});
+
+test('main takes the medians from the committed module and fails a figure far outside them', async () => {
+  const paths = scratch();
+  try {
+    // Both committed metros hold a 20ft figure of 600, so the 20ft median is 600 and 2090 is over 3x.
+    const low = {};
+    for (const [slug, zip] of [['dayton-shipping-containers', '45404'], ['cincinnati-shipping-containers', '45237']]) {
+      low[slug] = metroFixture(zip, { '20ftCargo': 600, '40ftStandard': 2400, '40ftStandardHC': 2300 });
+    }
+    writeFileSync(paths.committed, serialise({ geoPricing: low, lastVerified: EARLIER }));
+    const result = await run(paths, { 45404: daytonPayload(), 45237: cincinnatiPayload() });
+    assert.equal(result.code, 1);
+    assert.equal(result.summary.wrote, false);
+    assert.ok(result.summary.failures.length >= 1);
+    assert.ok(result.summary.failures.every((f) => f.check === 'delivered-sanity' && f.sku === '20ftCargo'));
+  } finally {
+    rmSync(paths.dir, { recursive: true, force: true });
+  }
+});
+
+test('main publishes a figure that moved far from its own committed figure when it is sane', async () => {
+  const paths = scratch();
+  try {
+    const committed = {
+      'dayton-shipping-containers': metroFixture('45404', { '20ftCargo': 1500, '40ftStandard': 2400, '40ftStandardHC': 2300 }),
+      'cincinnati-shipping-containers': metroFixture('45237', { '20ftCargo': 2240, '40ftStandard': 2550, '40ftStandardHC': 2450 }),
+    };
+    writeFileSync(paths.committed, serialise({ geoPricing: committed, lastVerified: EARLIER }));
+    const result = await run(paths, { 45404: daytonPayload(), 45237: cincinnatiPayload() });
+    assert.equal(result.code, 0);
+    assert.equal(result.summary.status, 'written');
+    const written = parseCommitted(readFileSync(paths.out, 'utf8'));
+    assert.equal(written.geoPricing['dayton-shipping-containers'].skus['20ftCargo'].delivered, 2090);
+  } finally {
+    rmSync(paths.dir, { recursive: true, force: true });
+  }
 });
 
 /* ------------------------------------------------------------ the whole metro */

@@ -65,8 +65,7 @@ export const FIGURE_MAX = 6000;
  *
  * Derived from the same live run rather than picked. Subtracting the smallest base delivery cost in
  * the fifteen metro set, 250 at charleston, from the delivered floor of 1200 gives 950 as the
- * equivalent bound on a bare unit price, and a legal one run move of 20 percent from the lowest live
- * pickup figure of 1180 can reach 944. 900 is the nearest whole hundred that clears both, and it still
+ * equivalent bound on a bare unit price. 900 is the nearest whole hundred below that, and it still
  * catches a cents read (11.83), a decimal shift (118.34) and a zeroed field. The ceiling is shared.
  */
 export const PICKUP_MIN = 900;
@@ -135,17 +134,51 @@ export function pickupWithinBounds(v) {
 }
 
 /**
- * Move ceiling on a delivered or a pickup figure, as a fraction of the committed one. Moved here from
- * the harvest on 2026-11-04 (T-234) so the live lookup behind /price/ withholds a figure on exactly
- * the same rule the daily harvest refuses to commit one.
+ * The sanity check on a delivered or a pickup figure, shared by the daily harvest and the live lookup
+ * behind /price/ so the two cannot disagree. Owner decision 2026-11-13, option A: the feed is trusted.
+ * The supplier ships from every yard, and a metro priced well above its neighbours is a box that has
+ * to come from a farther yard, which is a real price. So a figure is blocked only when it is not a
+ * finite number, is not above zero, or is more than SANITY_FACTOR times or less than one SANITY_FACTOR
+ * of the median committed figure for the same size across every committed metro. The site sells one
+ * grade, so the size is the whole of size and condition. This replaced the twenty percent move ceiling
+ * and the nearest metro guard, both of which withheld real prices.
  */
-export const MOVE_CEILING = 0.2;
+export const SANITY_FACTOR = 3;
+
+/** The median of the finite figures above zero, or null when there are none. */
+export function median(values) {
+  const v = (Array.isArray(values) ? values : [])
+    .filter((x) => isFiniteNumber(x) && x > 0)
+    .sort((a, b) => a - b);
+  if (v.length === 0) return null;
+  const mid = Math.floor(v.length / 2);
+  return v.length % 2 === 1 ? v[mid] : (v[mid - 1] + v[mid]) / 2;
+}
 
 /**
- * Whether a figure moved no further than the ceiling allows, in either direction. With no committed
- * figure there is nothing to move from, so the check is skipped rather than failed.
+ * The median committed figure per size across every metro in a geoPricing map, available sizes only.
+ * The field is delivered by default, or pickup. A size with no usable figure maps to null.
  */
-export function moveWithinCeiling(next, previous) {
-  if (!isFiniteNumber(previous) || previous <= 0) return true;
-  return Math.abs(next - previous) / previous <= MOVE_CEILING;
+export function committedMedians(geoPricing, field = 'delivered') {
+  const metros = geoPricing && typeof geoPricing === 'object' ? Object.values(geoPricing) : [];
+  const out = {};
+  for (const sku of SKU_KEYS) {
+    const values = [];
+    for (const metro of metros) {
+      const entry = metro?.skus?.[sku];
+      if (entry && entry.available === true) values.push(entry[field]);
+    }
+    out[sku] = median(values);
+  }
+  return out;
+}
+
+/**
+ * Whether a figure is sane. Not finite or not above zero always fails. With no usable median there is
+ * nothing to compare against, so only that comparison is skipped. Inclusive at both edges.
+ */
+export function passesSanity(value, reference) {
+  if (!isFiniteNumber(value) || value <= 0) return false;
+  if (!isFiniteNumber(reference) || reference <= 0) return true;
+  return value <= reference * SANITY_FACTOR && value * SANITY_FACTOR >= reference;
 }

@@ -35,11 +35,10 @@ import {
   rowForSize,
   withinBounds,
   pickupWithinBounds,
-  moveWithinCeiling,
+  committedMedians,
+  passesSanity,
 } from './feedRow.mjs';
-import { geoCentroids, type MetroCentroid } from '../../data/geoCentroids';
 import { geoPricing, type GeoMetroPricing } from '../../data/geoPricing';
-import { CENTROID_POINTS, PREFIX_CENTERS, PREFIXES_WITHOUT_ZCTA } from '../../data/zipPrefixCenters';
 
 export type ZipSku = '20ftCargo' | '40ftStandard' | '40ftStandardHC';
 
@@ -81,8 +80,8 @@ export const UPSTREAM_TIMEOUT_MS = 4000;
 export const CACHE_TTL_SECONDS = 12 * 60 * 60;
 
 /**
- * Bump to orphan every cached entry after a shape change. 2 since 2026-11-04 (T-234): entries written
- * before the committed metro ceiling existed are orphaned so none of them is read again.
+ * Bump to orphan every cached entry after a shape change. Cached entries hold the raw validated
+ * answer and the sanity check runs on every read, so a change to that check needs no bump.
  */
 export const CACHE_VERSION = 2;
 
@@ -268,132 +267,35 @@ export function validateZipPayload(payload: unknown, zip: string, checkedOn: str
   return { ok: true, result };
 }
 
-/* --------------------------------------------------- committed metro ceiling */
+/* ------------------------------------------------------------- sanity check */
 
-// WHY THIS EXISTS (T-234, 2026-11-04). The feed began routing delivery for some metros through a yard
-// that does not serve them, which inflated live delivered figures by twenty percent and more. The
-// daily harvest already refuses to commit a figure that moved more than MOVE_CEILING from the
-// committed one. This applies the same rule, with the same function, to the live per ZIP answer: a
-// size whose live delivered figure is more than MOVE_CEILING away, in either direction, from the
-// committed figure of the metro the ZIP belongs to is withheld, and the page sends the visitor to the
-// quote form for it. The committed figure is NEVER shown in its place, because it is priced for the
-// centroid ZIP of that metro, not for the ZIP the visitor typed.
-//
-// WHICH METRO A ZIP BELONGS TO, revised 2026-11-04 (T-234 gap). A ZIP that equals a centroid belongs
-// to that metro. Otherwise its three digit prefix belongs to the metro centroid NEAREST the center of
-// that prefix, by great circle distance, when that centroid is within GUARD_RADIUS_MILES. The first
-// version matched only the prefix the centroid itself sits in, which left suburbs one prefix over
-// (40047 Mount Washington, 40356 Nicholasville, 46032 Carmel, 46143 Greenwood) unguarded and showing
-// wrong yard figures live. Prefix centers and centroid points are Census 2020 ZCTA internal points,
-// cited in src/data/zipPrefixCenters.ts. No ZIP level coordinate source exists in this repository
-// and the feed returns neither coordinates nor a delivery distance, so the prefix is the unit.
-//
-// WHY 120 MILES. Measured 2026-11-04 by querying the live feed once per served prefix: ZIPs the feed
-// routes through the right yard stay inside the ceiling well out from their metro (Fort Wayne at 107
-// miles from the Indianapolis centroid moved 18 percent, Youngstown at 56 miles from Cleveland 16,
-// every Cincinnati, Dayton and Columbus prefix 6 or less), so a flat ceiling does not hide correct
-// far prices inside the radius. Beyond roughly 120 miles a different yard legitimately takes over
-// (Chicago for Gary and South Bend, Nashville and St. Louis for western Kentucky, Baltimore for the
-// eastern panhandle), and a figure from another yard cannot be judged against this metro at all.
-// Beyond the radius nothing is guarded, which is the behavior before this guard existed.
-//
-// WHY THE CEILING DOES NOT SCALE WITH DISTANCE. The feed returns no delivery distance, only the
-// distance to a pickup yard, so delivery cannot be separated from the unit price per ZIP. The same
-// measurement shows correctly routed figures inside the radius fit under the flat ceiling, and a
-// ceiling that widened with distance would admit exactly the wrong yard figures this exists to stop.
-//
-// The nearest centroid is chosen among every centroid, and a ZIP whose nearest metro has no committed
-// record maps to nothing rather than to the next nearest, which would be judging it against a metro
-// that does not serve it. zipPrice.test.ts asserts every served prefix maps or is named unguarded.
+// Owner decision 2026-11-13, option A: the feed is trusted. A ZIP priced from a farther yard is an
+// inventory fact, so its figure is shown. A live size is withheld only when it fails the sanity
+// check shared with the daily harvest (passesSanity in feedRow.mjs): not finite, not above zero, or
+// more than SANITY_FACTOR times or under one SANITY_FACTOR of the median committed delivered figure
+// for that size across every metro. A withheld size sends the visitor to the quote form, and no
+// other figure is ever shown in its place.
 
-/** Prefix centers farther than this from every metro centroid are not guarded. See WHY 120 MILES. */
-export const GUARD_RADIUS_MILES = 120;
+/** The median committed delivered figure per size, or null for a size with none. */
+export type SizeMedians = Partial<Record<ZipSku, number | null>>;
 
-/** Great circle distance in statute miles between two [latitude, longitude] points. */
-export function haversineMiles(a: readonly [number, number], b: readonly [number, number]): number {
-  const R = 3958.8;
-  const rad = (d: number) => (d * Math.PI) / 180;
-  const dLat = rad(b[0] - a[0]);
-  const dLng = rad(b[1] - a[1]);
-  const h = Math.sin(dLat / 2) ** 2 + Math.cos(rad(a[0])) * Math.cos(rad(b[0])) * Math.sin(dLng / 2) ** 2;
-  return 2 * R * Math.asin(Math.sqrt(h));
-}
-
-export type PrefixAssignment =
-  | { slug: string; miles: number; reason?: undefined }
-  | { slug?: undefined; miles?: number; reason: string };
-
-/** The metro centroid nearest a three digit prefix center, within the radius, or why there is none. */
-export function prefixAssignment(
-  prefix: string,
-  centroids: ReadonlyArray<MetroCentroid> = geoCentroids,
-): PrefixAssignment {
-  const center = PREFIX_CENTERS[prefix];
-  if (!center) return { reason: PREFIXES_WITHOUT_ZCTA[prefix] ?? 'no prefix center' };
-  let best: { slug: string; miles: number } | null = null;
-  for (const c of centroids) {
-    const point = CENTROID_POINTS[c.zip];
-    if (!point) continue;
-    const miles = haversineMiles(center, point);
-    if (!best || miles < best.miles) best = { slug: c.slug, miles };
-  }
-  if (!best) return { reason: 'no centroid point' };
-  if (best.miles > GUARD_RADIUS_MILES) {
-    return { miles: best.miles, reason: `nearest centroid is beyond ${GUARD_RADIUS_MILES} miles` };
-  }
-  return best;
-}
-
-/** The committed delivered figures of one metro, available sizes only. */
-export interface CommittedMetro {
-  slug: string;
-  /** The centroid ZIP the committed figures were priced for. Never rendered. */
-  zip: string;
-  delivered: Partial<Record<ZipSku, number>>;
-}
-
-/** The metro whose committed figures a ZIP is checked against, or null when none applies. */
-export function committedMetroForZip(
-  zip: string,
-  centroids: ReadonlyArray<MetroCentroid> = geoCentroids,
-  pricing: Record<string, GeoMetroPricing> = geoPricing,
-): CommittedMetro | null {
-  if (!/^[0-9]{5}$/.test(zip)) return null;
-  const exact = centroids.filter((c) => c.zip === zip);
-  let metro: MetroCentroid | undefined;
-  if (exact.length === 1) {
-    metro = exact[0];
-  } else if (exact.length === 0) {
-    const slug = prefixAssignment(zip.slice(0, 3), centroids).slug;
-    metro = slug ? centroids.find((c) => c.slug === slug) : undefined;
-  }
-  if (!metro) return null;
-  const record = pricing[metro.slug];
-  if (!record || !record.skus) return null;
-  const delivered: Partial<Record<ZipSku, number>> = {};
-  for (const sku of ZIP_SKUS) {
-    const committed = record.skus[sku];
-    if (committed && committed.available === true && withinBounds(committed.delivered)) {
-      delivered[sku] = committed.delivered;
-    }
-  }
-  return { slug: metro.slug, zip: metro.zip, delivered };
+/** Median committed delivered figures per size across every metro in the committed module. */
+export function deliveredMedians(pricing: Record<string, GeoMetroPricing> = geoPricing): SizeMedians {
+  return committedMedians(pricing, 'delivered') as SizeMedians;
 }
 
 /**
- * Drops every line whose delivered figure is more than MOVE_CEILING away from the committed figure
- * for its size, and names those sizes as withheld. A size with no committed figure is kept as is.
- * Pure: the input result is not modified, and no committed figure is copied into the output.
+ * Drops every line whose delivered figure fails the sanity check against the median for its size,
+ * and names those sizes as withheld. Pure: the input result is not modified, and no median or other
+ * figure is copied into the output.
  */
-export function applyCommittedCeiling(
+export function applySanityCheck(
   result: ZipPriceResult,
-  committed: CommittedMetro | null,
+  medians: SizeMedians,
 ): { result: ZipPriceResult; withheld: ZipSku[] } {
-  if (!committed) return { result, withheld: [] };
   const withheld: ZipSku[] = [];
   const lines = result.lines.filter((line) => {
-    const previous = committed.delivered[line.sku];
-    if (moveWithinCeiling(line.delivered, previous)) return true;
+    if (passesSanity(line.delivered, medians[line.sku] ?? null)) return true;
     withheld.push(line.sku);
     return false;
   });
@@ -463,9 +365,9 @@ export function parseStored(text: string, zip: string, nowMs: number): Stored | 
 export type LookupOutcome =
   | {
       status: 'ok';
-      /** Lines withheld by the committed metro ceiling are already removed from this result. */
+      /** Lines withheld by the sanity check are already removed from this result. */
       result: ZipPriceResult;
-      /** Sizes available at this ZIP whose live figure was withheld by the committed metro ceiling. */
+      /** Sizes available at this ZIP whose live figure failed the sanity check. */
       withheld: ZipSku[];
       fromCache: boolean;
       maxAgeSeconds: number;
@@ -480,8 +382,8 @@ export interface LookupDeps {
   timeoutMs?: number;
   /** Lets the cache write finish after the response is sent. Optional. */
   waitUntil?: (p: Promise<unknown>) => void;
-  /** The committed metro figures for a ZIP. Defaults to committedMetroForZip; injected in tests. */
-  committedFor?: (zip: string) => CommittedMetro | null;
+  /** Median committed delivered figure per size. Defaults to deliveredMedians(); injected in tests. */
+  medians?: SizeMedians;
 }
 
 /**
@@ -492,10 +394,10 @@ export interface LookupDeps {
  */
 export async function lookupZipPrice(zip: string, deps: LookupDeps = {}): Promise<LookupOutcome> {
   const now = deps.now ?? (() => new Date());
-  const committedFor = deps.committedFor ?? ((z: string) => committedMetroForZip(z));
+  const medians = deps.medians ?? deliveredMedians();
   // Applied on every ok answer, cached or fresh, so the cache holds what the feed said and the
-  // ceiling always reads the committed figures of the current deploy.
-  const guarded = (result: ZipPriceResult) => applyCommittedCeiling(result, committedFor(zip));
+  // check always reads the committed medians of the current deploy.
+  const guarded = (result: ZipPriceResult) => applySanityCheck(result, medians);
   const cache = deps.cache ?? null;
   const key = cacheKey(zip);
 

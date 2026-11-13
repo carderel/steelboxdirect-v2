@@ -13,7 +13,7 @@
  * smaller of the pickup and the delivery unit prices. Measured at centroid 45404 on 2026-08-17 that
  * field returned 1440.60 against a delivery unit price of 1492.05, so a delivered total built from it
  * understates that metro by 51.45 per container while still summing to a plausible amount and passing
- * every bound and every day over day move check. It is read here for provenance only, it is never
+ * every bound and the sanity check. It is read here for provenance only, it is never
  * added to anything, and it is never serialised. See MIN_OF_TWO_FIELD below, and note that
  * src/data/geoPricing.test.ts asserts this source file never places that field beside a plus sign.
  *
@@ -89,8 +89,10 @@ import {
   rowForSize,
   withinBounds,
   pickupWithinBounds,
-  MOVE_CEILING,
-  moveWithinCeiling,
+  SANITY_FACTOR,
+  median,
+  committedMedians,
+  passesSanity,
 } from '../src/lib/pricing/feedRow.mjs';
 
 export {
@@ -115,8 +117,10 @@ export {
   rowForSize,
   withinBounds,
   pickupWithinBounds,
-  MOVE_CEILING,
-  moveWithinCeiling,
+  SANITY_FACTOR,
+  median,
+  committedMedians,
+  passesSanity,
 };
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -134,8 +138,9 @@ export const FEED_VERSION = 1;
 export const USER_AGENT =
   'SteelBoxDirect-GeoPricingHarvest/1.0 (+https://steelboxdirect.com; daily price feed)';
 
-/* MOVE_CEILING and moveWithinCeiling live in src/lib/pricing/feedRow.mjs since 2026-11-04 (T-234),
- * shared with the live lookup behind /price/, and are re exported above unchanged. */
+/* The sanity check (SANITY_FACTOR, median, committedMedians, passesSanity) lives in
+ * src/lib/pricing/feedRow.mjs, shared with the live lookup behind /price/, and is re exported above
+ * unchanged. Since 2026-11-13 it replaces the twenty percent move ceiling: the feed is trusted. */
 
 export const HTTP_TIMEOUT_MS = 20000;
 export const HTTP_ATTEMPTS = 3;
@@ -331,11 +336,13 @@ export function resolveEffectiveSince({ delivered, committedSku, today }) {
 /* ------------------------------------------------------------ metro validation */
 
 /**
- * Validates one metro payload and builds its record. Returns errors, which abort the whole run, and
+ * Validates one metro payload and builds its record. medians holds the median committed delivered
+ * and pickup figure per size across every metro, from committedMedians; without it the median
+ * comparison of the sanity check is skipped. Returns errors, which abort the whole run, and
  * warnings, which do not. Also returns the raw observations so a human can check the arithmetic on a
  * dry run without reading the response body.
  */
-export function validateMetro({ slug, zip, payload, committedMetro, pending, warm, today }) {
+export function validateMetro({ slug, zip, payload, committedMetro, medians, pending, warm, today }) {
   const errors = [];
   const warnings = [];
   const observations = {};
@@ -413,14 +420,16 @@ export function validateMetro({ slug, zip, payload, committedMetro, pending, war
       });
       continue;
     }
-    if (!moveWithinCeiling(delivered, committedDelivered)) {
+    const deliveredMedian = medians?.delivered?.[sku] ?? null;
+    if (!passesSanity(delivered, deliveredMedian)) {
       errors.push({
         slug,
         zip,
         sku,
-        check: 'delivered-move-ceiling',
-        detail: `moved more than ${MOVE_CEILING * 100} percent in one run`,
+        check: 'delivered-sanity',
+        detail: `more than ${SANITY_FACTOR} times or under one ${SANITY_FACTOR} of the median ${deliveredMedian} across committed metros`,
         committed: committedDelivered ?? null,
+        median: deliveredMedian,
         rejected: delivered,
       });
       continue;
@@ -430,7 +439,6 @@ export function validateMetro({ slug, zip, payload, committedMetro, pending, war
     // warned about rather than taking the whole site off the air, which the spec names as the wrong
     // trade in the same breath as it applies the bounds to pickup.
     let pickup = pickupFigure(row);
-    const committedPickup = committedSku?.pickup;
     if (pickup !== null && !pickupWithinBounds(pickup)) {
       warnings.push({
         slug,
@@ -441,13 +449,14 @@ export function validateMetro({ slug, zip, payload, committedMetro, pending, war
       });
       pickup = null;
     }
-    if (pickup !== null && !moveWithinCeiling(pickup, committedPickup)) {
+    const pickupMedian = medians?.pickup?.[sku] ?? null;
+    if (pickup !== null && !passesSanity(pickup, pickupMedian)) {
       warnings.push({
         slug,
         zip,
         sku,
-        check: 'pickup-move-ceiling',
-        detail: `pickup moved more than ${MOVE_CEILING * 100} percent, so pickup is withheld`,
+        check: 'pickup-sanity',
+        detail: `pickup is more than ${SANITY_FACTOR} times or under one ${SANITY_FACTOR} of the median ${pickupMedian}, so pickup is withheld`,
       });
       pickup = null;
     }
@@ -968,6 +977,12 @@ export async function main(argv = process.argv.slice(2), deps = {}) {
     );
   }
 
+  // Computed once from the committed module, before any metro is read, so every metro in a run is
+  // judged against the same medians and no figure from this run can move its own reference.
+  const medians = {
+    delivered: committedMedians(committed.geoPricing, 'delivered'),
+    pickup: committedMedians(committed.geoPricing, 'pickup'),
+  };
   const candidate = {};
   const pendingNextAll = {};
   const allObservations = {};
@@ -991,6 +1006,7 @@ export async function main(argv = process.argv.slice(2), deps = {}) {
       zip: centroid.zip,
       payload,
       committedMetro: committed.geoPricing[centroid.slug],
+      medians,
       pending: state?.pendingUnavailable?.[centroid.slug] ?? [],
       warm,
       today: opts.today,

@@ -7,14 +7,16 @@ import {
   DASHES,
   FIGURE_MAX,
   FIGURE_MIN,
-  MOVE_CEILING,
   PICKUP_MIN,
+  SANITY_FACTOR,
   PRINTABLE_ASCII,
   SIZE_ID_BY_SKU,
   SKU_KEYS,
   UNIT_PRICE_BASIS,
+  committedMedians,
   deliveredPrice,
-  moveWithinCeiling,
+  median,
+  passesSanity,
   pickupFigure,
   pickupWithinBounds,
   roundToTen,
@@ -86,18 +88,59 @@ describe('feedRow: row selection', () => {
   });
 });
 
-describe('feedRow: the move ceiling is shared with the harvest', () => {
-  it('is twenty percent and lives in the shared module so the worker can import it', () => {
-    expect(MOVE_CEILING).toBe(0.2);
-    expect(harvest.MOVE_CEILING).toBe(MOVE_CEILING);
-    expect(harvest.moveWithinCeiling).toBe(moveWithinCeiling);
+describe('feedRow: the sanity check is shared with the harvest', () => {
+  it('is a factor of three and lives in the shared module so the worker can import it', () => {
+    expect(SANITY_FACTOR).toBe(3);
+    expect(harvest.SANITY_FACTOR).toBe(SANITY_FACTOR);
+    expect(harvest.passesSanity).toBe(passesSanity);
+    expect(harvest.committedMedians).toBe(committedMedians);
   });
-  it('rejects a move of more than twenty percent in either direction and skips with nothing committed', () => {
-    expect(moveWithinCeiling(2508, 2090)).toBe(true);
-    expect(moveWithinCeiling(2560, 2050)).toBe(false);
-    expect(moveWithinCeiling(1600, 2090)).toBe(false);
-    expect(moveWithinCeiling(2090, null)).toBe(true);
-    expect(moveWithinCeiling(2090, 0)).toBe(true);
+  it('the move ceiling is gone: the feed is trusted, so a twenty percent move is not a failure', () => {
+    expect((shared as Record<string, unknown>).MOVE_CEILING).toBeUndefined();
+    expect((shared as Record<string, unknown>).moveWithinCeiling).toBeUndefined();
+    expect(passesSanity(2950, 2340)).toBe(true);
+    expect(passesSanity(1600, 2340)).toBe(true);
+  });
+  it('blocks a figure that is not a finite number or not above zero', () => {
+    for (const bad of [NaN, Infinity, -Infinity, null, undefined, '2340', 0, -5]) {
+      expect(passesSanity(bad, 2340), String(bad)).toBe(false);
+    }
+  });
+  it('blocks more than three times or less than a third of the median, inclusive at the edges', () => {
+    expect(passesSanity(7020, 2340)).toBe(true);
+    expect(passesSanity(7030, 2340)).toBe(false);
+    expect(passesSanity(780, 2340)).toBe(true);
+    expect(passesSanity(770, 2340)).toBe(false);
+  });
+  it('skips only the median comparison when there is no median, never the finite and positive check', () => {
+    expect(passesSanity(2340, null)).toBe(true);
+    expect(passesSanity(2340, 0)).toBe(true);
+    expect(passesSanity(0, null)).toBe(false);
+    expect(passesSanity(NaN, null)).toBe(false);
+  });
+  it('median handles odd, even, empty and junk input', () => {
+    expect(median([3, 1, 2])).toBe(2);
+    expect(median([4, 1, 3, 2])).toBe(2.5);
+    expect(median([])).toBeNull();
+    expect(median([null, NaN, 0, -1, 'x'])).toBeNull();
+    expect(median([2000, null, 2400, NaN])).toBe(2200);
+  });
+  it('committedMedians reads available sizes only, per size, for the field asked', () => {
+    const sku = (delivered: number, pickup: number | null, available = true) => ({
+      delivered,
+      pickup,
+      pickupDistanceMiles: null,
+      available,
+      effectiveSince: '2026-11-01',
+    });
+    const pricing = {
+      a: { zip: '45404', skus: { '20ftCargo': sku(1900, 1400), '40ftStandard': sku(2300, 1800), '40ftStandardHC': sku(2400, null) } },
+      b: { zip: '45237', skus: { '20ftCargo': sku(2000, 1500), '40ftStandard': sku(2900, 1900), '40ftStandardHC': sku(2500, 1900) } },
+      c: { zip: '40205', skus: { '20ftCargo': sku(2600, 2100), '40ftStandard': sku(9999, 9999, false), '40ftStandardHC': sku(2700, 2000) } },
+    };
+    expect(committedMedians(pricing)).toEqual({ '20ftCargo': 2000, '40ftStandard': 2600, '40ftStandardHC': 2500 });
+    expect(committedMedians(pricing, 'pickup')).toEqual({ '20ftCargo': 1500, '40ftStandard': 1850, '40ftStandardHC': 1950 });
+    expect(committedMedians({})).toEqual({ '20ftCargo': null, '40ftStandard': null, '40ftStandardHC': null });
   });
 });
 

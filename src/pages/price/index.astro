@@ -108,9 +108,9 @@ const selectedUnavailable = Boolean(result && selectedSku && result.unavailable.
 const unavailableLabels = result
   ? result.unavailable.filter((s) => !selectedSku || s === selectedSku).map((s) => SIZE_LABEL[s])
   : [];
-// Sizes the feed priced but the committed metro ceiling withheld (T-234). Their lines are already
-// gone from result.lines. No figure is shown for them, not even the committed one: that figure is
-// for the centroid ZIP of the metro, not for this ZIP.
+// Sizes the feed priced but the shared sanity check withheld (finite, above zero, within 3x of the
+// median committed figure for the size). Their lines are already gone from result.lines. No figure
+// is shown for them, not even a committed one: that figure is for a metro centroid, not this ZIP.
 const withheldLabels =
   outcome && outcome.status === 'ok'
     ? outcome.withheld.filter((s) => !selectedSku || s === selectedSku).map((s) => SIZE_LABEL[s])
