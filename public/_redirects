@@ -8,6 +8,8 @@
 /indianapolis-shipping-containers /locations/indiana/indianapolis-shipping-containers/ 301
 /louisville-shipping-containers/ /locations/kentucky/louisville-shipping-containers/ 301
 /louisville-shipping-containers /locations/kentucky/louisville-shipping-containers/ 301
+# Crawlers and SEO tools probe /sitemap.xml; the real sitemap is /sitemap-index.xml (2026-11-18).
+/sitemap.xml /sitemap-index.xml 301
 /admin /admin/login/ 301
 /admin/ /admin/login/ 301
 /shipping-containers-for-sale/40-foot-one-trip-container /shipping-containers-for-sale/40-foot-high-cube-container/ 301
