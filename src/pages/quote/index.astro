@@ -29,17 +29,22 @@ import { RTO_QUANTITY_NOTE } from '../../lib/rto-eligibility';
           <form id="quote-form" class="quote-form quote_form">
             <div class="form-section quote_form_section">
               <h2>The Hardware</h2>
+              <!-- How many? drives the size selects below with CSS only (:has on the form, no JS).
+                   1: one size select. 2 to 4: one per container (container 1 keeps
+                   name="size_preference"; the rest are size_2..size_4). 5 or more: one size select
+                   plus the bulk_details box. Hidden selects are NOT required (CSS cannot toggle
+                   `required`), so the server reads only as many as the quantity says and treats a
+                   blank one as "not sure". Keep values in sync with src/lib/quote-quantity.ts. -->
               <div class="form-grid quote_form_grid">
                 <div class="form-group quote_field">
-                  <label for="size_preference">Container size</label>
-                  <select id="size_preference" name="size_preference" required>
-                    <option value="">Select size...</option>
-                    <option value="20ft">20ft Standard</option>
-                    <option value="40ft">40ft Standard</option>
-                    <option value="40ft_hc">40ft High Cube</option>
-                    <option value="not_sure">Not sure yet</option>
+                  <label for="quantity">How many?</label>
+                  <select id="quantity" name="quantity">
+                    <option value="1" selected>1 container</option>
+                    <option value="2">2 containers</option>
+                    <option value="3">3 containers</option>
+                    <option value="4">4 containers</option>
+                    <option value="5_plus">5 or more</option>
                   </select>
-                  <p class="quote_field_note">Need a 10ft? That's a special request. Pick "Not sure yet" and tell us in Notes.</p>
                 </div>
                 <div class="form-group quote_field">
                   <label for="condition_preference">Condition</label>
@@ -48,16 +53,53 @@ import { RTO_QUANTITY_NOTE } from '../../lib/rto-eligibility';
                     <option value="not_sure">Not sure yet</option>
                   </select>
                 </div>
-                <div class="form-group quote_field">
-                  <label for="quantity">How many?</label>
-                  <select id="quantity" name="quantity">
-                    <option value="1" selected>1 container</option>
-                    <option value="2_4">2 to 4</option>
-                    <option value="5_9">5 to 9</option>
-                    <option value="10_19">10 to 19</option>
-                    <option value="20_plus">20 or more</option>
+              </div>
+              <div class="form-grid quote_form_grid quote_sizes">
+                <div class="form-group quote_field quote_size quote_size_1">
+                  <label for="size_preference"><span class="quote_lbl_one">Container size</span><span class="quote_lbl_multi">Container 1 size</span></label>
+                  <select id="size_preference" name="size_preference" required>
+                    <option value="">Select size...</option>
+                    <option value="20ft">20ft Standard</option>
+                    <option value="40ft">40ft Standard</option>
+                    <option value="40ft_hc">40ft High Cube</option>
+                    <option value="not_sure">Not sure yet</option>
                   </select>
                 </div>
+                <div class="form-group quote_field quote_size quote_size_2">
+                  <label for="size_2">Container 2 size</label>
+                  <select id="size_2" name="size_2">
+                    <option value="">Select size...</option>
+                    <option value="20ft">20ft Standard</option>
+                    <option value="40ft">40ft Standard</option>
+                    <option value="40ft_hc">40ft High Cube</option>
+                    <option value="not_sure">Not sure yet</option>
+                  </select>
+                </div>
+                <div class="form-group quote_field quote_size quote_size_3">
+                  <label for="size_3">Container 3 size</label>
+                  <select id="size_3" name="size_3">
+                    <option value="">Select size...</option>
+                    <option value="20ft">20ft Standard</option>
+                    <option value="40ft">40ft Standard</option>
+                    <option value="40ft_hc">40ft High Cube</option>
+                    <option value="not_sure">Not sure yet</option>
+                  </select>
+                </div>
+                <div class="form-group quote_field quote_size quote_size_4">
+                  <label for="size_4">Container 4 size</label>
+                  <select id="size_4" name="size_4">
+                    <option value="">Select size...</option>
+                    <option value="20ft">20ft Standard</option>
+                    <option value="40ft">40ft Standard</option>
+                    <option value="40ft_hc">40ft High Cube</option>
+                    <option value="not_sure">Not sure yet</option>
+                  </select>
+                </div>
+              </div>
+              <p class="quote_field_note quote_size_note">Need a 10ft? That's a special request. Pick "Not sure yet" and tell us in Notes.</p>
+              <div class="form-group quote_field quote_bulk">
+                <label for="bulk_details">Tell us about what you need</label>
+                <textarea id="bulk_details" name="bulk_details" rows="4" placeholder="How many of each size, one site or several, anything else..."></textarea>
               </div>
               <div class="form-group quote_field">
                 <label for="primary_use">Primary use</label>
@@ -348,6 +390,24 @@ import { RTO_QUANTITY_NOTE } from '../../lib/rto-eligibility';
     .form-group input:focus { outline: none; background: white; border-color: var(--c3-deliver); }
     .quote_field_note { margin: 8px 0 0; font-size: 14px; line-height: 1.4; }
     .quote_field_note:empty { display: none; }
+
+    /* Quantity-driven size fields, CSS only. Extra size selects and the bulk box start hidden;
+       the quantity choice reveals them. */
+    .quote_size_2, .quote_size_3, .quote_size_4, .quote_bulk, .quote_lbl_multi { display: none; }
+    .quote_form:has(#quantity option[value="2"]:checked) .quote_size_2,
+    .quote_form:has(#quantity option[value="3"]:checked) :is(.quote_size_2, .quote_size_3),
+    .quote_form:has(#quantity option[value="4"]:checked) :is(.quote_size_2, .quote_size_3, .quote_size_4),
+    .quote_form:has(#quantity option[value="5_plus"]:checked) .quote_bulk { display: block; }
+    .quote_form:has(#quantity :is(option[value="2"], option[value="3"], option[value="4"]):checked) .quote_lbl_one { display: none; }
+    .quote_form:has(#quantity :is(option[value="2"], option[value="3"], option[value="4"]):checked) .quote_lbl_multi { display: inline; }
+    /* A browser without :has shows every field rather than hiding ones a buyer may need. The
+       server ignores size selects past the chosen quantity. */
+    @supports not selector(:has(a)) {
+      .quote_size_2, .quote_size_3, .quote_size_4, .quote_bulk { display: block; }
+    }
+    .quote_sizes .form-group { margin-bottom: 0; }
+    .quote_sizes { row-gap: 20px; }
+    .quote_size_note { margin: 8px 0 20px; }
 
     .form-submit .btn { width: 100%; justify-content: center; font-size: 20px; }
 

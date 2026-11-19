@@ -2,6 +2,13 @@ import type { APIRoute } from 'astro';
 import { createClient } from '@supabase/supabase-js';
 import { Resend } from 'resend';
 import { exceedsRtoQuantity, RTO_BULK_SELLER_LINE } from '../../lib/rto-eligibility';
+import {
+  quantityLabel as sharedQuantityLabel,
+  containerSizes,
+  sizeSlotCount,
+  sizeSummary,
+  bulkDetailsOneLine,
+} from '../../lib/quote-quantity';
 
 // Service area config
 const CINCINNATI_LAT = 39.1031;
@@ -28,6 +35,13 @@ interface QuoteFormData {
   // of leads in June. It is scored, put in the seller subject line and in the seller email body,
   // so nothing about it depends on a schema change.
   quantity?: string;
+  // Since 2026-11-19: one size per container for quantity 2..4 (container 1 stays size_preference),
+  // and free text for "5 or more". Same treatment as quantity: email only, NEVER in the leads
+  // insert (no such columns). Optional and never required: a blank extra size reads as not_sure.
+  size_2?: string;
+  size_3?: string;
+  size_4?: string;
+  bulk_details?: string;
   timeline: string;
   buyer_notes?: string;
   first_touch_source?: string;
@@ -62,29 +76,26 @@ function getClients() {
 }
 
 // Order quantity, the strongest buying signal the form collects. A 20 unit order is a 50k to 120k
-// purchase, so it outweighs every other factor; the points are sized to carry such a lead over the
-// Priority band on their own.
+// purchase, so it outweighs every other factor. Current form values (2026-11-19) first; the legacy
+// buckets keep their points so cached forms read the same as before.
 const QUANTITY_POINTS: Record<string, number> = {
   '1': 0,
+  '2': 5,
+  '3': 8,
+  '4': 10,
+  '5_plus': 20,
+  // Legacy buckets (form before 2026-11-19).
   '2_4': 10,
   '5_9': 20,
   '10_19': 30,
   '20_plus': 40,
 };
 
-const QUANTITY_LABELS: Record<string, string> = {
-  '1': '1 container',
-  '2_4': '2 to 4',
-  '5_9': '5 to 9',
-  '10_19': '10 to 19',
-  '20_plus': '20 or more',
-};
-
 // Missing means a lead submitted before the field existed, or a cached form. Treat it as one unit
-// in the label and as zero points in the score, never as blank or "undefined".
+// in the label and as zero points in the score, never as blank or "undefined". Labels (current and
+// legacy) live in src/lib/quote-quantity.ts.
 export function quantityLabel(quantity: string | undefined): string {
-  if (!quantity) return QUANTITY_LABELS['1'];
-  return QUANTITY_LABELS[quantity] || quantity.replace(/_/g, ' ');
+  return sharedQuantityLabel(quantity);
 }
 
 /**
@@ -119,7 +130,7 @@ export function notesSuggestBulk(notes: string | undefined): boolean {
 // counts only when the quantity field cannot already speak for itself, so a lead is never credited
 // for the same signal twice.
 export function isBulkLead(data: Pick<QuoteFormData, 'quantity' | 'buyer_notes'>): boolean {
-  if (data.quantity === '10_19' || data.quantity === '20_plus') return true;
+  if (data.quantity === '5_plus' || data.quantity === '10_19' || data.quantity === '20_plus') return true;
   const quantityUnstated = !data.quantity || data.quantity === '1';
   return quantityUnstated && notesSuggestBulk(data.buyer_notes);
 }
@@ -231,6 +242,23 @@ function getOptionLabel(labels: Record<string, string>, value: string | undefine
   return labels[value] || value.replace(/_/g, ' ');
 }
 
+/**
+ * The size part of the seller subject. One container (and every legacy bucket) reads exactly as
+ * before, the bare size code. 2..4 lists every size with the unit count, "20ft, 40ft (2 units)";
+ * "5 or more" reads "40ft (5+ units)".
+ */
+export function subjectSizePart(data: QuoteFormData): string {
+  const slots = sizeSlotCount(data.quantity);
+  if (slots > 1) return `${sizeSummary(containerSizes(data))} (${slots} units)`;
+  if (data.quantity === '5_plus') return `${data.size_preference} (5+ units)`;
+  return data.size_preference;
+}
+
+/** The seller email subject. Both prefixes are independent and can stack. */
+export function sellerSubject(data: QuoteFormData, score: number, dbSaved: boolean): string {
+  return `${dbSaved ? '' : '[ACTION NEEDED] '}${isBulkLead(data) ? '[BULK] ' : ''}New Quote Request - ${data.name} - ${subjectSizePart(data)} - Score: ${score}`;
+}
+
 async function sendBuyerConfirmation(data: QuoteFormData): Promise<string | null> {
   try {
     const { resend } = getClients();
@@ -258,6 +286,11 @@ async function sendBuyerConfirmation(data: QuoteFormData): Promise<string | null
       : '';
     // The all-in promise is delivery-specific. A self-pickup buyer is not being quoted
     // delivery at all, so promising "delivery to your ZIP" contradicts their own summary line.
+    // Multi-container orders (2..4 or 5+) also get a quantity line, and the size line lists every
+    // container. A single-container (or legacy-bucket) buyer email is unchanged.
+    const isNewMulti = sizeSlotCount(data.quantity) > 1 || data.quantity === '5_plus';
+    const quantitySummaryLine = isNewMulti ? `\n- Quantity: ${quantityLabel(data.quantity)}` : '';
+    const sizeSummaryText = sizeSummary(containerSizes(data), SIZE_LABELS);
     const allInLine = data.receive_method === 'pickup'
       ? 'Good to know: the price we send you covers the container at the pick-up yard. There is no delivery charge because you are arranging transport yourself, and the seller will confirm the yard location when they reach out.'
       : 'Good to know: the price we send you is all-in. It covers the container plus delivery to your ZIP and placement on flat ground. No surprise freight charges tacked on later.';
@@ -265,7 +298,7 @@ async function sendBuyerConfirmation(data: QuoteFormData): Promise<string | null
       from: 'Steel Box Direct <noreply@steelboxdirect.com>',
       to: data.email,
       subject: 'We received your quote request',
-      text: `Hi ${data.name},\n\nWe received your request for a shipping container quote.\n\nYour request summary:\n- Size: ${getOptionLabel(SIZE_LABELS, data.size_preference)}\n- Condition: ${getOptionLabel(CONDITION_LABELS, data.condition_preference)}\n- ${data.receive_method === 'pickup' ? 'Self pick-up near' : 'Delivery to'}: ${data.delivery_zip}\n- Timeline: ${getOptionLabel(TIMELINE_LABELS, data.timeline)}${rtoSummaryLine}\n\nWhat happens next:\nA seller will review your request and contact you within 4 business hours with pricing and availability for your area.\n\n${allInLine}${rtoHeadsUp}\n\nNo action needed from you. If you have questions, reply to this email.\n\n---\nSteel Box Direct`,
+      text: `Hi ${data.name},\n\nWe received your request for a shipping container quote.\n\nYour request summary:${quantitySummaryLine}\n- Size: ${isNewMulti ? sizeSummaryText : getOptionLabel(SIZE_LABELS, data.size_preference)}\n- Condition: ${getOptionLabel(CONDITION_LABELS, data.condition_preference)}\n- ${data.receive_method === 'pickup' ? 'Self pick-up near' : 'Delivery to'}: ${data.delivery_zip}\n- Timeline: ${getOptionLabel(TIMELINE_LABELS, data.timeline)}${rtoSummaryLine}\n\nWhat happens next:\nA seller will review your request and contact you within 4 business hours with pricing and availability for your area.\n\n${allInLine}${rtoHeadsUp}\n\nNo action needed from you. If you have questions, reply to this email.\n\n---\nSteel Box Direct`,
     });
     if (error) {
       console.error('Email send error:', error);
@@ -289,6 +322,10 @@ async function sendSellerNotification(
   try {
     const { resend } = getClients();
     const bulk = isBulkLead(data);
+    // Every container's size ("40ft" for one, "20ft x2, 40ft" for a mixed order) and the
+    // "5 or more" free text on one line.
+    const sizeLine = sizeSummary(containerSizes(data));
+    const bulkDetails = bulkDetailsOneLine(data.bulk_details);
     const priority = getPriorityLabel(score, bulk);
     const inServiceArea = distance === null || distance <= SERVICE_RADIUS_MILES;
     const pagesVisited = data.pages_visited?.join(', ') || 'Unknown';
@@ -334,8 +371,8 @@ async function sendSellerNotification(
       to: sellerRecipients,
       // Both prefixes are independent and can stack: [ACTION NEEDED] means the DB save failed,
       // [BULK] means the order is multi unit. Doug triages from the subject without opening it.
-      subject: `${dbSaved ? '' : '[ACTION NEEDED] '}${bulk ? '[BULK] ' : ''}New Quote Request - ${data.name} - ${data.size_preference} - Score: ${score}`,
-      text: `NEW QUOTE REQUEST\n${dbWarning}${rtoBanner}\nLEAD DETAILS\nName: ${data.name}\nEmail: ${data.email}\nPhone: ${data.phone}\n\nDECISIONS\nQuantity: ${quantityLabel(data.quantity)}\nSize: ${data.size_preference}\nCondition: ${data.condition_preference}\nUse: ${data.primary_use}\nTimeline: ${data.timeline}\nPayment intent: ${getPaymentIntentLabel(data)}\n\nDELIVERY\nLocation: ${data.delivery_zip}${distance ? ` (${distance}mi from Cincinnati)` : ''}\nService Area: ${inServiceArea ? 'Yes' : 'OUTSIDE AREA - Review'}\nAccess: ${data.site_access}\nMethod: ${data.receive_method === 'pickup' ? 'Self pick-up' : 'Tilt-bed delivery'}\n\nNOTES\n${data.buyer_notes || 'None provided'}\n\nATTRIBUTION\nSource: ${data.first_touch_source || 'Unknown'} / ${data.first_touch_medium || 'Unknown'}\nLanding Page: ${data.landing_page || 'Unknown'}\nPages Visited: ${pagesVisited}\nCalculator Result: ${data.calculator_result || 'Not used'}\nTime on Site: ${data.time_on_site_seconds ? Math.round(data.time_on_site_seconds / 60) + ' minutes' : 'Unknown'}\n\nSCORE: ${score} - ${priority}\n\nLead ID: ${leadId}${dbSaved ? '' : ' (NOT SAVED to database)'}\n`,
+      subject: sellerSubject(data, score, dbSaved),
+      text: `NEW QUOTE REQUEST\n${dbWarning}${rtoBanner}\nLEAD DETAILS\nName: ${data.name}\nEmail: ${data.email}\nPhone: ${data.phone}\n\nDECISIONS\nQuantity: ${quantityLabel(data.quantity)}\nSize: ${sizeLine}${bulkDetails ? `\nBulk details: ${bulkDetails}` : ''}\nCondition: ${data.condition_preference}\nUse: ${data.primary_use}\nTimeline: ${data.timeline}\nPayment intent: ${getPaymentIntentLabel(data)}\n\nDELIVERY\nLocation: ${data.delivery_zip}${distance ? ` (${distance}mi from Cincinnati)` : ''}\nService Area: ${inServiceArea ? 'Yes' : 'OUTSIDE AREA - Review'}\nAccess: ${data.site_access}\nMethod: ${data.receive_method === 'pickup' ? 'Self pick-up' : 'Tilt-bed delivery'}\n\nNOTES\n${data.buyer_notes || 'None provided'}\n\nATTRIBUTION\nSource: ${data.first_touch_source || 'Unknown'} / ${data.first_touch_medium || 'Unknown'}\nLanding Page: ${data.landing_page || 'Unknown'}\nPages Visited: ${pagesVisited}\nCalculator Result: ${data.calculator_result || 'Not used'}\nTime on Site: ${data.time_on_site_seconds ? Math.round(data.time_on_site_seconds / 60) + ' minutes' : 'Unknown'}\n\nSCORE: ${score} - ${priority}\n\nLead ID: ${leadId}${dbSaved ? '' : ' (NOT SAVED to database)'}\n`,
     });
     if (error) {
       console.error('Seller notification error:', error);

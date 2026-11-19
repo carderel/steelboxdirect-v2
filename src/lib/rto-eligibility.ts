@@ -9,9 +9,16 @@
 export const RTO_MAX_QUANTITY = 4;
 
 // Smallest unit count each /quote/ quantity bucket can mean. Keep in sync with the <option>
-// values in src/pages/quote/index.astro and QUANTITY_POINTS in src/pages/api/submit-quote.ts.
+// values in src/pages/quote/index.astro, QUANTITY_POINTS in src/pages/api/submit-quote.ts and
+// src/lib/quote-quantity.ts.
+// Current values (2026-11-19) first; "5 or more" is 5, so rent-to-own is blocked on it (owner rule:
+// no RTO on 5+ orders). The legacy buckets stay so cached forms and old leads are still judged.
 const QUANTITY_BUCKET_MIN: Record<string, number> = {
   '1': 1,
+  '2': 2,
+  '3': 3,
+  '4': 4,
+  '5_plus': 5,
   '2_4': 2,
   '5_9': 5,
   '10_19': 10,

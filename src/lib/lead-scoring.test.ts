@@ -27,6 +27,7 @@ import {
   isBulkLead,
   notesSuggestBulk,
   quantityLabel,
+  sellerSubject,
 } from '../pages/api/submit-quote';
 
 /** The minimum a full (non callback) quote carries. Individual tests override what they are about. */
@@ -248,6 +249,10 @@ describe('quantity is an email only pass through', () => {
     const insert = source.slice(source.indexOf(".from('leads')"), source.indexOf('distance_miles: distance,'));
     expect(insert).toContain('size_preference: data.size_preference');
     expect(insert).not.toContain('quantity');
+    // The 2026-11-19 per-container sizes and bulk box are email only too (no such columns).
+    for (const col of ['size_2', 'size_3', 'size_4', 'bulk_details', 'raw_fields']) {
+      expect(insert).not.toContain(col);
+    }
   });
 
   it('is in the seller email body, above Size', () => {
@@ -255,9 +260,12 @@ describe('quantity is an email only pass through', () => {
   });
 
   it('puts a [BULK] prefix in the seller subject without losing [ACTION NEEDED]', () => {
-    const subject = source.split('\n').find((l) => l.includes('New Quote Request - ${data.name}')) || '';
-    expect(subject).toContain("dbSaved ? '' : '[ACTION NEEDED] '");
-    expect(subject).toContain("bulk ? '[BULK] ' : ''");
+    // The subject is built by sellerSubject (2026-11-19), so it is asserted on output, not source.
+    const bulk = lead({ quantity: '20_plus' });
+    expect(sellerSubject(bulk, 90, false)).toBe('[ACTION NEEDED] [BULK] New Quote Request - Test Buyer - 40ft - Score: 90');
+    expect(sellerSubject(bulk, 90, true)).toBe('[BULK] New Quote Request - Test Buyer - 40ft - Score: 90');
+    expect(sellerSubject(lead(), 40, true)).toBe('New Quote Request - Test Buyer - 40ft - Score: 40');
+    expect(source).toContain('subject: sellerSubject(data, score, dbSaved),');
   });
 });
 
@@ -266,8 +274,12 @@ describe('the quote form asks the question', () => {
     const page = readQuotePage();
     expect(page).toContain('name="quantity"');
     expect(page).toContain('<option value="1" selected>1 container</option>');
-    for (const value of ['2_4', '5_9', '10_19', '20_plus']) {
+    // Owner-approved 2026-11-19: 1, 2, 3, 4, 5 or more. The legacy buckets are no longer offered.
+    for (const value of ['2', '3', '4', '5_plus']) {
       expect(page).toContain(`<option value="${value}">`);
+    }
+    for (const value of ['2_4', '5_9', '10_19', '20_plus']) {
+      expect(page).not.toContain(`<option value="${value}">`);
     }
   });
 
