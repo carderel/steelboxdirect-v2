@@ -85,7 +85,7 @@ export const routeLastmod = {
   'src/pages/portable-storage-vs-buying-a-container/index.astro': '2026-10-13T12:21:17-04:00',
   'src/pages/price/index.astro': '2026-11-13T13:50:19-05:00',
   'src/pages/privacy.astro': '2026-10-06T14:03:12-04:00',
-  'src/pages/quote/index.astro': '2026-11-19T19:15:49-05:00',
+  'src/pages/quote/index.astro': '2026-11-20T15:59:34-05:00',
   'src/pages/rent-to-own/index.astro': '2026-10-26T18:34:41-04:00',
   'src/pages/shipping-container-guides/index.astro': '2026-10-13T14:48:49-04:00',
   'src/pages/shipping-containers-for-sale/[slug].astro': '2026-10-26T18:34:41-04:00',
