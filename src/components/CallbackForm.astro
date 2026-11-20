@@ -4,6 +4,7 @@
 // leadType 'callback' (email-only pipeline, no DB write, the payment-intent
 // precedent). Door 2 links the full quote form with this page's size
 // preselected via the form's existing ?size= param.
+import { PHONE_PATTERN, PHONE_HINT } from '../lib/phone';
 interface Props {
   /** Human label for this size, e.g. "20ft Standard" (c.shortName). */
   sizeLabel: string;
@@ -25,7 +26,8 @@ const { sizeLabel, sizePreference } = Astro.props;
         </label>
         <label class="cb-field">
           <span>Phone</span>
-          <input type="tel" name="cb_phone" autocomplete="tel" required />
+          <input type="tel" name="cb_phone" inputmode="tel" autocomplete="tel" pattern={PHONE_PATTERN} title={PHONE_HINT} aria-describedby="cb-phone-hint" required />
+          <small id="cb-phone-hint" class="cb-hint">{PHONE_HINT}</small>
         </label>
         <label class="cb-field">
           <span>Email</span>
@@ -34,6 +36,7 @@ const { sizeLabel, sizePreference } = Astro.props;
         <button type="submit" class="btn cb-btn">Have Doug call me <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
       </form>
       <div id="cb-success" class="cb-success" hidden>Got it. Expect a call between 9am and 9pm Eastern.</div>
+      <div id="cb-invalid" class="cb-error" role="alert" hidden></div>
       <div id="cb-error" class="cb-error" hidden>That did not go through. Call us at <a href="tel:+15135462543">(513) 546-2543</a> or use the full quote form.</div>
       <p class="door-sub">We answer calls 9am to 9pm ET, every day.</p>
     </div>
@@ -66,6 +69,18 @@ const { sizeLabel, sizePreference } = Astro.props;
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
+      if (res.status === 400) {
+        // The server's own message (e.g. a phone Doug cannot dial). Let the buyer fix it and resend.
+        const bad = await res.json().catch(function () { return {}; });
+        if (typeof bad.error === 'string') {
+          btn.disabled = false; btn.textContent = btnLabel;
+          document.getElementById('cb-error').hidden = true;
+          const invalid = document.getElementById('cb-invalid');
+          invalid.textContent = bad.error;
+          invalid.hidden = false;
+          return;
+        }
+      }
       if (!res.ok) throw new Error('bad status');
       // GTM conversion. Its own event name, NOT generate_lead: callback leads are email-only
       // (submit-quote.ts skips the DB insert), so mixing them in would corrupt the lead count.
@@ -84,6 +99,7 @@ const { sizeLabel, sizePreference } = Astro.props;
       form.hidden = true; ok.hidden = false;
     } catch {
       btn.disabled = false; btn.textContent = btnLabel;
+      document.getElementById('cb-invalid').hidden = true;
       document.getElementById('cb-error').hidden = false;
     }
   });
@@ -98,6 +114,7 @@ const { sizeLabel, sizePreference } = Astro.props;
   .cb-field { display: block; margin-bottom: 16px; }
   .cb-field span { display: block; font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; opacity: .55; margin-bottom: 6px; }
   .cb-field input { width: 100%; border: 2px solid var(--ink); background: var(--cream); padding: 12px 14px; font-family: var(--sans, inherit); font-size: 16px; color: var(--ink); }
+  .cb-hint { display: block; font-size: 13px; line-height: 1.4; opacity: .7; margin-top: 6px; }
   .cb-field input:focus { outline: 3px solid var(--yellow); outline-offset: 0; }
   .cb-btn { background: var(--yellow); color: var(--ink); margin-top: 4px; }
   .cb-btn:hover { background: var(--ink); color: var(--yellow); }

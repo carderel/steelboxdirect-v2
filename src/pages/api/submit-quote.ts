@@ -9,6 +9,7 @@ import {
   sizeSummary,
   bulkDetailsOneLine,
 } from '../../lib/quote-quantity';
+import { normalizeUsPhone, formatUsPhone, PHONE_ERROR_MESSAGE } from '../../lib/phone';
 
 // Service area config
 const CINCINNATI_LAT = 39.1031;
@@ -340,6 +341,8 @@ async function sendSellerNotification(
     }
     // SELLER_EMAIL can be a comma-separated list to alert multiple recipients.
     const sellerRecipients = sellerEmail.split(',').map((e) => e.trim()).filter(Boolean);
+    // Validated upstream, so this always formats; the fallback is belt and braces.
+    const phone = formatUsPhone(data.phone) ?? data.phone;
 
     // Callback leads: email-only pipeline, so this notification IS the record. Phone leads
     // the subject and the first body line so Doug can dial without opening the email.
@@ -347,8 +350,8 @@ async function sendSellerNotification(
       const { error } = await resend.emails.send({
         from: 'Steel Box Direct <noreply@steelboxdirect.com>',
         to: sellerRecipients,
-        subject: `CALLBACK REQUESTED - ${data.name} - ${data.phone}${data.size_preference ? ' - ' + data.size_preference : ''}`,
-        text: `${data.phone} Wants a phone call. Answers 9am-9pm ET daily was promised.\n\nName: ${data.name}\nEmail: ${data.email}${data.size_preference ? `\nSize: ${data.size_preference}` : ''}\n\nNOT in the seller dashboard (callback leads are email-only by design).\nLead ID: ${leadId}\n`,
+        subject: `CALLBACK REQUESTED - ${data.name} - ${phone}${data.size_preference ? ' - ' + data.size_preference : ''}`,
+        text: `${phone} Wants a phone call. Answers 9am-9pm ET daily was promised.\n\nName: ${data.name}\nEmail: ${data.email}${data.size_preference ? `\nSize: ${data.size_preference}` : ''}\n\nNOT in the seller dashboard (callback leads are email-only by design).\nLead ID: ${leadId}\n`,
       });
       if (error) {
         console.error('Seller notification error:', error);
@@ -372,7 +375,7 @@ async function sendSellerNotification(
       // Both prefixes are independent and can stack: [ACTION NEEDED] means the DB save failed,
       // [BULK] means the order is multi unit. Doug triages from the subject without opening it.
       subject: sellerSubject(data, score, dbSaved),
-      text: `NEW QUOTE REQUEST\n${dbWarning}${rtoBanner}\nLEAD DETAILS\nName: ${data.name}\nEmail: ${data.email}\nPhone: ${data.phone}\n\nDECISIONS\nQuantity: ${quantityLabel(data.quantity)}\nSize: ${sizeLine}${bulkDetails ? `\nBulk details: ${bulkDetails}` : ''}\nCondition: ${data.condition_preference}\nUse: ${data.primary_use}\nTimeline: ${data.timeline}\nPayment intent: ${getPaymentIntentLabel(data)}\n\nDELIVERY\nLocation: ${data.delivery_zip}${distance ? ` (${distance}mi from Cincinnati)` : ''}\nService Area: ${inServiceArea ? 'Yes' : 'OUTSIDE AREA - Review'}\nAccess: ${data.site_access}\nMethod: ${data.receive_method === 'pickup' ? 'Self pick-up' : 'Tilt-bed delivery'}\n\nNOTES\n${data.buyer_notes || 'None provided'}\n\nATTRIBUTION\nSource: ${data.first_touch_source || 'Unknown'} / ${data.first_touch_medium || 'Unknown'}\nLanding Page: ${data.landing_page || 'Unknown'}\nPages Visited: ${pagesVisited}\nCalculator Result: ${data.calculator_result || 'Not used'}\nTime on Site: ${data.time_on_site_seconds ? Math.round(data.time_on_site_seconds / 60) + ' minutes' : 'Unknown'}\n\nSCORE: ${score} - ${priority}\n\nLead ID: ${leadId}${dbSaved ? '' : ' (NOT SAVED to database)'}\n`,
+      text: `NEW QUOTE REQUEST\n${dbWarning}${rtoBanner}\nLEAD DETAILS\nName: ${data.name}\nEmail: ${data.email}\nPhone: ${phone}\n\nDECISIONS\nQuantity: ${quantityLabel(data.quantity)}\nSize: ${sizeLine}${bulkDetails ? `\nBulk details: ${bulkDetails}` : ''}\nCondition: ${data.condition_preference}\nUse: ${data.primary_use}\nTimeline: ${data.timeline}\nPayment intent: ${getPaymentIntentLabel(data)}\n\nDELIVERY\nLocation: ${data.delivery_zip}${distance ? ` (${distance}mi from Cincinnati)` : ''}\nService Area: ${inServiceArea ? 'Yes' : 'OUTSIDE AREA - Review'}\nAccess: ${data.site_access}\nMethod: ${data.receive_method === 'pickup' ? 'Self pick-up' : 'Tilt-bed delivery'}\n\nNOTES\n${data.buyer_notes || 'None provided'}\n\nATTRIBUTION\nSource: ${data.first_touch_source || 'Unknown'} / ${data.first_touch_medium || 'Unknown'}\nLanding Page: ${data.landing_page || 'Unknown'}\nPages Visited: ${pagesVisited}\nCalculator Result: ${data.calculator_result || 'Not used'}\nTime on Site: ${data.time_on_site_seconds ? Math.round(data.time_on_site_seconds / 60) + ' minutes' : 'Unknown'}\n\nSCORE: ${score} - ${priority}\n\nLead ID: ${leadId}${dbSaved ? '' : ' (NOT SAVED to database)'}\n`,
     });
     if (error) {
       console.error('Seller notification error:', error);
@@ -420,6 +423,14 @@ export const POST: APIRoute = async ({ request }) => {
         console.warn(`API: Missing field: ${field}`);
         return new Response(JSON.stringify({ error: `Missing required field: ${field}` }), { status: 400 });
       }
+    }
+
+    // A phone Doug cannot dial is not a lead (live lead 2026-11-20 had phone "225"). Rejected here,
+    // before the insert and before ANY email, for both the quote and the callback path. The
+    // phone is still stored and emailed as typed; only the seller email shows it formatted.
+    if (!normalizeUsPhone(data.phone)) {
+      console.warn('API: Invalid phone number');
+      return new Response(JSON.stringify({ error: PHONE_ERROR_MESSAGE }), { status: 400 });
     }
 
     // Over-cap rent-to-own requests are recorded as not_sure and flagged, never rejected.

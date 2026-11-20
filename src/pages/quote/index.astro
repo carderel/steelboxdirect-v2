@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { RTO_QUANTITY_NOTE } from '../../lib/rto-eligibility';
+import { PHONE_PATTERN, PHONE_HINT } from '../../lib/phone';
 ---
 
 <BaseLayout
@@ -170,7 +171,8 @@ import { RTO_QUANTITY_NOTE } from '../../lib/rto-eligibility';
                 </div>
                 <div class="form-group quote_field">
                   <label for="phone">Phone</label>
-                  <input type="tel" id="phone" name="phone" required />
+                  <input type="tel" id="phone" name="phone" inputmode="tel" autocomplete="tel" pattern={PHONE_PATTERN} title={PHONE_HINT} aria-describedby="phone_hint" required />
+                  <p id="phone_hint" class="quote_field_note">{PHONE_HINT}</p>
                 </div>
               </div>
               <div class="form-group quote_field">
@@ -305,7 +307,10 @@ import { RTO_QUANTITY_NOTE } from '../../lib/rto-eligibility';
           }
           clearAttribution();
         } else {
-          alert('Something went wrong. Please try again.');
+          // Show the server's own message (e.g. the 400 for a phone Doug cannot dial); fall back
+          // to the generic line when the body has none.
+          const result = await response.json().catch(() => ({} as any));
+          alert(typeof result.error === 'string' && response.status === 400 ? result.error : 'Something went wrong. Please try again.');
           submitButton.disabled = false;
           submitButton.textContent = 'Request My Quote';
         }
