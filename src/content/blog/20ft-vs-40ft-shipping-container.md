@@ -56,6 +56,8 @@ Here's the size gap in plain numbers. These are the inside measurements, the one
 
 The width and height are the same. Only the length changes. So the 40ft is really two 20fts worth of floor, end to end.
 
+Our [container reference](/container-reference/#dimensions) puts these sizes side by side with the other common ones.
+
 Price doesn't double the same way. Part of what you pay for any container is fixed: the steel doors, the corner posts, the end walls, [the trip to your property](/blog/the-cheap-container-that-wasnt/). A longer box adds floor and side wall, not a second set of all that.
 
 That's why the price per square foot drops as you go up in size. For most buyers, the 40ft is the better deal on every foot of floor you actually use.

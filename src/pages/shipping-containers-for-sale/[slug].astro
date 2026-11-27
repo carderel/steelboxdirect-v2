@@ -11,6 +11,8 @@ import { priceBySlug, formatPrice, asOfLabel, nationalPriceLabel, hcBelowStandar
 
 /** The 20ft vs 40ft comparison post, linked once from each product page's compare band. */
 const VS_POST = '/blog/20ft-vs-40ft-shipping-container/';
+/** The parts-of-a-container anatomy post, linked once from every product page's specs band (T-239). */
+const PARTS_POST = '/blog/parts-of-a-shipping-container/';
 import { RTO_TERMS, RTO_DOWN_CONDITION } from '../../data/rtoTerms';
 import { DELIVERY_ACCESS } from '../../data/permitCounties';
 
@@ -559,6 +561,7 @@ const plateAria = `Side profile of a tilt bed delivery truck carrying a ${c.shor
         Full ISO 668 dimensions for every size are in our
         <a href="/container-reference/#dimensions">Container Reference</a>.
       </p>
+      <p class="spec-ref-link">What does each part of the box do? See <a href={PARTS_POST}>the parts of a shipping container</a>.</p>
       {c.slug === '40-foot-shipping-container' && (
         <p class="spec-ref-link">Weighing it against the shorter box? <a href={VS_POST}>Is a 40ft worth it over a 20ft?</a></p>
       )}

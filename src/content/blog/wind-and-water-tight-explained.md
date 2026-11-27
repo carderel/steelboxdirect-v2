@@ -126,7 +126,7 @@ That's the whole case for WWT. It's not the cheapest box you could find, and it'
 4. **Push on the floor** in a few spots. It should feel solid, not soft or springy.
 5. **Read the ID number and, if present, the CSC plate.** Our [container reference guide](/container-reference/#markings) shows exactly how to read both.
 
-For the full step-by-step walkthrough, see our [container buying guide](/container-buying-guide/). It covers everything on this list in more depth, plus what to look for in person before you commit.
+For the full step-by-step walkthrough, see our [container buying guide](/container-buying-guide/). It covers everything on this list in more depth, plus what to look for in person before you commit. Not sure what each part is called? Our guide to the [parts of a shipping container](/blog/parts-of-a-shipping-container/) names them, from the door gaskets to the cam keepers.
 
 ---
 

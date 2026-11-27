@@ -27,6 +27,21 @@ function splitLink(meaning: string, link?: InlineLink): [string, string] | null 
   return [meaning.slice(0, i), meaning.slice(i + link.linkText.length)];
 }
 
+// Spec library: the hub's links out to every spoke in the specs cluster. Anchors say what the
+// reader gets. Links only; no new factual claims live here.
+const specLibrary = [
+  { href: ISO6346_CALCULATOR_PATH, text: 'Check any container number’s check digit' },
+  { href: '/blog/how-to-read-container-id-number-iso-6346/', text: 'Read a container ID number, part by part' },
+  { href: BIC_LOOKUPS_POST_PATH, text: 'Check a used container’s identity with free BIC lookups' },
+  { href: '/container-certification-guide/', text: 'Understand the CSC plate and container certification' },
+  { href: '/blog/get-a-used-shipping-container-certified/', text: 'Get a used container certified' },
+  { href: '/blog/shipping-container-dimensions-size-chart/', text: 'See every size, 8ft to 53ft, in one chart' },
+  { href: '/blog/parts-of-a-shipping-container/', text: 'Learn what each part of a container does' },
+  { href: '/blog/20ft-vs-40ft-shipping-container/', text: 'Compare a 20ft and a 40ft container' },
+  { href: '/blog/wind-and-water-tight-explained/', text: 'Learn what Wind & Water Tight means' },
+  { href: '/blog/why-does-my-container-rain-inside-condensation/', text: 'Find out why a closed container can rain inside' },
+];
+
 const breadcrumbs = [
   { name: 'Home', path: '/' },
   { name: 'Container Reference' },
@@ -58,6 +73,17 @@ const breadcrumbs = [
         <a href="#markings">Markings &amp; ISO codes</a>
         <a href="#lifecycle">Lifecycle &amp; condition</a>
       </nav>
+    </div>
+  </section>
+
+  <!-- SPEC LIBRARY. Hub to spoke links (T-239, 2026-11-27 hub-and-spoke plan). Links only, no claims. -->
+  <section class="ref-section ref-library" aria-labelledby="spec-library">
+    <div class="wrap">
+      <h2 class="section-title" id="spec-library">Container Spec Library</h2>
+      <p class="section-intro">Go deeper on one topic. Each guide below picks up where this page leaves off.</p>
+      <ul class="lib-list">
+        {specLibrary.map((l) => <li><a href={l.href}>{l.text} →</a></li>)}
+      </ul>
     </div>
   </section>
 
@@ -98,7 +124,7 @@ const breadcrumbs = [
           <li><strong>{s.label}:</strong> {s.note}</li>
         ))}
       </ul>
-      <p class="ref-link-out">Comparing footprints? See <a href="/blog/shipping-container-dimensions-size-chart/">the complete 10ft-45ft size chart</a>.</p>
+      <p class="ref-link-out">Comparing footprints? See <a href="/blog/shipping-container-dimensions-size-chart/">the complete 8ft to 53ft size chart</a>. Want to know what each part of the box does? See <a href="/blog/parts-of-a-shipping-container/">the parts of a shipping container</a>.</p>
     </div>
   </section>
 
@@ -275,6 +301,13 @@ const breadcrumbs = [
   .ref-lifecycle { background: var(--cream); }
   .ref-faq { background: white; }
   .ref-spokes { background: var(--cream); }
+  .ref-library { background: white; }
+  .lib-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; border: 2.5px solid var(--ink); }
+  .lib-list li { border-bottom: 1.5px solid rgba(11,15,26,.1); }
+  .lib-list li:nth-child(odd) { border-right: 1.5px solid rgba(11,15,26,.1); }
+  .lib-list li:nth-last-child(-n+2) { border-bottom: none; }
+  .lib-list a { display: block; padding: 14px 20px; font-family: var(--narrow); font-weight: 700; font-size: 16px; text-transform: uppercase; }
+  .lib-list a:hover { background: var(--ink); color: var(--yellow); }
   .section-title { font-family: var(--narrow); font-size: 36px; text-transform: uppercase; margin-bottom: 12px; }
   .section-intro { font-size: 17px; line-height: 1.6; max-width: 760px; opacity: .8; margin-bottom: 32px; }
   .ref-h3 { font-family: var(--narrow); font-size: 22px; text-transform: uppercase; margin: 36px 0 16px; scroll-margin-top: 120px; }
@@ -343,7 +376,9 @@ const breadcrumbs = [
   .cta-box p { font-size: 17px; opacity: .8; margin-bottom: 32px; }
 
   @media (max-width: 960px) {
-    .code-grid, .life-grid, .ref-example { grid-template-columns: 1fr; }
+    .code-grid, .life-grid, .ref-example, .lib-list { grid-template-columns: 1fr; }
+    .lib-list li:nth-child(odd) { border-right: none; }
+    .lib-list li:nth-last-child(2) { border-bottom: 1.5px solid rgba(11,15,26,.1); }
     .ref-section, .ref-h3, .ref-callout h4 { scroll-margin-top: 240px; }
   }
   @media (max-width: 768px) {

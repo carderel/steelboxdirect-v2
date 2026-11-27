@@ -274,7 +274,7 @@ The ✓ marks the three sizes Steel Box Direct sells. Each is Wind & Water Tight
 
 A "20-foot container" is 20 feet long on the outside. But step inside, and it measures closer to 19 feet 4 inches.
 
-That's not a mistake. The steel walls, floor, and corner posts all take up a little room. Every size loses a few inches this way. So when you plan what will fit, use the *inside* numbers. Don't use the name.
+That's not a mistake. The steel walls, floor, and corner posts all take up a little room. Every size loses a few inches this way. So when you plan what will fit, use the *inside* numbers. Don't use the name. (Curious what each of those parts does? Here's our guide to the [parts of a shipping container](/blog/parts-of-a-shipping-container/).)
 
 <figure class="dim-fig">
   <div class="dim-fig-head" aria-hidden="true"><span class="dim-fig-no">FIG. 02</span><span class="dim-fig-title">Outside vs inside · 20 ft cutaway</span></div>

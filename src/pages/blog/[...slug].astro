@@ -151,7 +151,7 @@ const breadcrumbs = [
         <div class="wrap">
           <div class:list={['post-intro', { 'has-both': showTakeaways && showToc }]}>
             {showTakeaways && (
-              <details class="takeaways-box" open>
+              <details class="takeaways-box">
                 <summary class="intro-label">What You'll Learn</summary>
                 <ul>
                   {takeaways!.map((t) => <li>{t}</li>)}
@@ -284,14 +284,16 @@ const breadcrumbs = [
   /* INTRO: what-you'll-learn + auto TOC, sit above the body in the same reading column.
      Kept tight; this is the block the reader has to get through before the TOC/body. */
   .post-intro-wrap { background: white; padding: 12px 0 0; }
-  .post-intro { max-width: 760px; display: grid; grid-template-columns: 1fr; gap: 14px; align-items: start; }
+  /* Centered on the same axis as the body column (.post-body is 760px incl. 32px side padding,
+     so its text measure is 696px). Both toggles start closed on every post (owner 2026-11-25). */
+  .post-intro { max-width: 696px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 14px; align-items: start; }
   .post-intro.has-both { grid-template-columns: 1fr 1fr; }
   .takeaways-box, .toc-box { background: var(--cream); border: 2.5px solid var(--ink); padding: 14px 20px; box-shadow: 6px 6px 0 var(--yellow); }
 
   /* Accordion: native <details>/<summary>. Content stays in the DOM when
      collapsed (crawlers/LLMs still read it) and is only visually hidden via the
      [open] attribute selector below. Default marker removed; own chevron added. */
-  .intro-label { font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; margin: 0; list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .intro-label { font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; margin: 0; list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
   .intro-label::-webkit-details-marker { display: none; }
   .intro-label::marker { content: ''; }
   .intro-label::after { content: '▸'; font-size: 13px; transition: transform .15s ease; flex-shrink: 0; }
