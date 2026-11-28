@@ -34,7 +34,7 @@ export const SCHEMA_VERSION = 1;
 /** Repo relative source module path to ISO date of its last commit. Sorted by path. */
 export const routeLastmod = {
   'src/content/blog/12-things-never-store-in-a-shipping-container.md': '2026-10-26T18:34:41-04:00',
-  'src/content/blog/20ft-vs-40ft-shipping-container.md': '2026-11-27T10:27:56-05:00',
+  'src/content/blog/20ft-vs-40ft-shipping-container.md': '2026-11-27T20:04:00-05:00',
   'src/content/blog/99-dollar-down-rent-to-own.md': '2026-10-26T18:34:41-04:00',
   'src/content/blog/are-shipping-containers-airtight.md': '2026-10-26T18:34:41-04:00',
   'src/content/blog/buying-a-shipping-container-charlotte-nc.md': '2026-10-26T18:34:41-04:00',
